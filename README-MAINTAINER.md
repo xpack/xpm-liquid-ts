@@ -67,7 +67,7 @@ Check GitHub issues and pull requests:
   additions), `npm version major` (incompatible API changes)
 - push all changes to GitHub; this should trigger CI
 - **wait for CI tests to complete**
-- check <https://github.com/xpack/xpm-liquid-ts/actions/new>
+- check <https://github.com/xpack/xpm-liquid-ts/actions/>
 - `npm publish --tag next` (use `--access public` when publishing for the first time)
 
 Check if the version is present at
