@@ -303,8 +303,12 @@ export class XpmLiquid {
         release: os.release(),
         tmpdir: os.tmpdir(),
         type: os.type(),
-        // Workaround for the missing type definition.
-        version: os.version()
+        // os.version() available since 12.x
+        version: (typeof os.version === 'function')
+          /* istanbul ignore next */
+          ? os.version()
+          /* istanbul ignore next */
+          : '(unavailable)'
       },
       path: {
         delimiter: path.delimiter,
