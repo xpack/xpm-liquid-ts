@@ -1,0 +1,15 @@
+.vscode/
+.github/workflows/
+.nyc_output/
+
+src/
+tests/
+dist/tests/
+typings/
+
+**/tsconfig.json
+**/*.tgz
+
+README-*.md
+
+

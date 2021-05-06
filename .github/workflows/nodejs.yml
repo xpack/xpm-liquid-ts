@@ -1,0 +1,41 @@
+# https://help.github.com/en/actions
+
+# https://github.com/actions
+# https://github.com/actions/checkout
+# https://github.com/actions/setup-node
+
+name: CI on Push
+
+on: [push]
+
+jobs:
+  npm-test:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        # nvm ls-remote --lts
+        node-version: [^10.24.x, ^12.22.x, ^14.16.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 3
+    - name: Setup Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Show node & npm versions, environment
+      run: |
+        node --version
+        npm --version
+        env
+    - name: Install dependencies
+      run: npm ci
+    - name: Run test
+      run: npm run test100
+      env:
+        CI: true

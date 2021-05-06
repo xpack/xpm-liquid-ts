@@ -1,0 +1,9 @@
+{
+  "markdownlint.config": {
+    "MD041": false
+  },
+  "typescript.tsc.autoDetect": "off",
+  "editor.tabSize": 2,
+  "standard.engine": "ts-standard",
+  "standard.autoFixOnSave": true
+}
