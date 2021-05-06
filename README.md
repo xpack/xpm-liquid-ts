@@ -3,7 +3,7 @@
 
 # @xpack/xpm-liquid
 
-The Liquid substitutions code used by xpm &amp; relatives.
+This project implements the Liquid substitutions code used by xpm & relatives.
 
 ## Prerequisites
 
@@ -33,6 +33,8 @@ project.
 According to [semver](https://semver.org) requirements,
 incompatible API changes require higher major numbers.
 
+- none so far
+
 ## User info
 
 This section is intended for those who want to use this module in their
@@ -41,7 +43,7 @@ own projects.
 The `@xpack/xpm-liquid` module can be imported in both TypeScript and JavaScript
 Node.js code.
 
-In TypeScript, use import:
+In TypeScript, use `import`:
 
 ```typescript
 import { XpmLiquid } from '@xpack/xpm-liquid'
@@ -58,9 +60,10 @@ TODO: add more info.
 ## Maintainer info
 
 This page documents how to use this module in an user application.
-For maintainer information, see the separate
+For developer and maintainer information, see the separate
+[README-DEVELOPER](https://github.com/xpack/xpm-liquid-ts/blob/master/README-DEVELOPER.md) and
 [README-MAINTAINER](https://github.com/xpack/xpm-liquid-ts/blob/master/README-MAINTAINER.md)
-page.
+pages.
 
 ## License
 
