@@ -1,14 +1,14 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack/xpm-liquid.svg)](https://www.npmjs.com/package/@xpack/xpm-liquid)
 [![license](https://img.shields.io/github/license/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/blob/xpack/LICENSE)
-[![Standard](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com/)
-[![Actions Status](https://github.com/xpack/xpm-liquid-ts/workflows/Node.js%20CI%20on%20Push/badge.svg)](https://github.com/xpack/xpm-liquid-ts/actions)
+[![TS-Standard - Typescript Standard Style Guide](https://badgen.net/badge/code%20style/ts-standard/blue?icon=typescript)](https://github.com/standard/ts-standard)
+[![Actions Status](https://github.com/xpack/xpm-liquid-ts/workflows/CI%20on%20Push/badge.svg)](https://github.com/xpack/xpm-liquid-ts/actions)
 [![GitHub issues](https://img.shields.io/github/issues/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/issues/)
 [![GitHub pulls](https://img.shields.io/github/issues-pr/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/pulls)
 
 # Maintainer info
 
 This page complements the developer page and documents the
-maintenance procedures related to making release for the
+maintenance procedures related to making releases for the
 `@xpack/xpm-liquid` module.
 
 ## Prepare the release
@@ -51,9 +51,9 @@ Check GitHub issues and pull requests:
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- commit with a message like _prepare v0.1.0_
+- commit with a message like _prepare v0.1.1_
 
-## Publish to Marketplace
+## Publish to npmjs.com
 
 - terminate all running tasks (**Terminal** → **Terminate Task...**)
 - select the `develop` branch
@@ -86,7 +86,7 @@ npm install -global @xpack/xpm-liquid@next
 When stable:
 
 - `npm dist-tag ls @xpack/xpm-liquid`
-- `npm dist-tag add @xpack/xpm-liquid@0.1.0 latest`
+- `npm dist-tag add @xpack/xpm-liquid@0.1.1 latest`
 - `npm dist-tag ls @xpack/xpm-liquid`
 
 ### Merge into `master`

@@ -1,5 +1,6 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack/xpm-liquid.svg)](https://www.npmjs.com/package/@xpack/xpm-liquid)
 [![license](https://img.shields.io/github/license/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/blob/xpack/LICENSE)
+[![TS-Standard - Typescript Standard Style Guide](https://badgen.net/badge/code%20style/ts-standard/blue?icon=typescript)](https://github.com/standard/ts-standard)
 
 # @xpack/xpm-liquid
 
@@ -18,7 +19,7 @@ from the public repository; use `npm` to install it inside the module where
 it is needed:
 
 ```console
-npm install @xpack/xpm-liquid
+npm install @xpack/xpm-liquid@latest
 ```
 
 The module does not provide any executables, and generally there are no
@@ -28,20 +29,13 @@ The development repository is available from the GitHub
 [xpack/xpm-liquid-ts](https://github.com/xpack/xpm-liquid-ts)
 project.
 
-## Compatibility notices
-
-According to [semver](https://semver.org) requirements,
-incompatible API changes require higher major numbers.
-
-- none so far
-
 ## User info
 
 This section is intended for those who want to use this module in their
 own projects.
 
-The `@xpack/xpm-liquid` module can be imported in both TypeScript and JavaScript
-Node.js code.
+The `@xpack/xpm-liquid` module can be imported in both TypeScript
+and JavaScript Node.js code.
 
 In TypeScript, use `import`:
 
@@ -57,7 +51,14 @@ const { XpmLiquid } = require('@xpack/xpm-liquid')
 
 TODO: add more info.
 
-## Maintainer info
+## Compatibility notices
+
+According to [semver](https://semver.org) requirements,
+incompatible API changes require higher major numbers.
+
+- none so far
+
+## Maintainer & developer info
 
 This page documents how to use this module in an user application.
 For developer and maintainer information, see the separate

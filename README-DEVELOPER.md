@@ -1,7 +1,7 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack/xpm-liquid.svg)](https://www.npmjs.com/package/@xpack/xpm-liquid)
 [![license](https://img.shields.io/github/license/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/blob/xpack/LICENSE)
-[![Standard](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com/)
-[![Actions Status](https://github.com/xpack/xpm-liquid-ts/workflows/Node.js%20CI%20on%20Push/badge.svg)](https://github.com/xpack/xpm-liquid-ts/actions)
+[![TS-Standard - Typescript Standard Style Guide](https://badgen.net/badge/code%20style/ts-standard/blue?icon=typescript)](https://github.com/standard/ts-standard)
+[![Actions Status](https://github.com/xpack/xpm-liquid-ts/workflows/CI%20on%20Push/badge.svg)](https://github.com/xpack/xpm-liquid-ts/actions)
 [![GitHub issues](https://img.shields.io/github/issues/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/issues/)
 [![GitHub pulls](https://img.shields.io/github/issues-pr/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/pulls)
 
@@ -47,6 +47,19 @@ https://github.com/xpack/xpm-liquid-ts.git xpm-liquid-ts.git
 npm install
 ```
 
+## Add links dor development
+
+```sh
+cd xpm-liquid-ts.git
+npm link
+```
+
+And in projects refering this:
+
+```sh
+npm link @xpack/xpm-liquid
+```
+
 ## Start the compile background task
 
 ```sh
@@ -88,7 +101,7 @@ To manually fix compliance with the style guide (where possible):
 ```console
 $ npm run fix
 
-> @xpack/xpm-liquid@0.1.0 fix
+> @xpack/xpm-liquid@0.1.1 fix
 > ts-standard --fix src
 ```
 
@@ -114,19 +127,19 @@ A typical test result looks like:
 ```console
 % npm run test   
 
-> @xpack/xpm-liquid@0.1.0 pretest
+> @xpack/xpm-liquid@0.1.1 pretest
 > npm run compile && npm run lint
 
 
-> @xpack/xpm-liquid@0.1.0 compile
+> @xpack/xpm-liquid@0.1.1 compile
 > tsc -p ./
 
 
-> @xpack/xpm-liquid@0.1.0 lint
+> @xpack/xpm-liquid@0.1.1 lint
 > ts-standard src
 
 
-> @xpack/xpm-liquid@0.1.0 test
+> @xpack/xpm-liquid@0.1.1 test
 > npm run test-tap100 -s
 
 tests/tap/010-functions.ts ............................ 5/5
@@ -151,7 +164,7 @@ To run a specific test with more verbose output, use `npm run tap`:
 ```console
 % npm run tap tests/tap/010-functions.ts 
 
-> @xpack/xpm-liquid@0.1.0 tap
+> @xpack/xpm-liquid@0.1.1 tap
 > tap --ts --reporter=spec --timeout 300 --no-coverage "tests/tap/010-functions.ts"
 
 
@@ -181,6 +194,14 @@ Thus, passing coverage tests was enforced for all tests, as seen before.
 The continuous integration tests are performed via
 [GitHub Actions](https://github.com/features/actions) on Ubuntu,
 Windows and macOS, using node 10, 12, 14.
+
+## Tricks & tips
+
+To trace module resolution:
+
+```json
+    "compile": "tsc --traceResolution  -p ./",
+```
 
 ## TSDoc (TypeScript documentation)
 
