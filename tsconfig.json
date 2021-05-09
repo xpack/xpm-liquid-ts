@@ -3,7 +3,7 @@
   /* Most option copied from vscode.git/extensions/shared.tsconfig.json */
   /* The maps are used for debugging only. */
   "compilerOptions": {
-    "rootDir": ".",
+    "rootDir": "src",
     "outDir": "dist",
     "sourceMap": true,
     "declaration": true,
@@ -11,11 +11,8 @@
     "lib": [
       "es2018"
     ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./typings"
-    ],
     "module": "commonjs",
+    "moduleResolution": "node",
     "strict": true,
     "alwaysStrict": true,
     "noImplicitAny": true,
@@ -27,6 +24,6 @@
   "exclude": [
     "node_modules",
     "dist",
-    "tests/tap/*.d.ts"
+    "tests/tap"
   ]
 }

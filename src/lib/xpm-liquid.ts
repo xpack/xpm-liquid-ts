@@ -177,7 +177,7 @@ export class XpmLiquid {
   readonly engine: Liquid
 
   // --------------------------------------------------------------------------
-  // Constructors.
+  // Constructor.
 
   constructor (log: Logger) {
     this.log = log

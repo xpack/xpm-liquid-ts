@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "description": "The liquid substitutions code used by xpm &amp; relatives",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "keywords": [
     "xpm",
     "liquid",
     "liquidjs"
-  ], 
+  ],
   "scripts": {
     "fix": "ts-standard --fix src tests/tap",
     "compile": "tsc -p ./",
@@ -43,7 +44,7 @@
   },
   "homepage": "https://github.com/xpack/xpm-liquid-ts/",
   "dependencies": {
-    "@xpack/logger": "^3.0.0",
+    "@xpack/logger": "^5.0.2",
     "liquidjs": "^9.24.2"
   },
   "devDependencies": {
@@ -53,5 +54,8 @@
     "ts-node": "^9.1.1",
     "ts-standard": "^10.0.0",
     "typescript": "^4.2.4"
+  },
+  "engines": {
+    "node": ">10.0"
   }
 }
