@@ -44,12 +44,18 @@ function _isJsonObject (value: any): boolean {
   return value !== undefined && !_isPrimitive(value) && !Array.isArray(value)
 }
 
+/**
+ * Replace non alphanumeric chars with dashes to make the paths
+ * comply with filesystem names.
+ *
+ * @param {string} input A path candidate.
+ * @returns {string} A validated path.
+ */
 export function filterPath (input: string): string {
-  const lower = input.toLowerCase()
   /* istanbul ignore next */
   const fixed = (os.platform() === 'win32')
-    ? lower.replace(/[^a-z0-9\\]+/g, '-')
-    : lower.replace(/[^a-z0-9/]+/g, '-')
+    ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
+    : input.replace(/[^a-zA-Z0-9/]+/g, '-')
 
   return fixed.replace(/--/g, '-')
 }

@@ -24,11 +24,9 @@ tap.test('filterPath', (t): void => {
     t.equal(filterPath('a/b'), 'a/b', 'preserves posix path separator /')
   }
 
-  t.equal(filterPath('AB'), 'ab', 'changes to lowercase')
-
-  t.equal(filterPath('A!B'), 'a-b', 'replaces by dash')
-  t.equal(filterPath('A--B'), 'a-b', 'replaces two dashes')
-  t.equal(filterPath('A---B'), 'a-b', 'replaces three dashes')
+  t.equal(filterPath('A!B'), 'A-B', 'replaces by dash')
+  t.equal(filterPath('A--B'), 'A-B', 'replaces two dashes')
+  t.equal(filterPath('A---B'), 'A-B', 'replaces three dashes')
 
   t.end()
 })

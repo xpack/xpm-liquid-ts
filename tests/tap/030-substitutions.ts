@@ -61,8 +61,8 @@ tap.test('XpmLiquid filters', async (t) => {
   t.equal(
     await xpmLiquid.performSubstitutions(
       '{{ "A@#$B" | downcase_filename }}', map),
-    'a-b',
-    'downcase_filename ok')
+    'A-B',
+    'to_filename ok')
 
   t.equal(
     await xpmLiquid.performSubstitutions(
