@@ -22,12 +22,10 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src",
-    "tests/tap"
+    "src"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "tests/tap"
+    "dist"
   ]
 }
