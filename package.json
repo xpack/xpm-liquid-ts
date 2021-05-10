@@ -1,6 +1,6 @@
 {
   "name": "@xpack/xpm-liquid",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The liquid substitutions code used by xpm &amp; relatives",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
