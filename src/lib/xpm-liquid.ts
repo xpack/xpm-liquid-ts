@@ -158,12 +158,10 @@ export interface XpmLiquidMap {
   package?: any
   configuration?: {
     name: string
-    properties: {
-      [key: string]: string[]
-    }
+    [key: string]: any
   }
   properties?: {
-    [key: string]: string[]
+    [key: string]: string | string[]
   }
 }
 
