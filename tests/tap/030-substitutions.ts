@@ -60,7 +60,7 @@ tap.test('XpmLiquid filters', async (t) => {
 
   t.equal(
     await xpmLiquid.performSubstitutions(
-      '{{ "A@#$B" | downcase_filename }}', map),
+      '{{ "A@#$B" | to_filename }}', map),
     'A-B',
     'to_filename ok')
 
@@ -241,7 +241,7 @@ tap.test('XpmLiquid filters cascade', async (t) => {
 
   t.equal(
     await xpmLiquid.performSubstitutions(
-      '{{ "build" | path_join: configuration.name | downcase_filename }}',
+      '{{ "build" | path_join: configuration.name | to_filename | downcase }}',
       map),
     path.join('build', 'debug'),
     'build | join ok')

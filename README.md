@@ -58,7 +58,7 @@ const xpmLiquid = new XpmLiquid(log)
 const xpmLiquidMap = xpmLiquid.prepareMap(packagJson, 'Debug')
 
 const var = await xpmLiquid.performSubstitutions(
-      '{{ "build" | path_join: configuration.name | downcase_filename }}',
+      '{{ "build" | path_join: configuration.name | to_filename }}',
       xpmLiquidMap)
 ```
 
@@ -114,7 +114,7 @@ Variables based on the Node.js
 
 Examples:
 
-- `"buildFolderRelativePath": "build{{ path.sep }}{{ configuration.name | downcase_filename }}"`
+- `"buildFolderRelativePath": "build{{ path.sep }}{{ configuration.name | to_filename }}"`
 
 ### Custom filters
 
@@ -142,14 +142,14 @@ Filters based on Node.js
 
 - `util_format`
 
-Custom filter to convert generic names to lower case names accepted
+Custom filter to convert generic names to names accepted
 as file names (letters, digits, dash):
 
-- `downcase_filename`
+- `to_filename`
 
 Examples:
 
-- `"buildFolderRelativePath": "{{ "build" | path_join: configuration.name | downcase_filename }"`
+- `"buildFolderRelativePath": "{{ "build" | path_join: configuration.name | to_filename | downcase }"`
 
 ## Compatibility notices
 

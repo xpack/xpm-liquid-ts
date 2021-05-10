@@ -280,7 +280,7 @@ export class XpmLiquid {
     )
 
     // Custom action.
-    this.engine.registerFilter('downcase_filename',
+    this.engine.registerFilter('to_filename',
       (p) => filterPath(p)
     )
   }
