@@ -21,6 +21,10 @@
     "noUnusedParameters": true,
     "forceConsistentCasingInFileNames": true
   },
+  "include": [
+    "src",
+    "tests/tap"
+  ],
   "exclude": [
     "node_modules",
     "dist",
