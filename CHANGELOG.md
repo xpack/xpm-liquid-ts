@@ -6,6 +6,10 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues/)
 and close existing issues and pull requests.
 
+## 2021-05-10
+
+- v0.1.1 released
+
 ## 2021-05-09
 
 - v0.1.1 prepared
