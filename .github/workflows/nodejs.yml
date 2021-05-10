@@ -8,7 +8,8 @@ name: CI on Push
 
 on: 
   push:
-    branches
+    branches:
+    - '**'
 
 jobs:
   npm-test:
