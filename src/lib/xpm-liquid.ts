@@ -10,6 +10,16 @@
 
 // ----------------------------------------------------------------------------
 
+/*
+ * This module includes the LiquidJS code used to perform
+ * substitutions in xpm and related (like the VS Code extensions).
+ *
+ * The main code is the map used for substitutions and the list
+ * of custom tags.
+ */
+
+// ----------------------------------------------------------------------------
+
 import * as assert from 'assert'
 import * as os from 'os'
 import * as path from 'path'
