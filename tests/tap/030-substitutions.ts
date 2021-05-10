@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------------
 
 import * as os from 'os'
+import * as path from 'path'
 
 // The `[node-tap](http://www.node-tap.org)` framework.
 import * as tap from 'tap'
@@ -212,6 +213,38 @@ tap.test('XpmLiquid filters', async (t) => {
       map),
     '../../impl/bbb',
     'path_posix_relative ok')
+
+  t.end()
+})
+
+tap.test('XpmLiquid filters cascade', async (t) => {
+  const xpmLiquid = new XpmLiquid(log)
+
+  const xpack = {
+    name: 'n',
+    version: '0.1.2',
+    xpack: {
+      properties: {
+        one: '1'
+      },
+      buildConfigurations: {
+        Debug: {
+          properties: {
+            two: '2'
+          }
+        }
+      }
+    }
+  }
+
+  const map = xpmLiquid.prepareMap(xpack, 'Debug')
+
+  t.equal(
+    await xpmLiquid.performSubstitutions(
+      '{{ "build" | path_join: configuration.name | downcase_filename }}',
+      map),
+    path.join('build', 'debug'),
+    'build | join ok')
 
   t.end()
 })
