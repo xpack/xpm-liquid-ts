@@ -49,7 +49,107 @@ In JavaScript, use `require()`:
 const { XpmLiquid } = require('@xpack/xpm-liquid')
 ```
 
-TODO: add more info.
+To use the `XpmLiquid` class, create an instance of the engine, provide the
+`package.json` object, possibly the name of the configuration, and
+call `perform substitutions()`:
+
+```js
+const xpmLiquid = new XpmLiquid(log)
+const xpmLiquidMap = xpmLiquid.prepareMap(packagJson, 'Debug')
+
+const var = await xpmLiquid.performSubstitutions(
+      '{{ "build" | path_join: configuration.name | downcase_filename }}',
+      xpmLiquidMap)
+```
+
+### Available variables
+
+The entire project `package.json` is available as the `package` variable:
+
+- `package`
+
+All user defined properties (project and configuration) are grouped
+below the `properties` variable:
+
+- `properties`
+
+If the substitution refers to a certain build configuration, the configuration
+name and the entire configuration content are available separately below
+the `configuration` variable. Configuration properties are added to the
+`properties` variable`, possibly overriding project properties.
+
+- `configuration.name`
+- `configuration.*`
+
+Variables based on the Node.js process
+[environment](https://nodejs.org/dist/latest-v14.x/docs/api/process.html#process_process_env)
+
+- `env`
+
+Variables based on the Node.js
+[os](https://nodejs.org/dist/latest-v14.x/docs/api/os.html) definitions:
+
+- `os.EOL`
+- `os.arch` (like 'arm', 'arm64', 'ia32', 'x64')
+- `os.constants`
+- `os.cpus`
+- `os.endianness`
+- `os.homedir`
+- `os.hostname`
+- `os.platform` (like 'darwin', 'linux', 'win32')
+- `os.release`
+- `os.tmpdir`
+- `os.type`
+- `os.version` (available since Node 12)
+
+Variables based on the Node.js
+[path](https://nodejs.org/dist/latest-v14.x/docs/api/path.html) definitions:
+
+- `path.delimiter` (`;` for Windows, `:` for POSIX)
+- `path.sep` (`\` on Windows, `/` on POSIX)
+- `path.win32.delimiter` (`;`)
+- `path.win32.sep` (`\`)
+- `path.posix.delimiter` (`:`)
+- `path.posix.sep` (`/`)
+
+Examples:
+
+- `"buildFolderRelativePath": "build{{ path.sep }}{{ configuration.name | downcase_filename }}"`
+
+### Custom filters
+
+Filters based on Node.js
+[path](https://nodejs.org/dist/latest-v14.x/docs/api/path.html) functions:
+
+- `path_basename`
+- `path_dirname`
+- `path_normalize`
+- `path_join`
+- `path_relative`
+- `path_posix_basename`
+- `path_posix_dirname`
+- `path_posix_normalize`
+- `path_posix_join`
+- `path_posix_relative`
+- `path_win32_basename`
+- `path_win32_dirname`
+- `path_win32_normalize`
+- `path_win32_join`
+- `path_win32_relative`
+
+Filters based on Node.js
+[utils](https://nodejs.org/dist/latest-v14.x/docs/api/util.html) functions:
+
+- `util_format`
+
+Custom filter to convert generic names to lower case names accepted
+as file names (letters, digits, dash):
+
+- `downcase_filename`
+
+Examples:
+
+- `"buildFolderRelativePath": "{{ "build" | path_join: configuration.name | downcase_filename }"`
 
 ## Compatibility notices
 
