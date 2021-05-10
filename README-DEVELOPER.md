@@ -101,7 +101,7 @@ To manually fix compliance with the style guide (where possible):
 ```console
 $ npm run fix
 
-> @xpack/xpm-liquid@0.1.1 fix
+> @xpack/xpm-liquid@1.0.0 fix
 > ts-standard --fix src
 ```
 
@@ -127,19 +127,19 @@ A typical test result looks like:
 ```console
 % npm run test   
 
-> @xpack/xpm-liquid@0.1.1 pretest
+> @xpack/xpm-liquid@1.0.0 pretest
 > npm run compile && npm run lint
 
 
-> @xpack/xpm-liquid@0.1.1 compile
+> @xpack/xpm-liquid@1.0.0 compile
 > tsc -p ./
 
 
-> @xpack/xpm-liquid@0.1.1 lint
+> @xpack/xpm-liquid@1.0.0 lint
 > ts-standard src
 
 
-> @xpack/xpm-liquid@0.1.1 test
+> @xpack/xpm-liquid@1.0.0 test
 > npm run test-tap100 -s
 
 tests/tap/010-functions.ts ............................ 4/4
@@ -164,7 +164,7 @@ To run a specific test with more verbose output, use `npm run tap`:
 ```console
 % npm run tap tests/tap/010-functions.ts 
 
-> @xpack/xpm-liquid@0.1.1 tap
+> @xpack/xpm-liquid@1.0.0 tap
 > tap --ts --reporter=spec --timeout 300 --no-coverage "tests/tap/010-functions.ts"
 
 

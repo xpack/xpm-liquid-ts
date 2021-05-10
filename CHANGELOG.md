@@ -8,6 +8,9 @@ and close existing issues and pull requests.
 
 ## 2021-05-10
 
+- v1.0.0 released
+- [#2] - rename filter to_filename
+- [#1] - the filter path should not convert to lower case
 - v0.1.1 released
 
 ## 2021-05-09

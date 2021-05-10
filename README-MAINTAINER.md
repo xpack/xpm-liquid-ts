@@ -51,7 +51,7 @@ Check GitHub issues and pull requests:
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- commit with a message like _prepare v0.1.1_
+- commit with a message like _prepare v1.0.0_
 
 ## Publish to npmjs.com
 
@@ -86,7 +86,7 @@ npm install -global @xpack/xpm-liquid@next
 When stable:
 
 - `npm dist-tag ls @xpack/xpm-liquid`
-- `npm dist-tag add @xpack/xpm-liquid@0.1.1 latest`
+- `npm dist-tag add @xpack/xpm-liquid@1.0.0 latest`
 - `npm dist-tag ls @xpack/xpm-liquid`
 
 ### Merge into `master`
