@@ -346,7 +346,9 @@ export class XpmLiquid {
         liquidMap.properties = packageJson.xpack.properties
       }
 
-      if (buildConfigurationName !== undefined) {
+      if (buildConfigurationName !== undefined &&
+        buildConfigurationName !== null &&
+        buildConfigurationName.trim() !== '') {
         if (packageJson.xpack.buildConfigurations === undefined) {
           throw new Error('package.json has no buildConfigurations')
         }
