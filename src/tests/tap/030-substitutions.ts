@@ -249,4 +249,44 @@ tap.test('XpmLiquid filters cascade', async (t) => {
   t.end()
 })
 
+tap.test('XpmLiquid filters multi', async (t) => {
+  const xpmLiquid = new XpmLiquid(log)
+
+  const xpack = {
+    name: 'n',
+    version: '0.1.2',
+    xpack: {
+      properties: {
+        one: ['10', '11'],
+        two: '20',
+        compound: ['{{ properties.one }}', '{{ properties.three }}']
+      },
+      buildConfigurations: {
+        Debug: {
+          properties: {
+            three: ['30', '31'],
+            four: '40'
+          }
+        }
+      }
+    }
+  }
+
+  const map = xpmLiquid.prepareMap(xpack, 'Debug')
+
+  const one =
+    (await xpmLiquid.performSubstitutions('{{ properties.one }}', map))
+      .split(os.EOL)
+
+  t.equal(one.length, 2, 'has two entries')
+
+  const compound =
+    (await xpmLiquid.performSubstitutions('{{ properties.compound }}', map))
+      .split(os.EOL)
+
+  t.equal(compound.length, 4, 'has two entries')
+
+  t.end()
+})
+
 // ----------------------------------------------------------------------------

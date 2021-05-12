@@ -33,34 +33,11 @@ import { Liquid } from 'liquidjs'
 import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
-// General purpose functions.
+// Types.
 
-function _isPrimitive (value: any): boolean {
-  return (typeof value !== 'object' && typeof value !== 'function') ||
-    value === null
+export interface Properties {
+  [key: string]: string | string[]
 }
-
-function _isJsonObject (value: any): boolean {
-  return value !== undefined && !_isPrimitive(value) && !Array.isArray(value)
-}
-
-/**
- * Replace non alphanumeric chars with dashes to make the paths
- * comply with filesystem names.
- *
- * @param {string} input A path candidate.
- * @returns {string} A validated path.
- */
-export function filterPath (input: string): string {
-  /* istanbul ignore next */
-  const fixed = (os.platform() === 'win32')
-    ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
-    : input.replace(/[^a-zA-Z0-9/]+/g, '-')
-
-  return fixed.replace(/--/g, '-')
-}
-
-// ----------------------------------------------------------------------------
 
 export interface XpmLiquidMap {
   /**
@@ -176,10 +153,48 @@ export interface XpmLiquidMap {
     name: string
     [key: string]: any
   }
-  properties?: {
-    [key: string]: string | string[]
-  }
+  properties?: Properties
 }
+
+// ----------------------------------------------------------------------------
+// General purpose functions.
+
+function _isPrimitive (value: any): boolean {
+  return (typeof value !== 'object' && typeof value !== 'function') ||
+    value === null
+}
+
+function _isJsonObject (value: any): boolean {
+  return value !== undefined && !_isPrimitive(value) && !Array.isArray(value)
+}
+
+function _joinMultiLineProperties (properties: Properties): Properties {
+  const result: Properties = {}
+  Object.entries(properties).forEach(
+    ([key, value]) => {
+      result[key] = Array.isArray(value) ? value.join(os.EOL) : value
+    }
+  )
+  return result
+}
+
+/**
+ * Replace non alphanumeric chars with dashes to make the paths
+ * comply with filesystem names.
+ *
+ * @param {string} input A path candidate.
+ * @returns {string} A validated path.
+ */
+export function filterPath (input: string): string {
+  /* istanbul ignore next */
+  const fixed = (os.platform() === 'win32')
+    ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
+    : input.replace(/[^a-zA-Z0-9/]+/g, '-')
+
+  return fixed.replace(/--/g, '-')
+}
+
+// ============================================================================
 
 // https://liquidjs.com/
 
@@ -291,15 +306,14 @@ export class XpmLiquid {
   /**
    * Return the base for a liquid map.
    *
-   * The `package`, `configuration` and `properties` must be added later,
-   * when available.
-   *
    * @returns A map of properties.
    */
   prepareMap (
     packageJson: any,
     buildConfigurationName?: string
   ): XpmLiquidMap {
+    assert(packageJson)
+
     const liquidMap: XpmLiquidMap = {
       env: process.env,
       os: {
@@ -343,7 +357,8 @@ export class XpmLiquid {
 
     if (_isJsonObject(packageJson.xpack)) {
       if (_isJsonObject(packageJson.xpack.properties)) {
-        liquidMap.properties = packageJson.xpack.properties
+        liquidMap.properties =
+          _joinMultiLineProperties(packageJson.xpack.properties)
       }
 
       if (buildConfigurationName !== undefined &&
@@ -367,7 +382,7 @@ export class XpmLiquid {
         if (_isJsonObject(buildConfiguration.properties)) {
           liquidMap.properties = {
             ...liquidMap.properties,
-            ...buildConfiguration.properties
+            ...(_joinMultiLineProperties(buildConfiguration.properties))
           }
         }
       }
