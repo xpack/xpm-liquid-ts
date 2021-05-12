@@ -10,7 +10,7 @@
     "liquidjs"
   ],
   "scripts": {
-    "fix": "ts-standard --fix src tests/tap",
+    "fix": "ts-standard --fix src",
     "compile": "tsc -p ./",
     "compile-watch": "tsc -watch -p ./",
     "outdated": "npm outdated",
@@ -22,9 +22,9 @@
     "git-log": "git log --pretty='%cd * %h %s' --date=short",
     "lint": "ts-standard src",
     "tap": "tap --ts --reporter=spec --timeout 300 --no-coverage",
-    "test-tap": "tap --ts --reporter=classic --timeout 300 --no-coverage \"tests/tap/*.ts\"",
-    "test-tap100": "tap --ts --reporter=classic --timeout 300 --100 \"tests/tap/*.ts\"",
-    "test-coverage": "tap --ts --coverage --reporter=classic --timeout 600 --no-check-coverage \"tests/tap/*.ts\"",
+    "test-tap": "tap --ts --reporter=classic --timeout 300 --no-coverage \"src/tests/tap/*.ts\"",
+    "test-tap100": "tap --ts --reporter=classic --timeout 300 --100 \"src/tests/tap/*.ts\"",
+    "test-coverage": "tap --ts --coverage --reporter=classic --timeout 600 --no-check-coverage \"src/tests/tap/*.ts\"",
     "test": "npm run test-tap100 -s",
     "pretest": "npm run compile && npm run lint",
     "prepublish": "npm run compile && npm run lint"

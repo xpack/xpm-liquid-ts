@@ -15,7 +15,7 @@ import * as os from 'os'
 
 // The `[node-tap](http://www.node-tap.org)` framework.
 import * as tap from 'tap'
-import { filterPath } from '../../src/lib/xpm-liquid'
+import { filterPath } from '../../lib/xpm-liquid'
 
 tap.test('filterPath', (t): void => {
   if (os.platform() === 'win32') {

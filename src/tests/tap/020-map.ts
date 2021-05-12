@@ -15,7 +15,7 @@
 
 // The `[node-tap](http://www.node-tap.org)` framework.
 import * as tap from 'tap'
-import { XpmLiquid } from '../../src/lib/xpm-liquid'
+import { XpmLiquid } from '../../lib/xpm-liquid'
 import { Logger } from '@xpack/logger'
 
 const log = new Logger({ level: 'info' })
