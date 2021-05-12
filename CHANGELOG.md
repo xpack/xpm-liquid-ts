@@ -6,6 +6,13 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues/)
 and close existing issues and pull requests.
 
+## 2021-05-12
+
+- v1.1.0 released
+- [#4] - support multi-line properties
+- move tests to src
+- [#3] - validate configuration name
+
 ## 2021-05-10
 
 - v1.0.0 released
