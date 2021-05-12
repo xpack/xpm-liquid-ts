@@ -77,7 +77,7 @@ Check if the version is present at
 
 ### Test
 
-Test it with:
+Test if it can be installed:
 
 ```sh
 npm install -global @xpack/xpm-liquid@next
@@ -98,3 +98,9 @@ In this Git repo:
 - select the `master` branch
 - merge `develop`
 - push all branches
+
+### Close milestone
+
+In <https://github.com/xpack/xpm-liquid-ts/milestones>:
+
+- close the current milestone.
