@@ -68,6 +68,7 @@ add a new milestone like `1.2.0` (without `v`)
 - `npm version patch` (bug fixes), `npm version minor` (compatible API
   additions), `npm version major` (incompatible API changes)
 - push all changes to GitHub; this should trigger CI
+- push new tag to GitHub
 - **wait for CI tests to complete**
 - check <https://github.com/xpack/xpm-liquid-ts/actions/>
 - `npm publish --tag next` (use `--access public` when publishing for the first time)
