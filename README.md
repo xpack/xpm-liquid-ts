@@ -21,7 +21,7 @@ The module is available as
 from the public repository; use `npm` to install it inside the module where
 it is needed:
 
-```console
+```sh
 npm install @xpack/xpm-liquid@latest
 ```
 

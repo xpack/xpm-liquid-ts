@@ -6,7 +6,7 @@
 
 name: CI on Push
 
-on: 
+on:
   push:
     branches:
     - '**'
