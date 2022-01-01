@@ -82,6 +82,7 @@ Test if it can be installed:
 
 ```sh
 npm install -global @xpack/xpm-liquid@next
+npm list -g
 ```
 
 ### Change tag to latest
