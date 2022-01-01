@@ -149,6 +149,8 @@ Custom filter to convert generic names to names accepted
 as file names (letters, digits, dash):
 
 - `to_filename`
+- `to_posix_filename`
+- `to_win32_filename`
 
 Examples:
 

@@ -194,6 +194,34 @@ export function filterPath (input: string): string {
   return fixed.replace(/--/g, '-')
 }
 
+/**
+ * Replace non alphanumeric chars with dashes to make the paths
+ * comply with Posix filesystem names.
+ *
+ * @param {string} input A path candidate.
+ * @returns {string} A validated path.
+ */
+export function filterPosixPath (input: string): string {
+  /* istanbul ignore next */
+  const fixed = input.replace(/[^a-zA-Z0-9/]+/g, '-')
+
+  return fixed.replace(/--/g, '-')
+}
+
+/**
+ * Replace non alphanumeric chars with dashes to make the paths
+ * comply with Windows filesystem names.
+ *
+ * @param {string} input A path candidate.
+ * @returns {string} A validated path.
+ */
+export function filterWin32Path (input: string): string {
+  /* istanbul ignore next */
+  const fixed = input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
+
+  return fixed.replace(/--/g, '-')
+}
+
 // ============================================================================
 
 // https://liquidjs.com/
