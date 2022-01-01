@@ -39,7 +39,7 @@ Use the semantic versioning semantics.
 Check GitHub issues and pull requests:
 
 - in <https://github.com/xpack/xpm-liquid-ts/milestones>
-add a new milestone like `1.1.0` (without `v`)
+add a new milestone like `1.2.0` (without `v`)
 - <https://github.com/xpack/xpm-liquid-ts/issues/>
 
 ### Update versions in READMEs
@@ -53,7 +53,7 @@ add a new milestone like `1.1.0` (without `v`)
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- commit with a message like _prepare v1.1.0_
+- commit with a message like _prepare v1.2.0_
 
 ## Publish to npmjs.com
 
@@ -88,7 +88,7 @@ npm install -global @xpack/xpm-liquid@next
 When stable:
 
 - `npm dist-tag ls @xpack/xpm-liquid`
-- `npm dist-tag add @xpack/xpm-liquid@1.1.0 latest`
+- `npm dist-tag add @xpack/xpm-liquid@1.2.0 latest`
 - `npm dist-tag ls @xpack/xpm-liquid`
 
 ### Merge into `master`

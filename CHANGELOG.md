@@ -6,6 +6,12 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues/)
 and close existing issues and pull requests.
 
+## 2022-01-01
+
+- v1.2.0 released
+- [#5] add `to_posix_filename` and `to_win32_filename`
+- bump deps
+
 ## 2021-05-12
 
 - v1.1.0 released

@@ -107,7 +107,7 @@ To manually fix compliance with the style guide (where possible):
 ```console
 $ npm run fix
 
-> @xpack/xpm-liquid@1.1.0 fix
+> @xpack/xpm-liquid@1.2.0 fix
 > ts-standard --fix src
 ```
 
@@ -131,21 +131,21 @@ npm run test
 A typical test result looks like:
 
 ```console
-% npm run test   
+% npm run test
 
-> @xpack/xpm-liquid@1.1.0 pretest
+> @xpack/xpm-liquid@1.2.0 pretest
 > npm run compile && npm run lint
 
 
-> @xpack/xpm-liquid@1.1.0 compile
+> @xpack/xpm-liquid@1.2.0 compile
 > tsc -p ./
 
 
-> @xpack/xpm-liquid@1.1.0 lint
+> @xpack/xpm-liquid@1.2.0 lint
 > ts-standard src
 
 
-> @xpack/xpm-liquid@1.1.0 test
+> @xpack/xpm-liquid@1.2.0 test
 > npm run test-tap100 -s
 
 tests/tap/010-functions.ts ............................ 4/4
@@ -157,20 +157,20 @@ total ............................................... 54/54
 
   ok
 ---------------|---------|----------|---------|---------|-------------------
-File           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+File           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 ---------------|---------|----------|---------|---------|-------------------
-All files      |     100 |      100 |     100 |     100 |                   
- xpm-liquid.ts |     100 |      100 |     100 |     100 |                   
+All files      |     100 |      100 |     100 |     100 |
+ xpm-liquid.ts |     100 |      100 |     100 |     100 |
 ---------------|---------|----------|---------|---------|-------------------
-% 
+%
 ```
 
 To run a specific test with more verbose output, use `npm run tap`:
 
 ```console
-% npm run tap tests/tap/010-functions.ts 
+% npm run tap tests/tap/010-functions.ts
 
-> @xpack/xpm-liquid@1.1.0 tap
+> @xpack/xpm-liquid@1.2.0 tap
 > tap --ts --reporter=spec --timeout 300 --no-coverage "tests/tap/010-functions.ts"
 
 
@@ -184,7 +184,7 @@ tests/tap/010-functions.ts
 
 
   5 passing (1s)
-% 
+%
 ```
 
 ### Coverage tests
