@@ -24,7 +24,8 @@ Before making the release, perform some checks and tweaks.
 
 Keep:
 
-- `ts-node` to the minimum Node.js required by npm (currently 12.x)
+- `ts-node` to the minimum Node.js required by npm (currently 12.x;
+  keep CI updated)
 
 ### Check Git
 
