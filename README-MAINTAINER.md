@@ -22,6 +22,10 @@ Before making the release, perform some checks and tweaks.
 - repeat and possibly manually edit `package.json` until everything is
   up to date
 
+Keep:
+
+- `ts-node` to the minimum Node.js required by npm (currently 12.x)
+
 ### Check Git
 
 In this Git repo:
@@ -39,7 +43,7 @@ Use the semantic versioning semantics.
 Check GitHub issues and pull requests:
 
 - in <https://github.com/xpack/xpm-liquid-ts/milestones>
-add a new milestone like `1.2.0` (without `v`)
+add a new milestone like `1.2.1` (without `v`)
 - <https://github.com/xpack/xpm-liquid-ts/issues/>
 
 ### Update versions in READMEs
@@ -53,7 +57,7 @@ add a new milestone like `1.2.0` (without `v`)
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- commit with a message like _prepare v1.2.0_
+- commit with a message like _prepare v1.2.1_
 
 ## Publish to npmjs.com
 
@@ -63,8 +67,8 @@ add a new milestone like `1.2.0` (without `v`)
 - `npm run fix`
 - in the develop branch, commit all changes
 - `npm run test`
-- `npm run pack`; check the list of packaged files, possibly
-  update `.npmignore`
+- `npm run pack`; check the list of packaged files, the compiled
+  sources are in the `dist` folder; possibly update `.npmignore`
 - `npm version patch` (bug fixes), `npm version minor` (compatible API
   additions), `npm version major` (incompatible API changes)
 - push all changes to GitHub; this should trigger CI
@@ -90,7 +94,7 @@ npm list -g
 When stable:
 
 - `npm dist-tag ls @xpack/xpm-liquid`
-- `npm dist-tag add @xpack/xpm-liquid@1.2.0 latest`
+- `npm dist-tag add @xpack/xpm-liquid@1.2.1 latest`
 - `npm dist-tag ls @xpack/xpm-liquid`
 
 ### Merge into `master`

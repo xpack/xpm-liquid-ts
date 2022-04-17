@@ -6,6 +6,11 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues/)
 and close existing issues and pull requests.
 
+## 2022-04-17
+
+- v1.2.1 released
+- bump deps
+
 ## 2022-01-01
 
 - v1.2.0 released
