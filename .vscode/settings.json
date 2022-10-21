@@ -5,5 +5,19 @@
   "typescript.tsc.autoDetect": "off",
   "editor.tabSize": 2,
   "standard.engine": "ts-standard",
-  "standard.autoFixOnSave": true
+  "standard.autoFixOnSave": true,
+  "cSpell.ignoreWords": [
+    "Funcs",
+    "Ionescu",
+    "Liviu",
+    "POSIX",
+    "Schlueter",
+    "Stmts",
+    "endianness",
+    "liquidjs",
+    "npmignore",
+    "npmjs",
+    "tmpdir",
+    "xpack"
+  ]
 }
