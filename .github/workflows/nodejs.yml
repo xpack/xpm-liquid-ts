@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         # nvm ls-remote --lts | grep Latest
-        node-version: [^12.22.x, ^14.19.x, ^16.14.x]
+        node-version: [^12.22.x, ^14.20.x, ^16.18.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
