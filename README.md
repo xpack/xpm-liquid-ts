@@ -58,7 +58,7 @@ call `perform substitutions()`:
 
 ```js
 const xpmLiquid = new XpmLiquid(log)
-const xpmLiquidMap = xpmLiquid.prepareMap(packagJson, 'Debug')
+const xpmLiquidMap = xpmLiquid.prepareMap(packageJson, 'Debug')
 
 const var = await xpmLiquid.performSubstitutions(
       '{{ "build" | path_join: configuration.name | to_filename }}',
@@ -79,7 +79,7 @@ below the `properties` variable:
 If the substitution refers to a certain build configuration, the configuration
 name and the entire configuration content are available separately below
 the `configuration` variable. Configuration properties are added to the
-`properties` variable`, possibly overriding project properties.
+`properties` variables, possibly overriding project properties.
 
 - `configuration.name`
 - `configuration.*`
