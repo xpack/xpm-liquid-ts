@@ -11,6 +11,15 @@ This page complements the developer page and documents the
 maintenance procedures related to making releases for the
 `@xpack/xpm-liquid` module.
 
+## Use older node
+
+To ensure compatibility with older node, revert to an older one:
+
+```sh
+nvm use --lts 14
+code
+```
+
 ## Prepare the release
 
 Before making the release, perform some checks and tweaks.
