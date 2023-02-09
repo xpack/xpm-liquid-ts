@@ -47,7 +47,7 @@ jobs:
         npm --version
         env
     - name: Install dependencies
-      run: npm ci
+      run: npm install
     - name: Run test
       run: npm run test
       env:
