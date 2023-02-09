@@ -28,7 +28,7 @@
     "test-tap": "tap --ts --reporter=classic --timeout 300 --no-coverage \"src/tests/tap/*.ts\"",
     "tap": "tap --ts --reporter=spec --timeout 300 --no-coverage",
     "pretest": "npm run compile && npm run lint",
-    "prepublish": "npm run compile && npm run lint"
+    "prepare": "npm run compile && npm run lint"
   },
   "repository": {
     "type": "git",
