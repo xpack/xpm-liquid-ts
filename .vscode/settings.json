@@ -17,6 +17,8 @@
     "liquidjs",
     "npmignore",
     "npmjs",
+    "orandea",
+    "postversion",
     "tmpdir",
     "xpack"
   ]
