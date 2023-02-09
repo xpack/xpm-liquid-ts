@@ -9,7 +9,16 @@ name: CI on Push
 on:
   push:
     branches:
-    - '**'
+      - '**'
+    tags-ignore:
+      - '**'
+    paths-ignore:
+      - 'docs/**'
+      - 'LICENSE'
+      - '**.md'
+      - '.gitignore'
+      - '.npmignore'
+      - '.vscode/**'
 
 jobs:
   npm-test:
@@ -19,12 +28,13 @@ jobs:
     strategy:
       matrix:
         # nvm ls-remote --lts | grep Latest
-        node-version: [^12.22.x, ^14.20.x, ^16.18.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [^14.21.2, ^16.19.0, ^18.14.0]
+        # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+        os: [ubuntu-22.04, windows-2022, macos-12]
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
       with:
         fetch-depth: 3
     - name: Setup Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
