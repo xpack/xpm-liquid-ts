@@ -8,6 +8,14 @@ and close existing issues and pull requests.
 
 ## 2023-02-09
 
+* ea48568 package.json: bump deps
+* b0ab700 nodejs.yml: try again npm ci
+* ffcee2b package-lock.json: generated with v14
+* f7ebba0 package.json: rename script prepare
+* a8839df xpm-liquid.ts: assert os.version
+* df5893d nodejs.yml: npm install (ci fails)
+* ec47725 prepare v1.2.3
+* ec21e0f package.json: update engines
 * 0c24380 tsconfig.json: es2020
 * 032c0bc .vscode/settings.json: ignoreWords
 * 335339f nodejs.yml: bump matrix
