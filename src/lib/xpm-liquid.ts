@@ -342,6 +342,10 @@ export class XpmLiquid {
   ): XpmLiquidMap {
     assert(packageJson)
 
+    // os.version() available since 12.x
+    assert(typeof os.version === 'function',
+      'Mandatory os.version available only since 12.x')
+
     const liquidMap: XpmLiquidMap = {
       env: process.env,
       os: {
@@ -360,11 +364,7 @@ export class XpmLiquid {
         tmpdir: os.tmpdir(),
         type: os.type(),
         // os.version() available since 12.x
-        version: (typeof os.version === 'function')
-          /* istanbul ignore next */
-          ? os.version()
-          /* istanbul ignore next */
-          : '(unavailable)'
+        version: (os.version())
       },
       path: {
         delimiter: path.delimiter,
