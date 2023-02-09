@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/xpack/xpm-liquid-ts/",
   "dependencies": {
-    "@xpack/logger": "^5.0.3",
+    "@xpack/logger": "^5.0.4",
     "liquidjs": "^10.4.0"
   },
   "devDependencies": {
