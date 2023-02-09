@@ -6,6 +6,13 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues/)
 and close existing issues and pull requests.
 
+## 2023-02-09
+
+* 0c24380 tsconfig.json: es2020
+* 032c0bc .vscode/settings.json: ignoreWords
+* 335339f nodejs.yml: bump matrix
+* f854faa package.json: bump deps
+
 ## 2022-10-21
 
 * v1.2.2 released

@@ -40,13 +40,13 @@ own projects.
 The `@xpack/xpm-liquid` module can be imported in both TypeScript
 and JavaScript Node.js code.
 
-In TypeScript, use `import`:
+In TypeScript and ECMAScript modules, use `import`:
 
 ```typescript
 import { XpmLiquid } from '@xpack/xpm-liquid'
 ```
 
-In JavaScript, use `require()`:
+In JavaScript with CommonJS, use `require()`:
 
 ```javascript
 const { XpmLiquid } = require('@xpack/xpm-liquid')

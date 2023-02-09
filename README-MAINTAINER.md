@@ -25,11 +25,8 @@ Before making the release, perform some checks and tweaks.
 Keep:
 
 - `@types/node` locked to the
-  [latest node.js LTS](https://www.npmjs.com/package/@types/node)
-- `@types/vscode` locked to
-  one [minor version behind](https://www.npmjs.com/package/@types/vscode)
-- `ts-node` to the minimum Node.js required by npm (currently 12.x;
-  keep CI updated) <https://www.npmjs.com/package/ts-node>
+  [latest node.js LTS](https://nodejs.org/en/) available for
+  [TypeScript](https://www.npmjs.com/package/@types/node)
 
 ### Check Git
 
@@ -48,7 +45,7 @@ Use the semantic versioning semantics.
 Check GitHub issues and pull requests:
 
 - in <https://github.com/xpack/xpm-liquid-ts/milestones>
-add a new milestone like `1.2.2` (without `v`)
+add a new milestone like `1.2.3` (without `v`)
 - <https://github.com/xpack/xpm-liquid-ts/issues/>
 
 ### Update versions in READMEs
@@ -62,7 +59,8 @@ add a new milestone like `1.2.2` (without `v`)
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- commit with a message like _prepare v1.2.2_
+- add a line _* v1.2.3 released_
+- commit with a message like _prepare v1.2.3_
 
 ## Publish to npmjs.com
 
@@ -99,7 +97,7 @@ npm list -g
 When stable:
 
 - `npm dist-tag ls @xpack/xpm-liquid`
-- `npm dist-tag add @xpack/xpm-liquid@1.2.2 latest`
+- `npm dist-tag add @xpack/xpm-liquid@1.2.3 latest`
 - `npm dist-tag ls @xpack/xpm-liquid`
 
 ### Merge into `master`
