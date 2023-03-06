@@ -20,7 +20,7 @@
     "compile": "tsc --build --verbose src",
     "npm-install": "npm install",
     "npm-link": "npm link",
-    "npm-link-deps": "echo nop",
+    "npm-link-deps": "npm link @xpack/logger",
     "npm-outdated": "npm outdated",
     "npm-update": "npm update",
     "npm-version-patch": "npm version patch",
