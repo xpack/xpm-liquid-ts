@@ -1,36 +1,45 @@
-[![npm (scoped)](https://img.shields.io/npm/v/@xpack/xpm-liquid.svg)](https://www.npmjs.com/package/@xpack/xpm-liquid/)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/xpack/xpm-liquid-ts)](https://github.com/xpack/xpm-liquid-ts/blob/mater/package.json)
 [![license](https://img.shields.io/github/license/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/blob/xpack/LICENSE)
-[![TS-Standard - Typescript Standard Style Guide](https://badgen.net/badge/code%20style/ts-standard/blue?icon=typescript)](https://github.com/standard/ts-standard/)
+[![npm (scoped)](https://img.shields.io/npm/v/@xpack/xpm-liquid.svg)](https://www.npmjs.com/package/@xpack/xpm-liquid/)
 
-# @xpack/xpm-liquid
+# A Node.js CommonJS/ES6 module with the Liquid substitutions code used by xpm & relatives
 
-This project implements the Liquid substitutions code used by xpm & relatives.
+This project provides a **TypeScript** Node.js **CommonJS**/**ES6** module
+with the code used to perform the Liquid substitutions when parsing
+the xpm `package.json` file.
+
+Note: Compatibility with CommonJS is required until VS Code extensions will be
+updated to import ES6 modules.
 
 The project is open-source and hosted on GitHub as
 [xpack/xpm-liquid-ts](https://github.com/xpack/xpm-liquid-ts.git).
 
+## Maintainer & developer info
+
+This page documents how to use this module in an user application.
+For maintainer information, see the separate
+[README-MAINTAINER](https://github.com/xpack/xpm-liquid-ts/blob/master/README-MAINTAINER.md)
+page.
+
 ## Prerequisites
 
-A recent [Node.js](https://nodejs.org) (>=10.x), since the TypeScript code
-is compiled to ECMAScript 2018 code.
+A recent [Node.js](https://nodejs.org) (>=14.13), since the TypeScript code
+is compiled into ECMAScript 2020 code, and the tests use ES6 modules.
 
-## Easy install
+## Install
 
 The module is available as
-[`@xpack/xpm-liquid`](https://www.npmjs.com/package/@xpack/xpm-liquid)
-from the public repository; use `npm` to install it inside the module where
-it is needed:
+[`@xpack/xpm-liquid-ts`](https://www.npmjs.com/package/@xpack/xpm-liquid-ts/)
+from the public [`npmjs`](https://www.npmjs.com) repository;
+it can be added as a dependency to any TypeScript or JavaScript
+project with `npm install`:
 
-```sh
-npm install @xpack/xpm-liquid@latest
+```console
+npm install --save @xpack/xpm-liquid-ts@latest
 ```
 
 The module does not provide any executables, and generally there are no
 reasons to install it globally.
-
-The development repository is available from the GitHub
-[xpack/xpm-liquid-ts](https://github.com/xpack/xpm-liquid-ts)
-project.
 
 ## User info
 
@@ -54,13 +63,13 @@ const { XpmLiquid } = require('@xpack/xpm-liquid')
 
 To use the `XpmLiquid` class, create an instance of the engine, provide the
 `package.json` object, possibly the name of the configuration, and
-call `perform substitutions()`:
+call `performSubstitutions()`:
 
 ```js
 const xpmLiquid = new XpmLiquid(log)
 const xpmLiquidMap = xpmLiquid.prepareMap(packageJson, 'Debug')
 
-const var = await xpmLiquid.performSubstitutions(
+const str = await xpmLiquid.performSubstitutions(
       '{{ "build" | path_join: configuration.name | to_filename }}',
       xpmLiquidMap)
 ```
@@ -156,23 +165,45 @@ Examples:
 
 - `"buildFolderRelativePath": "{{ "build" | path_join: configuration.name | to_filename | downcase }"`
 
+### Reference
+
+For more details on the available class definitions, including all methods,
+accessors, properties, etc,
+please see the TypeDoc
+[reference pages](https://xpack.github.io/xpm-liquid-ts/).
+
+## Known problems
+
+- none
+
+## Status
+
+The `@xpack/xpm-liquid-ts` module is fully functional and stable.
+
+The main clients for this module is the `xpm` CLI application and the
+[VS Code xPack C/C++ Managed Build](https://github.com/xpack/vscode-xpack-extension-ts/)
+extension.
+
+## Tests
+
+The module is tested
+with 100% coverage and CI tested on every push via GitHub
+[Actions](https://github.com/xpack/xpm-liquid-ts/actions/).
+
 ## Compatibility notices
 
-According to [semver](https://semver.org) requirements,
-incompatible API changes require higher major numbers.
+According to [semver](https://semver.org) rules:
 
-- none so far
+> Major version X (X.y.z | X > 0) MUST be incremented if any
+backwards incompatible changes are introduced to the public API.
 
-## Maintainer & developer info
+### v2.0.0
 
-This page documents how to use this module in an user application.
-For developer and maintainer information, see the separate
-[README-DEVELOPER](https://github.com/xpack/xpm-liquid-ts/blob/master/README-DEVELOPER.md) and
-[README-MAINTAINER](https://github.com/xpack/xpm-liquid-ts/blob/master/README-MAINTAINER.md)
-pages.
+The project was updated to dual ESM & CJS.
 
 ## License
 
 The original content is released under the
-[MIT License](https://opensource.org/licenses/MIT), with all rights
-reserved to [Liviu Ionescu](https://github.com/ilg-ul/).
+[MIT License](https://opensource.org/licenses/MIT/),
+with all rights reserved to
+[Liviu Ionescu](https://github.com/ilg-ul/).
