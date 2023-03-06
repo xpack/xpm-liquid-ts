@@ -1,31 +1,11 @@
 {
   /* https://www.typescriptlang.org/tsconfig */
-  /* Most option copied from vscode.git/extensions/shared.tsconfig.json */
-  /* The maps are used for debugging only. */
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig-common.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
-    "sourceMap": true,
-    "declaration": true,
-    "target": "es2020",
-    "lib": [
-      "es2020"
-    ],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "strict": true,
-    "alwaysStrict": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "forceConsistentCasingInFileNames": true
   },
+  "exclude": [],
   "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
+    "**/*.ts"
   ]
 }
