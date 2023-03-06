@@ -6,8 +6,6 @@
  * See LICENSE in the project root for license information.
  */
 
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
-
 // ----------------------------------------------------------------------------
 
 /*
@@ -20,7 +18,7 @@
 
 // ----------------------------------------------------------------------------
 
-import * as assert from 'assert'
+import { strict as assert } from 'node:assert'
 import * as os from 'os'
 import * as path from 'path'
 import * as process from 'process'
@@ -186,10 +184,11 @@ function _joinMultiLineProperties (properties: Properties): Properties {
  * @returns {string} A validated path.
  */
 export function filterPath (input: string): string {
-  /* istanbul ignore next */
+  /* c8 ignore start */ /* istanbul ignore next */
   const fixed = (os.platform() === 'win32')
     ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
     : input.replace(/[^a-zA-Z0-9/]+/g, '-')
+  /* c8 ignore stop */
 
   return fixed.replace(/--/g, '-')
 }
@@ -453,13 +452,12 @@ export class XpmLiquid {
       substituted = await this.engine.parseAndRender(current, map)
 
       log.trace(`XpmLiquidMap.performSubstitutions(): '${substituted}'`)
-      /* istanbul ignore next */
+      /* c8 ignore start */ /* istanbul ignore next */
       if (substituted === current) {
         // If nothing changed, we're done.
         // Just a safety net, should not get there.
-        /* istanbul ignore next */
         break
-      }
+      } /* c8 ignore stop */
       current = substituted
     }
 

@@ -6,11 +6,9 @@
  * See LICENSE in the project root for license information.
  */
 
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
-
 // ----------------------------------------------------------------------------
 
 // Re-export the library definitions.
-export * from './lib/xpm-liquid'
+export * from './lib/xpm-liquid.js'
 
 // ----------------------------------------------------------------------------

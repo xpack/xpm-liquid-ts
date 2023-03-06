@@ -1,0 +1,14 @@
+{
+  /* https://www.typescriptlang.org/tsconfig */
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../tsconfig-common.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "../cjs"
+  },
+  "exclude": [],
+  "include": [
+    "*.ts",
+    "lib/*.ts"
+  ]
+}
