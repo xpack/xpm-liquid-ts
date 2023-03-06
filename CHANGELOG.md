@@ -6,9 +6,26 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues/)
 and close existing issues and pull requests.
 
+2023-03-06
+
+* dbd995d typedoc.json: update not exported
+* af1a28e package.json: update homepage
+* da60975 package.json: update link-deps
+* b5a1500 .npmignore update
+* f84bbe4 .gitignore updates
+* 5000d26 package.json updates
+* 4dd6468 update workflows
+* 0b4211a add typedoc metadata
+* e710266 update top tsconfig*.json
+* aa94fc7 add the esm folder
+* 2f057ca update the src folder
+* a25724d move the tests back to project root
+
 ## 2023-02-09
 
-* ea48568 package.json: bump deps
+* addc422 1.2.3
+* 7a047b5 CHANGELOG update
+* 88603aa README update* ea48568 package.json: bump deps
 * b0ab700 nodejs.yml: try again npm ci
 * ffcee2b package-lock.json: generated with v14
 * f7ebba0 package.json: rename script prepare
