@@ -6,21 +6,21 @@
  * See LICENSE in the project root for license information.
  */
 
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-
 // ----------------------------------------------------------------------------
 
 // import * as os from 'os'
 
 // The `[node-tap](http://www.node-tap.org)` framework.
-import * as tap from 'tap'
-import { XpmLiquid } from '../../lib/xpm-liquid'
+import { test } from 'tap'
+
 import { Logger } from '@xpack/logger'
 
-const log = new Logger({ level: 'info' })
+import { XpmLiquid } from '../../src/index.js'
 
-tap.test('XpmLiquid minimal', (t) => {
+// ----------------------------------------------------------------------------
+
+await test('XpmLiquid minimal', (t) => {
+  const log = new Logger({ level: 'info' })
   const xpmLiquid = new XpmLiquid(log)
   const minimalPackage = {
     name: 'n',
@@ -40,7 +40,9 @@ tap.test('XpmLiquid minimal', (t) => {
   t.end()
 })
 
-tap.test('XpmLiquid xpack', (t) => {
+await test('XpmLiquid xpack', (t) => {
+  const log = new Logger({ level: 'info' })
+
   const xpmLiquid = new XpmLiquid(log)
   const xpack = {
     name: 'n',
@@ -65,7 +67,9 @@ tap.test('XpmLiquid xpack', (t) => {
   t.end()
 })
 
-tap.test('XpmLiquid xpack config', (t) => {
+await test('XpmLiquid xpack config', (t) => {
+  const log = new Logger({ level: 'info' })
+
   const xpmLiquid = new XpmLiquid(log)
   const xpack = {
     name: 'n',
@@ -97,7 +101,8 @@ tap.test('XpmLiquid xpack config', (t) => {
   t.end()
 })
 
-tap.test('XpmLiquid xpack no objs', (t) => {
+await test('XpmLiquid xpack no objs', (t) => {
+  const log = new Logger({ level: 'info' })
   const xpmLiquid = new XpmLiquid(log)
   const xpack = {
     name: 'n',
@@ -125,7 +130,9 @@ tap.test('XpmLiquid xpack no objs', (t) => {
   t.end()
 })
 
-tap.test('XpmLiquid xpack bad configs', (t) => {
+await test('XpmLiquid xpack bad configs', (t) => {
+  const log = new Logger({ level: 'info' })
+
   const xpmLiquid = new XpmLiquid(log)
   const xpack = {
     name: 'n',
@@ -147,7 +154,7 @@ tap.test('XpmLiquid xpack bad configs', (t) => {
   t.end()
 })
 
-tap.test('XpmLiquid xpack bad config debug', (t) => {
+await test('XpmLiquid xpack bad config debug', (t) => {
   const log = new Logger({ level: 'info' })
 
   const xpmLiquid = new XpmLiquid(log)

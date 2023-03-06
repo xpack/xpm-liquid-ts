@@ -6,22 +6,22 @@
  * See LICENSE in the project root for license information.
  */
 
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-
 // ----------------------------------------------------------------------------
 
 import * as os from 'os'
 
 // The `[node-tap](http://www.node-tap.org)` framework.
-import * as tap from 'tap'
+import { test } from 'tap'
+
 import {
   filterPath,
   filterPosixPath,
   filterWin32Path
-} from '../../lib/xpm-liquid'
+} from '../../src/index.js'
 
-tap.test('filterPath', (t): void => {
+// ----------------------------------------------------------------------------
+
+await test('filterPath', (t): void => {
   if (os.platform() === 'win32') {
     t.equal(filterPath('a\\b'), 'a\\b', 'preserves windows path separator \\')
   } else {

@@ -6,22 +6,23 @@
  * See LICENSE in the project root for license information.
  */
 
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-
 // ----------------------------------------------------------------------------
 
 import * as os from 'os'
 import * as path from 'path'
 
 // The `[node-tap](http://www.node-tap.org)` framework.
-import * as tap from 'tap'
-import { XpmLiquid } from '../../lib/xpm-liquid'
+import { test } from 'tap'
+
 import { Logger } from '@xpack/logger'
 
-const log = new Logger({ level: 'info' })
+import { XpmLiquid } from '../../src/index.js'
 
-tap.test('XpmLiquid substitutions', async (t) => {
+// ----------------------------------------------------------------------------
+
+await test('XpmLiquid substitutions', async (t) => {
+  const log = new Logger({ level: 'info' })
+
   const xpmLiquid = new XpmLiquid(log)
   const _package = {
     name: 'n',
@@ -49,7 +50,9 @@ tap.test('XpmLiquid substitutions', async (t) => {
   t.end()
 })
 
-tap.test('XpmLiquid filters', async (t) => {
+await test('XpmLiquid filters', async (t) => {
+  const log = new Logger({ level: 'info' })
+
   const xpmLiquid = new XpmLiquid(log)
   const _package = {
     name: 'n',
@@ -217,7 +220,9 @@ tap.test('XpmLiquid filters', async (t) => {
   t.end()
 })
 
-tap.test('XpmLiquid filters cascade', async (t) => {
+await test('XpmLiquid filters cascade', async (t) => {
+  const log = new Logger({ level: 'info' })
+
   const xpmLiquid = new XpmLiquid(log)
 
   const xpack = {
@@ -249,7 +254,9 @@ tap.test('XpmLiquid filters cascade', async (t) => {
   t.end()
 })
 
-tap.test('XpmLiquid filters multi', async (t) => {
+await test('XpmLiquid filters multi', async (t) => {
+  const log = new Logger({ level: 'info' })
+
   const xpmLiquid = new XpmLiquid(log)
 
   const xpack = {
