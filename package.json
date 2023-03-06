@@ -65,7 +65,7 @@
   "bugs": {
     "url": "https://github.com/xpack/xpm-liquid-ts/issues/"
   },
-  "homepage": "https://github.com/xpack/xpm-liquid-ts/",
+  "homepage": "https://xpack.github.io/xpm-liquid-ts/",
   "dependencies": {
     "@xpack/logger": "^5.0.4",
     "liquidjs": "^10.6.1"
