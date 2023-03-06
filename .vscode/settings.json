@@ -20,6 +20,8 @@
     "orandea",
     "postversion",
     "tmpdir",
+    "tsbuildinfo",
+    "typedoc",
     "xpack"
   ]
 }
