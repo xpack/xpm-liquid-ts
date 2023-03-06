@@ -16,6 +16,7 @@
   "gaID": "341760653",
   "includeVersion": false,
   "intentionallyNotExported": [
+    "Logger"
   ],
   "navigationLinks": {
     "xPack": "https://xpack.github.io/",
