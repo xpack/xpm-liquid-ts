@@ -39,11 +39,11 @@ export interface Properties {
 
 export interface XpmLiquidMap {
   /**
-   * https://nodejs.org/dist/latest-v14.x/docs/api/process.html#process_process_env
+   * https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env
    */
   env: NodeJS.ProcessEnv
   /**
-   * https://nodejs.org/dist/latest-v14.x/docs/api/os.html
+   * https://nodejs.org/dist/latest-v16.x/docs/api/os.html
    */
   os: {
     /**
@@ -61,7 +61,7 @@ export interface XpmLiquidMap {
      * Contains commonly used operating system-specific constants
      * for error codes, process signals, and so on. The specific
      * constants defined are described in
-     * [OS constants](https://nodejs.org/dist/latest-v14.x/docs/api/os.html#os_os_constants_1)
+     * [OS constants](https://nodejs.org/dist/latest-v16.x/docs/api/os.html#os_os_constants_1)
      */
     constants: {
       signals: {
@@ -122,7 +122,7 @@ export interface XpmLiquidMap {
     version: string
   }
   /**
-   * https://nodejs.org/dist/latest-v14.x/docs/api/path.html
+   * https://nodejs.org/dist/latest-v16.x/docs/api/path.html
    */
   path: {
     /**
@@ -249,7 +249,7 @@ export class XpmLiquid {
     })
 
     // https://liquidjs.com/api/classes/liquid_.liquid.html#registerFilter
-    // https://nodejs.org/dist/latest-v14.x/docs/api/path.html
+    // https://nodejs.org/dist/latest-v16.x/docs/api/path.html
 
     // Add the main path manipulation functions.
     this.engine.registerFilter('path_basename',
@@ -312,7 +312,7 @@ export class XpmLiquid {
       (from, to) => path.win32.relative(from, to)
     )
 
-    // https://nodejs.org/dist/latest-v14.x/docs/api/util.html
+    // https://nodejs.org/dist/latest-v16.x/docs/api/util.html
 
     this.engine.registerFilter('util_format',
       (format, ...args) => {

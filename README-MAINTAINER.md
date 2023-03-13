@@ -38,19 +38,15 @@ https://github.com/xpack/xpm-liquid-ts.git xpm-liquid-ts.git
 
 The prerequisites are:
 
-- node >= 14.13
+- node >= 16.0.0
 - npm
 
 To ensure compatibility with older node, revert to an older one:
 
 ```sh
-nvm use --lts 14
+nvm use --lts 16
 code
 ```
-
-For the TypeScript configuration, please see:
-
-- [@tsconfig/node14](https://www.npmjs.com/package/@tsconfig/node14)
 
 ## Satisfy dependencies
 
@@ -87,9 +83,9 @@ The current version is TypeScript 4:
 - <https://www.typescriptlang.org>
 - <https://www.typescriptlang.org/docs/handbook>
 
-Configured the compiler to produce `node16` files, which means
-ECMAScript6 with modules, that can be imported by any other project
-which uses ES6.
+The compiler is configured to produce `es2020` & `commonjs` files,
+which means ECMAScript6 with CommonJS modules, that can be imported
+by any other project either via `require()` or `import`.
 
 For more details on how to configure `tsconfig.json`, please see:
 
@@ -254,7 +250,7 @@ and `/* c8 ignore start */` `/* c8 ignore stop */` for
 
 The continuous integration tests are performed via GitHub
 [Actions](https://github.com/xpack/xpm-liquid-ts/actions/) on Ubuntu,
-Windows and macOS, using node 14, 16, 18.
+Windows and macOS, using node 16, 18.
 
 ## Tricks & tips
 
@@ -293,7 +289,7 @@ kept as a CommonJS dependency.
 Keep:
 
 - [`@types/node`](https://www.npmjs.com/package/@types/node?activeTab=versions)
-  locked to the oldest supported node (^14.18.36)
+  locked to the oldest supported node (^16.18.14)
   [release](https://nodejs.org/download/release/) available for TypeScript.
 
 ### Determine the next version
@@ -397,4 +393,3 @@ When the release is considered stable, promote it as `latest`:
 - <https://tsdoc.org>
 - <https://jsdoc.app/index.html>
 - <https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1>
-

@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         # nvm ls-remote --lts | grep Latest
-        node-version: [^14.21.2, ^16.19.0, ^18.14.0]
+        node-version: [^16.19.0, ^18.15.0]
         # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
         os: [ubuntu-22.04, windows-2022, macos-12]
 
@@ -55,7 +55,7 @@ jobs:
 
     - name: Install dependencies
       run: npm ci
-      
+
     - name: Run test
       run: npm run test
       env:

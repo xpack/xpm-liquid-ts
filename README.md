@@ -23,7 +23,7 @@ page.
 
 ## Prerequisites
 
-A recent [Node.js](https://nodejs.org) (>=14.13), since the TypeScript code
+A recent [Node.js](https://nodejs.org) (>=16.0.0), since the TypeScript code
 is compiled into ECMAScript 2020 code, and the tests use ES6 modules.
 
 ## Install
@@ -94,12 +94,12 @@ the `configuration` variable. Configuration properties are added to the
 - `configuration.*`
 
 Variables based on the Node.js process
-[environment](https://nodejs.org/dist/latest-v14.x/docs/api/process.html#process_process_env)
+[environment](https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env)
 
 - `env`
 
 Variables based on the Node.js
-[os](https://nodejs.org/dist/latest-v14.x/docs/api/os.html) definitions:
+[os](https://nodejs.org/dist/latest-v16.x/docs/api/os.html) definitions:
 
 - `os.EOL`
 - `os.arch` (like 'arm', 'arm64', 'ia32', 'x64')
@@ -115,7 +115,7 @@ Variables based on the Node.js
 - `os.version` (available since Node 12)
 
 Variables based on the Node.js
-[path](https://nodejs.org/dist/latest-v14.x/docs/api/path.html) definitions:
+[path](https://nodejs.org/dist/latest-v16.x/docs/api/path.html) definitions:
 
 - `path.delimiter` (`;` for Windows, `:` for POSIX)
 - `path.sep` (`\` on Windows, `/` on POSIX)
@@ -131,7 +131,7 @@ Examples:
 ### Custom filters
 
 Filters based on Node.js
-[path](https://nodejs.org/dist/latest-v14.x/docs/api/path.html) functions:
+[path](https://nodejs.org/dist/latest-v16.x/docs/api/path.html) functions:
 
 - `path_basename`
 - `path_dirname`
@@ -150,7 +150,7 @@ Filters based on Node.js
 - `path_win32_relative`
 
 Filters based on Node.js
-[utils](https://nodejs.org/dist/latest-v14.x/docs/api/util.html) functions:
+[utils](https://nodejs.org/dist/latest-v16.x/docs/api/util.html) functions:
 
 - `util_format`
 

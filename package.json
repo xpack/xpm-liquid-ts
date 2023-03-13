@@ -1,7 +1,7 @@
 {
   "name": "@xpack/xpm-liquid",
   "version": "2.0.0-pre",
-  "description": "The liquid substitutions code used by xpm &amp; relatives",
+  "description": "A Node.js CommonJS/ES6 module with the Liquid substitutions code used by xpm &amp; relatives",
   "type": "commonjs",
   "exports": {
     "node": {
@@ -71,7 +71,7 @@
     "liquidjs": "^10.6.1"
   },
   "devDependencies": {
-    "@types/node": "^14.18.36",
+    "@types/node": "^16.18.14",
     "@types/tap": "^15.0.8",
     "c8": "^7.13.0",
     "del-cli": "^5.0.0",
@@ -113,6 +113,6 @@
     ]
   },
   "engines": {
-    "node": " >=14.13.1 || >=15.3.0 || >=16.0.0"
+    "node": " >=16.0.0"
   }
 }
