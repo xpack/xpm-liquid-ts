@@ -6,6 +6,8 @@
  * See LICENSE in the project root for license information.
  */
 
+/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
+
 // ----------------------------------------------------------------------------
 
 // import * as os from 'os'
