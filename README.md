@@ -8,8 +8,8 @@ This project provides a **TypeScript** Node.js **CommonJS**/**ES6** module
 with the code used to perform the Liquid substitutions when parsing
 the xpm `package.json` file.
 
-Note: Compatibility with CommonJS is required until VS Code extensions will be
-updated to import ES6 modules.
+Note: Compatibility with legacy CommonJS is required until VS Code extensions
+will be updated to import ES6 modules.
 
 The project is open-source and hosted on GitHub as
 [xpack/xpm-liquid-ts](https://github.com/xpack/xpm-liquid-ts.git).
@@ -29,7 +29,7 @@ is compiled into ECMAScript 2020 code, and the tests use ES6 modules.
 ## Install
 
 The module is available as
-[`@xpack/xpm-liquid-ts`](https://www.npmjs.com/package/@xpack/xpm-liquid-ts/)
+[`@xpack/xpm-liquid-ts`](https://www.npmjs.com/package/@xpack/xpm-liquid-ts)
 from the public [`npmjs`](https://www.npmjs.com) repository;
 it can be added as a dependency to any TypeScript or JavaScript
 project with `npm install`:
@@ -46,7 +46,7 @@ reasons to install it globally.
 This section is intended for those who want to use this module in their
 own projects.
 
-The `@xpack/xpm-liquid` module can be imported in both TypeScript
+The `@xpack/xpm-liquid` module can be imported into both TypeScript
 and JavaScript Node.js code.
 
 In TypeScript and ECMAScript modules, use `import`:
@@ -170,7 +170,7 @@ Examples:
 For more details on the available class definitions, including all methods,
 accessors, properties, etc,
 please see the TypeDoc
-[reference pages](https://xpack.github.io/xpm-liquid-ts/).
+[reference pages](https://xpack.github.io/xpm-liquid-ts).
 
 ## Known problems
 
@@ -188,7 +188,7 @@ extension.
 
 The module is tested
 with 100% coverage and CI tested on every push via GitHub
-[Actions](https://github.com/xpack/xpm-liquid-ts/actions/).
+[Actions](https://github.com/xpack/xpm-liquid-ts/actions).
 
 ## Compatibility notices
 
@@ -204,6 +204,6 @@ The project was updated to dual ESM & CJS.
 ## License
 
 The original content is released under the
-[MIT License](https://opensource.org/licenses/MIT/),
+[MIT License](https://opensource.org/license/mit/),
 with all rights reserved to
-[Liviu Ionescu](https://github.com/ilg-ul/).
+[Liviu Ionescu](https://github.com/ilg-ul).

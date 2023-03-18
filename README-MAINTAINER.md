@@ -2,8 +2,8 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack/xpm-liquid.svg)](https://www.npmjs.com/package/@xpack/xpm-liquid/)
 [![license](https://img.shields.io/github/license/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/blob/xpack/LICENSE)
 [![TS-Standard - TypeScript Standard Style Guide](https://badgen.net/badge/code%20style/ts-standard/blue?icon=typescript)](https://github.com/standard/ts-standard/)
-[![Actions Status](https://github.com/xpack/xpm-liquid-ts/workflows/CI%20on%20Push/badge.svg)](https://github.com/xpack/xpm-liquid-ts/actions/)
-[![GitHub issues](https://img.shields.io/github/issues/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/issues/)
+[![CI on Push](https://github.com/xpack/xpm-liquid-ts/actions/workflows/nodejs.yml/badge.svg)](https://github.com/xpack/xpm-liquid-ts/actions/workflows/nodejs.yml)
+[![GitHub issues](https://img.shields.io/github/issues/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/issues)
 [![GitHub pulls](https://img.shields.io/github/issues-pr/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/pulls/)
 
 # Maintainer & developer info
@@ -22,7 +22,7 @@ The project uses two branches:
 To clone the `master` branch, use:
 
 ```sh
-mkdir ${HOME}/Work/vscode-extensions && cd ${HOME}/Work/vscode-extensions
+mkdir ${HOME}/Work/npm-modules && cd ${HOME}/Work/npm-modules
 git clone \
 https://github.com/xpack/xpm-liquid-ts.git xpm-liquid-ts.git
 ```
@@ -84,7 +84,7 @@ The current version is TypeScript 4:
 - <https://www.typescriptlang.org/docs/handbook>
 
 The compiler is configured to produce `es2020` & `commonjs` files,
-which means ECMAScript6 with CommonJS modules, that can be imported
+which means ECMAScript6 with legacy CommonJS modules, that can be imported
 by any other project either via `require()` or `import`.
 
 For more details on how to configure `tsconfig.json`, please see:
@@ -107,22 +107,6 @@ project.
 
 Generally, to fit two editor windows side by side in a screen,
 all files should limit the line length to 80.
-
-```json
-  "eslintConfig": {
-    "rules": {
-      "max-len": [
-        "error",
-        80,
-        {
-          "ignoreUrls": true
-        }
-      ]
-    }
-  },
-```
-
-The same can be specified in each file:
 
 ```js
 /* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
@@ -249,7 +233,7 @@ and `/* c8 ignore start */` `/* c8 ignore stop */` for
 ### Continuous Integration (CI)
 
 The continuous integration tests are performed via GitHub
-[Actions](https://github.com/xpack/xpm-liquid-ts/actions/) on Ubuntu,
+[Actions](https://github.com/xpack/xpm-liquid-ts/actions) on Ubuntu,
 Windows and macOS, using node 16, 18.
 
 ## Tricks & tips
@@ -278,7 +262,7 @@ No need to add a tag here, it'll be added when the release is created.
 ### Update npm packages
 
 Notice: this package is also used by the VS Code extension and must be
-kept as a CommonJS dependency.
+kept as a legacy CommonJS dependency.
 
 - `npm outdated`
 - `npm update` or edit and `npm install`
@@ -371,7 +355,7 @@ In <https://github.com/xpack/xpm-liquid-ts/milestones>:
 
 The documentation site is built with [TypeDoc](https://typedoc.org/) and
 published in the project GitHub
-[Pages](https://xpack.github.io/xpm-liquid-ts/).
+[Pages](https://xpack.github.io/xpm-liquid-ts).
 
 The Web site deployment is performed automatically when pushing to the
 master branch, by a dedicated workflow in GitHub
