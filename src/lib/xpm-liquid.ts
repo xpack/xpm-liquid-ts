@@ -446,7 +446,7 @@ export class XpmLiquid {
       return input
     }
 
-    const log = this.log
+    const { log } = this
 
     let current: string = input
     let substituted: string = current
