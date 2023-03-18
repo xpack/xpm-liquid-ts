@@ -59,11 +59,11 @@
   "author": {
     "name": "Liviu Ionescu",
     "email": "ilg@livius.net",
-    "url": "https://github.com/ilg-ul/"
+    "url": "https://github.com/ilg-ul"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/xpack/xpm-liquid-ts/issues/"
+    "url": "https://github.com/xpack/xpm-liquid-ts/issues"
   },
   "homepage": "https://xpack.github.io/xpm-liquid-ts/",
   "dependencies": {
