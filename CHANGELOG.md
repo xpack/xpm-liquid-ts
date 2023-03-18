@@ -3,11 +3,26 @@
 Releases in reverse chronological order.
 
 Please check
-[GitHub](https://github.com/xpack/xpm-liquid-ts/issues/)
+[GitHub](https://github.com/xpack/xpm-liquid-ts/issues)
 and close existing issues and pull requests.
 
-2023-03-06
+## 2023-03-18
 
+* a4bbcbf READMEs updates
+* defca6e workflows renames
+* 55ee90c package.json cosmetics
+* 89f0696 update licenses
+* 481dc74 eslint max-len
+
+## 2023-03-13
+
+* 487b8a9 update for node 16
+
+## 2023-03-06
+
+* fff1fca READMEs updates
+* 6493477 CHANGELOG.md update
+* 5b55a6c .vscode/settings.json: ignoreWords
 * dbd995d typedoc.json: update not exported
 * af1a28e package.json: update homepage
 * da60975 package.json: update link-deps
