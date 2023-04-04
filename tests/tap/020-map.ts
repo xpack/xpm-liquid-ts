@@ -15,10 +15,14 @@
 
 // import * as os from 'os'
 
-// The `[node-tap](http://www.node-tap.org)` framework.
+// ----------------------------------------------------------------------------
+
+// https://www.npmjs.com/package/tap
 import { test } from 'tap'
 
 import { Logger } from '@xpack/logger'
+
+// ----------------------------------------------------------------------------
 
 import { XpmLiquid } from '../../src/index.js'
 
