@@ -1,15 +1,1 @@
-.container-main {
-  flex-direction: row-reverse;
-}
-
-@media (min-width: 1024px) {
-  .col-content {
-    padding-left: 2rem;
-    padding-right: 0;
-  }
-  .col-menu {
-    border-left: 0;
-    border-right: 1px solid var(--color-accent);
-  }
-}
-
+/* Placeholder */

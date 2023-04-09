@@ -14,7 +14,7 @@
   ],
   "githubPages": true,
   "gaID": "341760653",
-  "includeVersion": false,
+  "includeVersion": true,
   "intentionallyNotExported": [
     "Logger"
   ],
