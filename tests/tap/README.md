@@ -50,6 +50,7 @@ Tests can be started using scripts:
     "pretest-100": "npm run compile",
     "pretest-100-c8": "npm run compile",
     "tap": "tap --reporter=spec",
+    "tap-c8": "c8 tap --reporter=spec",
     "test-tap": "tap",
     "test-tap-coverage": "tap --coverage",
     "test-tap-coverage-c8": "c8 -- tap",
