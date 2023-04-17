@@ -17,6 +17,7 @@ on:
       - 'src/**/*.ts'
       - 'README.md'
       - '.github/workflows/typedoc.yml'
+      - 'package.json'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
