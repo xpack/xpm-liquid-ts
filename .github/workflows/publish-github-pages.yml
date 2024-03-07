@@ -16,7 +16,7 @@ on:
       - '**/tsconfig*.json'
       - 'src/**/*.ts'
       - 'README.md'
-      - '.github/workflows/typedoc.yml'
+      - '.github/workflows/publish-github-pages.yml'
       - 'package.json'
 
   # Allows you to run this workflow manually from the Actions tab
