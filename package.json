@@ -26,7 +26,7 @@
     "npm-version-patch": "npm version patch",
     "npm-version-minor": "npm version minor",
     "postversion": "git push origin --all && git push origin --tags",
-    "package": "npm pack",
+    "npm-pack": "npm pack",
     "git-log": "git log --pretty='%cd * %h %s' --date=short",
     "lint": "ts-standard src && standard esm",
     "prepare": "npm run compile && npm run lint",
