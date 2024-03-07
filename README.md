@@ -94,7 +94,7 @@ the `configuration` variable. Configuration properties are added to the
 - `configuration.*`
 
 Variables based on the Node.js process
-[environment](https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env)
+[environment](https://nodejs.org/dist/latest-v18.x/docs/api/process.html#process_process_env):
 
 - `env`
 
