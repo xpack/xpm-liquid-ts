@@ -165,6 +165,15 @@ Examples:
 
 - `"buildFolderRelativePath": "{{ "build" | path_join: configuration.name | to_filename | downcase }"`
 
+### Lenient if's
+
+The undefined variables in tests do not trigger `undefined variable` messages
+and allow to use defaults, like:
+
+```
+{{ env.OPTIMIZATION | default: '-O2' }}
+```
+
 ### Reference
 
 For more details on the available class definitions, including all methods,
