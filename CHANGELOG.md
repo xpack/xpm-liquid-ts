@@ -6,8 +6,41 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues)
 and close existing issues and pull requests.
 
+## 2024-03-07
+
+* v2.0.0 released
+* 7f7eebd bump deps
+* 81487e3 #7: add lenientIf: true
+* 433892e publish-github-pages update
+* 769e376 README update
+* 2ae81eb package.json: add safari action
+
+## 2023-04-17
+
+* 4c079b1 package.json: typedoc 0.24.4
+* 6bb735c publish-*.yml: add package.json to includes
+
+## 2023-04-16
+
+* 180c768 package.json: typedoc 0.24.2
+
+## 2023-04-09
+
+* 49508b5 package.json: add tap-c8
+* abc5763 bump typedoc 2.24.1
+
+## 2023-04-05
+
+* 0cbdd39 tests cosmetics
+
+## 2023-04-04
+
+* 88bd937 test-ci.yml: bump node 16
+
 ## 2023-03-18
 
+* 983d04f destructure { log }
+* 61e17cf CHANGELOG update
 * a4bbcbf READMEs updates
 * defca6e workflows renames
 * 55ee90c package.json cosmetics

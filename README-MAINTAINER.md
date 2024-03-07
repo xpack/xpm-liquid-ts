@@ -38,13 +38,13 @@ https://github.com/xpack/xpm-liquid-ts.git xpm-liquid-ts.git
 
 The prerequisites are:
 
-- node >= 16.0.0
+- node >= 18.0.0
 - npm
 
 To ensure compatibility with older node, revert to an older one:
 
 ```sh
-nvm use --lts 16
+nvm use --lts 18
 code
 ```
 
@@ -273,8 +273,11 @@ kept as a legacy CommonJS dependency.
 Keep:
 
 - [`@types/node`](https://www.npmjs.com/package/@types/node?activeTab=versions)
-  locked to the oldest supported node (^16.18.14)
+  locked to the oldest supported node (^18.11.9)
   [release](https://nodejs.org/download/release/) available for TypeScript.
+- tap 16.3.4
+
+To be updated when fully migrated to ESM.
 
 ### Determine the next version
 
