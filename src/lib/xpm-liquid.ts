@@ -250,7 +250,8 @@ export class XpmLiquid {
       trimTagRight: false,
       trimOutputLeft: false,
       trimOutputRight: false,
-      greedy: false
+      greedy: false,
+      lenientIf: true
     })
 
     // https://liquidjs.com/api/classes/liquid_.liquid.html#registerFilter
