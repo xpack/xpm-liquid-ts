@@ -13,14 +13,13 @@ on:
     tags-ignore:
       - '**'
     paths-ignore:
-      - 'docs/**'
+      - 'website/**'
       - 'LICENSE'
       - '**.md'
       - '.gitignore'
       - '.npmignore'
       - '.vscode/**'
       - '.github/FUNDING.yml'
-      - 'typedoc.json'
 
 jobs:
   npm-test:
@@ -29,21 +28,20 @@ jobs:
 
     strategy:
       matrix:
-        # nvm ls-remote --lts | grep Latest
-        node-version: [^16.20.0, ^18.15.0]
-        # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+        node-version: [18, 20]
+        # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
         os: [ubuntu-22.04, windows-2022, macos-12]
 
     steps:
     - name: Checkout
       # https://github.com/actions/checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4.1.1
       with:
         fetch-depth: 3
 
     - name: Setup Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
       # https://github.com/actions/setup-node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4.0.2
       with:
         node-version: ${{ matrix.node-version }}
 
