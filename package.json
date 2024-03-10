@@ -44,9 +44,7 @@
     "test-100": "npm run test-tap-coverage-100 -s",
     "test-100-c8": "npm run test-tap-coverage-100-c8 -s",
     "dev-cycle": "npm run fix && npm run compile && npm run test-100-c8",
-    "typedoc": "typedoc --logLevel Verbose",
-    "safari": "open -a Safari docs/index.html",
-    "clean": "del-cli docs cjs 'tests/**/cjs' 'src/**/*.d.ts' 'src/**/*.d.ts.map' 'src/**/*.js' 'src/**/*.js.map' 'tests/**/*.d.ts' 'tests/**/*.d.ts.map' 'tests/**/*.js' 'tests/**/*.js.map' '**/tsconfig.tsbuildinfo' .nyc_output coverage",
+    "clean": "del-cli cjs 'tests/**/cjs' 'src/**/*.d.ts' 'src/**/*.d.ts.map' 'src/**/*.js' 'src/**/*.js.map' 'tests/**/*.d.ts' 'tests/**/*.d.ts.map' 'tests/**/*.js' 'tests/**/*.js.map' '**/tsconfig.tsbuildinfo' .nyc_output coverage",
     "deep-clean": "npm run clean && rm -rf node_modules package-lock.json",
     "npm-version": "echo $(which node) $(node --version) && echo $(which npm) $(npm --version)"
   },
@@ -82,7 +80,6 @@
     "tap": "^16.3.4",
     "ts-node": "^10.9.2",
     "ts-standard": "^12.0.2",
-    "typedoc": "^0.25.11",
     "typescript": "^4.9.5"
   },
   "tap": {

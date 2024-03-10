@@ -4,7 +4,7 @@
   "cleanOutputDir": true,
   "customCss": "./assets/css/custom.css",
   "entryPoints": [
-    "./src/index.ts"
+    "../src/index.ts"
   ],
   "entryPointStrategy": "resolve",
   "exclude": [
@@ -23,13 +23,13 @@
     "GitHub": "https://github.com/xpack/logger-ts/",
     "Org": "https://github.com/xpack/"
   },
-  "out": "docs",
-  "readme": "./README.md",
+  "out": "html",
+  "readme": "../README.md",
   "sidebarLinks": {
   },
   "sort": [
     "instance-first",
     "visibility"
   ],
-  "tsconfig": "./src/tsconfig.json"
+  "tsconfig": "../src/tsconfig.json"
 }

@@ -1,0 +1,24 @@
+{
+  "name": "website",
+  "version": "0.0.0",
+  "description": "website",
+  "main": "",
+  "scripts": {
+    "npm-install": "npm install",
+    "npm-outdated": "npm outdated",
+    "npm-update": "npm update",
+    "typedoc": "typedoc --logLevel Verbose",
+    "safari": "open -a Safari html/index.html",
+    "clean": "del-cli html",
+    "deep-clean": "npm run clean && rm -rf node_modules package-lock.json",
+    "npm-version": "echo $(which node) $(node --version) && echo $(which npm) $(npm --version)"
+  },
+  "devDependencies": {
+    "del-cli": "^5.1.0",
+    "typedoc": "^0.25.11",
+    "typescript": "^4.9.5"
+  },
+  "engines": {
+    "node": " >=18.0.0"
+  }
+}

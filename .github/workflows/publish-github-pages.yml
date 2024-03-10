@@ -12,12 +12,13 @@ on:
       - '**'
     # ... any of these files changes ...
     paths:
-      - 'typedoc.json'
+      - 'website/typedoc.json'
+      - 'website/package.json'
+      - 'website/assets/css/*.css'
       - '**/tsconfig*.json'
       - 'src/**/*.ts'
       - 'README.md'
       - '.github/workflows/publish-github-pages.yml'
-      - 'package.json'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -39,37 +40,43 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         # https://github.com/actions/checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.1.1
 
       - name: Use Nodejs
         # https://github.com/actions/setup-node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4.0.2
         with:
-          node-version: 16.x
+          node-version: 18.x
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install -C website
+
+      - name: Compile TypeScript
+        run: npm run compile
 
       - name: Generate TypeDocs
-        run: npm run typedoc
+        run: npm run typedoc -C website
 
       - name: Setup Pages
         # https://github.com/actions/configure-pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
         # https://github.com/actions/upload-pages-artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3.0.1
         with:
-          # Upload entire repository
-          path: './docs'
+          # Upload entire website
+          path: './website/html'
 
       - name: Deploy to GitHub Pages
         id: deployment
         # https://github.com/actions/deploy-pages
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4.0.4
