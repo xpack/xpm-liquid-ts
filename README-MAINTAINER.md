@@ -22,7 +22,7 @@ The project uses two branches:
 To clone the `master` branch, use:
 
 ```sh
-mkdir ${HOME}/Work/npm-modules && cd ${HOME}/Work/npm-modules
+mkdir ${HOME}/Work/npm-packages && cd ${HOME}/Work/npm-packages
 git clone \
 https://github.com/xpack/xpm-liquid-ts.git xpm-liquid-ts.git
 ```
@@ -85,7 +85,7 @@ The current version is TypeScript 4:
 
 The compiler is configured to produce `es2020` & `commonjs` files,
 which means ECMAScript6 with legacy CommonJS modules, that can be imported
-by any other project either via `require()` or `import`.
+by any other project either via `require()` or `import`.
 
 For more details on how to configure `tsconfig.json`, please see:
 
@@ -154,13 +154,13 @@ A typical test result looks like:
 ```console
 % npm run test-100-c8
 
-> @xpack/xpm-liquid@2.0.0 pretest-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-modules/xpm-liquid-ts.git
+> @xpack/xpm-liquid@2.0.0 pretest-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-liquid-ts.git
 > npm run lint
 
-> @xpack/xpm-liquid@2.0.0 lint /Users/ilg/My Files/WKS Projects/xpack.github/npm-modules/xpm-liquid-ts.git
+> @xpack/xpm-liquid@2.0.0 lint /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-liquid-ts.git
 > ts-standard src && standard esm
 
-> @xpack/xpm-liquid@2.0.0 test-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-modules/xpm-liquid-ts.git
+> @xpack/xpm-liquid@2.0.0 test-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-liquid-ts.git
 > npm run test-tap-coverage-100-c8 -s
 
 (node:32915) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
@@ -193,7 +193,7 @@ To run a specific test with more verbose output, use `npm run tap`:
 ```console
 % npm run tap tests/tap/010-functions.ts
 
-> @xpack/xpm-liquid@2.0.0 tap /Users/ilg/My Files/WKS Projects/xpack.github/npm-modules/xpm-liquid-ts.git
+> @xpack/xpm-liquid@2.0.0 tap /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-liquid-ts.git
 > tap --reporter=spec "tests/tap/010-functions.ts"
 
 (node:32977) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
