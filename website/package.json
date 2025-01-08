@@ -14,7 +14,7 @@
     "npm-version": "echo $(which node) $(node --version) && echo $(which npm) $(npm --version)"
   },
   "devDependencies": {
-    "del-cli": "^5.1.0",
+    "del-cli": "^6.0.0",
     "typedoc": "^0.25.11",
     "typescript": "^4.9.5"
   },
