@@ -358,7 +358,7 @@ In <https://github.com/xpack/xpm-liquid-ts/milestones>:
 
 The documentation site is built with [TypeDoc](https://typedoc.org/) and
 published in the project GitHub
-[Pages](https://xpack.github.io/xpm-liquid-ts).
+[Pages](https://xpack.github.io/xpm-liquid-ts/).
 
 The Web site deployment is performed automatically when pushing to the
 master branch, by a dedicated workflow in GitHub

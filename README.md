@@ -179,7 +179,7 @@ and allow to use defaults, like:
 For more details on the available class definitions, including all methods,
 accessors, properties, etc,
 please see the TypeDoc
-[reference pages](https://xpack.github.io/xpm-liquid-ts).
+[reference pages](https://xpack.github.io/xpm-liquid-ts/).
 
 ## Known problems
 
