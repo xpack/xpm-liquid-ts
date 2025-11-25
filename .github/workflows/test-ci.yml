@@ -28,20 +28,20 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20]
-        # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
-        os: [ubuntu-22.04, windows-2022, macos-12]
+        node-version: [20, 22]
+        # https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners
+        os: [ 'ubuntu-24.04', 'ubuntu-24.04-arm', 'macos-15-intel', 'macos-15', 'windows-2025' ]
 
     steps:
     - name: Checkout
       # https://github.com/actions/checkout
-      uses: actions/checkout@v4.1.1
+      uses: actions/checkout@v6.0.0
       with:
         fetch-depth: 1
 
     - name: Setup Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
       # https://github.com/actions/setup-node
-      uses: actions/setup-node@v4.0.2
+      uses: actions/setup-node@v6.0.0
       with:
         node-version: ${{ matrix.node-version }}
 

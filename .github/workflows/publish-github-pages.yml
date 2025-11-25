@@ -41,16 +41,16 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
         # https://github.com/actions/checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v6.0.0
 
       - name: Use Nodejs
         # https://github.com/actions/setup-node
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v6.0.0
         with:
           node-version: 18.x
 
@@ -71,7 +71,7 @@ jobs:
 
       - name: Upload artifact
         # https://github.com/actions/upload-pages-artifact
-        uses: actions/upload-pages-artifact@v3.0.1
+        uses: actions/upload-pages-artifact@v4.0.0
         with:
           # Upload entire website
           path: './website/html'
@@ -79,4 +79,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         # https://github.com/actions/deploy-pages
-        uses: actions/deploy-pages@v4.0.4
+        uses: actions/deploy-pages@v4.0.5
