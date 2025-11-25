@@ -305,4 +305,27 @@ await test('XpmLiquid filters multi', async (t) => {
   t.end()
 })
 
+await test('XpmLiquid context', async (t) => {
+  const log = new Logger({ level: 'info' })
+
+  const xpmLiquid = new XpmLiquid(log)
+  const _package = {
+    name: 'n',
+    version: '0.1.2',
+    xpack: {
+      properties: {
+        valueWithParam: 'the {{ param }} value'
+      }
+    }
+  }
+
+  const map = xpmLiquid.prepareMap(_package)
+
+  const s = await xpmLiquid.performSubstitutions(
+    '{% assign param = \'substituted\' %}{{ properties.valueWithParam }}', map)
+  t.equal(s, 'the substituted value', 'substituted')
+
+  t.end()
+})
+
 // ----------------------------------------------------------------------------

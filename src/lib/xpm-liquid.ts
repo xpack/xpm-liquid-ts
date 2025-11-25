@@ -30,7 +30,7 @@ import * as process from 'process'
 import * as util from 'util'
 
 // https://www.npmjs.com/package/liquidjs
-import { Liquid } from 'liquidjs'
+import { Liquid, Context } from 'liquidjs'
 
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
@@ -442,12 +442,14 @@ export class XpmLiquid {
   ): Promise<string> {
     assert(map)
 
-    if (input === '') {
+    if (input.trim() === '') {
       // Spare it the trouble for empty strings.
       return input
     }
 
     const { log } = this
+
+    const context = new Context(map)
 
     let current: string = input
     let substituted: string = current
@@ -455,7 +457,7 @@ export class XpmLiquid {
     // Iterate until all substitutions are done.
     while (current.includes('{{') || current.includes('{%')) {
       // May throw.
-      substituted = await this.engine.parseAndRender(current, map)
+      substituted = await this.engine.parseAndRender(current, context)
 
       log.trace(`XpmLiquidMap.performSubstitutions(): '${substituted}'`)
       /* c8 ignore start */ /* istanbul ignore next */
