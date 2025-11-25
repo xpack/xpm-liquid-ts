@@ -17,7 +17,7 @@ The project is hosted on GitHub:
 The project uses two branches:
 
 - `master`, with the latest stable version (default)
-- `develop`, with the current development version
+- `development`, with the current development version
 
 To clone the `master` branch, use:
 
@@ -27,10 +27,10 @@ git clone \
 https://github.com/xpack/xpm-liquid-ts.git xpm-liquid-ts.git
 ```
 
-For development, to clone the `develop` branch, use:
+For development, to clone the `development` branch, use:
 
 ```sh
-git clone --branch develop \
+git clone --branch development \
 https://github.com/xpack/xpm-liquid-ts.git xpm-liquid-ts.git
 ```
 
@@ -254,7 +254,7 @@ There are no fixed releases.
 
 In the `xpack/xpm-liquid-ts` Git repo:
 
-- switch to the `develop` branch
+- switch to the `development` branch
 - if needed, merge the `master` branch
 
 No need to add a tag here, it'll be added when the release is created.
@@ -309,10 +309,10 @@ related to the new version.
 ## Prepare to publish
 
 - terminate all running tasks (**Terminal** → **Terminate Task...**)
-- select the `develop` branch
+- select the `development` branch
 - commit everything
 - `npm run fix`
-- in the develop branch, commit all changes
+- in the development branch, commit all changes
 - `npm run test`
 - `npm run typedoc` and open the `docs/index.html` in a browser
 - `npm run pack`; check the list of packaged files, possibly
@@ -345,7 +345,7 @@ npm install -global @xpack/xpm-liquid@next
 In this Git repo:
 
 - select the `master` branch
-- merge `develop`
+- merge `development`
 - push all branches
 
 ### Close milestone
