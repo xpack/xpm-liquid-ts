@@ -6,8 +6,38 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues)
 and close existing issues and pull requests.
 
+## 2025-11-25
+
+* v2.1.0 released
+* 32ebd9b #8: use context for subsequent substitutions
+
+## 2025-01-30
+
+* c96ea70 website/package.json cosmetics
+
+## 2025-01-10
+
+* 0e4cfbf README updates
+
+## 2025-01-08
+
+* c96a2f7 package.json: bump deps
+
+## 2024-12-24
+
+* 5d43a66 re-generate commons
+
+## 2024-03-10
+
+* 1a031f7 workflows updates
+* 4f1a91a move website to separate folder
+
 ## 2024-03-07
 
+* 4949c55 2.0.0
+* 8c39c6a package.json: npm-pack
+* 163c870 README update
+* 35b9864 prepare v2.0.0
 * v2.0.0 released
 * 7f7eebd bump deps
 * 81487e3 #7: add lenientIf: true
