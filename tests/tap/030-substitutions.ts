@@ -321,9 +321,66 @@ await test('XpmLiquid context', async (t) => {
 
   const map = xpmLiquid.prepareMap(_package)
 
-  const s = await xpmLiquid.performSubstitutions(
+  const one = await xpmLiquid.performSubstitutions(
     '{% assign param = \'substituted\' %}{{ properties.valueWithParam }}', map)
-  t.equal(s, 'the substituted value', 'substituted')
+  t.equal(one, 'the substituted value', 'substituted')
+
+  const two = await xpmLiquid.performSubstitutions(
+    '{% assign param = \'one\' %}{{ properties.valueWithParam }}' +
+    ' {% assign param = \'two\' %}{{ properties.valueWithParam }}', map)
+  t.equal(two, 'the one value the two value', 'substituted')
+
+  t.end()
+})
+
+await test('XpmLiquid context missing', async (t) => {
+  const log = new Logger({ level: 'info' })
+
+  const xpmLiquid = new XpmLiquid(log)
+  const _package = {
+    name: 'n',
+    version: '0.1.2',
+    xpack: {
+      properties: {
+        other: null
+      }
+    }
+  }
+
+  const map = xpmLiquid.prepareMap(_package)
+
+  try {
+    await xpmLiquid.performSubstitutions(
+      '{{ properties.valueWithParam }}', map)
+  } catch (ex) {
+    t.ok(true, `throws '${(ex as Error).message}'`)
+  }
+
+  const one = await xpmLiquid.performSubstitutions(
+    'a{{ properties.other }}b', map)
+  t.equal(one, 'ab', 'substituted')
+
+  t.end()
+})
+
+await test('XpmLiquid context no drop', async (t) => {
+  const log = new Logger({ level: 'info' })
+
+  const xpmLiquid = new XpmLiquid(log)
+  const _package = {
+    name: 'n',
+    version: '0.1.2',
+    properties2: {
+      valueWithParam: 'the {{ param }} value'
+    }
+  }
+
+  const map = xpmLiquid.prepareMap(_package)
+
+  const one = await xpmLiquid.performSubstitutions(
+    '{% assign param = \'substituted\' %}' +
+    '{{ package.properties2.valueWithParam }}', map)
+  t.equal(one, 'the substituted value', 'substituted')
 
   t.end()
 })

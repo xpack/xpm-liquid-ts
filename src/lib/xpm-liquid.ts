@@ -30,7 +30,7 @@ import * as process from 'process'
 import * as util from 'util'
 
 // https://www.npmjs.com/package/liquidjs
-import { Liquid, Context } from 'liquidjs'
+import { Liquid, Context, Drop } from 'liquidjs'
 
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
@@ -156,7 +156,7 @@ export interface XpmLiquidMap {
     name: string
     [key: string]: any
   }
-  properties?: Properties
+  properties: Properties
 }
 
 // ----------------------------------------------------------------------------
@@ -169,16 +169,6 @@ function _isPrimitive (value: any): boolean {
 
 function _isJsonObject (value: any): boolean {
   return value !== undefined && !_isPrimitive(value) && !Array.isArray(value)
-}
-
-function _joinMultiLineProperties (properties: Properties): Properties {
-  const result: Properties = {}
-  Object.entries(properties).forEach(
-    ([key, value]) => {
-      result[key] = Array.isArray(value) ? value.join(os.EOL) : value
-    }
-  )
-  return result
 }
 
 /**
@@ -229,6 +219,36 @@ export function filterWin32Path (input: string): string {
 // ============================================================================
 
 // https://liquidjs.com/
+
+class PropertiesDrop extends Drop {
+  #properties: Properties
+  #engine: Liquid
+
+  constructor (engine: Liquid, properties: Properties) {
+    super()
+
+    this.#engine = engine
+    this.#properties = properties
+  }
+
+  override async liquidMethodMissing (
+    key: string,
+    context: Context
+  ): Promise<string> {
+    if (this.#properties[key] === undefined) {
+      throw new Error(`properties have no ${key} key`)
+    }
+
+    const value = this.#properties[key] ?? ''
+    const valueString = Array.isArray(value) ? value.join(os.EOL) : value
+
+    if (valueString?.includes('{')) {
+      return await this.#engine.parseAndRender(valueString, context)
+    } else {
+      return valueString
+    }
+  }
+}
 
 export class XpmLiquid {
   // --------------------------------------------------------------------------
@@ -383,15 +403,13 @@ export class XpmLiquid {
           sep: path.posix.sep
         }
       },
-      package: packageJson
+      package: packageJson,
+      properties: {}
     }
-
-    liquidMap.properties = {}
 
     if (_isJsonObject(packageJson.xpack)) {
       if (_isJsonObject(packageJson.xpack.properties)) {
-        liquidMap.properties =
-          _joinMultiLineProperties(packageJson.xpack.properties)
+        liquidMap.properties = packageJson.xpack.properties
       }
 
       if (buildConfigurationName !== undefined &&
@@ -415,7 +433,7 @@ export class XpmLiquid {
         if (_isJsonObject(buildConfiguration.properties)) {
           liquidMap.properties = {
             ...liquidMap.properties,
-            ...(_joinMultiLineProperties(buildConfiguration.properties))
+            ...buildConfiguration.properties
           }
         }
       }
@@ -449,7 +467,15 @@ export class XpmLiquid {
 
     const { log } = this
 
-    const context = new Context(map)
+    let context
+    if (Object.keys(map.properties).length > 0) {
+      context = new Context({
+        ...map,
+        properties: new PropertiesDrop(this.engine, map.properties)
+      })
+    } else {
+      context = new Context(map)
+    }
 
     let current: string = input
     let substituted: string = current
