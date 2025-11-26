@@ -8,7 +8,13 @@ and close existing issues and pull requests.
 
 ## 2025-11-25
 
-* v2.1.0 released
+* v2.2.0 released
+* a0200ad #8: add Drop
+* 0dbf1f5 2.1.0
+* b72f8ea .npmignore website
+* 8a387ba README update
+* 0a64c94 update workflows
+* 456f9b8 prepare v2.1.0
 * 32ebd9b #8: use context for subsequent substitutions
 
 ## 2025-01-30

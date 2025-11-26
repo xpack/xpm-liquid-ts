@@ -1,6 +1,6 @@
 {
   "name": "@xpack/xpm-liquid",
-  "version": "2.1.0",
+  "version": "2.2.0-pre",
   "description": "A Node.js CommonJS/ES6 module with the Liquid substitutions code used by xpm &amp; relatives",
   "type": "commonjs",
   "exports": {
