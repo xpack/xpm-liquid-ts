@@ -6,6 +6,17 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues)
 and close existing issues and pull requests.
 
+## 2025-11-27
+
+* v2.2.1 released
+* 596ca67 test original array behaviour
+* 0d0000c add logger to performSubstitutions
+
+## 2025-11-26
+
+* 7ade690 2.2.0
+* dc809d1 prepare v2.2.0
+
 ## 2025-11-25
 
 * v2.2.0 released
