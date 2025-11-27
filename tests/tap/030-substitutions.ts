@@ -26,6 +26,7 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import { XpmLiquid } from '../../src/index.js'
+import { Context, Liquid } from 'liquidjs'
 
 // ----------------------------------------------------------------------------
 
@@ -263,7 +264,50 @@ await test('XpmLiquid filters cascade', async (t) => {
   t.end()
 })
 
-await test('XpmLiquid filters multi', async (t) => {
+await test('XpmLiquid arrays original', async (t) => {
+  // const log = new Logger({ level: 'info' })
+
+  const engine = new Liquid()
+
+  const map = {
+    name: 'n',
+    version: '0.1.2',
+    array: ['1', '2', '3'],
+    one: ['10', '11'],
+    two: ['20', '21'],
+    compound: ['{{one}}', '{{two}}']
+  }
+
+  const context = new Context(map)
+
+  const iteration =
+    await engine.parseAndRender(
+      '{% for item in array %}({{ item }}){% endfor %}', context)
+
+  t.not(Array.isArray(iteration), 'iteration not an array')
+  t.equal(iteration, '(1)(2)(3)', 'iteration is correct')
+
+  const array =
+    await engine.parseAndRender('{{ array }}', context)
+
+  t.not(Array.isArray(array), 'array is concatenated')
+  t.equal(array, '123', 'array is correct')
+
+  const temp =
+    await engine.parseAndRender('{{ compound }}', context)
+
+  t.equal(temp, '{{one}}{{two}}', 'temp is correct')
+
+  const compound =
+    await engine.parseAndRender(temp, context)
+
+  t.not(Array.isArray(compound), 'compound is concatenated')
+  t.equal(compound, '10112021', 'compound is correct')
+
+  t.end()
+})
+
+await test('XpmLiquid arrays multi', async (t) => {
   const log = new Logger({ level: 'info' })
 
   const xpmLiquid = new XpmLiquid(log)
@@ -292,15 +336,15 @@ await test('XpmLiquid filters multi', async (t) => {
 
   const one =
     (await xpmLiquid.performSubstitutions('{{ properties.one }}', map))
-      .split(os.EOL)
 
-  t.equal(one.length, 2, 'has two entries')
+  t.not(Array.isArray(one), 'array one is concatenated')
+  t.equal(one, '1011', 'array one is correct')
 
   const compound =
     (await xpmLiquid.performSubstitutions('{{ properties.compound }}', map))
-      .split(os.EOL)
 
-  t.equal(compound.length, 4, 'has two entries')
+  t.not(Array.isArray(compound), 'compound is concatenated')
+  t.equal(compound, '10113031', 'compound is correct')
 
   t.end()
 })
