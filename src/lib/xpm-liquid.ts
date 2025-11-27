@@ -221,12 +221,22 @@ export function filterWin32Path (input: string): string {
 // https://liquidjs.com/
 
 class PropertiesDrop extends Drop {
-  #properties: Properties
-  #engine: Liquid
+  readonly #log: Logger
+  readonly #properties: Properties
+  readonly #engine: Liquid
 
-  constructor (engine: Liquid, properties: Properties) {
+  constructor ({
+    logger,
+    engine,
+    properties
+  }: {
+    logger: Logger
+    engine: Liquid
+    properties: Properties
+  }) {
     super()
 
+    this.#log = logger
     this.#engine = engine
     this.#properties = properties
   }
@@ -234,19 +244,28 @@ class PropertiesDrop extends Drop {
   override async liquidMethodMissing (
     key: string,
     context: Context
-  ): Promise<string> {
+  ): Promise<string | string[]> {
     if (this.#properties[key] === undefined) {
       throw new Error(`properties have no ${key} key`)
     }
 
-    const value = this.#properties[key] ?? ''
-    const valueString = Array.isArray(value) ? value.join(os.EOL) : value
+    const log = this.#log
 
-    if (valueString?.includes('{')) {
-      return await this.#engine.parseAndRender(valueString, context)
+    const value = this.#properties[key] ?? ''
+    log.trace(
+      `PropertiesDrop.liquidMethodMissing('${key}') value = |`, value, '|')
+
+    let result: string | string[]
+
+    const valueString = Array.isArray(value) ? value.join('') : value
+    if (valueString?.includes('{{') || valueString?.includes('{%')) {
+      result = await this.#engine.parseAndRender(valueString, context)
     } else {
-      return valueString
+      result = value
     }
+    log.trace(
+      `PropertiesDrop.liquidMethodMissing('${key}') result = |`, result, '|')
+    return result
   }
 }
 
@@ -471,21 +490,30 @@ export class XpmLiquid {
     if (Object.keys(map.properties).length > 0) {
       context = new Context({
         ...map,
-        properties: new PropertiesDrop(this.engine, map.properties)
+        properties: new PropertiesDrop({
+          logger: log,
+          engine: this.engine,
+          properties: map.properties
+        })
       })
     } else {
       context = new Context(map)
     }
 
+    log.trace(`XpmLiquidMap.performSubstitutions('${input}')`)
+
     let current: string = input
     let substituted: string = current
+    let count = 0
 
     // Iterate until all substitutions are done.
     while (current.includes('{{') || current.includes('{%')) {
+      ++count
       // May throw.
       substituted = await this.engine.parseAndRender(current, context)
 
-      log.trace(`XpmLiquidMap.performSubstitutions(): '${substituted}'`)
+      log.trace(
+        `XpmLiquidMap.performSubstitutions() ${count}: |`, substituted, '|')
       /* c8 ignore start */ /* istanbul ignore next */
       if (substituted === current) {
         // If nothing changed, we're done.
