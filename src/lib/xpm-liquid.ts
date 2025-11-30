@@ -27,136 +27,20 @@ import { strict as assert } from 'node:assert'
 import * as os from 'os'
 import * as path from 'path'
 import * as process from 'process'
-import * as util from 'util'
 
 // https://www.npmjs.com/package/liquidjs
-import { Liquid, Context, Drop } from 'liquidjs'
+import { Liquid, Context } from 'liquidjs'
 
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
+import { XpmLiquidPropertiesDrop } from './liquid-drop.js'
+import { XpmLiquidMap, XpmLiquidProperties } from './properties.js'
+import { XpmLiquidEngine } from './engine.js'
 
 // ----------------------------------------------------------------------------
 // Types.
 
-export interface Properties {
-  [key: string]: string | string[]
-}
-
-export interface XpmLiquidMap {
-  /**
-   * https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env
-   */
-  env: NodeJS.ProcessEnv
-  /**
-   * https://nodejs.org/dist/latest-v16.x/docs/api/os.html
-   */
-  os: {
-    /**
-     * The operating system-specific end-of-line marker.
-     * - `\n` on POSIX
-     * - `\r\n` on Windows
-     */
-    EOL: string
-    /**
-     * Possible values are 'arm', 'arm64', 'ia32', 'mips', 'mipsel',
-     * 'ppc', 'ppc64', 's390', 's390x', 'x32', and 'x64'.
-     */
-    arch: string
-    /**
-     * Contains commonly used operating system-specific constants
-     * for error codes, process signals, and so on. The specific
-     * constants defined are described in
-     * [OS constants](https://nodejs.org/dist/latest-v16.x/docs/api/os.html#os_os_constants_1)
-     */
-    constants: {
-      signals: {
-        [key: string]: number
-      }
-      errno: {
-        [key: string]: number
-      }
-    }
-    /**
-     * An array of objects containing information about
-     * each logical CPU core.
-     */
-    cpus: os.CpuInfo[]
-    /**
-     * A string identifying the endianness of the CPU
-     * for which the Node.js binary was compiled.
-     *
-     * Possible values are 'BE' for big endian and 'LE' for little endian.
-     */
-    endianness: 'BE' | 'LE'
-    /**
-     * The string path of the current user's home directory.
-     */
-    homedir: string
-    /**
-     * The host name of the operating system as a string.
-     */
-    hostname: string
-    /**
-     * A string identifying the operating system platform.
-     * Possible values are 'aix', 'darwin', 'freebsd', 'linux', 'openbsd',
-     * 'sunos', and 'win32'.
-     */
-    platform: NodeJS.Platform
-    /**
-     * The operating system as a string.
-     */
-    release: string
-    /**
-     * Returns the operating system's default directory for
-     * temporary files as a string.
-     */
-    tmpdir: string
-    /**
-     * Returns the operating system name as returned by uname(3).
-     * For example, it returns 'Linux' on Linux, 'Darwin' on macOS,
-     * and 'Windows_NT' on Windows.
-     */
-    type: string
-    /**
-     * Returns a string identifying the kernel version.
-     *
-     * On POSIX systems, the operating system release is determined
-     * by calling `uname(3)`. On Windows, `RtlGetVersion()` is used,
-     * and if it is not available, `GetVersionExW()` will be used.
-     */
-    version: string
-  }
-  /**
-   * https://nodejs.org/dist/latest-v16.x/docs/api/path.html
-   */
-  path: {
-    /**
-     * Provides the platform-specific path delimiter:
-     * - `;` for Windows
-     * - `:` for POSIX
-     */
-    delimiter: string
-    /**
-     * Provides the platform-specific path segment separator:
-     * - `\` on Windows
-     * - `/` on POSIX
-     */
-    sep: string
-    win32: {
-      delimiter: string
-      sep: string
-    }
-    posix: {
-      delimiter: string
-      sep: string
-    }
-  }
-  package?: any
-  configuration?: {
-    name: string
-    [key: string]: any
-  }
-  properties: Properties
+export interface Properties extends XpmLiquidProperties {
 }
 
 // ----------------------------------------------------------------------------
@@ -218,57 +102,6 @@ export function filterWin32Path (input: string): string {
 
 // ============================================================================
 
-// https://liquidjs.com/
-
-class PropertiesDrop extends Drop {
-  readonly #log: Logger
-  readonly #properties: Properties
-  readonly #engine: Liquid
-
-  constructor ({
-    logger,
-    engine,
-    properties
-  }: {
-    logger: Logger
-    engine: Liquid
-    properties: Properties
-  }) {
-    super()
-
-    this.#log = logger
-    this.#engine = engine
-    this.#properties = properties
-  }
-
-  override async liquidMethodMissing (
-    key: string,
-    context: Context
-  ): Promise<string | string[]> {
-    if (this.#properties[key] === undefined) {
-      throw new Error(`properties have no ${key} key`)
-    }
-
-    const log = this.#log
-
-    const value = this.#properties[key] ?? ''
-    log.trace(
-      `PropertiesDrop.liquidMethodMissing('${key}') value = |`, value, '|')
-
-    let result: string | string[]
-
-    const valueString = Array.isArray(value) ? value.join('') : value
-    if (valueString?.includes('{{') || valueString?.includes('{%')) {
-      result = await this.#engine.parseAndRender(valueString, context)
-    } else {
-      result = value
-    }
-    log.trace(
-      `PropertiesDrop.liquidMethodMissing('${key}') result = |`, result, '|')
-    return result
-  }
-}
-
 export class XpmLiquid {
   // --------------------------------------------------------------------------
   // Members.
@@ -282,94 +115,7 @@ export class XpmLiquid {
   constructor (log: Logger) {
     this.log = log
 
-    this.engine = new Liquid({
-      strictFilters: true,
-      strictVariables: true,
-      trimTagLeft: false,
-      trimTagRight: false,
-      trimOutputLeft: false,
-      trimOutputRight: false,
-      greedy: false,
-      lenientIf: true
-    })
-
-    // https://liquidjs.com/api/classes/liquid_.liquid.html#registerFilter
-    // https://nodejs.org/dist/latest-v16.x/docs/api/path.html
-
-    // Add the main path manipulation functions.
-    this.engine.registerFilter('path_basename',
-      (p, ...arg) => path.basename(p, ...arg)
-    )
-
-    this.engine.registerFilter('path_dirname',
-      (p) => path.dirname(p)
-    )
-
-    this.engine.registerFilter('path_normalize',
-      (p) => path.normalize(p)
-    )
-
-    this.engine.registerFilter('path_join',
-      (p, ...args) => path.join(p, ...args)
-    )
-
-    this.engine.registerFilter('path_relative',
-      (from, to) => path.relative(from, to)
-    )
-
-    this.engine.registerFilter('path_posix_basename',
-      (p, ...arg) => path.posix.basename(p, ...arg)
-    )
-
-    this.engine.registerFilter('path_posix_dirname',
-      (p) => path.posix.dirname(p)
-    )
-
-    this.engine.registerFilter('path_posix_normalize',
-      (p) => path.posix.normalize(p)
-    )
-
-    this.engine.registerFilter('path_posix_join',
-      (p, ...args) => path.posix.join(p, ...args)
-    )
-
-    this.engine.registerFilter('path_posix_relative',
-      (from, to) => path.posix.relative(from, to)
-    )
-
-    this.engine.registerFilter('path_win32_basename',
-      (p, ...arg) => path.win32.basename(p, ...arg)
-    )
-
-    this.engine.registerFilter('path_win32_dirname',
-      (p) => path.win32.dirname(p)
-    )
-
-    this.engine.registerFilter('path_win32_normalize',
-      (p) => path.win32.normalize(p)
-    )
-
-    this.engine.registerFilter('path_win32_join',
-      (p, ...args) => path.win32.join(p, ...args)
-    )
-
-    this.engine.registerFilter('path_win32_relative',
-      (from, to) => path.win32.relative(from, to)
-    )
-
-    // https://nodejs.org/dist/latest-v16.x/docs/api/util.html
-
-    this.engine.registerFilter('util_format',
-      (format, ...args) => {
-        // console.log([...args])
-        return util.format(format, ...args)
-      }
-    )
-
-    // Custom action.
-    this.engine.registerFilter('to_filename',
-      (p) => filterPath(p)
-    )
+    this.engine = new XpmLiquidEngine()
   }
 
   // --------------------------------------------------------------------------
@@ -490,7 +236,7 @@ export class XpmLiquid {
     if (Object.keys(map.properties).length > 0) {
       context = new Context({
         ...map,
-        properties: new PropertiesDrop({
+        properties: new XpmLiquidPropertiesDrop({
           logger: log,
           engine: this.engine,
           properties: map.properties
