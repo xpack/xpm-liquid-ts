@@ -56,14 +56,15 @@ export interface JsonNpmPackage {
   [key: string]: any // Allow any additional property
 }
 
-
 export interface JsonXpmPackage extends JsonNpmPackage {
   xpack: JsonXpack
 }
 
 export class XpmLiquidData {
-  
-
+  packageJson: JsonXpmPackage
+  constructor (packageJson: JsonXpmPackage) {
+    this.packageJson = packageJson
+  }
 }
 
 // ----------------------------------------------------------------------------
