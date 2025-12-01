@@ -19,5 +19,6 @@ export * from './lib/xpm-liquid.js'
 export * from './lib/liquid-drop.js'
 export * from './lib/engine.js'
 export * from './lib/properties.js'
+export * from './lib/data.js'
 
 // ----------------------------------------------------------------------------
