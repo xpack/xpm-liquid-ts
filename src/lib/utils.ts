@@ -13,12 +13,22 @@
 
 // ----------------------------------------------------------------------------
 
-// Re-export the library definitions.
-export * from './lib/xpm-liquid.js'
+export function isPrimitive(value: unknown): boolean {
+  return (
+    (typeof value !== 'object' && typeof value !== 'function') || value === null
+  )
+}
 
-export * from './lib/liquid-drop.js'
-export * from './lib/engine.js'
-export * from './lib/map.js'
-export * from './lib/data.js'
+export function isJsonObject(value: unknown): boolean {
+  return value !== undefined && !isPrimitive(value) && !Array.isArray(value)
+}
+
+export function isJsonArray(value: unknown): boolean {
+  return value !== undefined && Array.isArray(value)
+}
+
+export function isNonEmptyJsonObject(value: unknown): boolean {
+  return isJsonObject(value) && Object.keys(value as object).length > 0
+}
 
 // ----------------------------------------------------------------------------

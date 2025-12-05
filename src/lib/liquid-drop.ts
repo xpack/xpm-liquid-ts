@@ -18,7 +18,7 @@ import { Liquid, Context, Drop } from 'liquidjs'
 
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
-import { XpmLiquidProperties } from './properties.js'
+import { XpmLiquidSubstitutionParameters } from './map.js'
 
 // ----------------------------------------------------------------------------
 
@@ -26,21 +26,21 @@ import { XpmLiquidProperties } from './properties.js'
 
 export class XpmLiquidPropertiesDrop extends Drop {
   readonly #log: Logger
-  readonly #properties: XpmLiquidProperties
+  readonly #properties: XpmLiquidSubstitutionParameters
   readonly #engine: Liquid
 
   constructor ({
-    logger,
+    log,
     engine,
     properties
   }: {
-    logger: Logger
+    log: Logger
     engine: Liquid
-    properties: XpmLiquidProperties
+    properties: XpmLiquidSubstitutionParameters
   }) {
     super()
 
-    this.#log = logger
+    this.#log = log
     this.#engine = engine
     this.#properties = properties
   }

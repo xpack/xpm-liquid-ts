@@ -34,13 +34,13 @@ import { Liquid, Context } from 'liquidjs'
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
 import { XpmLiquidPropertiesDrop } from './liquid-drop.js'
-import { XpmLiquidMap, XpmLiquidProperties } from './properties.js'
+import { XpmLiquidSubstitutionMap, XpmLiquidSubstitutionParameters } from './map.js'
 import { XpmLiquidEngine } from './engine.js'
 
 // ----------------------------------------------------------------------------
 // Types.
 
-export interface Properties extends XpmLiquidProperties {
+export interface Properties extends XpmLiquidSubstitutionParameters {
 }
 
 // ----------------------------------------------------------------------------
@@ -129,14 +129,14 @@ export class XpmLiquid {
   prepareMap (
     packageJson: any,
     buildConfigurationName?: string
-  ): XpmLiquidMap {
+  ): XpmLiquidSubstitutionMap {
     assert(packageJson)
 
     // os.version() available since 12.x
     assert(typeof os.version === 'function',
       'Mandatory os.version available only since 12.x')
 
-    const liquidMap: XpmLiquidMap = {
+    const liquidMap: XpmLiquidSubstitutionMap = {
       env: process.env,
       os: {
         EOL: os.EOL,
@@ -221,7 +221,7 @@ export class XpmLiquid {
    */
   async performSubstitutions (
     input: string,
-    map: XpmLiquidMap
+    map: XpmLiquidSubstitutionMap
   ): Promise<string> {
     assert(map)
 
@@ -237,7 +237,7 @@ export class XpmLiquid {
       context = new Context({
         ...map,
         properties: new XpmLiquidPropertiesDrop({
-          logger: log,
+          log: log,
           engine: this.engine,
           properties: map.properties
         })

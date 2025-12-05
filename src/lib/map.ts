@@ -14,14 +14,15 @@
 // ----------------------------------------------------------------------------
 
 import * as os from 'os'
+import path from 'path'
 
 // ----------------------------------------------------------------------------
 
-export interface XpmLiquidProperties {
+export interface XpmLiquidSubstitutionParameters {
   [key: string]: string | string[]
 }
 
-export interface XpmLiquidMap {
+export interface XpmLiquidSubstitutionMap {
   /**
    * https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env
    */
@@ -135,7 +136,44 @@ export interface XpmLiquidMap {
     name: string
     [key: string]: any
   }
-  properties: XpmLiquidProperties
+  properties: XpmLiquidSubstitutionParameters
+
+  matrix?: XpmLiquidSubstitutionParameters
+}
+
+export const xmlLiquidSubstitutionMapBase: XpmLiquidSubstitutionMap = {
+  env: process.env,
+  os: {
+    EOL: os.EOL,
+    arch: os.arch(),
+    constants: {
+      signals: os.constants.signals,
+      errno: os.constants.errno,
+    },
+    cpus: os.cpus(),
+    endianness: os.endianness(),
+    homedir: os.homedir(),
+    hostname: os.hostname(),
+    platform: os.platform(),
+    release: os.release(),
+    tmpdir: os.tmpdir(),
+    type: os.type(),
+    // os.version() available since 12.x
+    version: os.version(),
+  },
+  path: {
+    delimiter: path.delimiter,
+    sep: path.sep,
+    win32: {
+      delimiter: path.win32.delimiter,
+      sep: path.win32.sep,
+    },
+    posix: {
+      delimiter: path.posix.delimiter,
+      sep: path.posix.sep,
+    },
+  },
+  properties: {},
 }
 
 // ----------------------------------------------------------------------------
