@@ -1,41 +1,17 @@
 {
-  /* https://www.typescriptlang.org/tsconfig */
-  "$schema": "https://json.schemastore.org/tsconfig",
-
+  "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
-    "sourceMap": true,
-    "declaration": true,
-    "target": "es2020",
-    "lib": [
-      "es2020"
-    ],
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "exactOptionalPropertyTypes": true,
-    "alwaysStrict": true,
-    "esModuleInterop": true,
-    "declarationMap": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "node16",
-    "moduleResolution": "node16",
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "preserveConstEnums": true,
-    "removeComments": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./typings"
-    ],
-    "useUnknownInCatchVariables": true
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+    /* https://www.npmjs.com/package/@tsconfig/node20 */
+
+    "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
+    "declarationMap": true,                           /* Create sourcemaps for d.ts files. */
+    "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
+    "inlineSourceMap": false,                         /* Do not include the source map inline in the emitted JavaScript files. */
+    "inlineSources": false,                           /* Do not emit the source alongside the sourcemaps within a single file. */
+    // api-extractor reads the documentation from the compiled files.
+    // "removeComments": true,                           /* Disable emitting comments. */
+
+    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
   }
 }

@@ -2,22 +2,24 @@
   "name": "@xpack/xpm-liquid",
   "version": "2.2.1",
   "description": "A Node.js CommonJS/ES6 module with the Liquid substitutions code used by xpm &amp; relatives",
-  "type": "commonjs",
+  "type": "module",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "exports": {
-    "node": {
-      "import": "./esm/index.js",
-      "require": "./cjs/index.js"
-    },
-    "types": "./cjs/index.d.ts",
-    "default": "./cjs/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
-  "main": "./cjs/index.js",
-  "module": "./esm/index.js",
-  "types": "./cjs/index.d.ts",
+  "files": [
+    "dist/",
+    "src/"
+  ],
   "scripts": {
     "compile-watch": "tsc --build --verbose --watch src",
-    "fix": "ts-standard --fix src tests && standard esm",
     "compile": "tsc --build --verbose src",
+    "prettier": "prettier src --write",
+    "fix": "eslint --fix src",
     "npm-install": "npm install",
     "npm-link": "npm link",
     "npm-link-deps": "npm link @xpack/logger",
@@ -28,7 +30,7 @@
     "postversion": "git push origin --all && git push origin --tags",
     "npm-pack": "npm pack",
     "git-log": "git log --pretty='%cd * %h %s' --date=short",
-    "lint": "ts-standard src && standard esm",
+    "lint": "eslint src",
     "prepare": "npm run compile && npm run lint",
     "pretest": "npm run lint",
     "pretest-100": "npm run lint",
@@ -44,7 +46,7 @@
     "test-100": "npm run test-tap-coverage-100 -s",
     "test-100-c8": "npm run test-tap-coverage-100-c8 -s",
     "dev-cycle": "npm run fix && npm run compile && npm run test-100-c8",
-    "clean": "del-cli cjs 'tests/**/cjs' 'src/**/*.d.ts' 'src/**/*.d.ts.map' 'src/**/*.js' 'src/**/*.js.map' 'tests/**/*.d.ts' 'tests/**/*.d.ts.map' 'tests/**/*.js' 'tests/**/*.js.map' '**/tsconfig.tsbuildinfo' .nyc_output coverage",
+    "clean": "del-cli dist 'tests/**/cjs' 'src/**/*.d.ts' 'src/**/*.d.ts.map' 'src/**/*.js' 'src/**/*.js.map' 'tests/**/*.d.ts' 'tests/**/*.d.ts.map' 'tests/**/*.js' 'tests/**/*.js.map' '**/tsconfig.tsbuildinfo' .nyc_output coverage",
     "deep-clean": "npm run clean && rm -rf node_modules package-lock.json",
     "npm-version": "echo $(which node) $(node --version) && echo $(which npm) $(npm --version)"
   },
@@ -72,15 +74,18 @@
     "liquidjs": "^10.24.0"
   },
   "devDependencies": {
-    "@types/node": "^18.11.9",
+    "@tsconfig/node20": "^20.1.6",
+    "@types/node": "^24.0.14",
     "@types/tap": "^15.0.11",
     "c8": "^9.1.0",
     "del-cli": "^7.0.0",
-    "standard": "^17.1.0",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.8",
     "tap": "^16.3.4",
     "ts-node": "^10.9.2",
-    "ts-standard": "^12.0.2",
-    "typescript": "^4.9.5"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0",
+    "@eslint/js": "^9.31.0"
   },
   "tap": {
     "check-coverage": false,
@@ -95,22 +100,11 @@
     "timeout": 30,
     "ts": true
   },
-  "eslintConfig": {
-    "rules": {
-      "max-len": [
-        "error",
-        80,
-        {
-          "ignoreUrls": true
-        }
-      ]
-    }
-  },
-  "ts-standard": {
-    "ignore": [
-      "**/*.d.ts",
-      "**/*.js"
-    ]
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
   },
   "engines": {
     "node": " >=20.0"
