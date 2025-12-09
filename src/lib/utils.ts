@@ -31,4 +31,8 @@ export function isNonEmptyJsonObject(value: unknown): boolean {
   return isJsonObject(value) && Object.keys(value as object).length > 0
 }
 
+export function isString(value: unknown): value is string {
+  return typeof value === 'string'
+}
+
 // ----------------------------------------------------------------------------
