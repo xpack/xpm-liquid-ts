@@ -18,11 +18,9 @@ import path from 'path'
 
 // ----------------------------------------------------------------------------
 
-export interface XpmLiquidSubstitutionParameters {
-  [key: string]: string | string[]
-}
+export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>
 
-export interface XpmLiquidSubstitutionMap {
+export interface XpmLiquidSubstitutionsVariables {
   /**
    * https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env
    */
@@ -49,12 +47,8 @@ export interface XpmLiquidSubstitutionMap {
      * [OS constants](https://nodejs.org/dist/latest-v16.x/docs/api/os.html#os_os_constants_1)
      */
     constants: {
-      signals: {
-        [key: string]: number
-      }
-      errno: {
-        [key: string]: number
-      }
+      signals: Record<string, number>
+      errno: Record<string, number>
     }
     /**
      * An array of objects containing information about
@@ -131,49 +125,53 @@ export interface XpmLiquidSubstitutionMap {
       sep: string
     }
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   package?: any
   configuration?: {
     name: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any
   }
-  properties: XpmLiquidSubstitutionParameters
+  properties: XpmLiquidSubstitutionsStrings
 
-  matrix?: XpmLiquidSubstitutionParameters
+  matrix?: XpmLiquidSubstitutionsStrings
 }
 
-export const xmlLiquidSubstitutionMapBase: XpmLiquidSubstitutionMap = {
-  env: process.env,
-  os: {
-    EOL: os.EOL,
-    arch: os.arch(),
-    constants: {
-      signals: os.constants.signals,
-      errno: os.constants.errno,
+// eslint-disable-next-line max-len
+export const xpmLiquidSubstitutionsVariablesBase: XpmLiquidSubstitutionsVariables =
+  {
+    env: process.env,
+    os: {
+      EOL: os.EOL,
+      arch: os.arch(),
+      constants: {
+        signals: os.constants.signals,
+        errno: os.constants.errno,
+      },
+      cpus: os.cpus(),
+      endianness: os.endianness(),
+      homedir: os.homedir(),
+      hostname: os.hostname(),
+      platform: os.platform(),
+      release: os.release(),
+      tmpdir: os.tmpdir(),
+      type: os.type(),
+      // os.version() available since 12.x
+      version: os.version(),
     },
-    cpus: os.cpus(),
-    endianness: os.endianness(),
-    homedir: os.homedir(),
-    hostname: os.hostname(),
-    platform: os.platform(),
-    release: os.release(),
-    tmpdir: os.tmpdir(),
-    type: os.type(),
-    // os.version() available since 12.x
-    version: os.version(),
-  },
-  path: {
-    delimiter: path.delimiter,
-    sep: path.sep,
-    win32: {
-      delimiter: path.win32.delimiter,
-      sep: path.win32.sep,
+    path: {
+      delimiter: path.delimiter,
+      sep: path.sep,
+      win32: {
+        delimiter: path.win32.delimiter,
+        sep: path.win32.sep,
+      },
+      posix: {
+        delimiter: path.posix.delimiter,
+        sep: path.posix.sep,
+      },
     },
-    posix: {
-      delimiter: path.posix.delimiter,
-      sep: path.posix.sep,
-    },
-  },
-  properties: {},
-}
+    properties: {},
+  }
 
 // ----------------------------------------------------------------------------
