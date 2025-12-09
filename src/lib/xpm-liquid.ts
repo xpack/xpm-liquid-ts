@@ -34,24 +34,27 @@ import { Liquid, Context } from 'liquidjs'
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
 import { XpmLiquidPropertiesDrop } from './liquid-drop.js'
-import { XpmLiquidSubstitutionMap, XpmLiquidSubstitutionParameters } from './map.js'
+import {
+  XpmLiquidSubstitutionsVariables,
+  XpmLiquidSubstitutionsStrings,
+} from './substitutions-variables.js'
 import { XpmLiquidEngine } from './engine.js'
 
 // ----------------------------------------------------------------------------
 // Types.
 
-export interface Properties extends XpmLiquidSubstitutionParameters {
-}
+export interface Properties extends XpmLiquidSubstitutionsStrings {}
 
 // ----------------------------------------------------------------------------
 // General purpose functions.
 
-function _isPrimitive (value: any): boolean {
-  return (typeof value !== 'object' && typeof value !== 'function') ||
-    value === null
+function _isPrimitive(value: any): boolean {
+  return (
+    (typeof value !== 'object' && typeof value !== 'function') || value === null
+  )
 }
 
-function _isJsonObject (value: any): boolean {
+function _isJsonObject(value: any): boolean {
   return value !== undefined && !_isPrimitive(value) && !Array.isArray(value)
 }
 
@@ -62,11 +65,12 @@ function _isJsonObject (value: any): boolean {
  * @param {string} input A path candidate.
  * @returns {string} A validated path.
  */
-export function filterPath (input: string): string {
+export function filterPath(input: string): string {
   /* c8 ignore start */ /* istanbul ignore next */
-  const fixed = (os.platform() === 'win32')
-    ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
-    : input.replace(/[^a-zA-Z0-9/]+/g, '-')
+  const fixed =
+    os.platform() === 'win32'
+      ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
+      : input.replace(/[^a-zA-Z0-9/]+/g, '-')
   /* c8 ignore stop */
 
   return fixed.replace(/--/g, '-')
@@ -79,7 +83,7 @@ export function filterPath (input: string): string {
  * @param {string} input A path candidate.
  * @returns {string} A validated path.
  */
-export function filterPosixPath (input: string): string {
+export function filterPosixPath(input: string): string {
   /* istanbul ignore next */
   const fixed = input.replace(/[^a-zA-Z0-9/]+/g, '-')
 
@@ -93,7 +97,7 @@ export function filterPosixPath (input: string): string {
  * @param {string} input A path candidate.
  * @returns {string} A validated path.
  */
-export function filterWin32Path (input: string): string {
+export function filterWin32Path(input: string): string {
   /* istanbul ignore next */
   const fixed = input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
 
@@ -112,7 +116,7 @@ export class XpmLiquid {
   // --------------------------------------------------------------------------
   // Constructor.
 
-  constructor (log: Logger) {
+  constructor(log: Logger) {
     this.log = log
 
     this.engine = new XpmLiquidEngine()
@@ -126,24 +130,26 @@ export class XpmLiquid {
    *
    * @returns A map of properties.
    */
-  prepareMap (
+  prepareMap(
     packageJson: any,
     buildConfigurationName?: string
-  ): XpmLiquidSubstitutionMap {
+  ): XpmLiquidSubstitutionsVariables {
     assert(packageJson)
 
     // os.version() available since 12.x
-    assert(typeof os.version === 'function',
-      'Mandatory os.version available only since 12.x')
+    assert(
+      typeof os.version === 'function',
+      'Mandatory os.version available only since 12.x'
+    )
 
-    const liquidMap: XpmLiquidSubstitutionMap = {
+    const liquidMap: XpmLiquidSubstitutionsVariables = {
       env: process.env,
       os: {
         EOL: os.EOL,
         arch: os.arch(),
         constants: {
           signals: os.constants.signals,
-          errno: os.constants.errno
+          errno: os.constants.errno,
         },
         cpus: os.cpus(),
         endianness: os.endianness(),
@@ -154,22 +160,22 @@ export class XpmLiquid {
         tmpdir: os.tmpdir(),
         type: os.type(),
         // os.version() available since 12.x
-        version: (os.version())
+        version: os.version(),
       },
       path: {
         delimiter: path.delimiter,
         sep: path.sep,
         win32: {
           delimiter: path.win32.delimiter,
-          sep: path.win32.sep
+          sep: path.win32.sep,
         },
         posix: {
           delimiter: path.posix.delimiter,
-          sep: path.posix.sep
-        }
+          sep: path.posix.sep,
+        },
       },
       package: packageJson,
-      properties: {}
+      properties: {},
     }
 
     if (_isJsonObject(packageJson.xpack)) {
@@ -177,28 +183,31 @@ export class XpmLiquid {
         liquidMap.properties = packageJson.xpack.properties
       }
 
-      if (buildConfigurationName !== undefined &&
+      if (
+        buildConfigurationName !== undefined &&
         buildConfigurationName !== null &&
-        buildConfigurationName.trim() !== '') {
+        buildConfigurationName.trim() !== ''
+      ) {
         if (packageJson.xpack.buildConfigurations === undefined) {
           throw new Error('package.json has no buildConfigurations')
         }
         const buildConfiguration =
-        packageJson.xpack.buildConfigurations[buildConfigurationName]
+          packageJson.xpack.buildConfigurations[buildConfigurationName]
         if (buildConfiguration === undefined) {
-          throw new Error('package.json has no buildConfiguration.' +
-          `${buildConfigurationName}`)
+          throw new Error(
+            'package.json has no buildConfiguration.' + buildConfigurationName
+          )
         }
 
         liquidMap.configuration = {
           ...buildConfiguration,
-          name: buildConfigurationName
+          name: buildConfigurationName,
         }
 
         if (_isJsonObject(buildConfiguration.properties)) {
           liquidMap.properties = {
             ...liquidMap.properties,
-            ...buildConfiguration.properties
+            ...buildConfiguration.properties,
           }
         }
       }
@@ -219,9 +228,9 @@ export class XpmLiquid {
    *
    * @throws Liquid exceptions
    */
-  async performSubstitutions (
+  async performSubstitutions(
     input: string,
-    map: XpmLiquidSubstitutionMap
+    map: XpmLiquidSubstitutionsVariables
   ): Promise<string> {
     assert(map)
 
@@ -239,8 +248,8 @@ export class XpmLiquid {
         properties: new XpmLiquidPropertiesDrop({
           log: log,
           engine: this.engine,
-          properties: map.properties
-        })
+          properties: map.properties,
+        }),
       })
     } else {
       context = new Context(map)
@@ -259,7 +268,10 @@ export class XpmLiquid {
       substituted = await this.engine.parseAndRender(current, context)
 
       log.trace(
-        `XpmLiquidMap.performSubstitutions() ${count}: |`, substituted, '|')
+        `XpmLiquidMap.performSubstitutions() ${count}: |`,
+        substituted,
+        '|'
+      )
       /* c8 ignore start */ /* istanbul ignore next */
       if (substituted === current) {
         // If nothing changed, we're done.
