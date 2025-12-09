@@ -58,6 +58,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
     key: string,
     context: Context
   ): Promise<string | string[]> {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.#properties[key] === undefined) {
       throw new Error(`properties have no ${key} key`)
     }
