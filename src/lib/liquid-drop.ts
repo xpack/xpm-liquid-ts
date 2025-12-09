@@ -18,25 +18,31 @@ import { Liquid, Context, Drop } from 'liquidjs'
 
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
-import { XpmLiquidSubstitutionParameters } from './map.js'
+import { XpmLiquidSubstitutionsStrings } from './substitutions-variables.js'
 
 // ----------------------------------------------------------------------------
 
 // https://liquidjs.com/
 
 export class XpmLiquidPropertiesDrop extends Drop {
+  // --------------------------------------------------------------------------
+  // Members.
+
   readonly #log: Logger
-  readonly #properties: XpmLiquidSubstitutionParameters
+  readonly #properties: XpmLiquidSubstitutionsStrings
   readonly #engine: Liquid
 
-  constructor ({
+  // --------------------------------------------------------------------------
+  // Constructor.
+
+  constructor({
     log,
     engine,
-    properties
+    properties,
   }: {
     log: Logger
     engine: Liquid
-    properties: XpmLiquidSubstitutionParameters
+    properties: XpmLiquidSubstitutionsStrings
   }) {
     super()
 
@@ -45,7 +51,10 @@ export class XpmLiquidPropertiesDrop extends Drop {
     this.#properties = properties
   }
 
-  override async liquidMethodMissing (
+  // --------------------------------------------------------------------------
+  // Methods.
+
+  override async liquidMethodMissing(
     key: string,
     context: Context
   ): Promise<string | string[]> {
@@ -58,19 +67,26 @@ export class XpmLiquidPropertiesDrop extends Drop {
     const value = this.#properties[key] ?? ''
     log.trace(
       `XpmLiquidPropertiesDrop.liquidMethodMissing('${key}') value = |`,
-      value, '|')
+      value,
+      '|'
+    )
 
     let result: string | string[]
 
     const valueString = Array.isArray(value) ? value.join('') : value
-    if (valueString?.includes('{{') || valueString?.includes('{%')) {
-      result = await this.#engine.parseAndRender(valueString, context)
+    if (valueString.includes('{{') || valueString.includes('{%')) {
+      result = (await this.#engine.parseAndRender(
+        valueString,
+        context
+      )) as string
     } else {
       result = value
     }
     log.trace(
       `XpmLiquidPropertiesDrop.liquidMethodMissing('${key}') result = |`,
-      result, '|')
+      result,
+      '|'
+    )
     return result
   }
 }
