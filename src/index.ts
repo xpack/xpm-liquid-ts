@@ -20,6 +20,7 @@ export * from './lib/substitutions-variables.js'
 export * from './lib/package.js'
 export * from './lib/actions.js'
 export * from './lib/build-configurations.js'
+export * from './lib/perform-substitutions.js'
 
 // export * from './lib/xpm-liquid.js'
 

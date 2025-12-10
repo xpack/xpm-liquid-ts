@@ -26,8 +26,8 @@ import {
   JsonBuildConfiguration,
   JsonBuildConfigurations,
   JsonDependencies,
-  performSubstitutions,
 } from './package.js'
+import { performSubstitutions } from './perform-substitutions.js'
 import { XpmLiquidActions } from './actions.js'
 import { isString } from './utils.js'
 import { filterPath } from './xpm-liquid.js'
@@ -167,7 +167,7 @@ export class XpmLiquidBuildConfiguration {
   // For templates, the actual values.
   matrixParameters?: XpmLiquidSubstitutionsStrings
 
-  buildFolderRelativePath?: string
+  #buildFolderRelativePath?: string
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -278,8 +278,8 @@ export class XpmLiquidBuildConfiguration {
   // Methods.
 
   async getBuildFolderRelativePath(): Promise<string> {
-    this.buildFolderRelativePath ??= await this.#getBuildFolderRelativePath()
-    return this.buildFolderRelativePath
+    this.#buildFolderRelativePath ??= await this.#getBuildFolderRelativePath()
+    return this.#buildFolderRelativePath
   }
 
   async #getBuildFolderRelativePath(): Promise<string> {
