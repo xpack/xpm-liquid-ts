@@ -45,7 +45,8 @@ export type JsonDependencies = Record<string, string | JsonDependencyExtended>
 export type JsonDependencyExtended = Record<string, string>
 
 export interface JsonBuildConfiguration {
-  inherit?: JsonBuildConfigurationInherits | string
+  inherits?: JsonBuildConfigurationInherits | string
+  inherit?: JsonBuildConfigurationInherits | string // Deprecated
   hidden?: boolean
   properties?: JsonProperties
   actions?: JsonActions
@@ -87,16 +88,17 @@ export class XpmLiquidPackage {
   // --------------------------------------------------------------------------
   // Members.
 
-  #log: Logger
-  #engine: Liquid
-  #packageJson: JsonXpmPackage
+  readonly #log: Logger
+  readonly #engine: Liquid
+  readonly #packageJson: JsonXpmPackage
 
-  topActions: XpmLiquidActions
-  buildConfigurations: XpmLiquidBuildConfigurations
-  topLiquidSubstitutionsVariables: XpmLiquidSubstitutionsVariables
+  readonly topLiquidSubstitutionsVariables: XpmLiquidSubstitutionsVariables
+
+  readonly topActions: XpmLiquidActions
+  readonly buildConfigurations: XpmLiquidBuildConfigurations
 
   // --------------------------------------------------------------------------
-  // Constructor.
+  // Constructor and async initialiser.
 
   constructor({
     log,
@@ -107,6 +109,7 @@ export class XpmLiquidPackage {
   }) {
     this.#log = log
     this.#engine = new XpmLiquidEngine()
+
     assert(isJsonObject(packageJson.xpack))
     this.#packageJson = packageJson
 
@@ -124,6 +127,7 @@ export class XpmLiquidPackage {
     // Prevent adding/removing properties.
     Object.seal(this.topLiquidSubstitutionsVariables)
 
+    // Empty actions.
     this.topActions = new XpmLiquidActions({
       log: this.#log,
       engine: this.#engine,
@@ -131,12 +135,19 @@ export class XpmLiquidPackage {
       jsonActions: this.#packageJson.xpack.actions,
     })
 
+    // Empty build configurations.
     this.buildConfigurations = new XpmLiquidBuildConfigurations({
       log: this.#log,
       engine: this.#engine,
       substitutionsVariables: this.topLiquidSubstitutionsVariables,
       jsonBuildConfigurations: this.#packageJson.xpack.buildConfigurations,
     })
+  }
+
+  // If necessary, the inits can be called directly from the application.
+  async initialise(): Promise<void> {
+    await this.topActions.initialise()
+    await this.buildConfigurations.initialise()
   }
 }
 

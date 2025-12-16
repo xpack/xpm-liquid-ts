@@ -101,6 +101,7 @@ export async function performSubstitutions({
       }
       // Return the current (unsubstituted) value.
       substituted = current
+      break
     }
 
     log.trace(`performSubstitutions() ${String(count)} => |`, substituted, '|')
