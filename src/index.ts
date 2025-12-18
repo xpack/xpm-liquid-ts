@@ -15,12 +15,13 @@
 
 // Re-export all library definitions.
 export * from './lib/liquid-drop.js'
-export * from './lib/engine.js'
+export * from './lib/liquid-engine.js'
 export * from './lib/substitutions-variables.js'
-export * from './lib/package.js'
-export * from './lib/actions.js'
-export * from './lib/build-configurations.js'
+export * from './lib/liquid-package.js'
+export * from './lib/liquid-actions.js'
+export * from './lib/liquid-build-configurations.js'
 export * from './lib/perform-substitutions.js'
+export * from './lib/package.js'
 
 // export * from './lib/xpm-liquid.js'
 
