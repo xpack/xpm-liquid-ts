@@ -47,6 +47,8 @@ export class XpmLiquidBuildConfigurations {
 
   readonly #map: Map<string, XpmLiquidBuildConfiguration | undefined>
 
+  #isInitialised = false
+
   // --------------------------------------------------------------------------
   // Constructor and async initialiser.
 
@@ -76,6 +78,10 @@ export class XpmLiquidBuildConfigurations {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async initialise(): Promise<void> {
+    if (this.#isInitialised) {
+      return
+    }
+
     for (const buildConfigurationName of Object.keys(
       this.jsonBuildConfigurations
     )) {
@@ -88,6 +94,7 @@ export class XpmLiquidBuildConfigurations {
       Array.from(this.#map.keys())
     )
 
+    this.#isInitialised = true
   }
 
   // --------------------------------------------------------------------------
@@ -165,6 +172,8 @@ export class XpmLiquidBuildConfiguration {
 
   #buildFolderRelativePath?: string
 
+  #isInitialised = false
+
   // --------------------------------------------------------------------------
   // Constructor and async initialiser.
 
@@ -194,6 +203,10 @@ export class XpmLiquidBuildConfiguration {
   }
 
   async initialise(): Promise<void> {
+    if (this.#isInitialised) {
+      return
+    }
+
     const log = this.#parentBuildConfigurations.log
     const jsonBuildConfiguration = this.#jsonBuildConfiguration
 
@@ -295,6 +308,8 @@ export class XpmLiquidBuildConfiguration {
     log.trace('dependencies => ', this.jsonDependencies)
     log.trace('devDependencies => ', this.jsonDevDependencies)
     // log.trace('substitutionsVariables => ', this.substitutionsVariables)
+
+    this.#isInitialised = true
   }
 
   // --------------------------------------------------------------------------

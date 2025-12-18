@@ -39,6 +39,8 @@ export class XpmLiquidActions {
 
   readonly #map: Map<string, XpmLiquidAction | undefined>
 
+  #isInitialised = false
+
   // --------------------------------------------------------------------------
   // Constructor and async initialiser.
 
@@ -69,6 +71,9 @@ export class XpmLiquidActions {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async initialise(): Promise<void> {
+    if (this.#isInitialised) {
+      return
+    }
     for (const actionName of Object.keys(this.jsonActions)) {
       // TODO: expand templates in names
       this.#map.set(actionName, undefined)
@@ -78,6 +83,8 @@ export class XpmLiquidActions {
       `${this.constructor.name}.initialise() =>`,
       Array.from(this.#map.keys())
     )
+
+    this.#isInitialised = true
   }
 
   // --------------------------------------------------------------------------
