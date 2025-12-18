@@ -61,6 +61,8 @@ export class XpmLiquidBuildConfigurations {
     substitutionsVariables: XpmLiquidSubstitutionsVariables
     jsonBuildConfigurations: JsonBuildConfigurations | undefined
   }) {
+    log.trace(`${this.constructor.name}()`)
+
     this.log = log
     this.engine = engine
     this.substitutionsVariables = substitutionsVariables
@@ -69,7 +71,6 @@ export class XpmLiquidBuildConfigurations {
     // Possibly empty if there are no build configurations.
     this.#map = new Map<string, XpmLiquidBuildConfiguration | undefined>()
 
-    // log.trace('XpmLiquidBuildConfigurations()')
     // log.trace('substitutionsVariables => ', this.substitutionsVariables)
   }
 
@@ -81,6 +82,12 @@ export class XpmLiquidBuildConfigurations {
       // TODO: expand templates in names
       this.#map.set(buildConfigurationName, undefined)
     }
+
+    this.log.trace(
+      `${this.constructor.name}.initialise() =>`,
+      Array.from(this.#map.keys())
+    )
+
   }
 
   // --------------------------------------------------------------------------
@@ -92,8 +99,9 @@ export class XpmLiquidBuildConfigurations {
 
   names(): string[] {
     const buildConfigurationsNames = Array.from(this.#map.keys())
+
     this.log.trace(
-      'XpmLiquidBuildConfigurations.names() ->',
+      `${this.constructor.name}.names() =>`,
       buildConfigurationsNames
     )
     return buildConfigurationsNames
@@ -164,6 +172,10 @@ export class XpmLiquidBuildConfiguration {
     buildConfigurationName: string,
     parentBuildConfigurations: XpmLiquidBuildConfigurations
   ) {
+    parentBuildConfigurations.log.trace(
+      `${this.constructor.name}(${buildConfigurationName})`
+    )
+
     this.#buildConfigurationName = buildConfigurationName
     this.#parentBuildConfigurations = parentBuildConfigurations
 
@@ -178,7 +190,7 @@ export class XpmLiquidBuildConfiguration {
 
     this.hidden = this.#jsonBuildConfiguration.hidden ?? false
 
-    // The rest of the initialization is done in the async initialiser.
+    // The rest of the initialisation is done in the async initialiser.
   }
 
   async initialise(): Promise<void> {
@@ -275,7 +287,10 @@ export class XpmLiquidBuildConfiguration {
     })
     await this.#actions.initialise()
 
-    log.trace('XpmLiquidBuildConfiguration', this.#buildConfigurationName)
+    log.trace(
+      `${this.constructor.name}.initialise() =>`,
+      this.#buildConfigurationName
+    )
     log.trace('properties => ', this.properties)
     log.trace('dependencies => ', this.jsonDependencies)
     log.trace('devDependencies => ', this.jsonDevDependencies)

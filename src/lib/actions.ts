@@ -53,6 +53,8 @@ export class XpmLiquidActions {
     substitutionsVariables: XpmLiquidSubstitutionsVariables
     jsonActions: JsonActions | undefined
   }) {
+    log.trace(`${this.constructor.name}()`)
+
     this.log = log
     this.engine = engine
     this.substitutionsVariables = substitutionsVariables
@@ -61,8 +63,8 @@ export class XpmLiquidActions {
     // Possibly empty if there are no actions.
     this.#map = new Map<string, XpmLiquidAction | undefined>()
 
-    // log.trace('XpmLiquidActions()')
     // log.trace('substitutionsVariables => ', this.substitutionsVariables)
+    // The rest of the initialisation is done in the async initialiser.
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -71,6 +73,11 @@ export class XpmLiquidActions {
       // TODO: expand templates in names
       this.#map.set(actionName, undefined)
     }
+
+    this.log.trace(
+      `${this.constructor.name}.initialise() =>`,
+      Array.from(this.#map.keys())
+    )
   }
 
   // --------------------------------------------------------------------------
@@ -82,7 +89,8 @@ export class XpmLiquidActions {
 
   names(): string[] {
     const actionNames = Array.from(this.#map.keys())
-    this.log.trace('XpmLiquidActions.names() ->', actionNames)
+
+    this.log.trace(`${this.constructor.name}.names() =>`, actionNames)
     return actionNames
   }
 
@@ -125,6 +133,8 @@ export class XpmLiquidAction {
     actionName: string
     parentActions: XpmLiquidActions
   }) {
+    parentActions.log.trace(`${this.constructor.name}(${actionName})`)
+
     this.#actionName = actionName
     this.#parentActions = parentActions
   }
@@ -151,7 +161,7 @@ export class XpmLiquidAction {
     }
 
     this.#parentActions.log.trace(
-      'XpmLiquidAction.commands() ->',
+      `${this.constructor.name}.commands() =>`,
       this.#commands
     )
     return this.#commands
