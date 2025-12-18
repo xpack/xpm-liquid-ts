@@ -145,12 +145,6 @@ export class XpmLiquidPackage {
       jsonBuildConfigurations: this.#packageJson.xpack.buildConfigurations,
     })
   }
-
-  // If necessary, the inits can be called directly from the application.
-  async initialise(): Promise<void> {
-    await this.topActions.initialise()
-    await this.buildConfigurations.initialise()
-  }
 }
 
 // ----------------------------------------------------------------------------
