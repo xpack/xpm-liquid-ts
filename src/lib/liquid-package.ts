@@ -107,7 +107,7 @@ export class XpmLiquidPackage {
     log: Logger
     packageJson: JsonXpmPackage
   }) {
-    log.trace(`${this.constructor.name}()`)
+    log.trace(`${XpmLiquidPackage.name}()`)
 
     this.#log = log
     this.#engine = new XpmLiquidEngine()

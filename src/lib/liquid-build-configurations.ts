@@ -63,7 +63,7 @@ export class XpmLiquidBuildConfigurations {
     substitutionsVariables: XpmLiquidSubstitutionsVariables
     jsonBuildConfigurations: JsonBuildConfigurations | undefined
   }) {
-    log.trace(`${this.constructor.name}()`)
+    log.trace(`${XpmLiquidBuildConfigurations.name}()`)
 
     this.log = log
     this.engine = engine
@@ -90,7 +90,7 @@ export class XpmLiquidBuildConfigurations {
     }
 
     this.log.trace(
-      `${this.constructor.name}.initialise() =>`,
+      `${XpmLiquidBuildConfigurations.name}.initialise() =>`,
       Array.from(this.#map.keys())
     )
 
@@ -108,7 +108,7 @@ export class XpmLiquidBuildConfigurations {
     const buildConfigurationsNames = Array.from(this.#map.keys())
 
     this.log.trace(
-      `${this.constructor.name}.names() =>`,
+      `${XpmLiquidBuildConfigurations.name}.names() =>`,
       buildConfigurationsNames
     )
     return buildConfigurationsNames
@@ -182,7 +182,7 @@ export class XpmLiquidBuildConfiguration {
     parentBuildConfigurations: XpmLiquidBuildConfigurations
   ) {
     parentBuildConfigurations.log.trace(
-      `${this.constructor.name}(${buildConfigurationName})`
+      `${XpmLiquidBuildConfiguration.name}(${buildConfigurationName})`
     )
 
     this.#buildConfigurationName = buildConfigurationName
@@ -302,7 +302,7 @@ export class XpmLiquidBuildConfiguration {
     // await this.#actions.initialise()
 
     log.trace(
-      `${this.constructor.name}.initialise() =>`,
+      `${XpmLiquidBuildConfiguration.name}.initialise() =>`,
       this.#buildConfigurationName
     )
     log.trace('properties => ', this.properties)

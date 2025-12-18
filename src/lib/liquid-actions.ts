@@ -55,7 +55,7 @@ export class XpmLiquidActions {
     substitutionsVariables: XpmLiquidSubstitutionsVariables
     jsonActions: JsonActions | undefined
   }) {
-    log.trace(`${this.constructor.name}()`)
+    log.trace(`${XpmLiquidActions.name}()`)
 
     this.log = log
     this.engine = engine
@@ -80,7 +80,7 @@ export class XpmLiquidActions {
     }
 
     this.log.trace(
-      `${this.constructor.name}.initialise() =>`,
+      `${XpmLiquidActions.name}.initialise() =>`,
       Array.from(this.#map.keys())
     )
 
@@ -97,7 +97,7 @@ export class XpmLiquidActions {
   names(): string[] {
     const actionNames = Array.from(this.#map.keys())
 
-    this.log.trace(`${this.constructor.name}.names() =>`, actionNames)
+    this.log.trace(`${XpmLiquidActions.name}.names() =>`, actionNames)
     return actionNames
   }
 
@@ -140,7 +140,7 @@ export class XpmLiquidAction {
     actionName: string
     parentActions: XpmLiquidActions
   }) {
-    parentActions.log.trace(`${this.constructor.name}(${actionName})`)
+    parentActions.log.trace(`${XpmLiquidAction.name}(${actionName})`)
 
     this.#actionName = actionName
     this.#parentActions = parentActions
@@ -168,7 +168,7 @@ export class XpmLiquidAction {
     }
 
     this.#parentActions.log.trace(
-      `${this.constructor.name}.commands() =>`,
+      `${XpmLiquidAction.name}.commands() =>`,
       this.#commands
     )
     return this.#commands

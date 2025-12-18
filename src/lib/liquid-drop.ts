@@ -46,7 +46,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
   }) {
     super()
 
-    log.trace(`${this.constructor.name}()`)
+    log.trace(`${XpmLiquidPropertiesDrop.name}()`)
 
     this.#log = log
     this.#engine = engine
@@ -69,7 +69,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
 
     const value = this.#properties[key] ?? ''
     log.trace(
-      `${this.constructor.name}.liquidMethodMissing('${key}') value = |`,
+      `${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}') value = |`,
       value,
       '|'
     )
@@ -86,7 +86,8 @@ export class XpmLiquidPropertiesDrop extends Drop {
       result = value
     }
     log.trace(
-      `${this.constructor.name}.liquidMethodMissing('${key}') result = |`,
+      `${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}') ` +
+        `result = |`,
       result,
       '|'
     )
