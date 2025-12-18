@@ -17,7 +17,7 @@ import assert from 'assert'
 
 import { Logger } from '@xpack/logger'
 import { Context } from 'liquidjs'
-import { XpmLiquidEngine } from './engine.js'
+import { XpmLiquidEngine } from './liquid-engine.js'
 import { XpmLiquidPropertiesDrop } from './liquid-drop.js'
 import { XpmLiquidSubstitutionsVariables } from './substitutions-variables.js'
 

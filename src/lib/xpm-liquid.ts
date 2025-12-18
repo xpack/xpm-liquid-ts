@@ -38,7 +38,7 @@ import {
   XpmLiquidSubstitutionsVariables,
   XpmLiquidSubstitutionsStrings,
 } from './substitutions-variables.js'
-import { XpmLiquidEngine } from './engine.js'
+import { XpmLiquidEngine } from './liquid-engine.js'
 
 // ----------------------------------------------------------------------------
 // Types.

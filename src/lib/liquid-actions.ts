@@ -17,12 +17,12 @@
 import os from 'os'
 
 import { Logger } from '@xpack/logger'
-import { XpmLiquidEngine } from './engine.js'
+import { XpmLiquidEngine } from './liquid-engine.js'
 import {
   XpmLiquidSubstitutionsVariables,
   XpmLiquidSubstitutionsStrings,
 } from './substitutions-variables.js'
-import { JsonActions } from './package.js'
+import { JsonActions } from './liquid-package.js'
 import { performSubstitutions } from './perform-substitutions.js'
 
 // ----------------------------------------------------------------------------

@@ -17,7 +17,7 @@ import assert from 'assert'
 import path from 'path'
 
 import { Logger } from '@xpack/logger'
-import { XpmLiquidEngine } from './engine.js'
+import { XpmLiquidEngine } from './liquid-engine.js'
 import {
   XpmLiquidSubstitutionsVariables,
   XpmLiquidSubstitutionsStrings,
@@ -27,9 +27,9 @@ import {
   JsonBuildConfiguration,
   JsonBuildConfigurations,
   JsonDependencies,
-} from './package.js'
+} from './liquid-package.js'
 import { performSubstitutions } from './perform-substitutions.js'
-import { XpmLiquidActions } from './actions.js'
+import { XpmLiquidActions } from './liquid-actions.js'
 import { isString } from './utils.js'
 import { filterPath } from './xpm-liquid.js'
 

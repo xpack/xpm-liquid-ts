@@ -21,10 +21,10 @@ import {
   XpmLiquidSubstitutionsVariables,
 } from './substitutions-variables.js'
 import { Logger } from '@xpack/logger'
-import { XpmLiquidEngine } from './engine.js'
+import { XpmLiquidEngine } from './liquid-engine.js'
 import { Liquid } from 'liquidjs'
-import { XpmLiquidActions } from './actions.js'
-import { XpmLiquidBuildConfigurations } from './build-configurations.js'
+import { XpmLiquidActions } from './liquid-actions.js'
+import { XpmLiquidBuildConfigurations } from './liquid-build-configurations.js'
 
 // ----------------------------------------------------------------------------
 
