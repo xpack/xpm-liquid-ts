@@ -298,7 +298,8 @@ export class XpmLiquidBuildConfiguration {
       substitutionsVariables: this.substitutionsVariables,
       jsonActions: this.#jsonBuildConfiguration.actions,
     })
-    await this.#actions.initialise()
+    // Note: this must be done manually by the application.
+    // await this.#actions.initialise()
 
     log.trace(
       `${this.constructor.name}.initialise() =>`,
