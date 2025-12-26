@@ -28,58 +28,6 @@ import { XpmLiquidBuildConfigurations } from './liquid-build-configurations.js'
 
 // ----------------------------------------------------------------------------
 
-export type JsonActionValue = string | string[]
-
-export type JsonPropertyValue = string
-
-export type JsonProperties = Record<string, JsonPropertyValue>
-
-export type JsonBuildConfigurationInherits = string[]
-
-export type JsonActions = Record<string, JsonActionValue>
-
-export type JsonScripts = Record<string, string>
-
-export type JsonDependencies = Record<string, string | JsonDependencyExtended>
-
-export type JsonDependencyExtended = Record<string, string>
-
-export interface JsonBuildConfiguration {
-  inherits?: JsonBuildConfigurationInherits | string
-  inherit?: JsonBuildConfigurationInherits | string // Deprecated
-  hidden?: boolean
-  properties?: JsonProperties
-  actions?: JsonActions
-  dependencies?: JsonDependencies
-  devDependencies?: JsonDependencies
-}
-
-export type JsonBuildConfigurations = Record<string, JsonBuildConfiguration>
-
-export interface JsonXpack {
-  properties?: JsonProperties
-  actions?: JsonActions
-  dependencies?: JsonDependencies
-  devDependencies?: JsonDependencies
-  buildConfigurations?: JsonBuildConfigurations
-}
-
-export interface JsonNpmPackage {
-  name?: string
-  version?: string
-  scripts?: JsonScripts
-  dependencies?: JsonDependencies
-  devDependencies?: JsonDependencies
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any // Allow any additional property
-}
-
-export interface JsonXpmPackage extends JsonNpmPackage {
-  xpack: JsonXpack
-}
-
-export type XpmLiquidActionCommands = string[] // Always array of strings.
-
 export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath'
 
 // ----------------------------------------------------------------------------
