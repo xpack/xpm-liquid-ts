@@ -39,4 +39,50 @@ export function isString(value: unknown): value is string {
   return typeof value === 'string'
 }
 
+/**
+ * Replace non alphanumeric chars with dashes to make the paths
+ * comply with filesystem names.
+ *
+ * @param {string} input A path candidate.
+ * @returns {string} A validated path.
+ */
+export function filterPath(input: string): string {
+  /* c8 ignore start */ /* istanbul ignore next */
+  const fixed =
+    os.platform() === 'win32'
+      ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
+      : input.replace(/[^a-zA-Z0-9/]+/g, '-')
+  /* c8 ignore stop */
+
+  return fixed.replace(/--/g, '-')
+}
+
+/**
+ * Replace non alphanumeric chars with dashes to make the paths
+ * comply with Posix filesystem names.
+ *
+ * @param {string} input A path candidate.
+ * @returns {string} A validated path.
+ */
+export function filterPosixPath(input: string): string {
+  /* istanbul ignore next */
+  const fixed = input.replace(/[^a-zA-Z0-9/]+/g, '-')
+
+  return fixed.replace(/--/g, '-')
+}
+
+/**
+ * Replace non alphanumeric chars with dashes to make the paths
+ * comply with Windows filesystem names.
+ *
+ * @param {string} input A path candidate.
+ * @returns {string} A validated path.
+ */
+export function filterWin32Path(input: string): string {
+  /* istanbul ignore next */
+  const fixed = input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
+
+  return fixed.replace(/--/g, '-')
+}
+
 // ----------------------------------------------------------------------------
