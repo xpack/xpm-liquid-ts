@@ -1,7 +1,7 @@
 {
-  "name": "@xpack/xpm-liquid",
-  "version": "2.2.1",
-  "description": "A Node.js CommonJS/ES6 module with the Liquid substitutions code used by xpm &amp; relatives",
+  "name": "@xpack/xpm-utils",
+  "version": "3.0.0-pre",
+  "description": "A Node.js ES6 module with the xpm library utilities",
   "type": "module",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -52,7 +52,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/xpack/xpm-liquid-ts.git"
+    "url": "https://github.com/xpack/xpm-lib-ts.git"
   },
   "keywords": [
     "xpm",
@@ -66,9 +66,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/xpack/xpm-liquid-ts/issues"
+    "url": "https://github.com/xpack/xpm-lib-ts/issues"
   },
-  "homepage": "https://xpack.github.io/xpm-liquid-ts/",
+  "homepage": "https://xpack.github.io/xpm-lib-ts/",
   "dependencies": {
     "@npmcli/arborist": "^9.1.9",
     "@xpack/logger": "^6.0.0",

@@ -1,10 +1,10 @@
-[![GitHub package.json version](https://img.shields.io/github/package-json/v/xpack/xpm-liquid-ts)](https://github.com/xpack/xpm-liquid-ts/blob/mater/package.json)
-[![npm (scoped)](https://img.shields.io/npm/v/@xpack/xpm-liquid.svg)](https://www.npmjs.com/package/@xpack/xpm-liquid/)
-[![license](https://img.shields.io/github/license/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/blob/xpack/LICENSE)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/xpack/xpm-lib-ts)](https://github.com/xpack/xpm-lib-ts/blob/mater/package.json)
+[![npm (scoped)](https://img.shields.io/npm/v/@xpack/xpm-lib.svg)](https://www.npmjs.com/package/@xpack/xpm-lib/)
+[![license](https://img.shields.io/github/license/xpack/xpm-lib-ts.svg)](https://github.com/xpack/xpm-lib-ts/blob/xpack/LICENSE)
 [![TS-Standard - TypeScript Standard Style Guide](https://badgen.net/badge/code%20style/ts-standard/blue?icon=typescript)](https://github.com/standard/ts-standard/)
-[![CI on Push](https://github.com/xpack/xpm-liquid-ts/actions/workflows/nodejs.yml/badge.svg)](https://github.com/xpack/xpm-liquid-ts/actions/workflows/nodejs.yml)
-[![GitHub issues](https://img.shields.io/github/issues/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/issues)
-[![GitHub pulls](https://img.shields.io/github/issues-pr/xpack/xpm-liquid-ts.svg)](https://github.com/xpack/xpm-liquid-ts/pulls/)
+[![CI on Push](https://github.com/xpack/xpm-lib-ts/actions/workflows/nodejs.yml/badge.svg)](https://github.com/xpack/xpm-lib-ts/actions/workflows/nodejs.yml)
+[![GitHub issues](https://img.shields.io/github/issues/xpack/xpm-lib-ts.svg)](https://github.com/xpack/xpm-lib-ts/issues)
+[![GitHub pulls](https://img.shields.io/github/issues-pr/xpack/xpm-lib-ts.svg)](https://github.com/xpack/xpm-lib-ts/pulls/)
 
 # Maintainer & developer info
 
@@ -12,7 +12,7 @@
 
 The project is hosted on GitHub:
 
-- <https://github.com/xpack/xpm-liquid-ts.git>
+- <https://github.com/xpack/xpm-lib-ts.git>
 
 The project uses two branches:
 
@@ -24,14 +24,14 @@ To clone the `master` branch, use:
 ```sh
 mkdir ${HOME}/Work/npm-packages && cd ${HOME}/Work/npm-packages
 git clone \
-https://github.com/xpack/xpm-liquid-ts.git xpm-liquid-ts.git
+https://github.com/xpack/xpm-lib-ts.git xpm-lib-ts.git
 ```
 
 For development, to clone the `development` branch, use:
 
 ```sh
 git clone --branch development \
-https://github.com/xpack/xpm-liquid-ts.git xpm-liquid-ts.git
+https://github.com/xpack/xpm-lib-ts.git xpm-lib-ts.git
 ```
 
 ## Prerequisites
@@ -57,14 +57,14 @@ npm install
 ## Add links for development
 
 ```sh
-cd xpm-liquid-ts.git
+cd xpm-lib-ts.git
 npm link
 ```
 
 And in the projects referring it:
 
 ```sh
-npm link @xpack/xpm-liquid
+npm link @xpack/xpm-lib
 ```
 
 ## Start the compile background task
@@ -121,7 +121,7 @@ To manually fix compliance with the style guide (where possible):
 ```console
 % npm run fix
 
-> @xpack/xpm-liquid@2.2.1 fix
+> @xpack/xpm-lib@2.2.1 fix
 > ts-standard --fix src && standard --fix test
 ...
 ```
@@ -144,7 +144,7 @@ As for any `npm` package, the standard way to run the project tests is via
 `npm run test`:
 
 ```sh
-cd xpm-liquid-ts.git
+cd xpm-lib-ts.git
 npm install
 npm run test
 ```
@@ -154,13 +154,13 @@ A typical test result looks like:
 ```console
 % npm run test-100-c8
 
-> @xpack/xpm-liquid@2.2.1 pretest-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-liquid-ts.git
+> @xpack/xpm-lib@2.2.1 pretest-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
 > npm run lint
 
-> @xpack/xpm-liquid@2.2.1 lint /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-liquid-ts.git
+> @xpack/xpm-lib@2.2.1 lint /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
 > ts-standard src && standard esm
 
-> @xpack/xpm-liquid@2.2.1 test-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-liquid-ts.git
+> @xpack/xpm-lib@2.2.1 test-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
 > npm run test-tap-coverage-100-c8 -s
 
 (node:32915) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
@@ -184,7 +184,7 @@ All files       |     100 |      100 |     100 |     100 |
  src            |     100 |      100 |     100 |     100 |
   index.ts      |     100 |      100 |     100 |     100 |
  src/lib        |     100 |      100 |     100 |     100 |
-  xpm-liquid.ts |     100 |      100 |     100 |     100 |
+  xpm-lib.ts |     100 |      100 |     100 |     100 |
 ----------------|---------|----------|---------|---------|-------------------
 ```
 
@@ -193,7 +193,7 @@ To run a specific test with more verbose output, use `npm run tap`:
 ```console
 % npm run tap tests/tap/010-functions.ts
 
-> @xpack/xpm-liquid@2.2.1 tap /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-liquid-ts.git
+> @xpack/xpm-lib@2.2.1 tap /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
 > tap --reporter=spec "tests/tap/010-functions.ts"
 
 (node:32977) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
@@ -233,7 +233,7 @@ and `/* c8 ignore start */` `/* c8 ignore stop */` for
 ### Continuous Integration (CI)
 
 The continuous integration tests are performed via GitHub
-[Actions](https://github.com/xpack/xpm-liquid-ts/actions) on Ubuntu,
+[Actions](https://github.com/xpack/xpm-lib-ts/actions) on Ubuntu,
 Windows and macOS, using node 16, 18.
 
 ## Tricks & tips
@@ -252,7 +252,7 @@ There are no fixed releases.
 
 ### Check Git
 
-In the `xpack/xpm-liquid-ts` Git repo:
+In the `xpack/xpm-lib-ts` Git repo:
 
 - switch to the `development` branch
 - if needed, merge the `master` branch
@@ -291,7 +291,7 @@ and eventually update the
 
 Check GitHub issues and pull requests:
 
-- <https://github.com/xpack/xpm-liquid-ts/issues/>
+- <https://github.com/xpack/xpm-lib-ts/issues/>
 
 ### Update `README-MAINTAINER.md`
 
@@ -323,21 +323,21 @@ related to the new version.
 - the `postversion` npm script should also update tags via
   `git push origin --tags`; this should trigger CI
 - **wait for CI tests to complete**
-- check <https://github.com/xpack/xpm-liquid-ts/actions/>
+- check <https://github.com/xpack/xpm-lib-ts/actions/>
 
 ## Publish to npmjs.com
 
 - `npm publish --tag next` (use `--access public` when publishing for the first time)
 
 Check if the version is present at
-[@xpack/xpm-liquid Versions](https://www.npmjs.com/package/@xpack/xpm-liquid?activeTab=versions).
+[@xpack/xpm-lib Versions](https://www.npmjs.com/package/@xpack/xpm-lib?activeTab=versions).
 
 ### Test
 
 Test it with:
 
 ```bash
-npm install -global @xpack/xpm-liquid@next
+npm install -global @xpack/xpm-lib@next
 ```
 
 ### Merge into `master`
@@ -350,7 +350,7 @@ In this Git repo:
 
 ### Close milestone
 
-In <https://github.com/xpack/xpm-liquid-ts/milestones>:
+In <https://github.com/xpack/xpm-lib-ts/milestones>:
 
 - close the current milestone.
 
@@ -358,19 +358,19 @@ In <https://github.com/xpack/xpm-liquid-ts/milestones>:
 
 The documentation site is built with [TypeDoc](https://typedoc.org/) and
 published in the project GitHub
-[Pages](https://xpack.github.io/xpm-liquid-ts/).
+[Pages](https://xpack.github.io/xpm-lib-ts/).
 
 The Web site deployment is performed automatically when pushing to the
 master branch, by a dedicated workflow in GitHub
-[Actions](https://github.com/xpack/xpm-liquid-ts/actions/workflows/typedoc.yml).
+[Actions](https://github.com/xpack/xpm-lib-ts/actions/workflows/typedoc.yml).
 
 ### Tag the npm package as `latest`
 
 When the release is considered stable, promote it as `latest`:
 
-- `npm dist-tag ls @xpack/xpm-liquid`
-- `npm dist-tag add @xpack/xpm-liquid@2.2.1 latest`
-- `npm dist-tag ls @xpack/xpm-liquid`
+- `npm dist-tag ls @xpack/xpm-lib`
+- `npm dist-tag add @xpack/xpm-lib@2.2.1 latest`
+- `npm dist-tag ls @xpack/xpm-lib`
 
 ## Useful links
 

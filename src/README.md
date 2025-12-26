@@ -3,12 +3,8 @@
 This folder includes the main TypeScript source files, that provide
 the project functionality.
 
-They are compiled by `tsc` into the `cjs` folder as CommonJS code.
+They are compiled by `tsc` into the top `dist` folder as ES6 code.
 
 ## CommonJS backward compatibility
 
-Please note that the `package.json` defines the folder to
-be an ES6 module, like the rest of the project, so all tests run
-as ES6 modules, but the `tsconfig.json` defines
-`"module": "commonjs"`, so the compiled files in the `cjs` folder
-will be in CommonJS format.
+Started with version 3.x,  compatibility with CommonJS was removed.
