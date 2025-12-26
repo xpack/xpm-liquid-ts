@@ -23,6 +23,4 @@ export * from './lib/liquid-build-configurations.js'
 export * from './lib/perform-substitutions.js'
 export * from './lib/package.js'
 
-// export * from './lib/xpm-liquid.js'
-
 // ----------------------------------------------------------------------------
