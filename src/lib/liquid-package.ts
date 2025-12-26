@@ -25,11 +25,10 @@ import {
   xpmLiquidSubstitutionsVariablesBase,
   XpmLiquidSubstitutionsVariables,
 } from './substitutions-variables.js'
-import { Logger } from '@xpack/logger'
 import { XpmLiquidEngine } from './liquid-engine.js'
-import { Liquid } from 'liquidjs'
 import { XpmLiquidActions } from './liquid-actions.js'
 import { XpmLiquidBuildConfigurations } from './liquid-build-configurations.js'
+import { JsonXpmPackage } from './types.js'
 
 // ----------------------------------------------------------------------------
 
@@ -43,7 +42,7 @@ export class XpmLiquidPackage {
 
   readonly #log: Logger
   readonly #engine: Liquid
-  readonly #packageJson: JsonXpmPackage
+  readonly #jsonPackage: JsonXpmPackage
 
   readonly topLiquidSubstitutionsVariables: XpmLiquidSubstitutionsVariables
 
@@ -55,27 +54,33 @@ export class XpmLiquidPackage {
 
   constructor({
     log,
-    packageJson,
+    jsonPackage,
   }: {
     log: Logger
-    packageJson: JsonXpmPackage
+    jsonPackage: JsonXpmPackage
   }) {
     log.trace(`${XpmLiquidPackage.name}()`)
 
     this.#log = log
     this.#engine = new XpmLiquidEngine()
 
-    assert(isJsonObject(packageJson.xpack))
-    this.#packageJson = packageJson
+    assert(isJsonObject(jsonPackage.xpack))
+    this.#jsonPackage = jsonPackage
+
+    // os.version() available since 12.x
+    assert(
+      typeof os.version === 'function',
+      'Mandatory os.version available only since 12.x'
+    )
 
     this.topLiquidSubstitutionsVariables = {
       ...xpmLiquidSubstitutionsVariablesBase,
-      package: packageJson,
+      package: jsonPackage,
     }
 
-    if (isJsonObject(packageJson.xpack.properties)) {
+    if (isJsonObject(jsonPackage.xpack.properties)) {
       this.topLiquidSubstitutionsVariables.properties = {
-        ...packageJson.xpack.properties,
+        ...jsonPackage.xpack.properties,
       }
     }
 
@@ -87,7 +92,7 @@ export class XpmLiquidPackage {
       log: this.#log,
       engine: this.#engine,
       substitutionsVariables: this.topLiquidSubstitutionsVariables,
-      jsonActions: this.#packageJson.xpack.actions,
+      jsonActions: this.#jsonPackage.xpack.actions,
     })
 
     // Empty build configurations.
@@ -95,7 +100,7 @@ export class XpmLiquidPackage {
       log: this.#log,
       engine: this.#engine,
       substitutionsVariables: this.topLiquidSubstitutionsVariables,
-      jsonBuildConfigurations: this.#packageJson.xpack.buildConfigurations,
+      jsonBuildConfigurations: this.#jsonPackage.xpack.buildConfigurations,
     })
   }
 }
