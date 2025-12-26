@@ -13,8 +13,8 @@
 
 // ----------------------------------------------------------------------------
 
-import assert from 'assert'
-import path from 'path'
+import assert from 'node:assert'
+import path from 'node:path'
 
 import { Logger } from '@xpack/logger'
 import { XpmLiquidEngine } from './liquid-engine.js'

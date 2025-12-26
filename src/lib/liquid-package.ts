@@ -13,7 +13,12 @@
 
 // ----------------------------------------------------------------------------
 
-import assert from 'assert'
+import assert from 'node:assert'
+import * as os from 'node:os'
+
+import { Liquid } from 'liquidjs'
+
+import { Logger } from '@xpack/logger'
 
 import { isJsonObject } from './utils.js'
 import {

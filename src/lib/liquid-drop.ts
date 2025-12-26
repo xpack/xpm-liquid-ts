@@ -18,6 +18,7 @@ import { Liquid, Context, Drop } from 'liquidjs'
 
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
+
 import { XpmLiquidSubstitutionsStrings } from './substitutions-variables.js'
 
 // ----------------------------------------------------------------------------

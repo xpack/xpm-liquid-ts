@@ -14,15 +14,16 @@
 // ----------------------------------------------------------------------------
 
 // import assert from 'assert'
-import os from 'os'
+import os from 'node:os'
 
 import { Logger } from '@xpack/logger'
+
 import { XpmLiquidEngine } from './liquid-engine.js'
 import {
   XpmLiquidSubstitutionsVariables,
   XpmLiquidSubstitutionsStrings,
 } from './substitutions-variables.js'
-import { JsonActions } from './liquid-package.js'
+import { JsonActions } from './types.js'
 import { performSubstitutions } from './perform-substitutions.js'
 
 // ----------------------------------------------------------------------------

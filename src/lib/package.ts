@@ -13,10 +13,12 @@
 
 // ----------------------------------------------------------------------------
 
-// import assert from 'node:assert'
-import * as fs from 'fs/promises'
+import assert from 'node:assert'
+import * as fs from 'node:fs/promises'
+import * as os from 'node:os'
 import * as path from 'node:path'
-
+import util from 'node:util'
+import stream from 'node:stream'
 import { Logger } from '@xpack/logger'
 
 // import * as utils from './utils.js'

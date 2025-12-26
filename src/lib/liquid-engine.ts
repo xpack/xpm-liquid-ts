@@ -13,9 +13,9 @@
 
 // ----------------------------------------------------------------------------
 
-import * as os from 'os'
-import * as path from 'path'
-import * as util from 'util'
+import * as os from 'node:os'
+import * as path from 'node:path'
+import * as util from 'node:util'
 
 // https://www.npmjs.com/package/liquidjs
 import { Liquid } from 'liquidjs'
@@ -130,8 +130,6 @@ export class XpmLiquidEngine extends Liquid {
       }
     )
   }
-
-  // --------------------------------------------------------------------------
 }
 
 // ----------------------------------------------------------------------------
