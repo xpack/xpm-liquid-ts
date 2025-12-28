@@ -1,5 +1,5 @@
 {
-  "name": "@xpack/xpm-utils",
+  "name": "@xpack/xpm-lib",
   "version": "3.0.0-pre",
   "description": "A Node.js ES6 module with the xpm library utilities",
   "type": "module",
