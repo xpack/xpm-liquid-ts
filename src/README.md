@@ -7,4 +7,4 @@ They are compiled by `tsc` into the top `dist` folder as ES6 code.
 
 ## CommonJS backward compatibility
 
-Started with version 3.x,  compatibility with CommonJS was removed.
+Starting with version 3.x, compatibility with CommonJS was removed.
