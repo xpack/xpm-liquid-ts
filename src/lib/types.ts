@@ -43,7 +43,7 @@ export type JsonBuildConfigurations = Record<string, JsonBuildConfiguration>
 
 export interface JsonXpack {
   minimumXpmRequired?: string
-  binaries: JsonXpmBinaries
+  binaries?: JsonXpmBinaries
   executables?: Record<string, string>
   bin?: Record<string, string> // Deprecated
   properties?: JsonProperties
