@@ -868,7 +868,7 @@ export class XpmPackage {
       const pipelinePromise = util.promisify(stream.pipeline)
 
       log.trace(`create write stream for ${key}`)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
       const cacacheWriteStream = cacache.put.stream(cacheFolderPath, key, opts)
       log.trace(`create pipeline for ${key}`)
       try {
