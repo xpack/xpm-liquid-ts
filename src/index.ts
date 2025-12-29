@@ -28,4 +28,6 @@ export * from './lib/substitutions-variables.js'
 export * from './lib/types.js'
 export * from './lib/utils.js'
 
+export * from 'liquidjs'
+
 // ----------------------------------------------------------------------------
