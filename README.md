@@ -35,7 +35,7 @@ it can be added as a dependency to any TypeScript or JavaScript
 project with `npm install`:
 
 ```console
-npm install --save @xpack/xpm-lib-ts@latest
+npm install --save @xpack/xpm-libs@latest
 ```
 
 The module does not provide any executables, and generally there are no
