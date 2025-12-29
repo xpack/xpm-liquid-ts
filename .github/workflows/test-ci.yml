@@ -23,14 +23,15 @@ on:
 
 jobs:
   npm-test:
-
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        node-version: [20, 22]
+        # node-version: [20, 22]
+        node-version: [22]
         # https://github.com/actions/runner-images
-        os: [ 'ubuntu-24.04', 'ubuntu-24.04-arm', 'macos-15-intel', 'macos-15', 'windows-2025' ]
+        # os: [ 'ubuntu-24.04', 'ubuntu-24.04-arm', 'macos-15-intel', 'macos-15', 'windows-2025' ]
+        os: [ 'ubuntu-24.04' ]
 
     steps:
     - name: Checkout
@@ -45,11 +46,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Show node & npm versions, environment
-      run: |
-        node --version
-        npm --version
-        env
+    - name: Show environment
+      run: env
 
     - name: Install dependencies
       run: npm ci

@@ -39,7 +39,7 @@
     "test-ci": "npm run test-tap-run",
     "tap": "tap --reporter=spec",
     "tap-c8": "c8 tap --reporter=spec",
-    "test-tap-run": "tap run",
+    "test-tap-run": "tap config list && tap run",
     "test-tap": "tap",
     "test-tap-coverage": "tap --coverage",
     "test-tap-coverage-c8": "c8 -- tap",
