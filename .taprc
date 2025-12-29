@@ -1,0 +1,7 @@
+files:
+  - tests/tap/*.ts
+
+coverage-report:
+  - text
+
+reporter: base
