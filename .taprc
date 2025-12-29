@@ -5,3 +5,18 @@ coverage-report:
   - text
 
 reporter: base
+browser: true
+color: true
+
+branches: 100
+functions: 100
+lines: 100
+statements: 100
+
+# jobs: 3
+timeout: 30
+
+snapshot-clean-cwd: true
+
+allow-empty-coverage: true
+allow-incomplete-coverage: true
