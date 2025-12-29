@@ -35,14 +35,16 @@
     "pretest": "npm run lint",
     "pretest-100": "npm run lint",
     "pretest-100-c8": "npm run lint",
+    "test": "npm run test-tap-run",
+    "test-ci": "npm run test-tap-run",
     "tap": "tap --reporter=spec",
     "tap-c8": "c8 tap --reporter=spec",
+    "test-tap-run": "tap run",
     "test-tap": "tap",
     "test-tap-coverage": "tap --coverage",
     "test-tap-coverage-c8": "c8 -- tap",
     "test-tap-coverage-100": "tap --coverage --100",
     "test-tap-coverage-100-c8": "c8 --100 -- tap",
-    "test": "npm run test-tap -s",
     "test-100": "npm run test-tap-coverage-100 -s",
     "test-100-c8": "npm run test-tap-coverage-100-c8 -s",
     "dev-cycle": "npm run fix && npm run compile && npm run test-100-c8",
@@ -86,34 +88,25 @@
     "@eslint/js": "^9.31.0",
     "@tsconfig/node20": "^20.1.6",
     "@types/decompress": "^4.2.7",
-    "@types/node": "^24.0.14",
+    "@types/node": "^25.0.3",
     "@types/npmcli__arborist": "^6.3.1",
     "@types/pacote": "^11.1.8",
     "@types/proxy-from-env": "^1.0.4",
     "@types/semver": "^7.7.1",
     "@types/tap": "^15.0.11",
-    "c8": "^9.1.0",
     "del-cli": "^7.0.0",
     "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.7.4",
-    "tap": "^16.3.4",
+    "tap": "^21.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0"
   },
   "tap": {
-    "check-coverage": false,
-    "coverage": false,
     "files": [
       "tests/tap/*.ts"
-    ],
-    "node-arg": [
-      "--loader=ts-node/esm"
-    ],
-    "reporter": "classic",
-    "timeout": 30,
-    "ts": true
+    ]
   },
   "prettier": {
     "printWidth": 80,
