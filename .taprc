@@ -1,3 +1,5 @@
+# https://node-tap.org/cli/#configuration
+
 files:
   - tests/tap/*.ts
 
