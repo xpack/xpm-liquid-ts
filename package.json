@@ -36,7 +36,7 @@
     "pretest-100": "npm run lint",
     "pretest-100-c8": "npm run lint",
     "test": "npm run test-tap-run",
-    "test-ci": "npm run test-tap-config-list && npm run test-tap-run",
+    "test-ci": "npm run test-tap-run",
     "tap": "tap --reporter=spec",
     "tap-c8": "c8 tap --reporter=spec",
     "test-tap-run": "tap run",

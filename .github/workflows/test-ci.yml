@@ -52,6 +52,9 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Show tap configuration
+      run: npm run test-tap-config-list
+
     - name: Run test
       run: npm run test-ci
       env:
