@@ -401,7 +401,7 @@ export class XpmPackage {
 
   async pacoteExtractPackage({
     packFullName,
-    manifestFrom,
+    specifier,
     destinationFolderPath,
     cacheFolderPath,
     setReadOnly,
@@ -410,7 +410,7 @@ export class XpmPackage {
     policies,
   }: {
     packFullName: string
-    manifestFrom: string
+    specifier: string
     destinationFolderPath: string
     cacheFolderPath: string
     setReadOnly: boolean
@@ -419,7 +419,7 @@ export class XpmPackage {
     policies: XpmPolicies
   }): Promise<void> {
     assert(packFullName)
-    assert(manifestFrom)
+    assert(specifier)
     assert(destinationFolderPath)
     assert(cacheFolderPath)
     assert(verboseMessage)
@@ -427,7 +427,7 @@ export class XpmPackage {
     assert(policies)
 
     const log = this.log
-    log.trace(`${XpmPackage.name}.pacoteExtractContent('${manifestFrom}')`)
+    log.trace(`${XpmPackage.name}.pacoteExtractContent('${specifier}')`)
 
     const destinationPackage = new XpmPackage({
       log,
@@ -473,15 +473,24 @@ export class XpmPackage {
     log.trace(`del(${destinationTmpFolderPath})`)
     await deleteAsync(destinationTmpFolderPath, { force: true })
 
-    await this.pacoteExtract({
-      packFullName,
-      manifestFrom,
-      destinationFolderPath,
-      destinationTmpFolderPath,
-      cacheFolderPath,
-      verboseMessage,
-      config,
-    })
+    if (log.isVerbose && verboseMessage) {
+      log.verbose(verboseMessage)
+    }
+
+    if (config.isDryRun) {
+      if (!log.isVerbose) {
+        log.info(`${packFullName} => '${destinationFolderPath}' (dry run)`)
+      }
+    } else {
+      await this.pacoteExtract({
+        specifier: specifier,
+        destinationFolderPath: destinationTmpFolderPath,
+        cacheFolderPath,
+      })
+      if (!log.isVerbose) {
+        log.info(`${packFullName} => '${destinationFolderPath}'`)
+      }
+    }
 
     const json = await destinationPackage.readPackageDotJsonNoThrow()
     if (!json?.xpack) {
@@ -528,57 +537,32 @@ export class XpmPackage {
   }
 
   async pacoteExtract({
-    packFullName,
-    manifestFrom,
+    specifier,
     destinationFolderPath,
-    destinationTmpFolderPath,
     cacheFolderPath,
-    verboseMessage,
-    config,
   }: {
-    packFullName: string
-    manifestFrom: string
+    specifier: string
     destinationFolderPath: string
-    destinationTmpFolderPath: string
     cacheFolderPath: string
-    verboseMessage: string
-    config: XpmConfig
   }): Promise<void> {
-    assert(packFullName)
-    assert(manifestFrom)
+    assert(specifier)
     assert(destinationFolderPath)
-    assert(destinationTmpFolderPath)
     assert(cacheFolderPath)
-    assert(verboseMessage)
-    assert(config)
 
     const log = this.log
-    log.trace(`${XpmPackage.name}.pacoteExtract(${manifestFrom})`)
-
-    if (log.isVerbose && verboseMessage) {
-      log.verbose(verboseMessage)
-    }
+    log.trace(`${XpmPackage.name}.pacoteExtract(${specifier})`)
 
     try {
-      if (!config.isDryRun) {
-        log.trace(`pacote.extract(${manifestFrom})`)
-        const fetchResult = await pacote.extract(
-          manifestFrom,
-          destinationTmpFolderPath,
-          { cache: cacheFolderPath, Arborist }
-        )
-        log.trace(`fetchResult: ${util.inspect(fetchResult)}`)
-      }
-      if (!log.isVerbose) {
-        if (config.isDryRun) {
-          log.info(`${packFullName} => '${destinationFolderPath}' (dry run)`)
-        } else {
-          log.info(`${packFullName} => '${destinationFolderPath}'`)
-        }
-      }
+      log.trace(`pacote.extract(${specifier})`)
+      const fetchResult = await pacote.extract(
+        specifier,
+        destinationFolderPath,
+        { cache: cacheFolderPath, Arborist }
+      )
+      log.trace(`fetchResult: ${util.inspect(fetchResult)}`)
     } catch (err) {
       log.trace(util.inspect(err))
-      throw new XpmInputError(`Package ${packFullName} not found`)
+      throw new XpmInputError(`Package ${specifier} not found`)
     }
   }
 
