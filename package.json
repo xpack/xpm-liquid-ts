@@ -33,8 +33,6 @@
     "lint": "eslint src",
     "prepare": "npm run compile && npm run lint",
     "pretest": "npm run lint",
-    "pretest-100": "npm run lint",
-    "pretest-100-c8": "npm run lint",
     "test": "npm run test-tap-run",
     "test-ci": "npm run test-tap-run",
     "test-tap-run": "tap run",
