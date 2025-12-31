@@ -53,11 +53,13 @@ export interface JsonXpack {
   buildConfigurations?: JsonBuildConfigurations
 }
 
+export type JsonXpmBinariesPlatforms = Record<string, JsonXpmPlatformFile>
+
 export interface JsonXpmBinaries {
   destination: string
   baseUrl: string
   skip?: number
-  platforms: Record<string, JsonXpmPlatformFile>
+  platforms: JsonXpmBinariesPlatforms
 }
 
 export interface JsonXpmPlatformFile {
