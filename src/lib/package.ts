@@ -86,6 +86,8 @@ export class XpmPackage {
   constructor({ log, folderPath }: { log: Logger; folderPath: string }) {
     this.log = log
     this.folderPath = folderPath
+
+    log.trace(`${XpmPackage.name}(${folderPath})`)
   }
 
   // --------------------------------------------------------------------------
@@ -179,8 +181,43 @@ export class XpmPackage {
 
   isBinaryXpmPackage() {
     const json = this.jsonPackage
+    if (!this.isXpmPackage()) {
+      return false
+    }
     // Since Nov. 2024, `executables` is preferred to `bin`.
-    return this.isXpmPackage() && !!(json?.xpack.executables ?? json?.xpack.bin)
+    if (json?.xpack.executables ?? json?.xpack.bin) {
+      if (!json.xpack.binaries) {
+        throw new XpmInputError(
+          "doesn't look like a proper binary xpm package, " +
+            'package.json has no "xpack.binaries"'
+        )
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (!json.xpack.binaries.platforms) {
+        throw new XpmInputError(
+          "doesn't look like a proper binary xpm package, " +
+            'package.json has no "xpack.binaries.platforms"'
+        )
+      }
+      return true
+    }
+    if (json?.xpack.binaries) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (!json.xpack.binaries.platforms) {
+        throw new XpmInputError(
+          "doesn't look like a proper binary xpm package, " +
+            'package.json has no "xpack.binaries.platforms"'
+        )
+      }
+      if (!(json.xpack.executables ?? json.xpack.bin)) {
+        throw new XpmInputError(
+          "doesn't look like a proper binary xpm package, " +
+            'package.json has no "xpack.executables"'
+        )
+      }
+      return true
+    }
+    return false
   }
 
   isNodeModule() {
@@ -281,7 +318,6 @@ export class XpmPackage {
     const minimumXpmRequired: string = cleanedVersion
 
     log.trace(`minimumXpmRequired: ${minimumXpmRequired}`)
-    log.trace(`rootPath: ${xpmRootPath}`)
 
     let jsonXpmCliPackage: JsonXpmPackage
     try {
@@ -429,7 +465,7 @@ export class XpmPackage {
     const log = this.log
     log.trace(`${XpmPackage.name}.pacoteExtractContent('${specifier}')`)
 
-    const destinationPackage = new XpmPackage({
+    let destinationPackage = new XpmPackage({
       log,
       folderPath: destinationFolderPath,
     })
@@ -490,10 +526,14 @@ export class XpmPackage {
       if (!log.isVerbose) {
         log.info(`${packFullName} => '${destinationFolderPath}'`)
       }
+      destinationPackage = new XpmPackage({
+        log,
+        folderPath: destinationTmpFolderPath,
+      })
     }
 
-    const json = await destinationPackage.readPackageDotJsonNoThrow()
-    if (!json?.xpack) {
+    await destinationPackage.readPackageDotJsonNoThrow()
+    if (!destinationPackage.isXpmPackage()) {
       if (!policies.shareNpmDependencies) {
         log.trace(`del(${destinationTmpFolderPath})`)
         await deleteAsync(destinationTmpFolderPath, { force: true })
@@ -514,8 +554,8 @@ export class XpmPackage {
       }
     } else {
       await this.downloadBinaries({
-        packagePath: destinationFolderPath,
-        packageTmpPath: destinationTmpFolderPath,
+        destinationPackage,
+        destinationFolderPath,
         cacheFolderPath,
         config,
       })
@@ -566,53 +606,38 @@ export class XpmPackage {
     }
   }
 
-  async downloadBinaries({
-    packagePath,
-    packageTmpPath,
+  private async downloadBinaries({
+    destinationPackage,
+    destinationFolderPath,
     cacheFolderPath,
     config,
   }: {
-    packagePath: string
-    packageTmpPath: string
+    destinationPackage: XpmPackage
+    destinationFolderPath: string
     cacheFolderPath: string
     config: XpmConfig
   }): Promise<void> {
-    assert(packagePath)
-    assert(packageTmpPath)
+    assert(destinationPackage)
+    assert(destinationFolderPath)
     assert(cacheFolderPath)
     assert(config)
 
     const log = this.log
+    const packagePath = destinationPackage.folderPath
+    const jsonPackage = destinationPackage.jsonPackage
+    assert(jsonPackage)
 
-    log.trace(`${XpmPackage.name}.downloadBinaries(${packageTmpPath})`)
-    const tmpPackage = new XpmPackage({ log, folderPath: packageTmpPath })
-    const json = await tmpPackage.readPackageDotJsonNoThrow()
-    if (!tmpPackage.isXpmPackage()) {
+    log.trace(`${XpmPackage.name}.downloadBinaries(${packagePath})`)
+    if (!destinationPackage.isXpmPackage()) {
       log.debug(
         "doesn't look like an xpm package, " + 'package.json has no "xpack"'
       )
       return
     }
-    if (!tmpPackage.isBinaryXpmPackage()) {
+    if (!destinationPackage.isBinaryXpmPackage()) {
       log.debug(
         "doesn't look like an xpm package, " +
-          'package.json has no "xpack.executables"'
-      )
-      return
-    }
-
-    if (!json?.xpack.binaries) {
-      log.debug(
-        "doesn't look like a binary xpm package, " +
-          'package.json has no "xpack.binaries"'
-      )
-      return
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!json?.xpack.binaries.platforms) {
-      log.debug(
-        "doesn't look like a binary xpm package, " +
-          'package.json has no "xpack.binaries.platforms"'
+          'package.json has no "xpack.executables" and "xpack.binaries"'
       )
       return
     }
@@ -632,7 +657,8 @@ export class XpmPackage {
       platformKeyAliases.add(platformKey)
     }
 
-    const platforms = json.xpack.binaries.platforms
+    assert(jsonPackage.xpack.binaries)
+    const platforms = jsonPackage.xpack.binaries.platforms
 
     let platform
     for (const item of platformKeyAliases) {
@@ -645,7 +671,7 @@ export class XpmPackage {
       throw new XpmInputError(`platform ${platformKey} not supported`)
     }
 
-    if (!json.xpack.binaries.baseUrl) {
+    if (!jsonPackage.xpack.binaries.baseUrl) {
       throw new XpmInputError(
         'missing "xpack.binaries.baseUrl" in package.json'
       )
@@ -664,7 +690,7 @@ export class XpmPackage {
 
     // Prefer the platform specific URL, if available, otherwise
     // use the common URL.
-    let fileUrl = platform.baseUrl ?? json.xpack.binaries.baseUrl
+    let fileUrl = platform.baseUrl ?? jsonPackage.xpack.binaries.baseUrl
     if (!fileUrl.endsWith('/')) {
       fileUrl += '/'
     }
@@ -745,9 +771,9 @@ export class XpmPackage {
 
     // The number of initial folder levels to skip.
     let skip = 0
-    if (json.xpack.binaries.skip) {
+    if (jsonPackage.xpack.binaries.skip) {
       try {
-        skip = json.xpack.binaries.skip
+        skip = jsonPackage.xpack.binaries.skip
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         // Ignore invalid skip value, use default
@@ -756,15 +782,15 @@ export class XpmPackage {
     log.trace(`skip ${skip.toString()} levels`)
 
     const contentFolderRelativePath =
-      json.xpack.binaries.destination || '.content'
+      jsonPackage.xpack.binaries.destination || '.content'
     const contentFolderPath = path.join(packagePath, contentFolderRelativePath)
-    const contentFolderTmpPath = path.join(
-      packageTmpPath,
+    const destinationContentFolderPath = path.join(
+      destinationFolderPath,
       contentFolderRelativePath
     )
 
-    log.trace(`del ${contentFolderTmpPath}`)
-    await deleteAsync(contentFolderTmpPath, { force: true })
+    log.trace(`del ${contentFolderPath}`)
+    await deleteAsync(contentFolderPath, { force: true })
 
     const cacheInfoPath = cacheInfo.path
     log.trace(`cacheInfoPath ${cacheInfoPath}`)
@@ -773,7 +799,7 @@ export class XpmPackage {
     // decompressTargz(), decompressUnzip().
     log.info(`Extracting '${platform.fileName}'...`)
 
-    res = await decompress(cacheInfoPath, contentFolderTmpPath, {
+    res = await decompress(cacheInfoPath, contentFolderPath, {
       strip: skip,
     })
 
@@ -783,13 +809,15 @@ export class XpmPackage {
         /^\.\//,
         ''
       )
-      assert(json.version)
+      assert(jsonPackage.version)
       log.verbose(
         `${res.length.toString()} files extracted in ` +
-          `'${json.version}/${shownFolderRelativePath}'`
+          `'${jsonPackage.version}/${shownFolderRelativePath}'`
       )
     } else {
-      log.info(`${res.length.toString()} files => '${contentFolderPath}'`)
+      log.info(
+        `${res.length.toString()} files => '${destinationContentFolderPath}'`
+      )
     }
   }
 
