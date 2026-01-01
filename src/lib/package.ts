@@ -74,94 +74,94 @@ export class XpmPackage {
   // --------------------------------------------------------------------------
   // Members.
 
-  folderPath: string
+  packageFolderPath: string
   jsonPackage?: JsonXpmPackage
   //packageJsonOriginal?: JsonXpmPackage
 
-  readonly log: Logger
+  readonly #log: Logger
 
   // --------------------------------------------------------------------------
   // Constructor.
 
-  constructor({ log, folderPath }: { log: Logger; folderPath: string }) {
-    this.log = log
-    this.folderPath = folderPath
+  constructor({
+    log,
+    packageFolderPath,
+  }: {
+    log: Logger
+    packageFolderPath: string
+  }) {
+    this.#log = log
+    this.packageFolderPath = packageFolderPath
 
-    log.trace(`${XpmPackage.name}(${folderPath})`)
+    log.trace(`${XpmPackage.name}(${packageFolderPath})`)
   }
 
   // --------------------------------------------------------------------------
   // Methods.
 
-  async readPackageDotJsonThrow(): Promise<JsonXpmPackage> {
-    const jsonPath = path.join(this.folderPath, 'package.json')
+  async readPackageDotJson({
+    withThrow = false,
+  }: {
+    withThrow?: boolean
+  } = {}): Promise<JsonXpmPackage | undefined> {
+    const jsonFilePath = path.join(this.packageFolderPath, 'package.json')
 
     let fileContent: string | Buffer
     try {
-      fileContent = await fs.readFile(jsonPath)
+      fileContent = await fs.readFile(jsonFilePath)
     } catch (err) {
-      if (err instanceof Error) {
-        this.log.trace(err.message)
+      if (withThrow) {
+        if (err instanceof Error) {
+          this.#log.trace(err.message)
+        }
+        throw new XpmInputError(
+          `no package.json in folder ‘${this.packageFolderPath}’`
+        )
+      } else {
+        return undefined
       }
-      throw new XpmInputError(`no package.json in folder ‘${this.folderPath}’`)
     }
 
     try {
       this.jsonPackage = JSON.parse(fileContent.toString()) as JsonXpmPackage
     } catch (err) {
-      this.jsonPackage = undefined
-      if (err instanceof Error) {
-        this.log.trace(err.message)
+      if (withThrow) {
+        this.jsonPackage = undefined
+        if (err instanceof Error) {
+          this.#log.trace(err.message)
+        }
+        throw new XpmInputError(
+          `invalid package.json in folder ‘${this.packageFolderPath}’`
+        )
+      } else {
+        return undefined
       }
-      throw new XpmInputError(
-        `invalid package.json in folder ‘${this.folderPath}’`
-      )
-    }
-    return this.jsonPackage
-  }
-
-  async readPackageDotJsonNoThrow(): Promise<JsonXpmPackage | undefined> {
-    const jsonPath = path.join(this.folderPath, 'package.json')
-
-    let fileContent: string | Buffer
-    try {
-      fileContent = await fs.readFile(jsonPath)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      return undefined
-    }
-
-    try {
-      this.jsonPackage = JSON.parse(fileContent.toString()) as JsonXpmPackage
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      return undefined
     }
     return this.jsonPackage
   }
 
   // Note: the json is explicitly passed.
   async rewritePackageDotJson(jsonPackage: JsonXpmPackage): Promise<void> {
-    const log = this.log
+    const log = this.#log
 
     assert(jsonPackage)
     const jsonString = JSON.stringify(jsonPackage, null, 2) + '\n'
 
-    const filePath = path.join(this.folderPath, 'package.json')
-    log.trace(`write filePath: '${filePath}'`)
-    await fs.writeFile(filePath, jsonString)
+    const jsonFilePath = path.join(this.packageFolderPath, 'package.json')
+    log.trace(`write filePath: '${jsonFilePath}'`)
+    await fs.writeFile(jsonFilePath, jsonString)
   }
 
   isNpmPackage(): boolean {
-    const json = this.jsonPackage
-    if (json?.name === undefined || json.version === undefined) {
+    const jsonPackage = this.jsonPackage
+    if (jsonPackage?.name === undefined || jsonPackage.version === undefined) {
       return false
     }
-    const name = json.name.trim()
+    const name = jsonPackage.name.trim()
     if (name.length === 0) {
       return false
     }
-    const version = json.version.trim()
+    const version = jsonPackage.version.trim()
     if (version.length === 0) {
       return false
     }
@@ -169,31 +169,33 @@ export class XpmPackage {
   }
 
   isXpmPackage(): boolean {
-    const json = this.jsonPackage
+    const jsonPackage = this.jsonPackage
     if (!this.isNpmPackage()) {
       return false
     }
-    if (json?.xpack === undefined) {
+    if (jsonPackage?.xpack === undefined) {
       return false
     }
     return true
   }
 
+  // Binary packages must have both executables and binaries, but
+  // the presence of one implies the other, so validate.
   isBinaryXpmPackage() {
-    const json = this.jsonPackage
+    const jsonPackage = this.jsonPackage
     if (!this.isXpmPackage()) {
       return false
     }
     // Since Nov. 2024, `executables` is preferred to `bin`.
-    if (json?.xpack.executables ?? json?.xpack.bin) {
-      if (!json.xpack.binaries) {
+    if (jsonPackage?.xpack.executables ?? jsonPackage?.xpack.bin) {
+      if (!jsonPackage.xpack.binaries) {
         throw new XpmInputError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.binaries"'
         )
       }
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!json.xpack.binaries.platforms) {
+      if (!jsonPackage.xpack.binaries.platforms) {
         throw new XpmInputError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.binaries.platforms"'
@@ -201,15 +203,15 @@ export class XpmPackage {
       }
       return true
     }
-    if (json?.xpack.binaries) {
+    if (jsonPackage?.xpack.binaries) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!json.xpack.binaries.platforms) {
+      if (!jsonPackage.xpack.binaries.platforms) {
         throw new XpmInputError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.binaries.platforms"'
         )
       }
-      if (!(json.xpack.executables ?? json.xpack.bin)) {
+      if (!(jsonPackage.xpack.executables ?? jsonPackage.xpack.bin)) {
         throw new XpmInputError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.executables"'
@@ -221,19 +223,22 @@ export class XpmPackage {
   }
 
   isNodeModule() {
-    const json = this.jsonPackage
-    return !!json && !json.xpack
+    const jsonPackage = this.jsonPackage
+    return !!jsonPackage && !jsonPackage.xpack
   }
 
   isBinaryNodeModule() {
-    const json = this.jsonPackage
+    const jsonPackage = this.jsonPackage
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return this.isNodeModule() && !!json?.bin
+    return this.isNodeModule() && !!jsonPackage?.bin
   }
 
   hasNpmScripts(): boolean {
-    const json = this.jsonPackage
-    if (json?.scripts !== undefined && Object.keys(json.scripts).length > 0) {
+    const jsonPackage = this.jsonPackage
+    if (
+      jsonPackage?.scripts !== undefined &&
+      Object.keys(jsonPackage.scripts).length > 0
+    ) {
       return true
     }
 
@@ -277,13 +282,13 @@ export class XpmPackage {
   }
 
   getMinimumXpmRequired(): string | undefined {
-    const log = this.log
-    const json = this.jsonPackage
+    const log = this.#log
+    const jsonPackage = this.jsonPackage
 
     log.trace(`${XpmPackage.name}.getMinimumXpmRequired()`)
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const version = json?.xpack?.minimumXpmRequired
+    const version = jsonPackage?.xpack?.minimumXpmRequired
     if (version === undefined) {
       return undefined
     }
@@ -291,26 +296,28 @@ export class XpmPackage {
     return version.replace(/-.*$/, '')
   }
 
-  async checkMinimumXpmRequired(
-    xpmRootPath: string
-  ): Promise<string | undefined> {
-    const log = this.log
-    const json = this.jsonPackage
+  async checkMinimumXpmRequired({
+    xpmRootFolderPath,
+  }: {
+    xpmRootFolderPath: string
+  }): Promise<string | undefined> {
+    const log = this.#log
+    const jsonPackage = this.jsonPackage
 
     log.trace(`${XpmPackage.name}.checkMinimumXpmRequired()`)
 
-    if (!json) {
+    if (!jsonPackage) {
       // Not in a package.
       return undefined
     }
 
-    if (!this.isXpmPackage() || !json.xpack.minimumXpmRequired) {
+    if (!this.isXpmPackage() || !jsonPackage.xpack.minimumXpmRequired) {
       log.trace('minimumXpmRequired not used, no checks')
       return undefined
     }
     // Remove the pre-release part.
     const cleanedVersion = semver.clean(
-      json.xpack.minimumXpmRequired.replace(/-.*$/, '')
+      jsonPackage.xpack.minimumXpmRequired.replace(/-.*$/, '')
     )
     if (!cleanedVersion) {
       return undefined
@@ -319,10 +326,15 @@ export class XpmPackage {
 
     log.trace(`minimumXpmRequired: ${minimumXpmRequired}`)
 
-    let jsonXpmCliPackage: JsonXpmPackage
+    let jsonXpmCliPackage: JsonXpmPackage | undefined
     try {
-      const xpmCliPackage = new XpmPackage({ log, folderPath: xpmRootPath })
-      jsonXpmCliPackage = await xpmCliPackage.readPackageDotJsonThrow()
+      const cliXpmPackage = new XpmPackage({
+        log,
+        packageFolderPath: xpmRootFolderPath,
+      })
+      jsonXpmCliPackage = await cliXpmPackage.readPackageDotJson({
+        withThrow: true,
+      })
     } catch (err) {
       if (err instanceof Error) {
         log.trace(err.message)
@@ -331,6 +343,7 @@ export class XpmPackage {
       }
       return undefined
     }
+    assert(jsonXpmCliPackage)
     log.trace(jsonXpmCliPackage.version)
 
     if (!jsonXpmCliPackage.version) {
@@ -347,7 +360,7 @@ export class XpmPackage {
     if (semver.lt(xpmVersion, minimumXpmRequired)) {
       throw new XpmPrerequisitesError(
         'package ' +
-          (json.name ? `'${json.name}' ` : '') +
+          (jsonPackage.name ? `'${jsonPackage.name}' ` : '') +
           `requires xpm v${minimumXpmRequired} or later, please upgrade`
       )
     }
@@ -362,7 +375,7 @@ export class XpmPackage {
   }): XpmPackageSpecifier {
     assert(npmPackageSpecifier)
 
-    const log = this.log
+    const log = this.#log
 
     let scope
     let name
@@ -401,7 +414,7 @@ export class XpmPackage {
   }: {
     doForce32bit?: boolean
   } = {}): string {
-    const log = this.log
+    const log = this.#log
 
     const platform = process.platform
     let arch = process.arch
@@ -426,7 +439,7 @@ export class XpmPackage {
     specifier: string
     cacheFolderPath: string
   }): Promise<AbbreviatedManifest & ManifestResult> {
-    const log = this.log
+    const log = this.#log
     log.trace(`${XpmPackage.name}.pacoteCreateManifest('${specifier}')`)
     const manifest = await pacote.manifest(specifier, {
       cache: cacheFolderPath,
@@ -462,14 +475,14 @@ export class XpmPackage {
     assert(config)
     assert(policies)
 
-    const log = this.log
+    const log = this.#log
     log.trace(`${XpmPackage.name}.pacoteExtractContent('${specifier}')`)
 
-    let destinationPackage = new XpmPackage({
+    let destinationXpmPackage = new XpmPackage({
       log,
-      folderPath: destinationFolderPath,
+      packageFolderPath: destinationFolderPath,
     })
-    const destinationJson = await destinationPackage.readPackageDotJsonNoThrow()
+    const destinationJson = await destinationXpmPackage.readPackageDotJson()
     if (destinationJson) {
       // The package is already present in the destination folder.
       if (!config.doForce) {
@@ -526,14 +539,14 @@ export class XpmPackage {
       if (!log.isVerbose) {
         log.info(`${packFullName} => '${destinationFolderPath}'`)
       }
-      destinationPackage = new XpmPackage({
+      destinationXpmPackage = new XpmPackage({
         log,
-        folderPath: destinationTmpFolderPath,
+        packageFolderPath: destinationTmpFolderPath,
       })
     }
 
-    await destinationPackage.readPackageDotJsonNoThrow()
-    if (!destinationPackage.isXpmPackage()) {
+    await destinationXpmPackage.readPackageDotJson()
+    if (!destinationXpmPackage.isXpmPackage()) {
       if (!policies.shareNpmDependencies) {
         log.trace(`del(${destinationTmpFolderPath})`)
         await deleteAsync(destinationTmpFolderPath, { force: true })
@@ -553,8 +566,8 @@ export class XpmPackage {
         log.verbose('Pretend changing permissions to read-only...')
       }
     } else {
-      await this.downloadBinaries({
-        destinationPackage,
+      await this.#downloadBinaries({
+        destinationXpmPackage,
         destinationFolderPath,
         cacheFolderPath,
         config,
@@ -589,7 +602,7 @@ export class XpmPackage {
     assert(destinationFolderPath)
     assert(cacheFolderPath)
 
-    const log = this.log
+    const log = this.#log
     log.trace(`${XpmPackage.name}.pacoteExtract(${specifier})`)
 
     try {
@@ -606,35 +619,35 @@ export class XpmPackage {
     }
   }
 
-  private async downloadBinaries({
-    destinationPackage,
+  async #downloadBinaries({
+    destinationXpmPackage,
     destinationFolderPath,
     cacheFolderPath,
     config,
   }: {
-    destinationPackage: XpmPackage
+    destinationXpmPackage: XpmPackage
     destinationFolderPath: string
     cacheFolderPath: string
     config: XpmConfig
   }): Promise<void> {
-    assert(destinationPackage)
+    assert(destinationXpmPackage)
     assert(destinationFolderPath)
     assert(cacheFolderPath)
     assert(config)
 
-    const log = this.log
-    const packagePath = destinationPackage.folderPath
-    const jsonPackage = destinationPackage.jsonPackage
+    const log = this.#log
+    const packageFolderPath = destinationXpmPackage.packageFolderPath
+    const jsonPackage = destinationXpmPackage.jsonPackage
     assert(jsonPackage)
 
-    log.trace(`${XpmPackage.name}.downloadBinaries(${packagePath})`)
-    if (!destinationPackage.isXpmPackage()) {
+    log.trace(`${XpmPackage.name}.downloadBinaries(${packageFolderPath})`)
+    if (!destinationXpmPackage.isXpmPackage()) {
       log.debug(
         "doesn't look like an xpm package, " + 'package.json has no "xpack"'
       )
       return
     }
-    if (!destinationPackage.isBinaryXpmPackage()) {
+    if (!destinationXpmPackage.isBinaryXpmPackage()) {
       log.debug(
         "doesn't look like an xpm package, " +
           'package.json has no "xpack.executables" and "xpack.binaries"'
@@ -783,7 +796,10 @@ export class XpmPackage {
 
     const contentFolderRelativePath =
       jsonPackage.xpack.binaries.destination || '.content'
-    const contentFolderPath = path.join(packagePath, contentFolderRelativePath)
+    const contentFolderPath = path.join(
+      packageFolderPath,
+      contentFolderRelativePath
+    )
     const destinationContentFolderPath = path.join(
       destinationFolderPath,
       contentFolderRelativePath
@@ -838,7 +854,7 @@ export class XpmPackage {
     assert(cacheFolderPath)
     assert(key)
     assert(opts)
-    const log = this.log
+    const log = this.#log
 
     // https://github.com/node-fetch/node-fetch/blob/main/docs/ERROR-HANDLING.md
     // https://github.com/node-fetch/node-fetch/blob/main/test/main.js
