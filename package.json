@@ -20,6 +20,7 @@
     "prettier": "prettier src --write",
     "fix": "eslint --fix src",
     "compile": "tsc --build --verbose src",
+    "fix-compile": "npm run prettier && npm run fix && npm run compile",
     "npm-install": "npm install",
     "npm-link": "npm link",
     "npm-link-deps": "npm link @xpack/logger",
