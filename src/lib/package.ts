@@ -76,7 +76,6 @@ export class XpmPackage {
 
   packageFolderPath: string
   jsonPackage?: JsonXpmPackage
-  //packageJsonOriginal?: JsonXpmPackage
 
   readonly #log: Logger
 
@@ -482,8 +481,8 @@ export class XpmPackage {
       log,
       packageFolderPath: destinationFolderPath,
     })
-    const destinationJson = await destinationXpmPackage.readPackageDotJson()
-    if (destinationJson) {
+    const jsonDestination = await destinationXpmPackage.readPackageDotJson()
+    if (jsonDestination) {
       // The package is already present in the destination folder.
       if (!config.doForce) {
         if (!config.doSkipIfInstalled) {
