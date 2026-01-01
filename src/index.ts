@@ -14,7 +14,10 @@
 // ----------------------------------------------------------------------------
 
 // Re-export all library definitions.
-export * from './lib/chmod-recursive.js'
+export * from './lib/functions/chmod-recursive.js'
+export * from './lib/functions/perform-substitutions.js'
+export * from './lib/functions/utils.js'
+
 export * from './lib/errors.js'
 export * from './lib/liquid-actions.js'
 export * from './lib/liquid-build-configurations.js'
@@ -22,11 +25,9 @@ export * from './lib/liquid-drop.js'
 export * from './lib/liquid-engine.js'
 export * from './lib/liquid-package.js'
 export * from './lib/package.js'
-export * from './lib/perform-substitutions.js'
 export * from './lib/policies.js'
 export * from './lib/substitutions-variables.js'
 export * from './lib/types.js'
-export * from './lib/utils.js'
 
 export * from 'liquidjs'
 

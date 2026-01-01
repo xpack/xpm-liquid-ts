@@ -58,7 +58,7 @@ import {
   JsonXpmPackage,
   XpmConfig,
 } from './types.js'
-import { chmodRecursive } from './chmod-recursive.js'
+import { chmodRecursive } from './functions/chmod-recursive.js'
 import { XpmPolicies } from './policies.js'
 import { XpmError, XpmInputError, XpmPrerequisitesError } from './errors.js'
 

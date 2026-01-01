@@ -29,10 +29,10 @@ import {
   JsonBuildConfigurations,
   JsonDependencies,
 } from './types.js'
-import { performSubstitutions } from './perform-substitutions.js'
+import { performSubstitutions } from './functions/perform-substitutions.js'
 import { XpmLiquidActions } from './liquid-actions.js'
-import { isString } from './utils.js'
-import { filterPath } from './utils.js'
+import { isString } from './functions/utils.js'
+import { filterPath } from './functions/utils.js'
 
 // ----------------------------------------------------------------------------
 

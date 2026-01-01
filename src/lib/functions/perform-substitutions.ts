@@ -19,9 +19,9 @@ import { Context } from 'liquidjs'
 
 import { Logger } from '@xpack/logger'
 
-import { XpmLiquidEngine } from './liquid-engine.js'
-import { XpmLiquidPropertiesDrop } from './liquid-drop.js'
-import { XpmLiquidSubstitutionsVariables } from './substitutions-variables.js'
+import { XpmLiquidEngine } from '../liquid-engine.js'
+import { XpmLiquidPropertiesDrop } from '../liquid-drop.js'
+import { XpmLiquidSubstitutionsVariables } from '../substitutions-variables.js'
 
 // ----------------------------------------------------------------------------
 /**

@@ -24,7 +24,7 @@ import {
   XpmLiquidSubstitutionsStrings,
 } from './substitutions-variables.js'
 import { JsonActions } from './types.js'
-import { performSubstitutions } from './perform-substitutions.js'
+import { performSubstitutions } from './functions/perform-substitutions.js'
 
 // ----------------------------------------------------------------------------
 
