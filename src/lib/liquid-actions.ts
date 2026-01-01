@@ -150,7 +150,7 @@ export class XpmLiquidAction {
   // --------------------------------------------------------------------------
   // Methods.
 
-  async commands(): Promise<string[]> {
+  async getCommands(): Promise<string[]> {
     if (this.#commands === undefined) {
       // Silently accept empty or non-existing actions.
       const jsonAction = this.#parentActions.jsonActions[this.#actionName] ?? ''
