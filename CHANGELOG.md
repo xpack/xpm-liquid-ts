@@ -8,7 +8,12 @@ and close existing issues and pull requests.
 
 ## 2026-01-03
 
-* v3.1.0 released
+* v3.1.1 released
+* 0549cc9 cosmetise imports
+* b9b7f2a fix inherits
+* bf3f0fc run() returns 0
+* 3b26dde 3.1.0
+* 2581b55 prepare v3.1.0
 * c0abb4a cosmetics
 * 536f845 policies.ts: add singleParameterXpmInitTemplate
 * e7a4e9b 3.0.0
