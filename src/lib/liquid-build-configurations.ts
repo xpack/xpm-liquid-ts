@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------------
 
 import assert from 'node:assert'
-import path from 'node:path'
+import * as path from 'node:path'
 
 import { Logger } from '@xpack/logger'
 

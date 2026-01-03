@@ -17,14 +17,15 @@ import assert from 'node:assert'
 import * as fs from 'node:fs/promises'
 import * as os from 'node:os'
 import * as path from 'node:path'
-import util from 'node:util'
-import stream from 'node:stream'
+import * as util from 'node:util'
+import * as stream from 'node:stream'
 
 // https://www.npmjs.com/package/@npmcli/arborist
 import { Arborist } from '@npmcli/arborist'
 
 // https://www.npmjs.com/package/pacote
-import pacote, { AbbreviatedManifest, ManifestResult } from 'pacote'
+import * as pacote from 'pacote'
+import { AbbreviatedManifest, ManifestResult } from 'pacote'
 
 // https://www.npmjs.com/package/cacache
 import cacache, { put } from 'cacache'
@@ -33,7 +34,7 @@ import cacache, { put } from 'cacache'
 import decompress from 'decompress'
 
 // https://www.npmjs.com/package/semver
-import semver from 'semver'
+import * as semver from 'semver'
 
 // https://www.npmjs.com/package/del
 import { deleteAsync } from 'del'

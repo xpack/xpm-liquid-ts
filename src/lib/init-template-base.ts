@@ -13,6 +13,7 @@
 
 // ----------------------------------------------------------------------------
 
+import assert from 'node:assert'
 import * as util from 'node:util'
 import * as readline from 'node:readline/promises'
 import * as path from 'node:path'
@@ -31,7 +32,6 @@ import { Logger } from '@xpack/logger'
 
 import { XpmContext } from './types.js'
 import { XpmOutputError, XpmSyntaxError } from './errors.js'
-import assert from 'node:assert'
 
 // ----------------------------------------------------------------------------
 
@@ -88,20 +88,20 @@ export abstract class XpmInitTemplateBase {
 
   constructor({
     context,
-    propertiesDefinitions,
     __dirname,
     templatesPath,
+    propertiesDefinitions,
   }: {
     context: XpmContext
-    propertiesDefinitions: XpmInitTemplatePropertiesDefinitions
     __dirname: string
     templatesPath: string
+    propertiesDefinitions: XpmInitTemplatePropertiesDefinitions
   }) {
     assert(context)
     assert(context.log)
-    assert(propertiesDefinitions)
     assert(__dirname)
     assert(templatesPath)
+    assert(propertiesDefinitions)
 
     this.context = context
     this.log = context.log

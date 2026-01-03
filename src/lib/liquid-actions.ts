@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------------
 
 // import assert from 'assert'
-import os from 'node:os'
+import * as os from 'node:os'
 
 import { Logger } from '@xpack/logger'
 
