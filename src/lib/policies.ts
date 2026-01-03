@@ -30,6 +30,7 @@ export class XpmPolicies {
   shareNpmDependencies = false
   nonHierarchicalLocalXpacksFolder = false
   onlyStringDependencies = false
+  singleParameterXpmInitTemplate = false
 
   constructor({ log, minVersion }: { log: Logger; minVersion: string }) {
     this.minVersion = minVersion || '0.0.0'
@@ -39,6 +40,7 @@ export class XpmPolicies {
     this.shareNpmDependencies = semver.lt(this.minVersion, '0.14.0')
     this.nonHierarchicalLocalXpacksFolder = semver.lt(this.minVersion, '0.16.0')
     this.onlyStringDependencies = semver.lt(this.minVersion, '0.16.0')
+    this.singleParameterXpmInitTemplate = semver.lt(this.minVersion, '0.22.0')
 
     this.#log.trace(
       `policies.shareNpmDependencies: ${String(this.shareNpmDependencies)}`
