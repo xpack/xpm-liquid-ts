@@ -59,7 +59,6 @@ export type XpmInitTemplatePlatform =
   | 'darwin-arm64'
 
 export interface XpmInitTemplateItemValue {
-  // 'linux', 'win32', 'darwin'
   platforms: XpmInitTemplatePlatform[]
   message: string
 }
@@ -98,6 +97,12 @@ export abstract class XpmInitTemplateBase {
     __dirname: string
     templatesPath: string
   }) {
+    assert(context)
+    assert(context.log)
+    assert(propertiesDefinitions)
+    assert(__dirname)
+    assert(templatesPath)
+
     this.context = context
     this.log = context.log
     this.propertiesDefinitions = propertiesDefinitions
