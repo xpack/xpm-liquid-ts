@@ -268,7 +268,7 @@ export class XpmLiquidBuildConfiguration {
     if (isString(jsonBuildConfiguration.inherits)) {
       inherits = [jsonBuildConfiguration.inherits]
     } else if (Array.isArray(jsonBuildConfiguration.inherits)) {
-      inherits = jsonBuildConfiguration.inherit as string[]
+      inherits = jsonBuildConfiguration.inherits as string[]
     } else if (isString(jsonBuildConfiguration.inherit)) {
       inherits = [jsonBuildConfiguration.inherit]
     } else if (Array.isArray(jsonBuildConfiguration.inherit)) {
