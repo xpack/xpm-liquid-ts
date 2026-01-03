@@ -8,6 +8,11 @@ and close existing issues and pull requests.
 
 ## 2026-01-03
 
+* v3.1.0 released
+* c0abb4a cosmetics
+* 536f845 policies.ts: add singleParameterXpmInitTemplate
+* e7a4e9b 3.0.0
+* bda9e7a prepare v3.0.0
 * f4453ab update copyright 2026
 * a703d84 add init-template-base.ts
 * baa6357 types.ts update XpmContext
