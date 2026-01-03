@@ -121,7 +121,7 @@ To manually fix compliance with the style guide (where possible):
 ```console
 % npm run fix
 
-> @xpack/xpm-lib@2.2.1 fix
+> @xpack/xpm-lib@3.0.0 fix
 > ts-standard --fix src && standard --fix test
 ...
 ```
@@ -154,13 +154,13 @@ A typical test result looks like:
 ```console
 % npm run test-100-c8
 
-> @xpack/xpm-lib@2.2.1 pretest-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
+> @xpack/xpm-lib@3.0.0 pretest-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
 > npm run lint
 
-> @xpack/xpm-lib@2.2.1 lint /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
+> @xpack/xpm-lib@3.0.0 lint /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
 > ts-standard src && standard esm
 
-> @xpack/xpm-lib@2.2.1 test-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
+> @xpack/xpm-lib@3.0.0 test-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
 > npm run test-tap-coverage-100-c8 -s
 
 (node:32915) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
@@ -193,7 +193,7 @@ To run a specific test with more verbose output, use `npm run tap`:
 ```console
 % npm run tap tests/tap/010-functions.ts
 
-> @xpack/xpm-lib@2.2.1 tap /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
+> @xpack/xpm-lib@3.0.0 tap /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
 > tap --reporter=spec "tests/tap/010-functions.ts"
 
 (node:32977) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
@@ -283,9 +283,9 @@ To be updated when fully migrated to ESM.
 
 As required by npm modules, this one also uses [semver](https://semver.org).
 
-Determine the next version (like `2.2.1`),
+Determine the next version (like `3.0.0`),
 and eventually update the
-`package.json` file; the format is `2.2.1-pre`.
+`package.json` file; the format is `3.0.0-pre`.
 
 ### Fix possible open issues
 
@@ -303,8 +303,8 @@ related to the new version.
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a line _* v2.2.1 released_
-- commit with a message like _prepare v2.2.1_
+- add a line _* v3.0.0 released_
+- commit with a message like _prepare v3.0.0_
 
 ## Prepare to publish
 
@@ -369,7 +369,7 @@ master branch, by a dedicated workflow in GitHub
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack/xpm-lib`
-- `npm dist-tag add @xpack/xpm-lib@2.2.1 latest`
+- `npm dist-tag add @xpack/xpm-lib@3.0.0 latest`
 - `npm dist-tag ls @xpack/xpm-lib`
 
 ## Useful links

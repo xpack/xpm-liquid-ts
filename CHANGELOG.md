@@ -6,9 +6,115 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues)
 and close existing issues and pull requests.
 
+## 2026-01-03
+
+* f4453ab update copyright 2026
+* a703d84 add init-template-base.ts
+* baa6357 types.ts update XpmContext
+* 3937908 errors.ts: add Syntax, Output
+
+## 2026-01-01
+
+* 17b9048 package.json: fix-compile
+* 26126ce package.ts cosmetics
+* 0f9ac8b /lib/functions
+* 5afe73c liquid-actions.ts: getCommands()
+* 5919297 package.ts: rename readPackageDotJson & cosmetics
+
+## 2025-12-31
+
+* b287e94 pacakge.ts: update downloadBinaries
+* 4049c07 types.ts: add JsonXpmBinariesPlatforms
+
+## 2025-12-30
+
+* 81ba853 index.ts: re-export Liquid
+* c4f70b1 README update
+* e5cb1f1 package.ts: simplify pacoteExtract()
+
+## 2025-12-29
+
+* 63e47fc package.json cosmetics
+* 7f3a83a tests/README updates
+* 9c2874a .taprc updates
+* 390219e .prettierrc.json
+* 6a91716 package.json cleanups
+* 14ba400 tap update
+* 68fe9ae tap ignore coverage
+* b9c9e17 .taprc
+* adce494 test-ci experiments
+* 8556b59 test-ci.yml update
+* e400e92 package*.json update
+* 0000a21 eslint.config.js
+* 7997da4 update tap (deprecate old tests)
+* d3b5c59 src/README update
+* 68032be package.json rename xpm-lib
+* 7119858 index.ts update
+* c7052cf package.ts silence eslint
+* a19b236 types.ts fix JsonXpack
+
+## 2025-12-27
+
+* 619fa19 renamed xpm-lib and version 3.0.0
+* 3c4dfef package.json: update deps
+* 04dd426 remove xpm-liquid.ts
+* 627068c package.ts: move many methods from xpm here
+* 09a7b8a updates & cosmetics
+* 25e5b73 utils.ts: add filter*()
+* da3e8c1 add errors.ts
+* 68952b9 add chmod-recursive.ts
+* f95d30c add policies.ts
+* c43b763 cosmetise imports
+* 2a1194f extract types.ts
+
+## 2025-12-18
+
+* 84131c0 add package.ts
+* d68fa24 rework constructors trace
+* 3a4e927 rename liquid-*.ts
+* ae3aa4e remove package .initialise()
+* d2fd2d7 remove default #actions.initialise()
+* 0787460 use #isInitialised
+* 4cb86ee this.constructor.name & cosmetics
+
+## 2025-12-17
+
+* bacfe38 async inits, inheritS, names(), get()
+
+## 2025-12-10
+
+* eb21408 extract perform-subtitutions.ts
+
+## 2025-12-09
+
+* 2d76486 eslint fix
+* 35de83b package*.json bump deps
+* ee5be1e remove xpm-liquid from exports
+* dbb37ff lint fixes
+* a6e5ac2 utils.ts: add isString
+* a84021f add actions & build-configurations
+* bb09d4a rename substitutions-variables.ts
+* ac15232 rename package.ts
+
+## 2025-12-05
+
+* 1d5c038 rework Actions & Action
+* 9ff4cdd update config for module only
+
+## 2025-12-02
+
+* 1d9b228 data.ts add XpmLiquidData constructor
+
+## 2025-12-01
+
+* a7bb371 add preliminary data types
+* a9873d8 split code
+* cb47d7a copyright cosmetics
+
 ## 2025-11-27
 
-* v2.2.1 released
+* 3563508 2.2.1
+* 7c2b134 prepare v2.2.1
 * 596ca67 test original array behaviour
 * 0d0000c add logger to performSubstitutions
 
