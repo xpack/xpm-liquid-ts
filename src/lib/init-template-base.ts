@@ -121,7 +121,7 @@ export abstract class XpmInitTemplateBase {
     })
   }
 
-  async run(): Promise<void> {
+  async run(): Promise<number> {
     const log = this.log
     log.trace(`${this.constructor.name}.run()`)
 
@@ -196,6 +196,8 @@ export abstract class XpmInitTemplateBase {
 
     this.substitutionsVariables = substitutionsVariables
     await this.generate(isInteractive)
+
+    return 0 // success
   }
 
   abstract generate(isInteractive: boolean): Promise<void>
