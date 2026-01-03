@@ -20,6 +20,10 @@ export class XpmPrerequisitesError extends Error {}
 
 export class XpmInputError extends Error {}
 
-// Other errors: Syntax, Output, Child.
+export class XpmSyntaxError extends Error {}
+
+export class XpmOutputError extends Error {}
+
+// Other errors:  Child.
 
 // ----------------------------------------------------------------------------
