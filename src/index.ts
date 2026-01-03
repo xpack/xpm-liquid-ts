@@ -19,6 +19,7 @@ export * from './lib/functions/perform-substitutions.js'
 export * from './lib/functions/utils.js'
 
 export * from './lib/errors.js'
+export * from './lib/init-template-base.js'
 export * from './lib/liquid-actions.js'
 export * from './lib/liquid-build-configurations.js'
 export * from './lib/liquid-drop.js'
