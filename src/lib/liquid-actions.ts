@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------------
 
-// import assert from 'assert'
+import assert from 'node:assert'
 import * as os from 'node:os'
 
 import { Logger } from '@xpack/logger'
@@ -23,7 +23,7 @@ import {
   XpmLiquidSubstitutionsVariables,
   XpmLiquidSubstitutionsStrings,
 } from './substitutions-variables.js'
-import { JsonActions } from './types.js'
+import { JsonActions, JsonActionValue } from './types.js'
 import { performSubstitutions } from './functions/perform-substitutions.js'
 
 // ----------------------------------------------------------------------------
@@ -38,7 +38,8 @@ export class XpmLiquidActions {
   readonly substitutionsVariables: XpmLiquidSubstitutionsVariables
   readonly jsonActions: JsonActions
 
-  readonly #map: Map<string, XpmLiquidAction | undefined>
+  readonly #actionsMap: Map<string, XpmLiquidAction | undefined>
+  readonly #jsonActionsNamesMap: Map<string, string>
 
   #isInitialised = false
 
@@ -49,11 +50,13 @@ export class XpmLiquidActions {
     log,
     engine,
     substitutionsVariables,
+    inheritedActionsMap,
     jsonActions,
   }: {
     log: Logger
     engine: XpmLiquidEngine
     substitutionsVariables: XpmLiquidSubstitutionsVariables
+    inheritedActionsMap?: Map<string, XpmLiquidAction>
     jsonActions: JsonActions | undefined
   }) {
     log.trace(`${XpmLiquidActions.name}()`)
@@ -64,7 +67,24 @@ export class XpmLiquidActions {
     this.jsonActions = jsonActions ?? {}
 
     // Possibly empty if there are no actions.
-    this.#map = new Map<string, XpmLiquidAction | undefined>()
+    this.#actionsMap = new Map<string, XpmLiquidAction | undefined>()
+
+    if (inheritedActionsMap !== undefined) {
+      for (const [
+        inheritedActionName,
+        inheritedAction,
+      ] of inheritedActionsMap) {
+        // Make copies of the actions, do not alter the inherited ones.
+        const action = new XpmLiquidAction({
+          actionName: inheritedActionName,
+          jsonAction: inheritedAction.jsonAction,
+          parentActions: this,
+        })
+        this.#actionsMap.set(inheritedActionName, action)
+      }
+    }
+
+    this.#jsonActionsNamesMap = new Map<string, string>()
 
     // log.trace('substitutionsVariables => ', this.substitutionsVariables)
     // The rest of the initialisation is done in the async initialiser.
@@ -76,13 +96,17 @@ export class XpmLiquidActions {
       return
     }
     for (const actionName of Object.keys(this.jsonActions)) {
-      // TODO: expand templates in names
-      this.#map.set(actionName, undefined)
+      if (actionName.includes('{{')) {
+        // TODO: expand templates and generate multiple actions.
+      } else {
+        this.#actionsMap.set(actionName, undefined)
+        this.#jsonActionsNamesMap.set(actionName, actionName)
+      }
     }
 
     this.log.trace(
       `${XpmLiquidActions.name}.initialise() =>`,
-      Array.from(this.#map.keys())
+      Array.from(this.#actionsMap.keys())
     )
 
     this.#isInitialised = true
@@ -92,25 +116,33 @@ export class XpmLiquidActions {
   // Methods.
 
   empty(): boolean {
-    return this.#map.size === 0
+    return this.#actionsMap.size === 0
   }
 
   names(): string[] {
-    const actionNames = Array.from(this.#map.keys())
+    const actionNames = Array.from(this.#actionsMap.keys())
 
     this.log.trace(`${XpmLiquidActions.name}.names() =>`, actionNames)
     return actionNames
   }
 
   has(actionName: string): boolean {
-    return this.#map.has(actionName)
+    return this.#actionsMap.has(actionName)
   }
 
   get(actionName: string): XpmLiquidAction {
-    let action = this.#map.get(actionName)
+    let action = this.#actionsMap.get(actionName)
     if (action === undefined) {
-      action = new XpmLiquidAction({ actionName, parentActions: this })
-      this.#map.set(actionName, action)
+      const jsonActionName: string =
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.#jsonActionsNamesMap.get(actionName)!
+      const jsonAction = this.jsonActions[jsonActionName] ?? ''
+      action = new XpmLiquidAction({
+        actionName,
+        jsonAction,
+        parentActions: this,
+      })
+      this.#actionsMap.set(actionName, action)
     }
 
     return action
@@ -124,8 +156,10 @@ export class XpmLiquidAction {
   // --------------------------------------------------------------------------
   // Members.
 
-  readonly #actionName: string
-  readonly #parentActions: XpmLiquidActions
+  readonly actionName: string
+  // readonly jsonActionName: string
+  readonly jsonAction: JsonActionValue
+  parentActions: XpmLiquidActions
 
   // For templates, the actual values.
   matrixParameters?: XpmLiquidSubstitutionsStrings
@@ -136,15 +170,25 @@ export class XpmLiquidAction {
 
   constructor({
     actionName,
+    // jsonActionName,
+    jsonAction,
     parentActions,
   }: {
     actionName: string
+    // jsonActionName: string
+    jsonAction: JsonActionValue
     parentActions: XpmLiquidActions
   }) {
+    assert(actionName)
+    // assert(jsonActionName)
+    assert(parentActions)
+
     parentActions.log.trace(`${XpmLiquidAction.name}(${actionName})`)
 
-    this.#actionName = actionName
-    this.#parentActions = parentActions
+    this.actionName = actionName
+    // this.jsonActionName = jsonActionName
+    this.jsonAction = jsonAction
+    this.parentActions = parentActions
   }
 
   // --------------------------------------------------------------------------
@@ -153,22 +197,22 @@ export class XpmLiquidAction {
   async getCommands(): Promise<string[]> {
     if (this.#commands === undefined) {
       // Silently accept empty or non-existing actions.
-      const jsonAction = this.#parentActions.jsonActions[this.#actionName] ?? ''
+      const jsonAction = this.jsonAction
       const input = Array.isArray(jsonAction)
         ? jsonAction.join(os.EOL)
         : jsonAction
 
       const substituted = await performSubstitutions({
         input,
-        engine: this.#parentActions.engine,
-        substitutionsVariables: this.#parentActions.substitutionsVariables,
-        log: this.#parentActions.log,
+        engine: this.parentActions.engine,
+        substitutionsVariables: this.parentActions.substitutionsVariables,
+        log: this.parentActions.log,
       })
 
       this.#commands = substituted.split(os.EOL)
     }
 
-    this.#parentActions.log.trace(
+    this.parentActions.log.trace(
       `${XpmLiquidAction.name}.commands() =>`,
       this.#commands
     )

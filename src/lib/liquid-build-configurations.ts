@@ -30,7 +30,7 @@ import {
   JsonDependencies,
 } from './types.js'
 import { performSubstitutions } from './functions/perform-substitutions.js'
-import { XpmLiquidActions } from './liquid-actions.js'
+import { XpmLiquidAction, XpmLiquidActions } from './liquid-actions.js'
 import { isString } from './functions/utils.js'
 import { filterPath } from './functions/utils.js'
 
@@ -68,6 +68,10 @@ export class XpmLiquidBuildConfigurations {
     substitutionsVariables: XpmLiquidSubstitutionsVariables
     jsonBuildConfigurations: JsonBuildConfigurations | undefined
   }) {
+    assert(log)
+    assert(engine)
+    assert(substitutionsVariables)
+
     log.trace(`${XpmLiquidBuildConfigurations.name}()`)
 
     this.log = log
@@ -163,9 +167,13 @@ export class XpmLiquidBuildConfigurations {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.#jsonBuildConfigurationsNamesMap.get(buildConfigurationName)!
 
+      const jsonBuildConfiguration =
+        this.jsonBuildConfigurations[jsonBuildConfigurationName] ?? {}
+
       buildConfiguration = new XpmLiquidBuildConfiguration({
         buildConfigurationName,
-        jsonBuildConfigurationName,
+        // jsonBuildConfigurationName,
+        jsonBuildConfiguration,
         parentBuildConfigurations: this,
       })
       await buildConfiguration.initialise()
@@ -194,7 +202,7 @@ export class XpmLiquidBuildConfiguration {
   readonly hidden: boolean
 
   // The actual (un-substituted) name from package.json.
-  readonly jsonBuildConfigurationName: string
+  // readonly jsonBuildConfigurationName: string
   // Points to the actual buildConfiguration in package.json.
   readonly jsonBuildConfiguration: JsonBuildConfiguration
 
@@ -224,25 +232,28 @@ export class XpmLiquidBuildConfiguration {
 
   constructor({
     buildConfigurationName, // The Liquid-processed name.
-    jsonBuildConfigurationName, // The raw name from package.json.
+    // jsonBuildConfigurationName, // The raw name from package.json.
+    jsonBuildConfiguration,
     parentBuildConfigurations,
   }: {
     buildConfigurationName: string
-    jsonBuildConfigurationName: string
+    // jsonBuildConfigurationName: string
+    jsonBuildConfiguration: JsonBuildConfiguration
     parentBuildConfigurations: XpmLiquidBuildConfigurations
   }) {
+    assert(buildConfigurationName)
+    // assert(jsonBuildConfigurationName)
+    assert(jsonBuildConfiguration)
+    assert(parentBuildConfigurations)
+
     parentBuildConfigurations.log.trace(
       `${XpmLiquidBuildConfiguration.name}(${buildConfigurationName})`
     )
 
     this.#buildConfigurationName = buildConfigurationName
-    this.jsonBuildConfigurationName = jsonBuildConfigurationName
+    // this.jsonBuildConfigurationName = jsonBuildConfigurationName
+    this.jsonBuildConfiguration = jsonBuildConfiguration
     this.#parentBuildConfigurations = parentBuildConfigurations
-
-    this.jsonBuildConfiguration =
-      parentBuildConfigurations.jsonBuildConfigurations[
-        jsonBuildConfigurationName
-      ] ?? {}
 
     this.substitutionsVariables = {
       ...this.#parentBuildConfigurations.substitutionsVariables,
@@ -275,6 +286,11 @@ export class XpmLiquidBuildConfiguration {
       inherits = jsonBuildConfiguration.inherit as string[]
     }
 
+    const inheritedActionsMap: Map<string, XpmLiquidAction> = new Map<
+      string,
+      XpmLiquidAction
+    >()
+
     // Add inherited configuration properties.
     // TODO: detect circular references.
     for (const inheritedBuildConfigurationName of inherits) {
@@ -298,6 +314,12 @@ export class XpmLiquidBuildConfiguration {
         this.jsonDevDependencies = {
           ...this.jsonDevDependencies,
           ...inheritedBuildConfiguration.jsonDevDependencies,
+        }
+
+        await inheritedBuildConfiguration.actions.initialise()
+        for (const actionName of inheritedBuildConfiguration.actions.names()) {
+          const action = inheritedBuildConfiguration.actions.get(actionName)
+          inheritedActionsMap.set(actionName, action)
         }
       } else {
         log.warn(
@@ -347,6 +369,7 @@ export class XpmLiquidBuildConfiguration {
       log: this.#parentBuildConfigurations.log,
       engine: this.#parentBuildConfigurations.engine,
       substitutionsVariables: this.substitutionsVariables,
+      inheritedActionsMap,
       jsonActions: this.jsonBuildConfiguration.actions,
     })
     // Note: this must be done manually by the application.
