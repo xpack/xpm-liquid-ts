@@ -24,7 +24,7 @@ import * as stream from 'node:stream'
 import { Arborist } from '@npmcli/arborist'
 
 // https://www.npmjs.com/package/pacote
-import * as pacote from 'pacote'
+import pacote from 'pacote'
 import { AbbreviatedManifest, ManifestResult } from 'pacote'
 
 // https://www.npmjs.com/package/cacache
@@ -34,7 +34,7 @@ import cacache, { put } from 'cacache'
 import decompress from 'decompress'
 
 // https://www.npmjs.com/package/semver
-import * as semver from 'semver'
+import semver from 'semver'
 
 // https://www.npmjs.com/package/del
 import { deleteAsync } from 'del'

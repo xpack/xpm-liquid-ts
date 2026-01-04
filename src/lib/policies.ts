@@ -19,7 +19,7 @@
 import { Logger } from '@xpack/logger'
 
 // https://www.npmjs.com/package/semver
-import * as semver from 'semver'
+import semver from 'semver'
 
 // ----------------------------------------------------------------------------
 
