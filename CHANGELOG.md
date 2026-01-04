@@ -6,8 +6,14 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues)
 and close existing issues and pull requests.
 
+## 2026-01-04
+
+* 0482730 fix action & configurations inheritance
+
 ## 2026-01-03
 
+* f0f4616 3.1.1
+* 0cc6b04 prepare v3.1.1
 * v3.1.1 released
 * 0549cc9 cosmetise imports
 * b9b7f2a fix inherits
