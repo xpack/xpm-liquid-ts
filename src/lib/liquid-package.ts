@@ -64,7 +64,10 @@ export class XpmLiquidPackage {
     this.#log = log
     this.#engine = new XpmLiquidEngine()
 
-    assert(isJsonObject(jsonPackage.xpack))
+    assert(
+      isJsonObject(jsonPackage.xpack),
+      'xpack section missing in package.json'
+    )
     this.#jsonPackage = jsonPackage
 
     // os.version() available since 12.x
