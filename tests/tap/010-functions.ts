@@ -25,20 +25,23 @@ import { test } from 'tap'
 import {
   filterPath,
   filterPosixPath,
-  filterWin32Path
+  filterWin32Path,
 } from '../../src/index.js'
 
 // ----------------------------------------------------------------------------
 
-await test('filterPath', (t): void => {
+await test('filterPath', async (t): Promise<void> => {
   if (os.platform() === 'win32') {
     t.equal(filterPath('a\\b'), 'a\\b', 'preserves windows path separator \\')
   } else {
     t.equal(filterPath('a/b'), 'a/b', 'preserves posix path separator /')
   }
 
-  t.equal(filterWin32Path('a\\b'), 'a\\b',
-    'preserves windows path separator \\')
+  t.equal(
+    filterWin32Path('a\\b'),
+    'a\\b',
+    'preserves windows path separator \\'
+  )
   t.equal(filterPosixPath('a/b'), 'a/b', 'preserves posix path separator /')
 
   t.equal(filterPath('A!B'), 'A-B', 'replaces by dash')
