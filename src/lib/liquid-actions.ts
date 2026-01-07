@@ -23,8 +23,10 @@ import {
   XpmLiquidSubstitutionsVariables,
   XpmLiquidSubstitutionsStrings,
 } from './substitutions-variables.js'
-import { JsonActions, JsonActionValue } from './types.js'
+import { JsonActions, JsonActionStrings, JsonActionTemplate } from './types.js'
 import { performSubstitutions } from './functions/perform-substitutions.js'
+import { isJsonArray, isJsonObject, isString } from './functions/utils.js'
+import { XpmError } from './errors.js'
 
 // ----------------------------------------------------------------------------
 
@@ -96,7 +98,24 @@ export class XpmLiquidActions {
     }
     for (const [actionName, jsonAction] of Object.entries(this.jsonActions)) {
       if (actionName.includes('{{')) {
-        // TODO: expand templates and generate multiple actions.
+        // Expand template and return multiple actions.
+        try {
+          const expandedActionsMap = await this.expandTemplateActions({
+            actionName,
+            jsonAction: jsonAction as JsonActionTemplate,
+          })
+          for (const [
+            expandedActionName,
+            expandedAction,
+          ] of expandedActionsMap) {
+            this.#actionsMap.set(expandedActionName, expandedAction)
+            this.#jsonActionsNamesMap.set(expandedActionName, actionName)
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            this.log.error(error.message)
+          }
+        }
       } else {
         this.#actionsMap.set(actionName, undefined)
         this.#jsonActionsNamesMap.set(actionName, actionName)
@@ -137,7 +156,8 @@ export class XpmLiquidActions {
       const jsonActionName: string =
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.#jsonActionsNamesMap.get(actionName)!
-      const jsonAction = this.jsonActions[jsonActionName] ?? ''
+      const jsonAction: JsonActionStrings = (this.jsonActions[jsonActionName] ??
+        '') as JsonActionStrings
       action = new XpmLiquidAction({
         actionName,
         jsonAction,
@@ -147,6 +167,118 @@ export class XpmLiquidActions {
     }
 
     return action
+  }
+
+  async expandTemplateActions({
+    actionName,
+    jsonAction,
+  }: {
+    actionName: string
+    jsonAction: JsonActionTemplate
+  }): Promise<Map<string, XpmLiquidAction>> {
+    const newActionsMap = new Map<string, XpmLiquidAction>()
+
+    if (!isJsonObject(jsonAction.matrix)) {
+      throw new XpmError(`action '${actionName}' matrix is not an object`)
+    }
+    if (!isString(jsonAction.template) && !isJsonArray(jsonAction.template)) {
+      throw new XpmError(
+        `action '${actionName}' template is not a string or array`
+      )
+    }
+    // Validate matrix structure and collect keys/values
+    const matrixKeys: string[] = []
+    const matrixValues: string[][] = []
+
+    for (const [matrixKey, matrixValueArray] of Object.entries(
+      jsonAction.matrix
+    )) {
+      if (!isJsonArray(matrixValueArray)) {
+        throw new XpmError(
+          `action '${actionName}' matrix.${matrixKey} is not an array`
+        )
+      }
+      for (const matrixValue of matrixValueArray) {
+        if (!isString(matrixValue)) {
+          throw new XpmError(
+            `action '${actionName}' matrix.${matrixKey} value is not a string`
+          )
+        }
+      }
+      matrixKeys.push(matrixKey)
+      const stringValue = matrixValueArray.join(os.EOL)
+      if (stringValue.includes('{{') || stringValue.includes('{%')) {
+        const substitutedValue = await performSubstitutions({
+          input: stringValue,
+          engine: this.engine,
+          substitutionsVariables: {
+            ...this.substitutionsVariables,
+          },
+          log: this.log,
+        })
+        // console.log('substitutedValue =>', substitutedValue)
+        matrixValues.push(
+          substitutedValue.replace(new RegExp(os.EOL + '$'), '').split(os.EOL)
+        )
+      } else {
+        matrixValues.push(matrixValueArray)
+      }
+    }
+
+    const createSubstitutedAction = async (
+      combination: Record<string, string>
+    ): Promise<void> => {
+      // console.log(combination)
+
+      const substitutedActionName = await performSubstitutions({
+        input: actionName,
+        engine: this.engine,
+        substitutionsVariables: {
+          ...this.substitutionsVariables,
+          matrix: combination,
+        },
+        log: this.log,
+      })
+      // console.log(substitutedActionName)
+
+      const newAction = new XpmLiquidAction({
+        actionName: substitutedActionName,
+        jsonAction: jsonAction.template,
+        parentActions: this,
+        matrixParameters: { ...combination },
+      })
+
+      newActionsMap.set(substitutedActionName, newAction)
+    }
+
+    // const matrixKeys: string[] = Object.keys(jsonAction.matrix)
+    // const matrixValues: string[][] = Object.values(jsonAction.matrix)
+
+    // Compute all combinations (cartesian product)
+
+    // Inner function
+    const generateCombinationsRecursively = async (
+      index: number,
+      combination: Record<string, string>
+    ): Promise<void> => {
+      if (index === matrixKeys.length) {
+        await createSubstitutedAction(combination)
+
+        return
+      }
+
+      const key = matrixKeys[index]
+      const values = matrixValues[index]
+
+      for (const value of values) {
+        combination[key] = value
+        await generateCombinationsRecursively(index + 1, combination)
+      }
+    }
+
+    await generateCombinationsRecursively(0, {})
+
+    return newActionsMap
   }
 }
 
@@ -159,7 +291,7 @@ export class XpmLiquidAction {
 
   readonly actionName: string
   // readonly jsonActionName: string
-  readonly jsonAction: JsonActionValue
+  readonly jsonAction: JsonActionStrings
   parentActions: XpmLiquidActions
 
   // For templates, the actual values.
@@ -174,11 +306,13 @@ export class XpmLiquidAction {
     // jsonActionName,
     jsonAction,
     parentActions,
+    matrixParameters,
   }: {
     actionName: string
     // jsonActionName: string
-    jsonAction: JsonActionValue
+    jsonAction: JsonActionStrings
     parentActions: XpmLiquidActions
+    matrixParameters?: XpmLiquidSubstitutionsStrings
   }) {
     assert(actionName)
     // assert(jsonActionName)
@@ -190,6 +324,9 @@ export class XpmLiquidAction {
     // this.jsonActionName = jsonActionName
     this.jsonAction = jsonAction
     this.parentActions = parentActions
+    if (matrixParameters !== undefined) {
+      this.matrixParameters = matrixParameters
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -206,11 +343,16 @@ export class XpmLiquidAction {
       const substituted = await performSubstitutions({
         input,
         engine: this.parentActions.engine,
-        substitutionsVariables: this.parentActions.substitutionsVariables,
+        substitutionsVariables: {
+          ...this.parentActions.substitutionsVariables,
+          matrix: this.matrixParameters ?? {},
+        },
         log: this.parentActions.log,
       })
 
-      this.#commands = substituted.split(os.EOL)
+      this.#commands = substituted
+        .replace(new RegExp(os.EOL + '$'), '')
+        .split(os.EOL)
     }
 
     this.parentActions.log.trace(
