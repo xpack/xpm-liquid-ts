@@ -1,0 +1,39 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/dist/index.js",
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "tap one",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "node_modules/.bin/tap",
+      "args": [
+        "run",
+        "--reporter=tap",
+        "--disable-coverage",
+        "--timeout=0",
+        "tests/tap/010-functions.ts"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/dist/*.js"
+      ]
+    }
+  ]
+}
