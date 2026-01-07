@@ -89,9 +89,9 @@ export class XpmLiquidBuildConfigurations {
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  async initialise(): Promise<void> {
+  async initialise(): Promise<boolean> {
     if (this.#isInitialised) {
-      return
+      return false
     }
 
     for (const buildConfigurationName of Object.keys(
@@ -114,6 +114,8 @@ export class XpmLiquidBuildConfigurations {
     )
 
     this.#isInitialised = true
+
+    return true
   }
 
   // --------------------------------------------------------------------------
@@ -264,9 +266,9 @@ export class XpmLiquidBuildConfiguration {
     // The rest of the initialisation is done in the async initialiser.
   }
 
-  async initialise(): Promise<void> {
+  async initialise(): Promise<boolean> {
     if (this.#isInitialised) {
-      return
+      return false
     }
 
     const log = this.#parentBuildConfigurations.log
@@ -385,6 +387,8 @@ export class XpmLiquidBuildConfiguration {
     // log.trace('substitutionsVariables => ', this.substitutionsVariables)
 
     this.#isInitialised = true
+
+    return true
   }
 
   // --------------------------------------------------------------------------

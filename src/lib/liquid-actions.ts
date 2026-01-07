@@ -90,12 +90,11 @@ export class XpmLiquidActions {
     // The rest of the initialisation is done in the async initialiser.
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  async initialise(): Promise<void> {
+  async initialise(): Promise<boolean> {
     if (this.#isInitialised) {
-      return
+      return false
     }
-    for (const actionName of Object.keys(this.jsonActions)) {
+    for (const [actionName, jsonAction] of Object.entries(this.jsonActions)) {
       if (actionName.includes('{{')) {
         // TODO: expand templates and generate multiple actions.
       } else {
@@ -110,6 +109,8 @@ export class XpmLiquidActions {
     )
 
     this.#isInitialised = true
+
+    return true
   }
 
   // --------------------------------------------------------------------------
