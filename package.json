@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "compile-watch": "tsc --build --verbose --watch src",
-    "prettier": "prettier src --write",
+    "prettier": "prettier src tests/tap --write",
     "fix": "eslint --fix src",
     "compile": "tsc --build --verbose src",
     "fix-compile": "npm run prettier && npm run fix && npm run compile",
