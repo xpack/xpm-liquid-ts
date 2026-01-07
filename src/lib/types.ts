@@ -15,7 +15,14 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-export type JsonActionValue = string | string[]
+export type JsonActionStrings = string | string[]
+
+export interface JsonActionTemplate {
+  matrix: Record<string, string[]>
+  template: JsonActionStrings
+}
+
+export type JsonActionValue = JsonActionStrings | JsonActionTemplate
 
 export type JsonPropertyValue = string
 
