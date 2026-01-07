@@ -63,12 +63,12 @@ export class XpmLiquidPropertiesDrop extends Drop {
   ): Promise<string | string[]> {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.#properties[key] === undefined) {
-      throw new Error(`properties have no ${key} key`)
+      throw new Error(`"properties.${key}" not defined`)
     }
 
     const log = this.#log
 
-    const value = this.#properties[key] ?? ''
+    const value = this.#properties[key]
     log.trace(
       `${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}') value = |`,
       value,
@@ -77,6 +77,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
 
     let result: string | string[]
 
+    // If the property value is an array, merge them into a single string.
     const valueString = Array.isArray(value) ? value.join('') : value
     if (valueString.includes('{{') || valueString.includes('{%')) {
       result = (await this.#engine.parseAndRender(
