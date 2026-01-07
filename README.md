@@ -2,7 +2,7 @@
 [![license](https://img.shields.io/github/license/xpack/xpm-lib-ts.svg)](https://github.com/xpack/xpm-lib-ts/blob/xpack/LICENSE)
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack/xpm-lib.svg)](https://www.npmjs.com/package/@xpack/xpm-lib/)
 
-# A Node.js CommonJS/ES6 module with the Liquid substitutions code used by xpm & relatives
+# A Node.js CommonJS/ES6 module with the xpm library
 
 This project provides a **TypeScript** Node.js **CommonJS**/**ES6** module
 with the code used to perform the Liquid substitutions when parsing
