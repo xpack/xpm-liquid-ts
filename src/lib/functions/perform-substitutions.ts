@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------------
 
 import assert from 'node:assert'
+// import * as util from 'node:util'
 
 import { Context } from 'liquidjs'
 
@@ -94,12 +95,12 @@ export async function performSubstitutions({
 
         break
       } /* c8 ignore stop */
-    } catch (ex) {
-      if (ex instanceof Error) {
-        // log.error(ex)
-        log.error(ex.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        // log.error(util.inspect(error))
+        log.error(error.message.replace(/, line:.*/g, ''))
       } else {
-        log.error(new Error(String(ex)))
+        log.error(new Error(String(error)))
       }
       // Return the current (unsubstituted) value.
       substituted = current
