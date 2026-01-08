@@ -175,10 +175,10 @@ await test('actions', async (t): Promise<void> => {
   t.ok(Array.isArray(actionsNames), 'topActions.names() is array')
   t.equal(actionsNames.length, 0, 'topActions has 0 names')
 
-  let initialized = await topActions.initialise()
-  t.equal(initialized, true, 'topActions.initialise() => true')
-  initialized = await topActions.initialise()
-  t.equal(initialized, false, 'topActions.initialise() again => false')
+  let initialised = await topActions.initialise()
+  t.equal(initialised, true, 'topActions.initialise() => true')
+  initialised = await topActions.initialise()
+  t.equal(initialised, false, 'topActions.initialise() again => false')
 
   t.equal(topActions.empty(), false, 'topActions is not empty after init')
 
@@ -200,13 +200,18 @@ await test('actions', async (t): Promise<void> => {
     'echo {{ properties.p2 }} command',
     'jsonAction is ok'
   )
-  t.equal(
-    actionOne.matrixParameters,
-    undefined,
-    'matrixParameters is undefined'
-  )
+  // t.equal(
+  //   actionOne.#matrixParameters,
+  //   undefined,
+  //   'matrixParameters is undefined'
+  // )
 
-  let commands = await actionOne.getCommands()
+  initialised = await actionOne.initialise()
+  t.equal(initialised, true, 'actionOne.initialise() => true')
+  initialised = await actionOne.initialise()
+  t.equal(initialised, false, 'actionOne.initialise() again => false')
+
+  let commands = actionOne.commands
   // console.log(commands)
   t.equal(commands.length, 1, 'actionOne has 1 command')
   t.equal(commands[0], 'echo 1 command', 'command is as expected')
@@ -219,7 +224,8 @@ await test('actions', async (t): Promise<void> => {
   const actionTwo = topActions.get('two')
   t.ok(actionTwo, 'topActions.get("two") is ok')
 
-  commands = await actionTwo.getCommands()
+  await actionTwo.initialise()
+  commands = actionTwo.commands
   // console.log(commands)
   t.equal(commands.length, 1, 'actionTwo has 1 command')
   t.equal(
@@ -236,7 +242,8 @@ await test('actions', async (t): Promise<void> => {
   const actionThree = topActions.get('three')
   t.ok(actionThree, 'topActions.get("three") is ok')
 
-  commands = await actionThree.getCommands()
+  await actionThree.initialise()
+  commands = actionThree.commands
   // console.log(commands)
   t.equal(commands.length, 4, 'actionThree has 4 commands')
   t.equal(commands[0], 'line 1', 'command line 1 is as expected')
@@ -260,7 +267,8 @@ await test('actions', async (t): Promise<void> => {
   t.ok(actionTemplate, 'topActions.get("test-native-cmake-gcc") is ok')
 
   // console.log(actionTemplate.jsonAction)
-  commands = await actionTemplate.getCommands()
+  await actionTemplate.initialise()
+  commands = actionTemplate.commands
   // console.log(commands)
   t.equal(commands.length, 2, 'actionTemplate has 2 commands')
   t.equal(
@@ -290,7 +298,8 @@ await test('actions', async (t): Promise<void> => {
   t.ok(actionTemplate, 'topActions.get("test-native-meson-gcc14") is ok')
 
   // console.log(actionTemplate.jsonAction)
-  commands = await actionTemplate.getCommands()
+  await actionTemplate.initialise()
+  commands = actionTemplate.commands
   // console.log(commands)
   t.equal(commands.length, 2, 'actionTemplate has 2 commands')
   t.equal(

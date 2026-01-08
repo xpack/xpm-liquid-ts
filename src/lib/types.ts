@@ -15,22 +15,11 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-export type JsonActionStrings = string | string[]
-
-export interface JsonActionTemplate {
-  matrix: Record<string, string[]>
-  template: JsonActionStrings
-}
-
-export type JsonActionValue = JsonActionStrings | JsonActionTemplate
-
 export type JsonPropertyValue = string
 
 export type JsonProperties = Record<string, JsonPropertyValue>
 
 export type JsonBuildConfigurationInherits = string[]
-
-export type JsonActions = Record<string, JsonActionValue>
 
 export type JsonScripts = Record<string, string>
 
@@ -38,9 +27,24 @@ export type JsonDependencies = Record<string, string | JsonDependencyExtended>
 
 export type JsonDependencyExtended = Record<string, string>
 
-export interface JsonBuildConfiguration {
+// -----
+
+export type JsonActionContent = string | string[]
+
+export interface JsonActionTemplate {
+  matrix: Record<string, string[]>
+  template: JsonActionContent
+}
+
+export type JsonAction = JsonActionContent | JsonActionTemplate
+
+export type JsonActions = Record<string, JsonAction>
+
+// -----
+
+export interface JsonBuildConfigurationContent {
   inherits?: JsonBuildConfigurationInherits | string
-  inherit?: JsonBuildConfigurationInherits | string // Deprecated
+  inherit?: JsonBuildConfigurationInherits | string // Deprecated, use inherits
   hidden?: boolean
   properties?: JsonProperties
   actions?: JsonActions
