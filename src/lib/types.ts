@@ -52,17 +52,28 @@ export interface JsonBuildConfigurationContent {
   devDependencies?: JsonDependencies
 }
 
+export interface JsonBuildConfigurationTemplate {
+  matrix: Record<string, string[]>
+  template: JsonBuildConfigurationContent
+}
+
+export type JsonBuildConfiguration =
+  | JsonBuildConfigurationContent
+  | JsonBuildConfigurationTemplate
+
 export type JsonBuildConfigurations = Record<string, JsonBuildConfiguration>
+
+// ----
 
 export interface JsonXpack {
   minimumXpmRequired?: string
   binaries?: JsonXpmBinaries
   executables?: Record<string, string>
-  bin?: Record<string, string> // Deprecated
-  properties?: JsonProperties
-  actions?: JsonActions
+  bin?: Record<string, string> // Deprecated, use executables
   dependencies?: JsonDependencies
   devDependencies?: JsonDependencies
+  properties?: JsonProperties
+  actions?: JsonActions
   buildConfigurations?: JsonBuildConfigurations
 }
 

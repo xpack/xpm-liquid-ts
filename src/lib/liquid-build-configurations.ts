@@ -15,6 +15,7 @@
 
 import assert from 'node:assert'
 import * as path from 'node:path'
+import * as os from 'node:os'
 
 import { Logger } from '@xpack/logger'
 
@@ -26,13 +27,16 @@ import {
 import { buildFolderRelativePathPropertyName } from './liquid-package.js'
 import {
   JsonBuildConfiguration,
+  JsonBuildConfigurationContent,
   JsonBuildConfigurations,
+  JsonBuildConfigurationTemplate,
   JsonDependencies,
 } from './types.js'
 import { performSubstitutions } from './functions/perform-substitutions.js'
 import { XpmLiquidAction, XpmLiquidActions } from './liquid-actions.js'
-import { isString } from './functions/utils.js'
+import { isJsonArray, isJsonObject, isString } from './functions/utils.js'
 import { filterPath } from './functions/utils.js'
+import { XpmError } from './errors.js'
 
 // ----------------------------------------------------------------------------
 
@@ -88,7 +92,6 @@ export class XpmLiquidBuildConfigurations {
     // log.trace('substitutionsVariables => ', this.substitutionsVariables)
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async initialise(): Promise<boolean> {
     if (this.#isInitialised) {
       return false
@@ -98,7 +101,33 @@ export class XpmLiquidBuildConfigurations {
       this.jsonBuildConfigurations
     )) {
       if (buildConfigurationName.includes('{{')) {
-        // TODO: expand templates and generate multiple build configurations.
+        // Expand templates and generate multiple build configurations.
+        try {
+          const expandedBuildConfigurationsMap =
+            await this.expandTemplateBuildConfigurations({
+              buildConfigurationName,
+              jsonBuildConfigurationTemplate: this.jsonBuildConfigurations[
+                buildConfigurationName
+              ] as JsonBuildConfigurationTemplate,
+            })
+          for (const [
+            expandedBuildConfigurationName,
+            expandedBuildConfiguration,
+          ] of expandedBuildConfigurationsMap) {
+            this.#buildConfigurationsMap.set(
+              expandedBuildConfigurationName,
+              expandedBuildConfiguration
+            )
+            this.#jsonBuildConfigurationsNamesMap.set(
+              expandedBuildConfigurationName,
+              buildConfigurationName
+            )
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            this.log.error(error.message)
+          }
+        }
       } else {
         this.#buildConfigurationsMap.set(buildConfigurationName, undefined)
         this.#jsonBuildConfigurationsNamesMap.set(
@@ -114,7 +143,6 @@ export class XpmLiquidBuildConfigurations {
     )
 
     this.#isInitialised = true
-
     return true
   }
 
@@ -148,10 +176,20 @@ export class XpmLiquidBuildConfigurations {
   }
 
   isHidden(buildConfigurationName: string): boolean {
-    return (
-      this.jsonBuildConfigurations[this.getJsonName(buildConfigurationName)]
-        .hidden ?? false
-    )
+    const jsonBuildConfigurationName = this.getJsonName(buildConfigurationName)
+    if (jsonBuildConfigurationName.includes('{{')) {
+      const jsonBuildConfigurationTemplate: JsonBuildConfigurationTemplate =
+        this.jsonBuildConfigurations[
+          jsonBuildConfigurationName
+        ] as JsonBuildConfigurationTemplate
+      return jsonBuildConfigurationTemplate.template.hidden ?? false
+    }
+
+    const jsonBuildConfigurationContent: JsonBuildConfigurationContent = this
+      .jsonBuildConfigurations[
+      jsonBuildConfigurationName
+    ] as JsonBuildConfigurationContent
+    return jsonBuildConfigurationContent.hidden ?? false
   }
 
   has(buildConfigurationName: string): boolean {
@@ -169,8 +207,9 @@ export class XpmLiquidBuildConfigurations {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.#jsonBuildConfigurationsNamesMap.get(buildConfigurationName)!
 
-      const jsonBuildConfiguration =
-        this.jsonBuildConfigurations[jsonBuildConfigurationName] ?? {}
+      const jsonBuildConfiguration: JsonBuildConfigurationContent = (this
+        .jsonBuildConfigurations[jsonBuildConfigurationName] ??
+        {}) as JsonBuildConfigurationContent
 
       buildConfiguration = new XpmLiquidBuildConfiguration({
         buildConfigurationName,
@@ -192,6 +231,134 @@ export class XpmLiquidBuildConfigurations {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.#jsonBuildConfigurationsNamesMap.get(buildConfigurationName)!
   }
+
+  async expandTemplateBuildConfigurations({
+    buildConfigurationName,
+    jsonBuildConfigurationTemplate,
+  }: {
+    buildConfigurationName: string
+    jsonBuildConfigurationTemplate: JsonBuildConfigurationTemplate
+  }): Promise<Map<string, XpmLiquidBuildConfiguration>> {
+    const newBuildConfigurationsMap = new Map<
+      string,
+      XpmLiquidBuildConfiguration
+    >()
+
+    if (!isJsonObject(jsonBuildConfigurationTemplate.matrix)) {
+      throw new XpmError(
+        `buildConfiguration '${buildConfigurationName}' ` +
+          `matrix is not an object`
+      )
+    }
+    if (
+      !isString(jsonBuildConfigurationTemplate.template) &&
+      !isJsonArray(jsonBuildConfigurationTemplate.template)
+    ) {
+      throw new XpmError(
+        `buildConfiguration '${buildConfigurationName}' ` +
+          `template is not a string or array`
+      )
+    }
+    // Validate matrix structure and collect keys/values
+    const matrixKeys: string[] = []
+    const matrixValues: string[][] = []
+
+    for (const [matrixKey, matrixValueArray] of Object.entries(
+      jsonBuildConfigurationTemplate.matrix
+    )) {
+      if (!isJsonArray(matrixValueArray)) {
+        throw new XpmError(
+          `buildConfiguration '${buildConfigurationName}' ` +
+            `matrix.${matrixKey} is not an array`
+        )
+      }
+      for (const matrixValue of matrixValueArray) {
+        if (!isString(matrixValue)) {
+          throw new XpmError(
+            `buildConfiguration '${buildConfigurationName}' ` +
+              `matrix.${matrixKey} value is not a string`
+          )
+        }
+      }
+      matrixKeys.push(matrixKey)
+      const stringValue = matrixValueArray.join(os.EOL)
+      if (stringValue.includes('{{') || stringValue.includes('{%')) {
+        const substitutedValue = await performSubstitutions({
+          input: stringValue,
+          engine: this.engine,
+          substitutionsVariables: {
+            ...this.substitutionsVariables,
+          },
+          log: this.log,
+        })
+        // console.log('substitutedValue =>', substitutedValue)
+        matrixValues.push(
+          substitutedValue.replace(new RegExp(os.EOL + '$'), '').split(os.EOL)
+        )
+      } else {
+        matrixValues.push(matrixValueArray)
+      }
+    }
+
+    // Inner function.
+    const createSubstitutedBuildConfiguration = async (
+      combination: Record<string, string>
+    ): Promise<void> => {
+      // console.log(combination)
+
+      const substitutedBuildConfigurationName = await performSubstitutions({
+        input: buildConfigurationName,
+        engine: this.engine,
+        substitutionsVariables: {
+          ...this.substitutionsVariables,
+          matrix: combination,
+        },
+        log: this.log,
+      })
+      // console.log(substitutedActionName)
+
+      const newBuildConfiguration = new XpmLiquidBuildConfiguration({
+        buildConfigurationName: substitutedBuildConfigurationName,
+        jsonBuildConfiguration: jsonBuildConfigurationTemplate.template,
+        parentBuildConfigurations: this,
+        matrixParameters: { ...combination },
+      })
+
+      newBuildConfigurationsMap.set(
+        substitutedBuildConfigurationName,
+        newBuildConfiguration
+      )
+    }
+
+    // const matrixKeys: string[] = Object.keys(jsonAction.matrix)
+    // const matrixValues: string[][] = Object.values(jsonAction.matrix)
+
+    // Compute all combinations (cartesian product)
+
+    // Inner function.
+    const generateCombinationsRecursively = async (
+      index: number,
+      combination: Record<string, string>
+    ): Promise<void> => {
+      if (index === matrixKeys.length) {
+        await createSubstitutedBuildConfiguration(combination)
+
+        return
+      }
+
+      const key = matrixKeys[index]
+      const values = matrixValues[index]
+
+      for (const value of values) {
+        combination[key] = value
+        await generateCombinationsRecursively(index + 1, combination)
+      }
+    }
+
+    await generateCombinationsRecursively(0, {})
+
+    return newBuildConfigurationsMap
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -202,21 +369,18 @@ export class XpmLiquidBuildConfiguration {
   // Members.
 
   readonly hidden: boolean
-
-  // The actual (un-substituted) name from package.json.
-  // readonly jsonBuildConfigurationName: string
-  // Points to the actual buildConfiguration in package.json.
-  readonly jsonBuildConfiguration: JsonBuildConfiguration
-
-  substitutionsVariables: XpmLiquidSubstitutionsVariables
-
   properties: XpmLiquidSubstitutionsStrings = {}
 
   jsonDependencies: JsonDependencies = {}
   jsonDevDependencies: JsonDependencies = {}
 
+  // Points to the actual (un-substituted) buildConfiguration in package.json.
+  readonly #jsonBuildConfiguration: JsonBuildConfigurationContent
+
+  #substitutionsVariables: XpmLiquidSubstitutionsVariables
+
   // For templates, the actual values.
-  matrixParameters?: XpmLiquidSubstitutionsStrings
+  readonly #matrixParameters?: XpmLiquidSubstitutionsStrings
 
   // The name after performing the substitutions.
   readonly #buildConfigurationName: string
@@ -237,11 +401,13 @@ export class XpmLiquidBuildConfiguration {
     // jsonBuildConfigurationName, // The raw name from package.json.
     jsonBuildConfiguration,
     parentBuildConfigurations,
+    matrixParameters,
   }: {
     buildConfigurationName: string
     // jsonBuildConfigurationName: string
-    jsonBuildConfiguration: JsonBuildConfiguration
+    jsonBuildConfiguration: JsonBuildConfigurationContent
     parentBuildConfigurations: XpmLiquidBuildConfigurations
+    matrixParameters?: XpmLiquidSubstitutionsStrings
   }) {
     assert(buildConfigurationName)
     // assert(jsonBuildConfigurationName)
@@ -254,14 +420,17 @@ export class XpmLiquidBuildConfiguration {
 
     this.#buildConfigurationName = buildConfigurationName
     // this.jsonBuildConfigurationName = jsonBuildConfigurationName
-    this.jsonBuildConfiguration = jsonBuildConfiguration
+    this.#jsonBuildConfiguration = jsonBuildConfiguration
     this.#parentBuildConfigurations = parentBuildConfigurations
+    if (matrixParameters !== undefined) {
+      this.#matrixParameters = matrixParameters
+    }
 
-    this.substitutionsVariables = {
+    this.#substitutionsVariables = {
       ...this.#parentBuildConfigurations.substitutionsVariables,
     }
 
-    this.hidden = this.jsonBuildConfiguration.hidden ?? false
+    this.hidden = this.#jsonBuildConfiguration.hidden ?? false
 
     // The rest of the initialisation is done in the async initialiser.
   }
@@ -272,20 +441,43 @@ export class XpmLiquidBuildConfiguration {
     }
 
     const log = this.#parentBuildConfigurations.log
-    const jsonBuildConfiguration = this.jsonBuildConfiguration
 
-    // TODO: add matrixParameters
+    const stringifiedJsonBuildConfiguration = JSON.stringify(
+      this.#jsonBuildConfiguration
+    )
+
+    let jsonSubstitutedBuildConfiguration: JsonBuildConfigurationContent
+
+    if (
+      stringifiedJsonBuildConfiguration.includes('{{') ||
+      stringifiedJsonBuildConfiguration.includes('{%')
+    ) {
+      const substitutedBuildConfiguration = await performSubstitutions({
+        input: stringifiedJsonBuildConfiguration,
+        engine: this.#parentBuildConfigurations.engine,
+        substitutionsVariables: {
+          ...this.#substitutionsVariables,
+          matrix: this.#matrixParameters ?? {},
+        },
+        log,
+      })
+      jsonSubstitutedBuildConfiguration = JSON.parse(
+        substitutedBuildConfiguration
+      ) as JsonBuildConfigurationContent
+    } else {
+      jsonSubstitutedBuildConfiguration = this.#jsonBuildConfiguration
+    }
 
     // Process both the new 'inherits' and the deprecated 'inherit'.
-    let inherits: string[] = []
-    if (isString(jsonBuildConfiguration.inherits)) {
-      inherits = [jsonBuildConfiguration.inherits]
-    } else if (Array.isArray(jsonBuildConfiguration.inherits)) {
-      inherits = jsonBuildConfiguration.inherits as string[]
-    } else if (isString(jsonBuildConfiguration.inherit)) {
-      inherits = [jsonBuildConfiguration.inherit]
-    } else if (Array.isArray(jsonBuildConfiguration.inherit)) {
-      inherits = jsonBuildConfiguration.inherit as string[]
+    let jsonInherits: string[] = []
+    if (isString(jsonSubstitutedBuildConfiguration.inherits)) {
+      jsonInherits = [jsonSubstitutedBuildConfiguration.inherits]
+    } else if (Array.isArray(jsonSubstitutedBuildConfiguration.inherits)) {
+      jsonInherits = jsonSubstitutedBuildConfiguration.inherits as string[]
+    } else if (isString(jsonSubstitutedBuildConfiguration.inherit)) {
+      jsonInherits = [jsonSubstitutedBuildConfiguration.inherit]
+    } else if (Array.isArray(jsonSubstitutedBuildConfiguration.inherit)) {
+      jsonInherits = jsonSubstitutedBuildConfiguration.inherit as string[]
     }
 
     const inheritedActionsMap: Map<string, XpmLiquidAction> = new Map<
@@ -295,7 +487,7 @@ export class XpmLiquidBuildConfiguration {
 
     // Add inherited configuration properties.
     // TODO: detect circular references.
-    for (const inheritedBuildConfigurationName of inherits) {
+    for (const inheritedBuildConfigurationName of jsonInherits) {
       if (
         this.#parentBuildConfigurations.hasJson(inheritedBuildConfigurationName)
       ) {
@@ -336,43 +528,44 @@ export class XpmLiquidBuildConfiguration {
 
     this.properties = {
       ...this.properties,
-      ...jsonBuildConfiguration.properties,
+      ...jsonSubstitutedBuildConfiguration.properties,
     }
 
     this.jsonDependencies = {
       ...this.jsonDependencies,
-      ...jsonBuildConfiguration.dependencies,
+      ...jsonSubstitutedBuildConfiguration.dependencies,
     }
     this.jsonDevDependencies = {
       ...this.jsonDevDependencies,
-      ...jsonBuildConfiguration.devDependencies,
+      ...jsonSubstitutedBuildConfiguration.devDependencies,
     }
 
-    this.substitutionsVariables = {
+    this.#substitutionsVariables = {
       ...this.#parentBuildConfigurations.substitutionsVariables,
       properties: {
-        ...this.substitutionsVariables.properties,
+        ...this.#substitutionsVariables.properties,
         ...this.properties,
       },
       configuration: {
-        ...jsonBuildConfiguration,
+        ...jsonSubstitutedBuildConfiguration,
         name: this.#buildConfigurationName,
       },
     }
 
     // Add the buildFolderRelativePath property.
     // Note: the async initialiser was needed due to this async operation.
-    const properties = this.substitutionsVariables.properties
+    const properties = this.#substitutionsVariables.properties
     properties.buildFolderRelativePath = await this.getBuildFolderRelativePath()
 
-    // Please note that substitutionsVariables is not fully set at this point;
-    // it will be in the async initialiser after the constructor returns.
     this.#actions = new XpmLiquidActions({
       log: this.#parentBuildConfigurations.log,
       engine: this.#parentBuildConfigurations.engine,
-      substitutionsVariables: this.substitutionsVariables,
+      substitutionsVariables: {
+        ...this.#substitutionsVariables,
+        matrix: this.#matrixParameters ?? {},
+      },
       inheritedActionsMap,
-      jsonActions: this.jsonBuildConfiguration.actions,
+      jsonActions: this.#jsonBuildConfiguration.actions,
     })
     // Note: this must be done manually by the application.
     // await this.#actions.initialise()
@@ -387,7 +580,6 @@ export class XpmLiquidBuildConfiguration {
     // log.trace('substitutionsVariables => ', this.substitutionsVariables)
 
     this.#isInitialised = true
-
     return true
   }
 
@@ -410,9 +602,9 @@ export class XpmLiquidBuildConfiguration {
     let folderPath: string
     if (
       buildFolderRelativePathPropertyName in
-      this.substitutionsVariables.properties
+      this.#substitutionsVariables.properties
     ) {
-      folderPath = this.substitutionsVariables.properties[
+      folderPath = this.#substitutionsVariables.properties[
         buildFolderRelativePathPropertyName
       ] as string
       if (folderPath !== '') {
@@ -421,7 +613,7 @@ export class XpmLiquidBuildConfiguration {
             log,
             engine: this.#parentBuildConfigurations.engine,
             input: folderPath,
-            substitutionsVariables: this.substitutionsVariables,
+            substitutionsVariables: this.#substitutionsVariables,
           })
         } catch (err) {
           log.trace(err)

@@ -55,6 +55,8 @@ import { Logger } from '@xpack/logger'
 
 import {
   JsonBuildConfiguration,
+  JsonBuildConfigurationContent,
+  JsonBuildConfigurationTemplate,
   // JsonNpmPackage,
   JsonXpmPackage,
   XpmConfig,
@@ -261,15 +263,33 @@ export class XpmPackage {
         json?.xpack.buildConfigurations !== undefined &&
         Object.keys(json.xpack.buildConfigurations).length > 0
       ) {
-        // Don't use a lambda, to return directly from the loop.
-        for (const name of Object.keys(json.xpack.buildConfigurations)) {
+        for (const buildConfigurationName of Object.keys(
+          json.xpack.buildConfigurations
+        )) {
           const buildConfiguration: JsonBuildConfiguration =
-            json.xpack.buildConfigurations[name]
+            json.xpack.buildConfigurations[buildConfigurationName]
           if (
-            buildConfiguration.actions !== undefined &&
-            Object.keys(buildConfiguration.actions).length > 0
+            buildConfigurationName.includes('{{') ||
+            buildConfigurationName.includes('{%')
           ) {
-            return true
+            const buildConfigurationTemplate =
+              buildConfiguration as JsonBuildConfigurationTemplate
+            if (
+              buildConfigurationTemplate.template.actions !== undefined &&
+              Object.keys(buildConfigurationTemplate.template.actions).length >
+                0
+            ) {
+              return true
+            }
+          } else {
+            const buildConfigurationContent =
+              buildConfiguration as JsonBuildConfigurationContent
+            if (
+              buildConfigurationContent.actions !== undefined &&
+              Object.keys(buildConfigurationContent.actions).length > 0
+            ) {
+              return true
+            }
           }
         }
       }
