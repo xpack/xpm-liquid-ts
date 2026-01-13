@@ -21,7 +21,8 @@
       "request": "launch",
       "name": "tap one",
       "skipFiles": [
-        "<node_internals>/**"
+        "<node_internals>/**",
+        "**/async-hook-domain/**"
       ],
       "program": "node_modules/.bin/tap",
       "args": [
@@ -29,11 +30,12 @@
         "--reporter=tap",
         "--disable-coverage",
         "--timeout=0",
-        "tests/tap/010-functions.ts"
+        "tests/tap/060-substitutions.ts"
       ],
       "outFiles": [
         "${workspaceFolder}/dist/*.js"
-      ]
+      ],
+      "stopOnEntry": true
     }
   ]
 }
