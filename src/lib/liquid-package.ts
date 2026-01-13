@@ -44,9 +44,9 @@ export class XpmLiquidPackage {
   readonly #engine: Liquid
   readonly #jsonPackage: JsonXpmPackage
 
-  readonly topLiquidSubstitutionsVariables: XpmLiquidSubstitutionsVariables
+  readonly substitutionsVariables: XpmLiquidSubstitutionsVariables
 
-  readonly topActions: XpmLiquidActions
+  readonly actions: XpmLiquidActions
   readonly buildConfigurations: XpmLiquidBuildConfigurations
 
   // --------------------------------------------------------------------------
@@ -76,25 +76,25 @@ export class XpmLiquidPackage {
       'Mandatory os.version available only since 12.x'
     )
 
-    this.topLiquidSubstitutionsVariables = {
+    this.substitutionsVariables = {
       ...xpmLiquidSubstitutionsVariablesBase,
       package: jsonPackage,
     }
 
     if (isJsonObject(jsonPackage.xpack.properties)) {
-      this.topLiquidSubstitutionsVariables.properties = {
+      this.substitutionsVariables.properties = {
         ...jsonPackage.xpack.properties,
       }
     }
 
     // Prevent adding/removing properties.
-    Object.seal(this.topLiquidSubstitutionsVariables)
+    Object.seal(this.substitutionsVariables)
 
     // Empty actions.
-    this.topActions = new XpmLiquidActions({
+    this.actions = new XpmLiquidActions({
       log: this.#log,
       engine: this.#engine,
-      substitutionsVariables: this.topLiquidSubstitutionsVariables,
+      substitutionsVariables: this.substitutionsVariables,
       jsonActions: this.#jsonPackage.xpack.actions,
     })
 
@@ -102,7 +102,7 @@ export class XpmLiquidPackage {
     this.buildConfigurations = new XpmLiquidBuildConfigurations({
       log: this.#log,
       engine: this.#engine,
-      substitutionsVariables: this.topLiquidSubstitutionsVariables,
+      substitutionsVariables: this.substitutionsVariables,
       jsonBuildConfigurations: this.#jsonPackage.xpack.buildConfigurations,
     })
   }
