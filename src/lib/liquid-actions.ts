@@ -149,7 +149,7 @@ export class XpmLiquidActions {
     return this.#actionsMap.has(actionName)
   }
 
-  get(actionName: string): XpmLiquidAction {
+  async get(actionName: string): Promise<XpmLiquidAction> {
     let action = this.#actionsMap.get(actionName)
     if (action === undefined) {
       const jsonActionName: string =
@@ -165,6 +165,7 @@ export class XpmLiquidActions {
       this.#actionsMap.set(actionName, action)
     }
 
+    await action.initialise()
     return action
   }
 
@@ -250,8 +251,6 @@ export class XpmLiquidActions {
         parentActions: this,
         matrixParameters: { ...combination },
       })
-
-      await newAction.initialise()
 
       newActionsMap.set(substitutedActionName, newAction)
     }
