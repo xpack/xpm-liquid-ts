@@ -208,8 +208,8 @@ await test('configurations', async (t): Promise<void> => {
     'jsonAction is ok'
   )
 
-  let actionInitialised = await actionOne.initialise()
-  t.equal(actionInitialised, false, 'actionOne.initialise() again => false')
+  initialised = await actionOne.initialise()
+  t.equal(initialised, false, 'actionOne.initialise() again => false')
 
   let commands = actionOne.commands
   // console.log(commands)
