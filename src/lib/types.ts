@@ -15,7 +15,8 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-export type JsonPropertyValue = string
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type JsonPropertyValue = any
 
 export type JsonProperties = Record<string, JsonPropertyValue>
 
@@ -23,9 +24,15 @@ export type JsonBuildConfigurationInherits = string[]
 
 export type JsonScripts = Record<string, string>
 
-export type JsonDependencies = Record<string, string | JsonDependencyExtended>
+export type JsonDependencies = Record<string, JsonDependenciesContent>
 
-export type JsonDependencyExtended = Record<string, string>
+export type JsonDependenciesContent = string | JsonDependencyExtended
+
+export interface JsonDependencyExtended {
+  specifier: string
+  local?: 'link' | 'copy'
+  platforms?: string | string[]
+}
 
 // -----
 
