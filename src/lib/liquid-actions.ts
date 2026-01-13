@@ -100,7 +100,7 @@ export class XpmLiquidActions {
       if (actionName.includes('{{')) {
         // Expand template and return multiple actions.
         try {
-          const expandedActionsMap = await this.expandTemplateActions({
+          const expandedActionsMap = await this.#expandTemplateActions({
             actionName,
             jsonActionTemplate: jsonAction as JsonActionTemplate,
           })
@@ -168,7 +168,7 @@ export class XpmLiquidActions {
     return action
   }
 
-  async expandTemplateActions({
+  async #expandTemplateActions({
     actionName,
     jsonActionTemplate,
   }: {
