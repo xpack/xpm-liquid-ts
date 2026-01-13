@@ -225,13 +225,13 @@ export class XpmLiquidBuildConfigurations {
         jsonBuildConfiguration,
         parentBuildConfigurations: this,
       })
-      await buildConfiguration.initialise()
       this.#buildConfigurationsMap.set(
         buildConfigurationName,
         buildConfiguration
       )
     }
 
+    await buildConfiguration.initialise()
     return buildConfiguration
   }
 
@@ -323,8 +323,6 @@ export class XpmLiquidBuildConfigurations {
         parentBuildConfigurations: this,
         matrixParameters: { ...combination },
       })
-
-      await newBuildConfiguration.initialise()
 
       newBuildConfigurationsMap.set(
         substitutedBuildConfigurationName,
@@ -529,7 +527,8 @@ export class XpmLiquidBuildConfiguration {
 
         await inheritedBuildConfiguration.actions.initialise()
         for (const actionName of inheritedBuildConfiguration.actions.names()) {
-          const action = inheritedBuildConfiguration.actions.get(actionName)
+          const action =
+            await inheritedBuildConfiguration.actions.get(actionName)
           inheritedActionsMap.set(actionName, action)
         }
       } else {
