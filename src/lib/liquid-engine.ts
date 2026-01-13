@@ -19,6 +19,7 @@ import * as util from 'node:util'
 
 // https://www.npmjs.com/package/liquidjs
 import { Liquid } from 'liquidjs'
+import { isJsonObject } from './functions/utils.js'
 
 // ----------------------------------------------------------------------------
 
@@ -129,6 +130,31 @@ export class XpmLiquidEngine extends Liquid {
         return fixed.replace(/--/g, '-')
       }
     )
+
+    this.registerFilter('join_lines', (input: string[]): string => {
+      // Convert an array into a string with each element on a separate line.
+      if (Array.isArray(input)) {
+        return input.join(os.EOL)
+      }
+      return input
+    })
+
+    this.registerFilter('split_lines', (input: string): string[] => {
+      // Convert a string with lines into an array.
+      return input.split(os.EOL)
+    })
+
+    this.registerFilter('keys', (input: unknown): string[] | string => {
+      if (isJsonObject(input)) {
+        const keys = Object.keys(input as object)
+        // console.log('input object', input)
+        // console.log('input keys', keys)
+        return keys
+      }
+      return String(input)
+    })
+
+    // throw new Error()
   }
 }
 
