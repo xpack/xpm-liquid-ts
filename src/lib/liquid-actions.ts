@@ -251,6 +251,8 @@ export class XpmLiquidActions {
         matrixParameters: { ...combination },
       })
 
+      await newAction.initialise()
+
       newActionsMap.set(substitutedActionName, newAction)
     }
 
