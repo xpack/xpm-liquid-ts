@@ -6,7 +6,7 @@ files:
 coverage-report:
   - text
 
-reporter: base
+reporter: terse
 browser: true
 color: true
 
