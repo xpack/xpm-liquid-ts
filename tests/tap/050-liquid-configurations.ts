@@ -196,7 +196,7 @@ await test('configurations', async (t): Promise<void> => {
   t.equal(actionsNames[0], 'one', 'actions names[0] is "one"')
   t.ok(actions.has('one'), 'actions has action "one"')
 
-  const actionOne = actions.get('one')
+  const actionOne = await actions.get('one')
   t.ok(actionOne, 'actions.get("one") is ok')
 
   t.equal(actionOne.parentActions, actions, 'parentActions is ok')
@@ -209,8 +209,6 @@ await test('configurations', async (t): Promise<void> => {
   )
 
   let actionInitialised = await actionOne.initialise()
-  t.equal(actionInitialised, true, 'actionOne.initialise() => true')
-  actionInitialised = await actionOne.initialise()
   t.equal(actionInitialised, false, 'actionOne.initialise() again => false')
 
   let commands = actionOne.commands
@@ -218,7 +216,7 @@ await test('configurations', async (t): Promise<void> => {
   t.equal(commands.length, 1, 'actionOne has 1 command')
   t.equal(commands[0], 'echo 1 command', 'command is as expected')
 
-  const actionTwo = actions.get('two')
+  const actionTwo = await actions.get('two')
   t.ok(actionTwo, 'actions.get("two") is ok')
 
   await actionTwo.initialise()
@@ -404,7 +402,7 @@ await test('configurations inheritance', async (t): Promise<void> => {
     'actions has ' + actionsNames.length + ' names'
   )
 
-  const action = actions.get('build')
+  const action = await actions.get('build')
   t.ok(action, 'actions.get("build") is ok')
 
   await action.initialise()
@@ -601,7 +599,7 @@ await test('configurations template', async (t): Promise<void> => {
     'actions has ' + actionsNames.length + ' names'
   )
 
-  const action = actions.get('dummy')
+  const action = await actions.get('dummy')
   t.ok(action, 'actions.get("dummy") is ok')
 
   await action.initialise()

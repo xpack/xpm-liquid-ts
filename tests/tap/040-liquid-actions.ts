@@ -116,7 +116,7 @@ await test('actions', async (t): Promise<void> => {
   t.equal(actionsNames[0], 'one', 'topActions names[0] is "one"')
   t.ok(topActions.has('one'), 'topActions has action "one"')
 
-  const actionOne = topActions.get('one')
+  const actionOne = await topActions.get('one')
   t.ok(actionOne, 'topActions.get("one") is ok')
 
   t.equal(actionOne.parentActions, topActions, 'parentActions is ok')
@@ -134,8 +134,6 @@ await test('actions', async (t): Promise<void> => {
   // )
 
   initialised = await actionOne.initialise()
-  t.equal(initialised, true, 'actionOne.initialise() => true')
-  initialised = await actionOne.initialise()
   t.equal(initialised, false, 'actionOne.initialise() again => false')
 
   let commands = actionOne.commands
@@ -148,7 +146,7 @@ await test('actions', async (t): Promise<void> => {
   t.equal(actionsNames[1], 'two', 'topActions names[1] is "two"')
   t.ok(topActions.has('two'), 'topActions has action "two"')
 
-  const actionTwo = topActions.get('two')
+  const actionTwo = await topActions.get('two')
   t.ok(actionTwo, 'topActions.get("two") is ok')
 
   await actionTwo.initialise()
@@ -166,7 +164,7 @@ await test('actions', async (t): Promise<void> => {
   t.equal(actionsNames[2], 'three', 'topActions names[2] is "three"')
   t.ok(topActions.has('three'), 'topActions has action "three"')
 
-  const actionThree = topActions.get('three')
+  const actionThree = await topActions.get('three')
   t.ok(actionThree, 'topActions.get("three") is ok')
 
   await actionThree.initialise()
@@ -190,7 +188,7 @@ await test('actions', async (t): Promise<void> => {
     'topActions has action "test-native-cmake-gcc"'
   )
 
-  let actionTemplate = topActions.get('test-native-cmake-gcc')
+  let actionTemplate = await topActions.get('test-native-cmake-gcc')
   t.ok(actionTemplate, 'topActions.get("test-native-cmake-gcc") is ok')
 
   // console.log(actionTemplate.jsonAction)
@@ -221,7 +219,7 @@ await test('actions', async (t): Promise<void> => {
     'topActions has action "test-native-meson-gcc14"'
   )
 
-  actionTemplate = topActions.get('test-native-meson-gcc14')
+  actionTemplate = await topActions.get('test-native-meson-gcc14')
   t.ok(actionTemplate, 'topActions.get("test-native-meson-gcc14") is ok')
 
   // console.log(actionTemplate.jsonAction)
