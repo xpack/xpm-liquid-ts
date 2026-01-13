@@ -20,6 +20,7 @@ import { Liquid, Context, Drop } from 'liquidjs'
 import { Logger } from '@xpack/logger'
 
 import { XpmLiquidSubstitutionsStrings } from './substitutions-variables.js'
+import { isJsonObject } from './functions/utils.js'
 
 // ----------------------------------------------------------------------------
 
@@ -60,7 +61,9 @@ export class XpmLiquidPropertiesDrop extends Drop {
   override async liquidMethodMissing(
     key: string,
     context: Context
-  ): Promise<string | string[]> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<any> {
+    // console.log(key)
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.#properties[key] === undefined) {
       throw new Error(`"properties.${key}" not defined`)
@@ -76,6 +79,10 @@ export class XpmLiquidPropertiesDrop extends Drop {
     )
 
     let result: string | string[]
+
+    if (isJsonObject(value)) {
+      return value
+    }
 
     // If the property value is an array, merge them into a single string.
     const valueString = Array.isArray(value) ? value.join('') : value
