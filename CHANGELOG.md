@@ -6,9 +6,54 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues)
 and close existing issues and pull requests.
 
+## 2026-01-14
+
+* 54c8fe6 prepare 4.0.0-pre
+* ea13d60 RAEDME updates, without liquid details
+* 3a6c594 get buildFolderRelativePath()
+* f7bd147 cosmetics
+* 36c6141 pacakge.json cosmetics
+* 2afc92d rename folder to core
+* 4b011da launch all tests
+* 2c12eba move initialise out of get()
+* 46d673c catch strings
+* 63a021b tests cosmetics
+* 40f6b0f tests update with await get()
+* f71a78b liquid-build-configurations.ts move initialise to get
+* e7c608b liquid-actions.ts async get with initialise
+* 5835d3d package.json test-one-0[1-6]0
+* 58bb8b2 test templates
+* 997ef5a launch.json skip **/async-hook-domain/**
+* 945eb23 .taprc reporter terse
+* 8d8a388 liquid-build-configurations.ts implement templates
+* ce743b8 types.ts add JsonDependenciesContent
+* 12c5670 liquid-package.ts rename actions, substitutionsVariables
+* aea8bc0 liquid-engine.ts add join_lines, split_lines, keys
+* 6cf1235 liquid-drop return objects
+* 138c0ba template await newAction.initialise()
+* 81cd220 private expandTemplateActions
+
+## 2026-01-08
+
+* cf188a1 process template in build configurations
+* 2471681 rework actions with explicit initialise()
+* c1e29ba README update
+* 6f03e9c package.json update test scripts
+* 6902bb3 launch.json debug test
+* 65f597e tests package & actions
+* 153bf36 .prettierignore allow tests
+* ecf2374 liquid-actions.ts implement templates
+* 21cc7a8 types.ts add JsonActionTemplate
+* 1e4d3c5 liquid-package.ts assert message
+* 8d6543b liquid-drop.ts cosmetics in errors
+* 5e93416 perform-substitutions error cosmetics
+* 24ce9ec initialise() returns boolean
+
+
 ## 2026-01-05
 
-* v3.1.3 released
+2026-01-05 * 51b7a26 3.1.3
+2026-01-05 * a087546 prepare v3.1.3
 * 5515ed0 fix pacote & semver imports
 
 ## 2026-01-04
