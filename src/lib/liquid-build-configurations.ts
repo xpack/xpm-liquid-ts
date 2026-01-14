@@ -604,6 +604,8 @@ export class XpmLiquidBuildConfiguration {
       } catch (error) {
         if (error instanceof Error) {
           throw new XpmError(error.message)
+        } else {
+          throw new XpmError(String(error))
         }
       }
     } else {
@@ -638,6 +640,8 @@ export class XpmLiquidBuildConfiguration {
       } catch (error) {
         if (error instanceof Error) {
           throw new XpmError(error.message)
+        } else {
+          throw new XpmError(String(error))
         }
       }
     } else {

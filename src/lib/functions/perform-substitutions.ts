@@ -100,7 +100,7 @@ export async function performSubstitutions({
         // log.error(util.inspect(error))
         log.error(error.message.replace(/, line:.*/g, ''))
       } else {
-        log.error(new Error(String(error)))
+        log.error(String(error))
       }
       // Return the current (unsubstituted) value.
       substituted = current

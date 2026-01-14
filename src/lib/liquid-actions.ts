@@ -113,7 +113,9 @@ export class XpmLiquidActions {
           }
         } catch (error) {
           if (error instanceof Error) {
-            this.log.error(error.message)
+            log.error(error.message)
+          } else {
+            log.error(String(error))
           }
         }
       } else {
