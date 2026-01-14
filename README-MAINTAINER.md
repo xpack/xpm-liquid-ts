@@ -121,7 +121,7 @@ To manually fix compliance with the style guide (where possible):
 ```console
 % npm run fix
 
-> @xpack/xpm-lib@3.1.3 fix
+> @xpack/xpm-lib@4.0.0 fix
 > ts-standard --fix src && standard --fix test
 ...
 ```
@@ -137,8 +137,7 @@ explicit types, since they are provided by TypeScript.
 The tests use the [`node-tap`](http://www.node-tap.org) framework
 (_A Test-Anything-Protocol library for Node.js_, written by Isaac Schlueter).
 
-Tests can be written in TypeScript, assuming `ts-node` is also installed
-(<https://node-tap.org/docs/using-with/#using-tap-with-typescript>)
+Tests can be written in TypeScript.
 
 As for any `npm` package, the standard way to run the project tests is via
 `npm run test`:
@@ -152,64 +151,70 @@ npm run test
 A typical test result looks like:
 
 ```console
-% npm run test-100-c8
+% npm run test
 
-> @xpack/xpm-lib@3.1.3 pretest-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
-> npm run lint
 
-> @xpack/xpm-lib@3.1.3 lint /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
-> ts-standard src && standard esm
 
-> @xpack/xpm-lib@3.1.3 test-100-c8 /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
-> npm run test-tap-coverage-100-c8 -s
+> @xpack/xpm-lib@4.0.0-pre pretest
+> npm run compile && npm run lint
 
-(node:32915) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
-(Use `node --trace-warnings ...` to show where the warning was created)
-(node:32914) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
-(Use `node --trace-warnings ...` to show where the warning was created)
-(node:32916) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
-(Use `node --trace-warnings ...` to show where the warning was created)
-tests/tap/010-functions.ts ............................ 8/8
-tests/tap/020-map.ts ................................ 26/26
-tests/tap/030-substitutions.ts ...................... 24/24
-total ............................................... 58/58
 
-  58 passing (2s)
+> @xpack/xpm-lib@4.0.0-pre compile
+> tsc --build --verbose src
 
-  ok
-----------------|---------|----------|---------|---------|-------------------
-File            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
-----------------|---------|----------|---------|---------|-------------------
-All files       |     100 |      100 |     100 |     100 |
- src            |     100 |      100 |     100 |     100 |
-  index.ts      |     100 |      100 |     100 |     100 |
- src/lib        |     100 |      100 |     100 |     100 |
-  xpm-lib.ts |     100 |      100 |     100 |     100 |
-----------------|---------|----------|---------|---------|-------------------
+[9:23:13 PM] Projects in this build: 
+    * src/tsconfig.json
+
+[9:23:13 PM] Project 'src/tsconfig.json' is up to date because newest input 'src/core/liquid-package.ts' is older than output 'dist/functions/chmod-recursive.js'
+
+
+> @xpack/xpm-lib@4.0.0-pre lint
+> eslint src
+
+
+> @xpack/xpm-lib@4.0.0-pre test
+> tap run --disable-coverage
+
+
+2> tests/tap/040-liquid-actions.ts
+error: "properties.X" not defined
+
+Asserts:  169 pass  0 fail  169 of 169 complete
+Suites:     6 pass  0 fail      6 of 6 complete
+
+# No coverage generated
+# { total: 169, pass: 169 }
+# time=4848.501ms
 ```
 
-To run a specific test with more verbose output, use `npm run tap`:
+To run a specific test with more verbose output, use `npm run tap *`:
 
 ```console
 % npm run tap tests/tap/010-functions.ts
+> @xpack/xpm-lib@4.0.0-pre test-one-010
+> tap run --reporter=tap --disable-coverage tests/tap/010-*.ts
 
-> @xpack/xpm-lib@3.1.3 tap /Users/ilg/My Files/WKS Projects/xpack.github/npm-packages/xpm-lib-ts.git
-> tap --reporter=spec "tests/tap/010-functions.ts"
+TAP version 14
+1..1
+# Subtest: tests/tap/010-functions.ts
+    # Subtest: filterPath
+        ok 1 - preserves posix path separator /
+        ok 2 - preserves windows path separator \\
+        ok 3 - preserves posix path separator /
+        ok 4 - replaces by dash
+        ok 5 - replaces by dash
+        ok 6 - replaces by dash
+        ok 7 - replaces two dashes
+        ok 8 - replaces three dashes
+        1..8
+    ok 1 - filterPath # time=5.033ms
+    
+    1..1
+ok 1 - tests/tap/010-functions.ts # time=1972.021ms
 
-(node:32977) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
-(Use `node --trace-warnings ...` to show where the warning was created)
-tests/tap/010-functions.ts
-  filterPath
-    ✓ preserves posix path separator /
-    ✓ preserves windows path separator \
-    ✓ preserves posix path separator /
-    ✓ replaces by dash
-    ✓ replaces by dash
-    ✓ replaces by dash
-    ✓ replaces two dashes
-    ✓ replaces three dashes
-
-  8 passing (1s)
+# No coverage generated
+# { total: 8, pass: 8 }
+# time=1991.621ms
 ```
 
 ### Coverage tests
@@ -218,7 +223,8 @@ Coverage tests are a good indication on how much of the source files is
 exercised by the tests. Ideally all source files should be covered 100%,
 for all 4 criteria (statements, branches, functions, lines).
 
-Thus, passing coverage tests was enforced for all tests, as seen before.
+Thus, in a future release, passing coverage tests will be enforced for
+all tests.
 
 #### Coverage exceptions
 
@@ -227,14 +233,14 @@ Exclusions are marked with `/* istanbul ignore next */` for
 and `/* c8 ignore start */` `/* c8 ignore stop */` for
 [c8](https://github.com/bcoe/c8).
 
-- an extra test to catch ineffective substitutions
 - a platform dependent logic in the `filterPath()` function
+- TBD
 
 ### Continuous Integration (CI)
 
 The continuous integration tests are performed via GitHub
-[Actions](https://github.com/xpack/xpm-lib-ts/actions) on Ubuntu,
-Windows and macOS, using node 16, 18.
+[Actions](https://github.com/xpack/xpm-lib-ts/actions) on 
+multiple platforms, with multiple node versions.
 
 ## Tricks & tips
 
@@ -282,9 +288,9 @@ To be updated when fully migrated to ESM.
 
 As required by npm modules, this one also uses [semver](https://semver.org).
 
-Determine the next version (like `3.1.3`),
+Determine the next version (like `4.0.0`),
 and eventually update the
-`package.json` file; the format is `3.1.3-pre`.
+`package.json` file; the format is `4.0.0-pre`.
 
 ### Fix possible open issues
 
@@ -302,8 +308,8 @@ related to the new version.
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a line _* v3.1.3 released_
-- commit with a message like _prepare v3.1.3_
+- add a line _* v4.0.0 released_
+- commit with a message like _prepare v4.0.0_
 
 ## Prepare to publish
 
@@ -368,7 +374,7 @@ master branch, by a dedicated workflow in GitHub
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack/xpm-lib`
-- `npm dist-tag add @xpack/xpm-lib@3.1.3 latest`
+- `npm dist-tag add @xpack/xpm-lib@4.0.0 latest`
 - `npm dist-tag ls @xpack/xpm-lib`
 
 ## Useful links

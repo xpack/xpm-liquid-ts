@@ -2,21 +2,19 @@
 [![license](https://img.shields.io/github/license/xpack/xpm-lib-ts.svg)](https://github.com/xpack/xpm-lib-ts/blob/xpack/LICENSE)
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack/xpm-lib.svg)](https://www.npmjs.com/package/@xpack/xpm-lib/)
 
-# A Node.js CommonJS/ES6 module with the xpm library
+# A Node.js ES6 module with the xpm library
 
-This project provides a **TypeScript** Node.js **CommonJS**/**ES6** module
-with the code used to perform the Liquid substitutions when parsing
-the xpm `package.json` file.
-
-Note: Compatibility with legacy CommonJS is required until VS Code extensions
-will be updated to import ES6 modules.
+This project provides a **TypeScript** Node.js **ES6** module with
+the **xpm** code that might be shared with xpm-enabled projects, like the
+[VS Code xPack C/C++ Managed Build](https://github.com/xpack/vscode-xpack-extension-ts/)
+extension.
 
 The project is open-source and hosted on GitHub as
 [xpack/xpm-lib-ts](https://github.com/xpack/xpm-lib-ts.git).
 
 ## Maintainer & developer info
 
-This page documents how to use this module in an user application.
+This page documents how to use this module in an xpm-enabled project.
 For maintainer information, see the separate
 [README-MAINTAINER](https://github.com/xpack/xpm-lib-ts/blob/master/README-MAINTAINER.md)
 page.
@@ -44,7 +42,7 @@ reasons to install it globally.
 ## User info
 
 This section is intended for those who want to use this module in their
-own projects.
+xpm-enabled projects.
 
 The `@xpack/xpm-lib` module can be imported into both TypeScript
 and JavaScript Node.js code.
@@ -52,127 +50,13 @@ and JavaScript Node.js code.
 In TypeScript and ECMAScript modules, use `import`:
 
 ```typescript
-import { XpmLiquid } from '@xpack/xpm-lib'
+import { XpmPackage } from '@xpack/xpm-lib'
 ```
 
-In JavaScript with CommonJS, use `require()`:
+To use the `XpmPackage` class, provide the path to the 
+`package.json` file and a logger.
 
-```javascript
-const { XpmLiquid } = require('@xpack/xpm-lib')
-```
-
-To use the `XpmLiquid` class, create an instance of the engine, provide the
-`package.json` object, possibly the name of the configuration, and
-call `performSubstitutions()`:
-
-```js
-const xpmLiquid = new XpmLiquid(log)
-const xpmLiquidMap = xpmLiquid.prepareMap(packageJson, 'Debug')
-
-const str = await xpmLiquid.performSubstitutions(
-      '{{ "build" | path_join: configuration.name | to_filename }}',
-      xpmLiquidMap)
-```
-
-### Available variables
-
-The entire project `package.json` is available as the `package` variable:
-
-- `package`
-
-All user defined properties (project and configuration) are grouped
-below the `properties` variable:
-
-- `properties`
-
-If the substitution refers to a certain build configuration, the configuration
-name and the entire configuration content are available separately below
-the `configuration` variable. Configuration properties are added to the
-`properties` variables, possibly overriding project properties.
-
-- `configuration.name`
-- `configuration.*`
-
-Variables based on the Node.js process
-[environment](https://nodejs.org/dist/latest-v18.x/docs/api/process.html#process_process_env):
-
-- `env`
-
-Variables based on the Node.js
-[os](https://nodejs.org/dist/latest-v16.x/docs/api/os.html) definitions:
-
-- `os.EOL`
-- `os.arch` (like 'arm', 'arm64', 'ia32', 'x64')
-- `os.constants`
-- `os.cpus`
-- `os.endianness`
-- `os.homedir`
-- `os.hostname`
-- `os.platform` (like 'darwin', 'linux', 'win32')
-- `os.release`
-- `os.tmpdir`
-- `os.type`
-- `os.version` (available since Node 12)
-
-Variables based on the Node.js
-[path](https://nodejs.org/dist/latest-v16.x/docs/api/path.html) definitions:
-
-- `path.delimiter` (`;` for Windows, `:` for POSIX)
-- `path.sep` (`\` on Windows, `/` on POSIX)
-- `path.win32.delimiter` (`;`)
-- `path.win32.sep` (`\`)
-- `path.posix.delimiter` (`:`)
-- `path.posix.sep` (`/`)
-
-Examples:
-
-- `"buildFolderRelativePath": "build{{ path.sep }}{{ configuration.name | to_filename }}"`
-
-### Custom filters
-
-Filters based on Node.js
-[path](https://nodejs.org/dist/latest-v16.x/docs/api/path.html) functions:
-
-- `path_basename`
-- `path_dirname`
-- `path_normalize`
-- `path_join`
-- `path_relative`
-- `path_posix_basename`
-- `path_posix_dirname`
-- `path_posix_normalize`
-- `path_posix_join`
-- `path_posix_relative`
-- `path_win32_basename`
-- `path_win32_dirname`
-- `path_win32_normalize`
-- `path_win32_join`
-- `path_win32_relative`
-
-Filters based on Node.js
-[utils](https://nodejs.org/dist/latest-v16.x/docs/api/util.html) functions:
-
-- `util_format`
-
-Custom filter to convert generic names to names accepted
-as file names (letters, digits, dash):
-
-- `to_filename`
-- `to_posix_filename`
-- `to_win32_filename`
-
-Examples:
-
-- `"buildFolderRelativePath": "{{ "build" | path_join: configuration.name | to_filename | downcase }"`
-
-### Lenient if's
-
-The undefined variables in tests do not trigger `undefined variable` messages
-and allow to use defaults, like:
-
-```
-{{ env.OPTIMIZATION | default: '-O2' }}
-```
+TBD
 
 ### Reference
 
@@ -195,9 +79,10 @@ extension.
 
 ## Tests
 
-The module is tested
-with 100% coverage and CI tested on every push via GitHub
+The module is CI tested on every push via GitHub
 [Actions](https://github.com/xpack/xpm-lib-ts/actions).
+
+100% coverage is planned for a future release.
 
 ## Compatibility notices
 
@@ -205,6 +90,11 @@ According to [semver](https://semver.org) rules:
 
 > Major version X (X.y.z | X > 0) MUST be incremented if any
 backwards incompatible changes are introduced to the public API.
+
+### v4.0.0
+
+The API was updated after template instantiation was implemented.
+Only `initialise()` is async for actions and build configurations.
 
 ### v3.0.0
 
