@@ -50,7 +50,7 @@ export class XpmLiquidPackage {
   readonly buildConfigurations: XpmLiquidBuildConfigurations
 
   // --------------------------------------------------------------------------
-  // Constructor and async initialiser.
+  // Constructor.
 
   constructor({
     log,

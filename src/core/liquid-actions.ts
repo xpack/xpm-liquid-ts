@@ -141,7 +141,7 @@ export class XpmLiquidActions {
   }
 
   // --------------------------------------------------------------------------
-  // Methods.
+  // Public methods.
 
   // Known only after initialisation.
   empty(): boolean {
@@ -186,8 +186,9 @@ export class XpmLiquidActions {
   }
 
   // --------------------------------------------------------------------------
-  // Template expansion.
+  // Private methods.
 
+  // Template expansion.
   async #expandTemplateActions({
     actionName,
     jsonActionTemplate,
@@ -402,7 +403,7 @@ export class XpmLiquidAction {
   }
 
   // --------------------------------------------------------------------------
-  // Methods.
+  // Public methods.
 
   get commands(): string[] {
     assert(this.#commands, 'Action not initialised, commands are undefined')

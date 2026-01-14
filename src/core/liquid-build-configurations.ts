@@ -154,7 +154,7 @@ export class XpmLiquidBuildConfigurations {
   }
 
   // --------------------------------------------------------------------------
-  // Methods.
+  // Public methods.
 
   empty(): boolean {
     return this.#buildConfigurationsMap.size === 0
@@ -243,8 +243,9 @@ export class XpmLiquidBuildConfigurations {
   }
 
   // --------------------------------------------------------------------------
-  // Template expansion.
+  // Private methods.
 
+  // Template expansion.
   async #expandTemplateBuildConfigurations({
     buildConfigurationName,
     jsonBuildConfigurationTemplate,
@@ -713,7 +714,7 @@ export class XpmLiquidBuildConfiguration {
   }
 
   // --------------------------------------------------------------------------
-  // Methods.
+  // Public methods.
 
   get actions(): XpmLiquidActions {
     assert(this.#actions !== undefined)
@@ -731,6 +732,9 @@ export class XpmLiquidBuildConfiguration {
     )
     return this.#buildFolderRelativePath
   }
+
+  // --------------------------------------------------------------------------
+  // Private Methods.
 
   async #getBuildFolderRelativePath(): Promise<string> {
     const log = this.parentBuildConfigurations.log
