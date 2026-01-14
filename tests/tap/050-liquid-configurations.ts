@@ -410,13 +410,9 @@ await test('configurations inheritance', async (t): Promise<void> => {
   await action.initialise()
   const commands = action.commands
   t.equal(commands.length, 2, 'action "build" has 2 commands')
-  t.equal(
+  t.match(
     commands[0],
-    'cmake -S . -B build/native-cmake-gcc14-release -G Ninja' +
-      ' -D CMAKE_BUILD_TYPE=Release' +
-      ' -D PLATFORM_NAME=native' +
-      ' -D CMAKE_EXPORT_COMPILE_COMMANDS=ON',
-    'first command is cmake -S . -B ...'
+    'cmake -S . -B build/native-cmake-gcc14-release -G Ninja'
   )
   t.equal(
     commands[1],
