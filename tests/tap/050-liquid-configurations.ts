@@ -16,7 +16,7 @@
 // import * as os from 'node:os'
 // import { fileURLToPath } from 'node:url'
 // import * as path from 'node:path'
-import * as util from 'node:util'
+// import * as util from 'node:util'
 
 // ----------------------------------------------------------------------------
 
@@ -136,7 +136,7 @@ await test('configurations', async (t): Promise<void> => {
     'buildConfigurations has configuration "alfa"'
   )
 
-  let buildConfiguration = await buildConfigurations.get('alfa')
+  let buildConfiguration = buildConfigurations.get('alfa')
   t.ok(buildConfiguration, 'buildConfigurationsNames.get("alfa") is ok')
 
   t.equal(
@@ -149,6 +149,8 @@ await test('configurations', async (t): Promise<void> => {
     'alfa',
     'buildConfigurationName is "alfa"'
   )
+
+  await buildConfiguration.initialise()
 
   // console.log(buildConfiguration.dependenciesMap)
   t.equal(
@@ -209,14 +211,14 @@ await test('configurations', async (t): Promise<void> => {
   )
 
   initialised = await actionOne.initialise()
-  t.equal(initialised, false, 'actionOne.initialise() again => false')
+  t.equal(initialised, true, 'actionOne.initialise() => true')
 
   let commands = actionOne.commands
   // console.log(commands)
   t.equal(commands.length, 1, 'actionOne has 1 command')
   t.equal(commands[0], 'echo 1 command', 'command is as expected')
 
-  const actionTwo = await actions.get('two')
+  const actionTwo = actions.get('two')
   t.ok(actionTwo, 'actions.get("two") is ok')
 
   await actionTwo.initialise()
@@ -339,14 +341,14 @@ await test('configurations inheritance', async (t): Promise<void> => {
   )
 
   // log.level = 'trace'
-  let buildConfiguration = await buildConfigurations.get(
-    'native-cmake-gcc14-release'
-  )
+  let buildConfiguration = buildConfigurations.get('native-cmake-gcc14-release')
   // log.level = 'info'
   t.ok(
     buildConfiguration,
     'buildConfigurationsNames.get("native-cmake-gcc14-release") is ok'
   )
+
+  await buildConfiguration.initialise()
 
   t.equal(
     Object.keys(buildConfiguration.properties).length,
@@ -655,9 +657,7 @@ await test('configurations template', async (t): Promise<void> => {
     'buildConfigurations names[22] is "bravo"'
   )
 
-  let buildConfiguration = await buildConfigurations.get(
-    'native-gcc15-dependencies'
-  )
+  let buildConfiguration = buildConfigurations.get('native-gcc15-dependencies')
   t.ok(
     buildConfiguration,
     'buildConfigurationsNames.get("native-gcc15-dependencies") is ok'
@@ -678,9 +678,7 @@ await test('configurations template', async (t): Promise<void> => {
 
   // -----
 
-  buildConfiguration = await buildConfigurations.get(
-    'native-cmake-gcc15-release'
-  )
+  buildConfiguration = buildConfigurations.get('native-cmake-gcc15-release')
   t.ok(
     buildConfiguration,
     'buildConfigurationsNames.get("native-cmake-gcc15-release") is ok'

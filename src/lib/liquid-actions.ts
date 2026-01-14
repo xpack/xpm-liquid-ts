@@ -40,8 +40,13 @@ export class XpmLiquidActions {
   readonly substitutionsVariables: XpmLiquidSubstitutionsVariables
   readonly jsonActions: JsonActions
 
-  readonly #actionsMap: Map<string, XpmLiquidAction | undefined>
-  readonly #jsonActionsNamesMap: Map<string, string>
+  // Known only after initialisation.
+  // Possibly empty if there are no actions.
+  readonly #actionsMap: Map<string, XpmLiquidAction | undefined> = new Map<
+    string,
+    XpmLiquidAction | undefined
+  >()
+  readonly #jsonActionsNamesMap: Map<string, string> = new Map<string, string>()
 
   #isInitialised = false
 
@@ -61,15 +66,16 @@ export class XpmLiquidActions {
     inheritedActionsMap?: Map<string, XpmLiquidAction>
     jsonActions: JsonActions | undefined
   }) {
+    assert(log)
+    assert(engine)
+    assert(substitutionsVariables)
+
     log.trace(`${XpmLiquidActions.name}()`)
 
     this.log = log
     this.engine = engine
     this.substitutionsVariables = substitutionsVariables
     this.jsonActions = jsonActions ?? {}
-
-    // Possibly empty if there are no actions.
-    this.#actionsMap = new Map<string, XpmLiquidAction | undefined>()
 
     if (inheritedActionsMap !== undefined) {
       for (const [
@@ -86,16 +92,17 @@ export class XpmLiquidActions {
       }
     }
 
-    this.#jsonActionsNamesMap = new Map<string, string>()
-
-    // log.trace('substitutionsVariables => ', this.substitutionsVariables)
     // The rest of the initialisation is done in the async initialiser.
   }
 
   async initialise(): Promise<boolean> {
+    const log = this.log
+    log.trace(`${XpmLiquidActions.name}.initialise()`)
+
     if (this.#isInitialised) {
       return false
     }
+
     for (const [actionName, jsonAction] of Object.entries(this.jsonActions)) {
       if (actionName.includes('{{')) {
         // Expand template and return multiple actions.
@@ -124,7 +131,7 @@ export class XpmLiquidActions {
       }
     }
 
-    this.log.trace(
+    log.trace(
       `${XpmLiquidActions.name}.initialise() =>`,
       Array.from(this.#actionsMap.keys())
     )
@@ -136,10 +143,12 @@ export class XpmLiquidActions {
   // --------------------------------------------------------------------------
   // Methods.
 
+  // Known only after initialisation.
   empty(): boolean {
     return this.#actionsMap.size === 0
   }
 
+  // Known only after initialisation.
   names(): string[] {
     const actionNames = Array.from(this.#actionsMap.keys())
 
@@ -147,11 +156,16 @@ export class XpmLiquidActions {
     return actionNames
   }
 
+  // Known only after initialisation.
   has(actionName: string): boolean {
     return this.#actionsMap.has(actionName)
   }
 
-  async get(actionName: string): Promise<XpmLiquidAction> {
+  // The commands are not substituted until the action is initialised.
+  get(actionName: string): XpmLiquidAction {
+    const log = this.log
+    log.trace(`${XpmLiquidActions.name}.get(${actionName})`)
+
     let action = this.#actionsMap.get(actionName)
     if (action === undefined) {
       const jsonActionName: string =
@@ -167,9 +181,12 @@ export class XpmLiquidActions {
       this.#actionsMap.set(actionName, action)
     }
 
-    await action.initialise()
+    // await action.initialise()
     return action
   }
+
+  // --------------------------------------------------------------------------
+  // Template expansion.
 
   async #expandTemplateActions({
     actionName,
@@ -178,6 +195,9 @@ export class XpmLiquidActions {
     actionName: string
     jsonActionTemplate: JsonActionTemplate
   }): Promise<Map<string, XpmLiquidAction>> {
+    const log = this.log
+    log.trace(`${XpmLiquidActions.name}.#expandTemplateActions(${actionName})`)
+
     const newActionsMap = new Map<string, XpmLiquidAction>()
 
     if (!isJsonObject(jsonActionTemplate.matrix)) {
@@ -267,6 +287,14 @@ export class XpmLiquidActions {
       index: number,
       combination: Record<string, string>
     ): Promise<void> => {
+      const log = this.log
+      log.trace(
+        `${XpmLiquidActions.name}.#expandTemplateActions().` +
+          `generateCombinationsRecursively(${String(index)}, ${JSON.stringify(
+            combination
+          )})`
+      )
+
       if (index === matrixKeys.length) {
         await createSubstitutedAction(combination)
 
@@ -323,12 +351,13 @@ export class XpmLiquidAction {
     matrixParameters?: XpmLiquidSubstitutionsStrings
   }) {
     assert(actionName)
+    assert(jsonAction)
     assert(parentActions)
 
-    parentActions.log.trace(`${XpmLiquidAction.name}(${actionName})`)
+    const log = parentActions.log
+    log.trace(`${XpmLiquidAction.name}(${actionName})`)
 
     this.actionName = actionName
-    // this.jsonActionName = jsonActionName
     this.jsonAction = jsonAction
     this.parentActions = parentActions
     if (matrixParameters !== undefined) {
@@ -337,11 +366,12 @@ export class XpmLiquidAction {
   }
 
   async initialise(): Promise<boolean> {
+    const log = this.parentActions.log
+    log.trace(`${XpmLiquidAction.name}.initialise(${this.actionName})`)
+
     if (this.#isInitialised) {
       return false
     }
-
-    const log = this.parentActions.log
 
     // Silently accept empty or non-existing actions.
     const jsonAction = this.jsonAction
@@ -365,7 +395,7 @@ export class XpmLiquidAction {
 
     log.trace(`${XpmLiquidAction.name}.initialise() =>`, this.actionName)
 
-    log.trace('commands =>', this.#commands)
+    log.trace(this.actionName, 'commands =>', this.#commands)
 
     this.#isInitialised = true
     return true

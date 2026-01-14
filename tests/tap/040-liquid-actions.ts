@@ -134,7 +134,7 @@ await test('actions', async (t): Promise<void> => {
   // )
 
   initialised = await actionOne.initialise()
-  t.equal(initialised, false, 'actionOne.initialise() again => false')
+  t.equal(initialised, true, 'actionOne.initialise() again => true')
 
   let commands = actionOne.commands
   // console.log(commands)
