@@ -33,10 +33,10 @@ import {
   JsonDependencies,
   JsonDependenciesContent,
 } from './types.js'
-import { performSubstitutions } from './functions/perform-substitutions.js'
+import { performSubstitutions } from '../functions/perform-substitutions.js'
 import { XpmLiquidAction, XpmLiquidActions } from './liquid-actions.js'
-import { isJsonArray, isJsonObject, isString } from './functions/utils.js'
-import { filterPath } from './functions/utils.js'
+import { isJsonArray, isJsonObject, isString } from '../functions/utils.js'
+import { filterPath } from '../functions/utils.js'
 import { XpmError } from './errors.js'
 
 // ----------------------------------------------------------------------------

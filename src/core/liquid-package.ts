@@ -20,7 +20,7 @@ import { Liquid } from 'liquidjs'
 
 import { Logger } from '@xpack/logger'
 
-import { isJsonObject } from './functions/utils.js'
+import { isJsonObject } from '../functions/utils.js'
 import {
   xpmLiquidSubstitutionsVariablesBase,
   XpmLiquidSubstitutionsVariables,

@@ -19,7 +19,7 @@ import * as util from 'node:util'
 
 // https://www.npmjs.com/package/liquidjs
 import { Liquid } from 'liquidjs'
-import { isJsonObject } from './functions/utils.js'
+import { isJsonObject } from '../functions/utils.js'
 
 // ----------------------------------------------------------------------------
 

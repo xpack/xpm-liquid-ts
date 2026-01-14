@@ -24,8 +24,8 @@ import {
   XpmLiquidSubstitutionsStrings,
 } from './substitutions-variables.js'
 import { JsonActions, JsonActionContent, JsonActionTemplate } from './types.js'
-import { performSubstitutions } from './functions/perform-substitutions.js'
-import { isJsonArray, isJsonObject, isString } from './functions/utils.js'
+import { performSubstitutions } from '../functions/perform-substitutions.js'
+import { isJsonArray, isJsonObject, isString } from '../functions/utils.js'
 import { XpmError } from './errors.js'
 
 // ----------------------------------------------------------------------------
