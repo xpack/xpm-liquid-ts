@@ -673,10 +673,12 @@ export class XpmLiquidBuildConfiguration {
       this.devDependencies = devDependencies
     }
 
+    this.#buildFolderRelativePath = await this.#getBuildFolderRelativePath()
+
     // Add the buildFolderRelativePath property.
     // Note: the async initialiser was needed due to this async operation.
     const properties = this.#substitutionsVariables.properties
-    properties.buildFolderRelativePath = await this.getBuildFolderRelativePath()
+    properties.buildFolderRelativePath = this.#buildFolderRelativePath
 
     this.#actions = new XpmLiquidActions({
       log: this.parentBuildConfigurations.log,
@@ -690,6 +692,12 @@ export class XpmLiquidBuildConfiguration {
     })
     // Note: this must be done manually by the application.
     // await this.#actions.initialise()
+
+    log.trace(
+      this.buildConfigurationName,
+      'buildFolderRelativePath =>',
+      this.#buildFolderRelativePath
+    )
 
     log.trace(
       `${XpmLiquidBuildConfiguration.name}.initialise() =>`,
@@ -721,15 +729,8 @@ export class XpmLiquidBuildConfiguration {
     return this.#actions
   }
 
-  async getBuildFolderRelativePath(): Promise<string> {
-    const log = this.parentBuildConfigurations.log
-
-    this.#buildFolderRelativePath ??= await this.#getBuildFolderRelativePath()
-    log.trace(
-      `${XpmLiquidBuildConfiguration.name}.` +
-        `getBuildFolderRelativePath(${this.buildConfigurationName}) =>`,
-      this.#buildFolderRelativePath
-    )
+  get buildFolderRelativePath(): string {
+    assert(this.#buildFolderRelativePath !== undefined)
     return this.#buildFolderRelativePath
   }
 

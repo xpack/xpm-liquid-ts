@@ -198,7 +198,7 @@ await test('configurations', async (t): Promise<void> => {
   t.equal(actionsNames[0], 'one', 'actions names[0] is "one"')
   t.ok(actions.has('one'), 'actions has action "one"')
 
-  const actionOne = await actions.get('one')
+  const actionOne = actions.get('one')
   t.ok(actionOne, 'actions.get("one") is ok')
 
   t.equal(actionOne.parentActions, actions, 'parentActions is ok')
