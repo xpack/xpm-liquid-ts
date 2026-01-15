@@ -412,11 +412,13 @@ export class XpmLiquidBuildConfiguration {
     JsonDependenciesContent
   >()
 
+  // After substitutions.
   dependencies: JsonDependencies = {}
   devDependencies: JsonDependencies = {}
 
   // Points to the actual (un-substituted) buildConfiguration in package.json.
-  readonly #jsonBuildConfiguration: JsonBuildConfigurationContent
+  // Modified by xpm uninstall.
+  jsonBuildConfiguration: JsonBuildConfigurationContent
 
   #substitutionsVariables: XpmLiquidSubstitutionsVariables
 
@@ -451,7 +453,7 @@ export class XpmLiquidBuildConfiguration {
     log.trace(`${XpmLiquidBuildConfiguration.name}(${buildConfigurationName})`)
 
     this.buildConfigurationName = buildConfigurationName
-    this.#jsonBuildConfiguration = jsonBuildConfiguration
+    this.jsonBuildConfiguration = jsonBuildConfiguration
     this.parentBuildConfigurations = parentBuildConfigurations
     if (matrixParameters !== undefined) {
       this.#matrixParameters = matrixParameters
@@ -461,7 +463,7 @@ export class XpmLiquidBuildConfiguration {
       ...this.parentBuildConfigurations.substitutionsVariables,
     }
 
-    this.hidden = this.#jsonBuildConfiguration.hidden ?? false
+    this.hidden = this.jsonBuildConfiguration.hidden ?? false
 
     // The rest of the initialisation is done in the async initialiser.
   }
@@ -477,7 +479,7 @@ export class XpmLiquidBuildConfiguration {
       return false
     }
 
-    const jsonBuildConfiguration = this.#jsonBuildConfiguration
+    const jsonBuildConfiguration = this.jsonBuildConfiguration
 
     // Process both the new 'inherits' and the deprecated 'inherit'.
     let jsonInherits: string[] = []
@@ -688,7 +690,7 @@ export class XpmLiquidBuildConfiguration {
         matrix: this.#matrixParameters ?? {},
       },
       inheritedActionsMap,
-      jsonActions: this.#jsonBuildConfiguration.actions,
+      jsonActions: this.jsonBuildConfiguration.actions,
     })
     // Note: this must be done manually by the application.
     // await this.#actions.initialise()
