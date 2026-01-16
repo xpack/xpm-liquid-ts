@@ -450,7 +450,9 @@ export class XpmLiquidBuildConfiguration {
     assert(parentBuildConfigurations)
 
     const log = parentBuildConfigurations.log
-    log.trace(`${XpmLiquidBuildConfiguration.name}(${buildConfigurationName})`)
+    log.trace(
+      `${XpmLiquidBuildConfiguration.name}() ` + `@${buildConfigurationName}`
+    )
 
     this.buildConfigurationName = buildConfigurationName
     this.jsonBuildConfiguration = jsonBuildConfiguration
@@ -471,8 +473,8 @@ export class XpmLiquidBuildConfiguration {
   async initialise(): Promise<boolean> {
     const log = this.parentBuildConfigurations.log
     log.trace(
-      `${XpmLiquidBuildConfiguration.name}.` +
-        `initialise(${this.buildConfigurationName})`
+      `${XpmLiquidBuildConfiguration.name}.initialise()` +
+        ` @${this.buildConfigurationName}`
     )
 
     if (this.#isInitialised) {
@@ -709,12 +711,12 @@ export class XpmLiquidBuildConfiguration {
     log.trace(
       this.buildConfigurationName,
       'dependencies => ',
-      this.dependenciesMap
+      this.dependencies
     )
     log.trace(
       this.buildConfigurationName,
       'devDependencies => ',
-      this.devDependenciesMap
+      this.devDependencies
     )
     log.trace(this.buildConfigurationName, 'actions => ', this.#actions.names())
     // log.trace('substitutionsVariables => ', this.substitutionsVariables)
