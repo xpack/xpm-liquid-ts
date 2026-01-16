@@ -27,6 +27,7 @@ import { JsonActions, JsonActionContent, JsonActionTemplate } from './types.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
 import { isJsonArray, isJsonObject, isString } from '../functions/utils.js'
 import { XpmError } from './errors.js'
+import { XpmLiquidBuildConfiguration } from './liquid-build-configurations.js'
 
 // ----------------------------------------------------------------------------
 
@@ -49,6 +50,8 @@ export class XpmLiquidActions {
   readonly #actionsNamesSet: Set<string> = new Set<string>()
   readonly #jsonActionsNamesMap: Map<string, string> = new Map<string, string>()
 
+  readonly buildConfiguration: XpmLiquidBuildConfiguration | undefined
+
   #isInitialised = false
 
   // --------------------------------------------------------------------------
@@ -60,23 +63,33 @@ export class XpmLiquidActions {
     substitutionsVariables,
     inheritedActionsMap,
     jsonActions,
+    buildConfiguration,
   }: {
     log: Logger
     engine: XpmLiquidEngine
     substitutionsVariables: XpmLiquidSubstitutionsVariables
     inheritedActionsMap?: Map<string, XpmLiquidAction>
     jsonActions: JsonActions | undefined
+    buildConfiguration?: XpmLiquidBuildConfiguration
   }) {
     assert(log)
     assert(engine)
     assert(substitutionsVariables)
 
-    log.trace(`${XpmLiquidActions.name}()`)
+    if (buildConfiguration !== undefined) {
+      log.trace(
+        `${XpmLiquidActions.name}()` +
+          ` @${buildConfiguration.buildConfigurationName}`
+      )
+    } else {
+      log.trace(`${XpmLiquidActions.name}()`)
+    }
 
     this.log = log
     this.engine = engine
     this.substitutionsVariables = substitutionsVariables
     this.jsonActions = jsonActions ?? {}
+    this.buildConfiguration = buildConfiguration
 
     if (inheritedActionsMap !== undefined) {
       for (const [
@@ -98,7 +111,15 @@ export class XpmLiquidActions {
 
   async initialise(): Promise<boolean> {
     const log = this.log
-    log.trace(`${XpmLiquidActions.name}.initialise()`)
+
+    if (this.buildConfiguration !== undefined) {
+      log.trace(
+        `${XpmLiquidActions.name}.initialise()` +
+          ` @${this.buildConfiguration.buildConfigurationName}`
+      )
+    } else {
+      log.trace(`${XpmLiquidActions.name}.initialise()`)
+    }
 
     if (this.#isInitialised) {
       return false
