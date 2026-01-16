@@ -46,6 +46,7 @@ export class XpmLiquidActions {
     string,
     XpmLiquidAction | undefined
   >()
+  readonly #actionsNamesSet: Set<string> = new Set<string>()
   readonly #jsonActionsNamesMap: Map<string, string> = new Map<string, string>()
 
   #isInitialised = false
@@ -115,8 +116,16 @@ export class XpmLiquidActions {
             expandedActionName,
             expandedAction,
           ] of expandedActionsMap) {
-            this.#actionsMap.set(expandedActionName, expandedAction)
-            this.#jsonActionsNamesMap.set(expandedActionName, actionName)
+            if (this.#actionsNamesSet.has(expandedActionName)) {
+              log.error(
+                `duplicate action name '${expandedActionName}' ` +
+                  `generated from template; skipped...`
+              )
+            } else {
+              this.#actionsMap.set(expandedActionName, expandedAction)
+              this.#jsonActionsNamesMap.set(expandedActionName, actionName)
+              this.#actionsNamesSet.add(expandedActionName)
+            }
           }
         } catch (error) {
           if (error instanceof Error) {
@@ -126,8 +135,16 @@ export class XpmLiquidActions {
           }
         }
       } else {
-        this.#actionsMap.set(actionName, undefined)
-        this.#jsonActionsNamesMap.set(actionName, actionName)
+        if (this.#actionsNamesSet.has(actionName)) {
+          log.error(
+            `duplicate action name '${actionName}' ` +
+              `possibly already generated from template; skipped...`
+          )
+        } else {
+          this.#actionsMap.set(actionName, undefined)
+          this.#jsonActionsNamesMap.set(actionName, actionName)
+          this.#actionsNamesSet.add(actionName)
+        }
       }
     }
 
