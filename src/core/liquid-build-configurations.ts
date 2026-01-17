@@ -607,7 +607,7 @@ export class XpmLiquidBuildConfiguration {
 
     // Process dependencies with substitutions.
     const dependencies: JsonDependencies = {}
-    for (const [key, value] of this.dependenciesMap) {
+    for (const [key, value] of Object.entries(this.dependencies)) {
       // console.log('dependency', key, value)
       dependencies[key] = value
     }
@@ -643,7 +643,7 @@ export class XpmLiquidBuildConfiguration {
 
     // Process devDependencies with substitutions.
     const devDependencies: JsonDependencies = {}
-    for (const [key, value] of this.devDependenciesMap) {
+    for (const [key, value] of Object.entries(this.devDependencies)) {
       // console.log('devDependency', key, value)
       devDependencies[key] = value
     }
