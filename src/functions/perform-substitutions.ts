@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------------
 
 import assert from 'node:assert'
-// import * as util from 'node:util'
+import * as util from 'node:util'
 
 import { Context } from 'liquidjs'
 
@@ -24,6 +24,7 @@ import { XpmLiquidEngine } from '../core/liquid-engine.js'
 import { XpmLiquidPropertiesDrop } from '../core/liquid-drop.js'
 // eslint-disable-next-line max-len
 import { XpmLiquidSubstitutionsVariables } from '../core/substitutions-variables.js'
+import { XpmError } from '../core/errors.js'
 
 // ----------------------------------------------------------------------------
 /**
@@ -89,26 +90,30 @@ export async function performSubstitutions({
         // If nothing changed, we're done.
         // This test is just a safety net, normally should not get there.
         log.warn(
-          `performSubstitutions() ${String(count)} => |`,
+          `performSubstitutions() step ${String(count)} => (`,
           substituted,
-          '| did not change'
+          ') did not change'
         )
 
         break
       } /* c8 ignore stop */
     } catch (error) {
       if (error instanceof Error) {
-        // log.error(util.inspect(error))
-        log.error(error.message.replace(/, line:.*/g, ''))
+        log.trace(util.inspect(error))
+        throw new XpmError(error.message.replace(/, line:.*/g, ''))
       } else {
-        log.error(String(error))
+        throw new XpmError(String(error))
       }
       // Return the current (unsubstituted) value.
       substituted = current
       break
     }
 
-    log.trace(`performSubstitutions() ${String(count)} => |`, substituted, '|')
+    log.trace(
+      `performSubstitutions() step ${String(count)} => (`,
+      substituted,
+      ')'
+    )
     current = substituted
   }
 
