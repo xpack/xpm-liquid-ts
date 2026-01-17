@@ -73,9 +73,9 @@ export class XpmLiquidPropertiesDrop extends Drop {
 
     const value = this.#properties[key]
     log.trace(
-      `${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}') value = |`,
+      `${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}') in (`,
       value,
-      '|'
+      ')'
     )
 
     let result: string | string[]
@@ -95,10 +95,9 @@ export class XpmLiquidPropertiesDrop extends Drop {
       result = value
     }
     log.trace(
-      `${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}') ` +
-        `result = |`,
+      `${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}')` + ` => (`,
       result,
-      '|'
+      ')'
     )
     return result
   }
