@@ -154,23 +154,23 @@ await test('configurations', async (t): Promise<void> => {
 
   // console.log(buildConfiguration.dependenciesMap)
   t.equal(
-    buildConfiguration.dependenciesMap.size,
+    Object.keys(buildConfiguration.dependencies).length,
     Object.keys(json.xpack!.buildConfigurations!.alfa!.dependencies!).length,
     'dependencies length matches'
   )
   t.equal(
-    buildConfiguration.dependenciesMap.get('dep1'),
+    buildConfiguration.dependencies['dep1'],
     '^1.0.0',
     'dependency dep1 matches'
   )
   // console.log(buildConfiguration.devDependenciesMap)
   t.equal(
-    buildConfiguration.devDependenciesMap.size,
+    Object.keys(buildConfiguration.devDependencies).length,
     Object.keys(json.xpack!.buildConfigurations!.alfa!.devDependencies!).length,
     'devDependencies length matches'
   )
   t.equal(
-    buildConfiguration.devDependenciesMap.get('ddep1'),
+    buildConfiguration.devDependencies['ddep1'],
     '^10.0.0',
     'devDependency ddep1 matches'
   )
@@ -372,18 +372,18 @@ await test('configurations inheritance', async (t): Promise<void> => {
   )
 
   t.equal(
-    buildConfiguration.devDependenciesMap.size,
+    Object.keys(buildConfiguration.devDependencies).length,
     2,
     'devDependencies length matches'
   )
 
   t.equal(
-    buildConfiguration.devDependenciesMap.has('@xpack-dev-tools/gcc'),
+    buildConfiguration.devDependencies.hasOwnProperty('@xpack-dev-tools/gcc'),
     true,
     'has devDependency @xpack-dev-tools/gcc'
   )
   t.equal(
-    buildConfiguration.devDependenciesMap.has(
+    buildConfiguration.devDependencies.hasOwnProperty(
       '@micro-os-plus/architecture-synthetic-posix'
     ),
     true,
