@@ -138,9 +138,9 @@ export class XpmLiquidActions {
             expandedAction,
           ] of expandedActionsMap) {
             if (this.#actionsNamesSet.has(expandedActionName)) {
-              log.error(
+              throw new XpmError(
                 `duplicate action name '${expandedActionName}' ` +
-                  `generated from template; skipped...`
+                  `generated from template.`
               )
             } else {
               this.#actionsMap.set(expandedActionName, expandedAction)
@@ -150,16 +150,16 @@ export class XpmLiquidActions {
           }
         } catch (error) {
           if (error instanceof Error) {
-            log.error(error.message)
+            throw new XpmError(error.message)
           } else {
-            log.error(String(error))
+            throw new XpmError(String(error))
           }
         }
       } else {
         if (this.#actionsNamesSet.has(actionName)) {
-          log.error(
+          throw new XpmError(
             `duplicate action name '${actionName}' ` +
-              `possibly already generated from template; skipped...`
+              `possibly already generated from template.`
           )
         } else {
           this.#actionsMap.set(actionName, undefined)
@@ -168,11 +168,6 @@ export class XpmLiquidActions {
         }
       }
     }
-
-    log.trace(
-      `${XpmLiquidActions.name}.initialise() =>`,
-      Array.from(this.#actionsMap.keys())
-    )
 
     this.#isInitialised = true
     return true
