@@ -139,8 +139,13 @@ export class XpmLiquidEngine extends Liquid {
       return input
     })
 
-    this.registerFilter('split_lines', (input: string): string[] => {
-      // Convert a string with lines into an array.
+    // Convert a string with lines into an array.
+    this.registerFilter('split_lines', (input: string | string[]): string[] => {
+      if (Array.isArray(input)) {
+        // If already an array, first flatten it, then split it.
+        // This is needed in case any of the lines include EOLs.
+        return input.join(os.EOL).split(os.EOL)
+      }
       return input.split(os.EOL)
     })
 
