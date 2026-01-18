@@ -443,6 +443,8 @@ export class XpmLiquidBuildConfiguration {
 
   #buildFolderRelativePath?: string
 
+  #inheritedNamesSet: Set<string> = new Set<string>()
+
   #isInitialised = false
   isTemplate: boolean
 
@@ -599,6 +601,17 @@ export class XpmLiquidBuildConfiguration {
         if (inheritedBuildConfigurationName.trim() === '') {
           continue
         }
+
+        if (this.#inheritedNamesSet.has(inheritedBuildConfigurationName)) {
+          throw new XpmInputError(
+            'buildConfiguration' +
+              ` '${this.buildConfigurationName}'` +
+              ' inherits from circular reference' +
+              ` '${inheritedBuildConfigurationName}'`
+          )
+        }
+        this.#inheritedNamesSet.add(inheritedBuildConfigurationName)
+
         const inheritedBuildConfiguration = this.parentBuildConfigurations.get(
           inheritedBuildConfigurationName
         )
