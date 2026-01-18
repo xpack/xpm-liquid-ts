@@ -21,6 +21,7 @@ import { Logger } from '@xpack/logger'
 
 import { XpmLiquidSubstitutionsStrings } from './substitutions-variables.js'
 import { isJsonObject } from '../functions/utils.js'
+import { XpmInputError } from '../index.js'
 
 // ----------------------------------------------------------------------------
 
@@ -66,7 +67,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
     // console.log(key)
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.#properties[key] === undefined) {
-      throw new Error(`"properties.${key}" not defined`)
+      throw new XpmInputError(`"properties.${key}" not defined`)
     }
 
     const log = this.#log
@@ -96,6 +97,83 @@ export class XpmLiquidPropertiesDrop extends Drop {
     }
     log.trace(
       `${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}')` + ` => (`,
+      result,
+      ')'
+    )
+    return result
+  }
+}
+
+export class XpmLiquidMatrixDrop extends Drop {
+  // --------------------------------------------------------------------------
+  // Members.
+
+  readonly #log: Logger
+  readonly #matrix: XpmLiquidSubstitutionsStrings
+  readonly #engine: Liquid
+
+  // --------------------------------------------------------------------------
+  // Constructor.
+
+  constructor({
+    log,
+    engine,
+    matrix,
+  }: {
+    log: Logger
+    engine: Liquid
+    matrix: XpmLiquidSubstitutionsStrings
+  }) {
+    super()
+
+    log.trace(`${XpmLiquidMatrixDrop.name}()`)
+
+    this.#log = log
+    this.#engine = engine
+    this.#matrix = matrix
+  }
+
+  // --------------------------------------------------------------------------
+  // Methods.
+
+  override async liquidMethodMissing(
+    key: string,
+    context: Context
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<any> {
+    // console.log(key)
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (this.#matrix[key] === undefined) {
+      throw new XpmInputError(`"matrix.${key}" not defined`)
+    }
+
+    const log = this.#log
+
+    const value = this.#matrix[key]
+    log.trace(
+      `${XpmLiquidMatrixDrop.name}.liquidMethodMissing('${key}') in (`,
+      value,
+      ')'
+    )
+
+    let result: string | string[]
+
+    if (isJsonObject(value)) {
+      return value
+    }
+
+    // If the property value is an array, merge them into a single string.
+    const valueString = Array.isArray(value) ? value.join('') : value
+    if (valueString.includes('{{') || valueString.includes('{%')) {
+      result = (await this.#engine.parseAndRender(
+        valueString,
+        context
+      )) as string
+    } else {
+      result = value
+    }
+    log.trace(
+      `${XpmLiquidMatrixDrop.name}.liquidMethodMissing('${key}')` + ` => (`,
       result,
       ')'
     )

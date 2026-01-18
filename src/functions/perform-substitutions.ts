@@ -21,7 +21,10 @@ import { Context } from 'liquidjs'
 import { Logger } from '@xpack/logger'
 
 import { XpmLiquidEngine } from '../core/liquid-engine.js'
-import { XpmLiquidPropertiesDrop } from '../core/liquid-drop.js'
+import {
+  XpmLiquidMatrixDrop,
+  XpmLiquidPropertiesDrop,
+} from '../core/liquid-drop.js'
 // eslint-disable-next-line max-len
 import { XpmLiquidSubstitutionsVariables } from '../core/substitutions-variables.js'
 import { XpmError } from '../core/errors.js'
@@ -66,6 +69,11 @@ export async function performSubstitutions({
         log,
         engine,
         properties: substitutionsVariables.properties,
+      }),
+      matrix: new XpmLiquidMatrixDrop({
+        log,
+        engine,
+        matrix: substitutionsVariables.matrix ?? {},
       }),
     })
   } else {
