@@ -25,7 +25,12 @@ import {
 } from './substitutions-variables.js'
 import { JsonActions, JsonActionContent, JsonActionTemplate } from './types.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
-import { isJsonArray, isJsonObject, isString } from '../functions/utils.js'
+import {
+  getErrorMessage,
+  isJsonArray,
+  isJsonObject,
+  isString,
+} from '../functions/utils.js'
 import { XpmError } from './errors.js'
 import { XpmLiquidBuildConfiguration } from './liquid-build-configurations.js'
 
@@ -112,6 +117,18 @@ export class XpmLiquidActions {
   async initialise(): Promise<boolean> {
     const log = this.log
 
+    if (this.#isInitialised) {
+      if (this.buildConfiguration !== undefined) {
+        log.trace(
+          `${XpmLiquidActions.name}.initialise()` +
+            ` @${this.buildConfiguration.buildConfigurationName} again`
+        )
+      } else {
+        log.trace(`${XpmLiquidActions.name}.initialise() again`)
+      }
+      return false
+    }
+
     if (this.buildConfiguration !== undefined) {
       log.trace(
         `${XpmLiquidActions.name}.initialise()` +
@@ -119,10 +136,6 @@ export class XpmLiquidActions {
       )
     } else {
       log.trace(`${XpmLiquidActions.name}.initialise()`)
-    }
-
-    if (this.#isInitialised) {
-      return false
     }
 
     for (const [actionName, jsonAction] of Object.entries(this.jsonActions)) {
@@ -139,7 +152,7 @@ export class XpmLiquidActions {
           ] of expandedActionsMap) {
             if (this.#actionsNamesSet.has(expandedActionName)) {
               throw new XpmError(
-                `duplicate action name '${expandedActionName}' ` +
+                `duplicate action name "${expandedActionName}" ` +
                   `generated from template.`
               )
             } else {
@@ -149,16 +162,13 @@ export class XpmLiquidActions {
             }
           }
         } catch (error) {
-          if (error instanceof Error) {
-            throw new XpmError(error.message)
-          } else {
-            throw new XpmError(String(error))
-          }
+          const message = getErrorMessage(error) + ` in action "${actionName}"`
+          throw new XpmError(message)
         }
       } else {
         if (this.#actionsNamesSet.has(actionName)) {
           throw new XpmError(
-            `duplicate action name '${actionName}' ` +
+            `duplicate action name "${actionName}" ` +
               `possibly already generated from template.`
           )
         } else {
@@ -214,7 +224,6 @@ export class XpmLiquidActions {
       this.#actionsMap.set(actionName, action)
     }
 
-    // await action.initialise()
     return action
   }
 
@@ -235,14 +244,14 @@ export class XpmLiquidActions {
     const newActionsMap = new Map<string, XpmLiquidAction>()
 
     if (!isJsonObject(jsonActionTemplate.matrix)) {
-      throw new XpmError(`action '${actionName}' matrix is not an object`)
+      throw new XpmError(`action "${actionName}" matrix is not an object`)
     }
     if (
       !isString(jsonActionTemplate.template) &&
       !isJsonArray(jsonActionTemplate.template)
     ) {
       throw new XpmError(
-        `action '${actionName}' template is not a string or array`
+        `action "${actionName}" template is not a string or array`
       )
     }
     // Validate matrix structure and collect keys/values
@@ -254,27 +263,36 @@ export class XpmLiquidActions {
     )) {
       if (!isJsonArray(matrixValueArray)) {
         throw new XpmError(
-          `action '${actionName}' matrix.${matrixKey} is not an array`
+          `action "${actionName}" matrix.${matrixKey} is not an array`
         )
       }
       for (const matrixValue of matrixValueArray) {
         if (!isString(matrixValue)) {
           throw new XpmError(
-            `action '${actionName}' matrix.${matrixKey} value is not a string`
+            `action "${actionName}" matrix.${matrixKey} value is not a string`
           )
         }
       }
       matrixKeys.push(matrixKey)
       const stringValue = matrixValueArray.join(os.EOL)
       if (stringValue.includes('{{') || stringValue.includes('{%')) {
-        const substitutedValue = await performSubstitutions({
-          input: stringValue,
-          engine: this.engine,
-          substitutionsVariables: {
-            ...this.substitutionsVariables,
-          },
-          log: this.log,
-        })
+        let substitutedValue
+        try {
+          substitutedValue = await performSubstitutions({
+            input: stringValue,
+            engine: this.engine,
+            substitutionsVariables: {
+              ...this.substitutionsVariables,
+            },
+            log: this.log,
+          })
+        } catch (error) {
+          const message =
+            getErrorMessage(error) +
+            ` in action "${actionName}" matrix.${matrixKey}`
+          throw new XpmError(message)
+        }
+
         // console.log('substitutedValue =>', substitutedValue)
         matrixValues.push(
           substitutedValue.replace(new RegExp(os.EOL + '$'), '').split(os.EOL)
@@ -290,15 +308,24 @@ export class XpmLiquidActions {
     ): Promise<void> => {
       // console.log(combination)
 
-      const substitutedActionName = await performSubstitutions({
-        input: actionName,
-        engine: this.engine,
-        substitutionsVariables: {
-          ...this.substitutionsVariables,
-          matrix: combination,
-        },
-        log: this.log,
-      })
+      let substitutedActionName
+      try {
+        substitutedActionName = await performSubstitutions({
+          input: actionName,
+          engine: this.engine,
+          substitutionsVariables: {
+            ...this.substitutionsVariables,
+            matrix: combination,
+          },
+          log: this.log,
+        })
+      } catch (error) {
+        const message =
+          getErrorMessage(error) +
+          ` in action "${actionName}" name substitution`
+        throw new XpmError(message)
+      }
+
       // console.log(substitutedActionName)
 
       const newAction = new XpmLiquidAction({
@@ -401,11 +428,14 @@ export class XpmLiquidAction {
 
   async initialise(): Promise<boolean> {
     const log = this.parentActions.log
-    log.trace(`${XpmLiquidAction.name}.initialise(${this.actionName})`)
 
     if (this.#isInitialised) {
+      log.trace(`${XpmLiquidAction.name}.initialise(${this.actionName}) again`)
+
       return false
     }
+
+    log.trace(`${XpmLiquidAction.name}.initialise(${this.actionName})`)
 
     // Silently accept empty or non-existing actions.
     const jsonAction = this.jsonAction
@@ -413,22 +443,29 @@ export class XpmLiquidAction {
       ? jsonAction.join(os.EOL)
       : jsonAction
 
-    const substitutedCommands = await performSubstitutions({
-      input: inputCommands,
-      engine: this.parentActions.engine,
-      substitutionsVariables: {
-        ...this.parentActions.substitutionsVariables,
-        matrix: this.#matrixParameters ?? {},
-      },
-      log,
-    })
+    let substitutedCommands
+    try {
+      substitutedCommands = await performSubstitutions({
+        input: inputCommands,
+        engine: this.parentActions.engine,
+        substitutionsVariables: {
+          ...this.parentActions.substitutionsVariables,
+          matrix: this.#matrixParameters ?? {},
+        },
+        log,
+      })
+    } catch (error) {
+      const message =
+        getErrorMessage(error) +
+        ` in action "${this.actionName}" commands substitution`
+      throw new XpmError(message)
+    }
 
     this.#commands = substitutedCommands
       .replace(new RegExp(os.EOL + '$'), '')
       .split(os.EOL)
 
     log.trace(`${XpmLiquidAction.name}.initialise() =>`, this.actionName)
-
     log.trace(this.actionName, 'commands =>', this.#commands)
 
     this.#isInitialised = true
