@@ -18,7 +18,6 @@ export * from './functions/chmod-recursive.js'
 export * from './functions/perform-substitutions.js'
 export * from './functions/utils.js'
 
-export * from './core/downloader.js'
 export * from './core/errors.js'
 export * from './core/init-template-base.js'
 export * from './core/liquid-actions.js'
