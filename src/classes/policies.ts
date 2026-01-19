@@ -24,8 +24,7 @@ import semver from 'semver'
 // ============================================================================
 
 export class XpmPolicies {
-  #log: Logger
-  minVersion: string
+  minVersion = '0.0.0'
 
   shareNpmDependencies = false
   nonHierarchicalLocalXpacksFolder = false
@@ -33,16 +32,20 @@ export class XpmPolicies {
   singleParameterXpmInitTemplate = false
 
   constructor({ log, minVersion }: { log: Logger; minVersion: string }) {
-    this.minVersion = minVersion || '0.0.0'
-    this.#log = log
+    log.trace(`${XpmPolicies.name}({minVersion: ${minVersion})`)
 
-    // log.trace(`minVersion: ${this.minVersion}`)
+    if (semver.valid(minVersion) === null) {
+      return
+    }
+
+    this.minVersion = minVersion
+
     this.shareNpmDependencies = semver.lt(this.minVersion, '0.14.0')
     this.nonHierarchicalLocalXpacksFolder = semver.lt(this.minVersion, '0.16.0')
     this.onlyStringDependencies = semver.lt(this.minVersion, '0.16.0')
     this.singleParameterXpmInitTemplate = semver.lt(this.minVersion, '0.22.0')
 
-    this.#log.trace(
+    log.trace(
       `policies.shareNpmDependencies: ${String(this.shareNpmDependencies)}`
     )
   }
