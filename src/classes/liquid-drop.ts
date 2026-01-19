@@ -21,10 +21,10 @@ import { Logger } from '@xpack/logger'
 
 // eslint-disable-next-line max-len
 import { XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.js'
-import { isJsonObject } from '../functions/utils.js'
+import { isJsonObject } from '../functions/is-something.js'
 import { XpmInputError } from '../index.js'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 // https://liquidjs.com/
 
@@ -104,6 +104,8 @@ export class XpmLiquidPropertiesDrop extends Drop {
     return result
   }
 }
+
+// ============================================================================
 
 export class XpmLiquidMatrixDrop extends Drop {
   // --------------------------------------------------------------------------

@@ -20,7 +20,7 @@ import { Liquid } from 'liquidjs'
 
 import { Logger } from '@xpack/logger'
 
-import { isJsonObject } from '../functions/utils.js'
+import { isJsonObject } from '../functions/is-something.js'
 import {
   xpmLiquidSubstitutionsVariablesBase,
   XpmLiquidSubstitutionsVariables,
@@ -34,7 +34,7 @@ import { JsonXpmPackage } from '../types/json.js'
 
 export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 export class XpmLiquidPackage {
   // --------------------------------------------------------------------------

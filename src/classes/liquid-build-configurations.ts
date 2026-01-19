@@ -35,16 +35,16 @@ import {
 } from '../types/json.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
 import { XpmLiquidAction, XpmLiquidActions } from './liquid-actions.js'
+import { getErrorMessage } from '../functions/utils.js'
 import {
-  getErrorMessage,
   isJsonArray,
   isJsonObject,
   isString,
-} from '../functions/utils.js'
-import { filterPath } from '../functions/utils.js'
+} from '../functions/is-something.js'
+import { filterPath } from '../functions/filter-paths.js'
 import { XpmError, XpmInputError } from './errors.js'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 // A collection of build configurations.
 export class XpmLiquidBuildConfigurations {
@@ -436,7 +436,7 @@ export class XpmLiquidBuildConfigurations {
   }
 }
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 // An individual build configuration.
 export class XpmLiquidBuildConfiguration {

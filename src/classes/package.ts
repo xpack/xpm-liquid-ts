@@ -34,7 +34,7 @@ import {
 import { XpmInputError, XpmPrerequisitesError } from './errors.js'
 import { JsonPackageSpecifier } from '../types/json.js'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 export class XpmPackage {
   // --------------------------------------------------------------------------

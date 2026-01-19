@@ -15,6 +15,8 @@
 
 // Re-export all library definitions.
 export * from './functions/chmod-recursive.js'
+export * from './functions/filter-paths.js'
+export * from './functions/is-something.js'
 export * from './functions/perform-substitutions.js'
 export * from './functions/utils.js'
 

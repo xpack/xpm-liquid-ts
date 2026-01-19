@@ -29,16 +29,16 @@ import {
   JsonActionTemplate,
 } from '../types/json.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
+import { getErrorMessage } from '../functions/utils.js'
 import {
-  getErrorMessage,
   isJsonArray,
   isJsonObject,
   isString,
-} from '../functions/utils.js'
+} from '../functions/is-something.js'
 import { XpmError } from './errors.js'
 import { XpmLiquidBuildConfiguration } from './liquid-build-configurations.js'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 // A collection of actions.
 export class XpmLiquidActions {
@@ -381,7 +381,7 @@ export class XpmLiquidActions {
   }
 }
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 // An individual action.
 export class XpmLiquidAction {

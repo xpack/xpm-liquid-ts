@@ -21,7 +21,7 @@ import { Logger } from '@xpack/logger'
 // https://www.npmjs.com/package/semver
 import semver from 'semver'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 export class XpmPolicies {
   #log: Logger
