@@ -23,7 +23,7 @@ import { XpmLiquidEngine } from './liquid-engine.js'
 import {
   XpmLiquidSubstitutionsVariables,
   XpmLiquidSubstitutionsStrings,
-} from './substitutions-variables.js'
+} from '../data/substitutions-variables.js'
 import { buildFolderRelativePathPropertyName } from './liquid-package.js'
 import {
   JsonBuildConfiguration,
@@ -32,7 +32,7 @@ import {
   JsonBuildConfigurationInherits,
   JsonBuildConfigurationTemplate,
   JsonDependencies,
-} from './types.js'
+} from '../types/json.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
 import { XpmLiquidAction, XpmLiquidActions } from './liquid-actions.js'
 import {

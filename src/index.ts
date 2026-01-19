@@ -18,18 +18,24 @@ export * from './functions/chmod-recursive.js'
 export * from './functions/perform-substitutions.js'
 export * from './functions/utils.js'
 
-export * from './core/errors.js'
-export * from './core/init-template-base.js'
-export * from './core/liquid-actions.js'
-export * from './core/liquid-build-configurations.js'
-export * from './core/liquid-drop.js'
-export * from './core/liquid-engine.js'
-export * from './core/liquid-package.js'
-export * from './core/package.js'
-export * from './core/policies.js'
-export * from './core/substitutions-variables.js'
-export * from './core/types.js'
+export * from './classes/errors.js'
+export * from './classes/init-template-base.js'
+export * from './classes/liquid-actions.js'
+export * from './classes/liquid-build-configurations.js'
+export * from './classes/liquid-drop.js'
+export * from './classes/liquid-engine.js'
+export * from './classes/liquid-package.js'
+export * from './classes/package.js'
+export * from './classes/policies.js'
 
+export * from './data/substitutions-variables.js'
+
+export * from './types/json.js'
+export * from './types/xpm.js'
+
+// ----------------------------------------------------------------------------
+
+// Re-export liquidjs to the application to ensure consistent versions.
 export * from 'liquidjs'
 
 // ----------------------------------------------------------------------------

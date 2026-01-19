@@ -30,16 +30,11 @@ import {
   JsonBuildConfigurationContent,
   JsonBuildConfigurationTemplate,
   JsonXpmPackage,
-} from './types.js'
+} from '../types/json.js'
 import { XpmInputError, XpmPrerequisitesError } from './errors.js'
+import { JsonPackageSpecifier } from '../types/json.js'
 
 // ----------------------------------------------------------------------------
-
-export interface XpmPackageSpecifier {
-  scope?: string
-  name?: string
-  version?: string
-}
 
 export class XpmPackage {
   // --------------------------------------------------------------------------
@@ -158,12 +153,15 @@ export class XpmPackage {
     }
     // Since Nov. 2024, `executables` is preferred to `bin`.
     if (jsonPackage?.xpack.executables ?? jsonPackage?.xpack.bin) {
+      // If it has `executables` or `bin`, it must have `binaries` and
+      // `binaries.platforms` too.
       if (!jsonPackage.xpack.binaries) {
         throw new XpmInputError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.binaries"'
         )
       }
+
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!jsonPackage.xpack.binaries.platforms) {
         throw new XpmInputError(
@@ -174,6 +172,9 @@ export class XpmPackage {
       return true
     }
     if (jsonPackage?.xpack.binaries) {
+      // If it has `binaries`, it must have `binaries.platforms` and
+      // `executables` too.
+
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!jsonPackage.xpack.binaries.platforms) {
         throw new XpmInputError(
@@ -199,6 +200,7 @@ export class XpmPackage {
 
   isBinaryNodeModule() {
     const jsonPackage = this.jsonPackage
+
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return this.isNodeModule() && !!jsonPackage?.bin
   }
@@ -275,8 +277,7 @@ export class XpmPackage {
 
     log.trace(`${XpmPackage.name}.getMinimumXpmRequired()`)
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const version = jsonPackage?.xpack?.minimumXpmRequired
+    const version = jsonPackage?.xpack.minimumXpmRequired
     if (version === undefined) {
       return undefined
     }
@@ -360,7 +361,7 @@ export class XpmPackage {
     npmPackageSpecifier,
   }: {
     npmPackageSpecifier: string
-  }): XpmPackageSpecifier {
+  }): JsonPackageSpecifier {
     assert(npmPackageSpecifier)
 
     const log = this.#log

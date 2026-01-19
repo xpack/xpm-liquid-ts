@@ -19,7 +19,8 @@ import { Liquid, Context, Drop } from 'liquidjs'
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
 
-import { XpmLiquidSubstitutionsStrings } from './substitutions-variables.js'
+// eslint-disable-next-line max-len
+import { XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.js'
 import { isJsonObject } from '../functions/utils.js'
 import { XpmInputError } from '../index.js'
 

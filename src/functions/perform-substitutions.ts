@@ -20,14 +20,14 @@ import { Context } from 'liquidjs'
 
 import { Logger } from '@xpack/logger'
 
-import { XpmLiquidEngine } from '../core/liquid-engine.js'
+import { XpmLiquidEngine } from '../classes/liquid-engine.js'
 import {
   XpmLiquidMatrixDrop,
   XpmLiquidPropertiesDrop,
-} from '../core/liquid-drop.js'
+} from '../classes/liquid-drop.js'
 // eslint-disable-next-line max-len
-import { XpmLiquidSubstitutionsVariables } from '../core/substitutions-variables.js'
-import { XpmError } from '../core/errors.js'
+import { XpmLiquidSubstitutionsVariables } from '../data/substitutions-variables.js'
+import { XpmError } from '../classes/errors.js'
 
 // ----------------------------------------------------------------------------
 /**

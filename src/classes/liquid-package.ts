@@ -24,11 +24,11 @@ import { isJsonObject } from '../functions/utils.js'
 import {
   xpmLiquidSubstitutionsVariablesBase,
   XpmLiquidSubstitutionsVariables,
-} from './substitutions-variables.js'
+} from '../data/substitutions-variables.js'
 import { XpmLiquidEngine } from './liquid-engine.js'
 import { XpmLiquidActions } from './liquid-actions.js'
 import { XpmLiquidBuildConfigurations } from './liquid-build-configurations.js'
-import { JsonXpmPackage } from './types.js'
+import { JsonXpmPackage } from '../types/json.js'
 
 // ----------------------------------------------------------------------------
 

@@ -9,8 +9,6 @@
  * be obtained from https://opensource.org/license/mit.
  */
 
-import { Logger } from '@xpack/logger'
-
 /* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
 
 // ----------------------------------------------------------------------------
@@ -34,7 +32,7 @@ export interface JsonDependencyExtended {
   platforms?: string | string[]
 }
 
-// -----
+// ----------------------------------------------------------------------------
 
 export type JsonActionContent = string | string[]
 
@@ -47,7 +45,7 @@ export type JsonAction = JsonActionContent | JsonActionTemplate
 
 export type JsonActions = Record<string, JsonAction>
 
-// -----
+// ----------------------------------------------------------------------------
 
 export interface JsonBuildConfigurationContent {
   inherits?: JsonBuildConfigurationInherits | string
@@ -70,7 +68,7 @@ export type JsonBuildConfiguration =
 
 export type JsonBuildConfigurations = Record<string, JsonBuildConfiguration>
 
-// ----
+// ----------------------------------------------------------------------------
 
 export interface JsonXpack {
   minimumXpmRequired?: string
@@ -118,21 +116,10 @@ export interface JsonXpmPackage extends JsonNpmPackage {
 
 // ----------------------------------------------------------------------------
 
-export type XpmLiquidActionCommands = string[] // Always array of strings.
-
-export interface XpmConfig {
-  doForce?: boolean
-  doSkipIfInstalled?: boolean
-  isDryRun?: boolean
-  properties?: Record<string, string | boolean | number>
-  [key: string]: unknown // Allow any additional property
-}
-
-export interface XpmContext {
-  log: Logger
-  config: XpmConfig
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any // Allow any additional property
+export interface JsonPackageSpecifier {
+  scope?: string
+  name?: string
+  version?: string
 }
 
 // ----------------------------------------------------------------------------

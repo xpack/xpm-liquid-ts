@@ -22,8 +22,12 @@ import { XpmLiquidEngine } from './liquid-engine.js'
 import {
   XpmLiquidSubstitutionsVariables,
   XpmLiquidSubstitutionsStrings,
-} from './substitutions-variables.js'
-import { JsonActions, JsonActionContent, JsonActionTemplate } from './types.js'
+} from '../data/substitutions-variables.js'
+import {
+  JsonActions,
+  JsonActionContent,
+  JsonActionTemplate,
+} from '../types/json.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
 import {
   getErrorMessage,
