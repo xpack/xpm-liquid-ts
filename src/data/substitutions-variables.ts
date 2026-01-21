@@ -18,15 +18,96 @@ import * as path from 'node:path'
 
 // ----------------------------------------------------------------------------
 
+/**
+ * Represents a map of substitution values used by Liquid templates.
+ *
+ * @remarks
+ * Values can be strings for simple substitutions or arrays for multi-line
+ * content. Array values are typically joined with newlines when rendered.
+ *
+ * Common use cases:
+ *
+ * - Properties: User-defined configuration values from xpack.properties.
+ *
+ * - Matrix parameters: Template expansion variables from matrix definitions.
+ *
+ * - Configuration data: Build-specific settings and metadata.
+ *
+ * Templates access these values via namespaces like `properties.foo`,
+ * `matrix.arch`, etc., with the Liquid Drop pattern providing lazy
+ * evaluation and nested substitution support.
+ *
+ * @public
+ */
 export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>
 
+/**
+ * Defines the substitution variables available to Liquid templates.
+ *
+ * @remarks
+ * This interface mirrors a subset of Node.js environment, operating
+ * system, and path information, along with package-specific configuration
+ * values.
+ *
+ * Variable hierarchy and scoping:
+ *
+ * 1. Base variables (env, os, path): Available globally, initialized once
+ *    from Node.js runtime at startup.
+ *
+ * 2. Package variables: Added when processing package.json, contains
+ *    package metadata accessible via `package.name`, `package.version`, etc.
+ *
+ * 3. Properties: User-defined values from xpack.properties, accessible via
+ *    `properties.key`.
+ *
+ * 4. Configuration: Build configuration metadata, available when processing
+ *    configuration-specific templates via `configuration.name`, etc.
+ *
+ * 5. Matrix: Template expansion parameters, scoped to individual expanded
+ *    instances, accessible via `matrix.key`.
+ *
+ * Variables are inherited and extended through the hierarchy: actions and
+ * configurations inherit base + package + properties, then add their own
+ * scoped variables. This ensures templates have access to appropriate
+ * context without exposing unrelated data.
+ *
+ * @public
+ */
 export interface XpmLiquidSubstitutionsVariables {
   /**
-   * https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env
+   * Process environment variables from the current execution context.
+   *
+   * @remarks
+   * Provides access to all environment variables via `env.VARIABLE_NAME`
+   * in templates. Common uses include accessing PATH, HOME, USER, or
+   * custom variables set by build scripts.
+   *
+   * See [Node.js process.env documentation](https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env)
+   *
+   * @public
    */
   env: NodeJS.ProcessEnv
   /**
-   * https://nodejs.org/dist/latest-v16.x/docs/api/os.html
+   * Operating system information from Node.js os module.
+   *
+   * @remarks
+   * Provides platform detection and system information for cross-platform
+   * template logic. Common uses include conditional compilation, path
+   * construction, and platform-specific configuration.
+   *
+   * Key properties for cross-platform templates:
+   *
+   * - `os.platform`: Detect OS ('darwin', 'linux', 'win32').
+   *
+   * - `os.arch`: Detect CPU architecture ('x64', 'arm64', etc.).
+   *
+   * - `os.EOL`: Use correct line endings for generated files.
+   *
+   * - `os.homedir`: Reference user's home directory portably.
+   *
+   * See [Node.js os module documentation](https://nodejs.org/dist/latest-v16.x/docs/api/os.html)
+   *
+   * @public
    */
   os: {
     /**
@@ -101,7 +182,30 @@ export interface XpmLiquidSubstitutionsVariables {
     version: string
   }
   /**
-   * https://nodejs.org/dist/latest-v16.x/docs/api/path.html
+   * Path separators and delimiters from Node.js path module.
+   *
+   * @remarks
+   * Provides platform-specific path constants for building file paths in
+   * templates. Use these to construct paths that work correctly on all
+   * platforms.
+   *
+   * Available constants:
+   *
+   * - `path.sep`: Platform-specific path separator (/ or \).
+   *
+   * - `path.delimiter`: Platform-specific PATH delimiter (; or :).
+   *
+   * - `path.posix.*`: Force POSIX conventions regardless of platform.
+   *
+   * - `path.win32.*`: Force Windows conventions regardless of platform.
+   *
+   * Note: For path manipulation, prefer using Liquid filters like
+   * `path_join`, `path_dirname`, etc., which handle cross-platform concerns
+   * automatically.
+   *
+   * See [Node.js path module documentation](https://nodejs.org/dist/latest-v16.x/docs/api/path.html)
+   *
+   * @public
    */
   path: {
     /**
@@ -125,18 +229,115 @@ export interface XpmLiquidSubstitutionsVariables {
       sep: string
     }
   }
+  /**
+   * The package metadata exposed to Liquid templates.
+   *
+   * @remarks
+   * Contains the entire package.json content, allowing templates to access
+   * package name, version, description, dependencies, and xpack-specific
+   * metadata.
+   *
+   * Common template patterns:
+   *
+   * - `{{ package.name }}`: Package name for generated files.
+   *
+   * - `{{ package.version }}`: Version string for documentation.
+   *
+   * - `{{ package.xpack.properties.key }}`: Access xpack properties.
+   *
+   * Undefined when processing templates outside of a package context.
+   *
+   * @public
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   package?: any
+  /**
+   * The build configuration exposed to Liquid templates.
+   *
+   * @remarks
+   * Available only when processing templates within a build configuration
+   * context (actions, dependencies, properties belonging to a specific
+   * configuration).
+   *
+   * Contains the configuration name and all configuration properties,
+   * allowing templates to reference the current build context:
+   *
+   * - `{{ configuration.name }}`: The build configuration name.
+   *
+   * - `{{ configuration.properties.key }}`: Configuration-specific settings.
+   *
+   * Undefined when processing package-level templates.
+   *
+   * @public
+   */
   configuration?: {
     name: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any
   }
+  /**
+   * The properties map used for substitutions.
+   *
+   * @remarks
+   * User-defined configuration values from xpack.properties in package.json.
+   * Provides a namespace for custom template variables without polluting
+   * the global scope.
+   *
+   * Properties support nested substitutions: a property value can reference
+   * other properties, package metadata, or system variables using Liquid
+   * syntax. The Liquid Drop pattern ensures recursive evaluation.
+   *
+   * Access via `{{ properties.key }}` in templates.
+   *
+   * @public
+   */
   properties: XpmLiquidSubstitutionsStrings
 
+  /**
+   * Optional matrix parameters used for template expansion.
+   *
+   * @remarks
+   * Available only for actions or configurations generated from templates
+   * with matrix definitions. Each expanded instance receives a specific
+   * combination of matrix values.
+   *
+   * Matrix parameters enable generating multiple similar actions or
+   * configurations from a single template definition. For example, a matrix
+   * with `arch: ['x64', 'arm64']` and `os: ['linux', 'darwin']` generates
+   * 4 instances (x64-linux, x64-darwin, arm64-linux, arm64-darwin).
+   *
+   * Access via `{{ matrix.key }}` in templates. Scoped to the individual
+   * expanded instance, ensuring isolation between generated items.
+   *
+   * @public
+   */
   matrix?: XpmLiquidSubstitutionsStrings
 }
 
+/**
+ * The base substitution variables initialised from the current environment.
+ *
+ * @remarks
+ * This constant provides the foundation for all Liquid template processing,
+ * capturing the runtime environment once at module load time.
+ *
+ * Initialization strategy:
+ *
+ * 1. Environment variables: Snapshot of process.env at load time.
+ *
+ * 2. OS information: Calls to os module functions (platform, arch, etc.).
+ *
+ * 3. Path constants: Platform-specific separators and delimiters.
+ *
+ * 4. Empty properties: Placeholder for package-specific additions.
+ *
+ * These base variables are shared across all template processing within the
+ * application and extended with package, configuration, and matrix variables
+ * as needed. The base object is typically spread into new contexts rather
+ * than mutated, preserving the original snapshot.
+ *
+ * @public
+ */
 // eslint-disable-next-line max-len
 export const xpmLiquidSubstitutionsVariablesBase: XpmLiquidSubstitutionsVariables =
   {
