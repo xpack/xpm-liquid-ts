@@ -2,6 +2,7 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack/xpm-lib-ts)](https://github.com/xpack/xpm-lib-ts/releases)
 [![NPM Version](https://img.shields.io/npm/v/@xpack/xpm-lib?color=blue)](https://www.npmjs.com/package/@xpack/xpm-lib/)
 [![license](https://img.shields.io/github/license/xpack/xpm-lib-ts)](https://github.com/xpack/xpm-lib-ts/blob/master/LICENSE)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fxpack.github.io%2Fxpm-lib-ts%2F)](https://xpack.github.io/xpm-lib-ts/)
 
 # The 
 
