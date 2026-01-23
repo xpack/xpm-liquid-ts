@@ -1,0 +1,258 @@
+import assert from 'node:assert';
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
+import semver from 'semver';
+import { XpmInputError, XpmPrerequisitesError } from './errors.js';
+export class XpmPackage {
+    packageFolderPath;
+    jsonPackage;
+    _log;
+    constructor({ log, packageFolderPath, }) {
+        this._log = log;
+        this.packageFolderPath = packageFolderPath;
+        log.trace(`${XpmPackage.name}(${packageFolderPath})`);
+    }
+    async readPackageDotJson({ withThrow = false, } = {}) {
+        const jsonFilePath = path.join(this.packageFolderPath, 'package.json');
+        let fileContent;
+        try {
+            fileContent = await fs.readFile(jsonFilePath);
+        }
+        catch (err) {
+            if (withThrow) {
+                if (err instanceof Error) {
+                    this._log.trace(err.message);
+                }
+                throw new XpmInputError(`no package.json in folder ‘${this.packageFolderPath}’`);
+            }
+            else {
+                return undefined;
+            }
+        }
+        try {
+            this.jsonPackage = JSON.parse(fileContent.toString());
+        }
+        catch (err) {
+            if (withThrow) {
+                this.jsonPackage = undefined;
+                if (err instanceof Error) {
+                    this._log.trace(err.message);
+                }
+                throw new XpmInputError(`invalid package.json in folder ‘${this.packageFolderPath}’`);
+            }
+            else {
+                return undefined;
+            }
+        }
+        return this.jsonPackage;
+    }
+    async rewritePackageDotJson(jsonPackage) {
+        const log = this._log;
+        assert(jsonPackage);
+        const jsonString = JSON.stringify(jsonPackage, null, 2) + '\n';
+        const jsonFilePath = path.join(this.packageFolderPath, 'package.json');
+        log.trace(`write filePath: '${jsonFilePath}'`);
+        await fs.writeFile(jsonFilePath, jsonString);
+    }
+    isNpmPackage() {
+        const jsonPackage = this.jsonPackage;
+        if (jsonPackage?.name === undefined || jsonPackage.version === undefined) {
+            return false;
+        }
+        const name = jsonPackage.name.trim();
+        if (name.length === 0) {
+            return false;
+        }
+        const version = jsonPackage.version.trim();
+        if (version.length === 0) {
+            return false;
+        }
+        return true;
+    }
+    isXpmPackage() {
+        const jsonPackage = this.jsonPackage;
+        if (!this.isNpmPackage()) {
+            return false;
+        }
+        if (jsonPackage?.xpack === undefined) {
+            return false;
+        }
+        return true;
+    }
+    isBinaryXpmPackage() {
+        const jsonPackage = this.jsonPackage;
+        if (!this.isXpmPackage()) {
+            return false;
+        }
+        if (jsonPackage?.xpack.executables ?? jsonPackage?.xpack.bin) {
+            if (!jsonPackage.xpack.binaries) {
+                throw new XpmInputError("doesn't look like a proper binary xpm package, " +
+                    'package.json has no "xpack.binaries"');
+            }
+            if (!jsonPackage.xpack.binaries.platforms) {
+                throw new XpmInputError("doesn't look like a proper binary xpm package, " +
+                    'package.json has no "xpack.binaries.platforms"');
+            }
+            return true;
+        }
+        if (jsonPackage?.xpack.binaries) {
+            if (!jsonPackage.xpack.binaries.platforms) {
+                throw new XpmInputError("doesn't look like a proper binary xpm package, " +
+                    'package.json has no "xpack.binaries.platforms"');
+            }
+            if (!(jsonPackage.xpack.executables ?? jsonPackage.xpack.bin)) {
+                throw new XpmInputError("doesn't look like a proper binary xpm package, " +
+                    'package.json has no "xpack.executables"');
+            }
+            return true;
+        }
+        return false;
+    }
+    isNodeModule() {
+        const jsonPackage = this.jsonPackage;
+        return !!jsonPackage && !jsonPackage.xpack;
+    }
+    isBinaryNodeModule() {
+        const jsonPackage = this.jsonPackage;
+        return this.isNodeModule() && !!jsonPackage?.bin;
+    }
+    hasNpmScripts() {
+        const jsonPackage = this.jsonPackage;
+        if (jsonPackage?.scripts !== undefined &&
+            Object.keys(jsonPackage.scripts).length > 0) {
+            return true;
+        }
+        return false;
+    }
+    hasXpmActions() {
+        const json = this.jsonPackage;
+        if (!this.isXpmPackage()) {
+            return false;
+        }
+        try {
+            if (json?.xpack.actions !== undefined &&
+                Object.keys(json.xpack.actions).length > 0) {
+                return true;
+            }
+            if (json?.xpack.buildConfigurations !== undefined &&
+                Object.keys(json.xpack.buildConfigurations).length > 0) {
+                for (const buildConfigurationName of Object.keys(json.xpack.buildConfigurations)) {
+                    const buildConfiguration = json.xpack.buildConfigurations[buildConfigurationName];
+                    if (buildConfigurationName.includes('{{') ||
+                        buildConfigurationName.includes('{%')) {
+                        const buildConfigurationTemplate = buildConfiguration;
+                        if (buildConfigurationTemplate.template.actions !== undefined &&
+                            Object.keys(buildConfigurationTemplate.template.actions).length >
+                                0) {
+                            return true;
+                        }
+                    }
+                    else {
+                        const buildConfigurationContent = buildConfiguration;
+                        if (buildConfigurationContent.actions !== undefined &&
+                            Object.keys(buildConfigurationContent.actions).length > 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        catch (err) {
+        }
+        return false;
+    }
+    getMinimumXpmRequired() {
+        const log = this._log;
+        const jsonPackage = this.jsonPackage;
+        log.trace(`${XpmPackage.name}.getMinimumXpmRequired()`);
+        const version = jsonPackage?.xpack.minimumXpmRequired;
+        if (version === undefined) {
+            return undefined;
+        }
+        return version.replace(/-.*$/, '');
+    }
+    async checkMinimumXpmRequired({ xpmRootFolderPath, }) {
+        const log = this._log;
+        const jsonPackage = this.jsonPackage;
+        log.trace(`${XpmPackage.name}.checkMinimumXpmRequired()`);
+        if (!jsonPackage) {
+            return undefined;
+        }
+        if (!this.isXpmPackage() || !jsonPackage.xpack.minimumXpmRequired) {
+            log.trace('minimumXpmRequired not used, no checks');
+            return undefined;
+        }
+        const cleanedVersion = semver.clean(jsonPackage.xpack.minimumXpmRequired.replace(/-.*$/, ''));
+        if (!cleanedVersion) {
+            return undefined;
+        }
+        const minimumXpmRequired = cleanedVersion;
+        log.trace(`minimumXpmRequired: ${minimumXpmRequired}`);
+        let jsonXpmCliPackage;
+        try {
+            const cliXpmPackage = new XpmPackage({
+                log,
+                packageFolderPath: xpmRootFolderPath,
+            });
+            jsonXpmCliPackage = await cliXpmPackage.readPackageDotJson({
+                withThrow: true,
+            });
+        }
+        catch (err) {
+            if (err instanceof Error) {
+                log.trace(err.message);
+            }
+            else {
+                log.trace(err);
+            }
+            return undefined;
+        }
+        assert(jsonXpmCliPackage);
+        log.trace(jsonXpmCliPackage.version);
+        if (!jsonXpmCliPackage.version) {
+            return undefined;
+        }
+        const xpmVersion = semver.clean(jsonXpmCliPackage.version.replace(/-.*$/, ''));
+        if (!xpmVersion) {
+            return undefined;
+        }
+        if (semver.lt(xpmVersion, minimumXpmRequired)) {
+            throw new XpmPrerequisitesError('package ' +
+                (jsonPackage.name ? `'${jsonPackage.name}' ` : '') +
+                `requires xpm v${minimumXpmRequired} or later, please upgrade`);
+        }
+        return minimumXpmRequired;
+    }
+    parsePackageSpecifier({ npmPackageSpecifier, }) {
+        assert(npmPackageSpecifier);
+        const log = this._log;
+        let scope;
+        let name;
+        let version;
+        if (npmPackageSpecifier.startsWith('@')) {
+            const arr = npmPackageSpecifier.split('/');
+            if (arr.length > 2) {
+                throw new XpmInputError(`'${npmPackageSpecifier}' not a package name`);
+            }
+            scope = arr[0];
+            if (arr.length > 1) {
+                const arr2 = arr[1].split('@');
+                name = arr2[0];
+                if (arr2.length > 1) {
+                    version = arr2[1];
+                }
+            }
+        }
+        else {
+            const arr2 = npmPackageSpecifier.split('@');
+            name = arr2[0];
+            if (arr2.length > 1) {
+                version = arr2[1];
+            }
+        }
+        log.trace(`${npmPackageSpecifier} => ` +
+            `${scope ?? '?'} ${name ?? '?'} ${version ?? '?'}`);
+        return { scope, name, version };
+    }
+}
+//# sourceMappingURL=package.js.map
