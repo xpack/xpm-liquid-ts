@@ -9,7 +9,8 @@ name: CI on Push
 on:
   push:
     branches:
-      - '**'
+      - 'master'
+      - 'development'
     tags-ignore:
       - '**'
     paths-ignore:
@@ -22,6 +23,7 @@ on:
       - '.vscode/**'
       - '.github/FUNDING.yml'
       - 'CHANGELOG.md'
+      - '.github/workflows/publish-github-pages.yml'  
 
 
 jobs:

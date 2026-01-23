@@ -58,16 +58,6 @@ typings/
 .next
 
 # ---
-
-**/*.js
-!/esm/index.js
-!eslint.config.js
-**/*.js.map
-**/*.d.ts
-**/*.d.ts.map
-
-/docs/
-
 tsconfig.tsbuildinfo
 
 website/html/
