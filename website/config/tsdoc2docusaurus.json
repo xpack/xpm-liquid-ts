@@ -1,0 +1,16 @@
+{
+  "website": {
+    "apiJsonInputFolderPath": "tsdoc/doc-model",
+    "apiMarkdownInputFolderPath": "tsdoc/markdown",
+    "apiFolderPath": "api",
+    "baseUrl": "/xpm-lib-ts/",
+    "apiBaseUrl": "api",
+    "navbarFilePath": "docusaurus-config-navbar-tsdoc.json",
+    "sidebarCategoryFilePath": "sidebar-category-tsdoc.json",
+    "customCssFilePath": "src/css/custom-tsdoc2docusaurus.css",
+    "navbarLabel": "API",
+    "navbarPosition": "left",
+    "verbose": false,
+    "debug": false
+  }
+}

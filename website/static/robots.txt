@@ -1,0 +1,7 @@
+Sitemap: https://xpack.github.io/xpm-lib-ts/sitemap.xml
+
+User-agent: *
+Disallow: /xpm-lib-ts/blog/archive/
+Disallow: /xpm-lib-ts/blog/authors/
+Disallow: /xpm-lib-ts/blog/page/
+Disallow: /xpm-lib-ts/blog/tags/

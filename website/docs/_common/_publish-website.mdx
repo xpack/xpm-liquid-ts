@@ -1,0 +1,31 @@
+{/* DO NOT EDIT! */}
+{/* Automatically generated from docusaurus-template-liquid/templates/docusaurus. */}
+
+{/* ------------------------------------------------------------------------ */}
+
+### Publish the website
+
+The website deployment is performed automatically when pushing to the
+`master` branch, utilising a dedicated workflow in
+[GitHub Actions](https://github.com/xpack/xpm-lib-ts/actions/workflows/publish-github-pages.yml).
+
+- Open https://xpack.github.io/xpm-lib-ts/docs/maintainer/#publish-the-website in a separate window
+- **Stop** the local web server
+- Switch to the `master` branch
+- **Merge** the `development` branch into the `master` branch
+- **Push** the `master` branch to GitHub
+  :::info
+  At this point, an automated GitHub Action will generate and publish the website.
+  :::
+- Check out the `development` branch
+- **Wait** for the publication to complete
+- **Refresh** the web page
+- The new release blog post is available
+at https://xpack.github.io/xpm-lib-ts/blog/
+- Record the post URL, as it must be used to update the release page
+and the X/Twitter announcement
+
+The `master` branch may be subsequently updated, provided the
+version in `package.json` remains unchanged.
+
+Verify the result at https://xpack.github.io/xpm-lib-ts/.
