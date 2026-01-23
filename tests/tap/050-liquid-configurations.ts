@@ -175,7 +175,7 @@ await test('configurations', async (t): Promise<void> => {
     'devDependency ddep1 matches'
   )
 
-  const actions = buildConfiguration.actions
+  const actions = buildConfiguration._actions
   t.ok(actions, 'has actions')
 
   t.equal(actions.empty(), true, 'actions is empty')
@@ -213,7 +213,7 @@ await test('configurations', async (t): Promise<void> => {
   initialised = await actionOne.initialise()
   t.equal(initialised, true, 'actionOne.initialise() => true')
 
-  let commands = actionOne.commands
+  let commands = actionOne._commands
   // console.log(commands)
   t.equal(commands.length, 1, 'actionOne has 1 command')
   t.equal(commands[0], 'echo 1 command', 'command is as expected')
@@ -222,7 +222,7 @@ await test('configurations', async (t): Promise<void> => {
   t.ok(actionTwo, 'actions.get("two") is ok')
 
   await actionTwo.initialise()
-  commands = actionTwo.commands
+  commands = actionTwo._commands
   t.equal(commands.length, 1, 'actionTwo has 1 command')
   t.equal(commands[0], 'echo 2a command', 'command is as expected')
 
@@ -390,7 +390,7 @@ await test('configurations inheritance', async (t): Promise<void> => {
     'has devDependency @micro-os-plus/architecture-synthetic-posix'
   )
 
-  const actions = buildConfiguration.actions
+  const actions = buildConfiguration._actions
   t.ok(actions, 'has actions')
 
   let actionsInitialised = await actions.initialise()
@@ -408,7 +408,7 @@ await test('configurations inheritance', async (t): Promise<void> => {
   t.ok(action, 'actions.get("build") is ok')
 
   await action.initialise()
-  const commands = action.commands
+  const commands = action._commands
   t.equal(commands.length, 2, 'action "build" has 2 commands')
   t.match(
     commands[0],
@@ -601,7 +601,7 @@ await test('configurations template', async (t): Promise<void> => {
   t.ok(action, 'actions.get("dummy") is ok')
 
   await action.initialise()
-  const commands = action.commands
+  const commands = action._commands
   t.equal(commands.length, 1, 'action "dummy" has 1 command')
   t.equal(commands[0], '11', 'command is as expected')
 
@@ -682,7 +682,7 @@ await test('configurations template', async (t): Promise<void> => {
 
   await buildConfiguration.initialise()
 
-  actions = buildConfiguration.actions
+  actions = buildConfiguration._actions
   t.ok(actions, 'has actions')
 
   actionsInitialised = await actions.initialise()

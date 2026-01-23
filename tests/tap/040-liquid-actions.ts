@@ -136,7 +136,7 @@ await test('actions', async (t): Promise<void> => {
   initialised = await actionOne.initialise()
   t.equal(initialised, true, 'actionOne.initialise() again => true')
 
-  let commands = actionOne.commands
+  let commands = actionOne._commands
   // console.log(commands)
   t.equal(commands.length, 1, 'actionOne has 1 command')
   t.equal(commands[0], 'echo 1 command', 'command is as expected')
@@ -165,7 +165,7 @@ await test('actions', async (t): Promise<void> => {
   t.ok(actionThree, 'topActions.get("three") is ok')
 
   await actionThree.initialise()
-  commands = actionThree.commands
+  commands = actionThree._commands
   // console.log(commands)
   t.equal(commands.length, 4, 'actionThree has 4 commands')
   t.equal(commands[0], 'line 1', 'command line 1 is as expected')
@@ -190,7 +190,7 @@ await test('actions', async (t): Promise<void> => {
 
   // console.log(actionTemplate.jsonAction)
   await actionTemplate.initialise()
-  commands = actionTemplate.commands
+  commands = actionTemplate._commands
   // console.log(commands)
   t.equal(commands.length, 2, 'actionTemplate has 2 commands')
   t.equal(
@@ -221,7 +221,7 @@ await test('actions', async (t): Promise<void> => {
 
   // console.log(actionTemplate.jsonAction)
   await actionTemplate.initialise()
-  commands = actionTemplate.commands
+  commands = actionTemplate._commands
   // console.log(commands)
   t.equal(commands.length, 2, 'actionTemplate has 2 commands')
   t.equal(
