@@ -12,7 +12,7 @@ on:
       - '**'
     # ... any of these files changes ...
     paths:
-      - 'website/**
+      - 'website/**'
       - '.github/workflows/publish-github-pages.yml'
 
   # Allows you to run this workflow manually from the Actions tab
