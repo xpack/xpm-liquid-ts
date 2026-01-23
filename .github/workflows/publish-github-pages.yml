@@ -69,7 +69,7 @@ jobs:
         uses: actions/upload-pages-artifact@v4.0.0
         with:
           # Upload entire website
-          path: './website/html'
+          path: './website/build'
 
       - name: Deploy to GitHub Pages
         id: deployment
