@@ -29,7 +29,7 @@ const actualBaseUrl = process.env.DOCUSAURUS_BASEURL ??
 // ----------------------------------------------------------------------------
 
 const config: Config = {
-  title: 'xpm-lib - The xpm core library' +
+  title: 'xpm-lib - The xpm core library (work in progress)' +
     ((process.env.DOCUSAURUS_IS_PREVIEW === 'true') ? ' (preview)' : ''),
   tagline: 'A Node.js TypeScript module with the common code for xpm and xpm enabled projects',
 
@@ -100,7 +100,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/xpack/xpm-lib-ts/edit/master/website/',
+          editUrl: 'https://github.com/xpack/xpm-lib-ts/edit/website/website/',
           // showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
@@ -114,7 +114,7 @@ const config: Config = {
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/xpack/xpm-lib-ts/edit/master/website/',
+          editUrl: 'https://github.com/xpack/xpm-lib-ts/edit/website/website/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',

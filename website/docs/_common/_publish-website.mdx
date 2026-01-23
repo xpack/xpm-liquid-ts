@@ -6,14 +6,14 @@
 ### Publish the website
 
 The website deployment is performed automatically when pushing to the
-`master` branch, utilising a dedicated workflow in
+`website` branch, utilising a dedicated workflow in
 [GitHub Actions](https://github.com/xpack/xpm-lib-ts/actions/workflows/publish-github-pages.yml).
 
 - Open https://xpack.github.io/xpm-lib-ts/docs/maintainer/#publish-the-website in a separate window
 - **Stop** the local web server
-- Switch to the `master` branch
-- **Merge** the `development` branch into the `master` branch
-- **Push** the `master` branch to GitHub
+- Switch to the `website` branch
+- **Merge** the `development` branch into the `website` branch
+- **Push** the `website` branch to GitHub
   :::info
   At this point, an automated GitHub Action will generate and publish the website.
   :::
@@ -25,7 +25,7 @@ at https://xpack.github.io/xpm-lib-ts/blog/
 - Record the post URL, as it must be used to update the release page
 and the X/Twitter announcement
 
-The `master` branch may be subsequently updated, provided the
+The `website` branch may be subsequently updated, provided the
 version in `package.json` remains unchanged.
 
 Verify the result at https://xpack.github.io/xpm-lib-ts/.

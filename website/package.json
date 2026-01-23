@@ -90,7 +90,7 @@
     ]
   },
   "websiteConfig": {
-    "title": "xpm-lib - The xpm core library",
+    "title": "xpm-lib - The xpm core library (work in progress)",
     "tagline": "A Node.js TypeScript module with the common code for xpm and xpm enabled projects",
     "metadataDescription": "A Node.js ES6 module with xpm core code",
     "metadataKeywords": "xpm, xpack, liquid, typescript, nodejs, es6, module, library",
