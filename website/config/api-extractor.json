@@ -27,9 +27,12 @@
       }
     },
     "extractorMessageReporting": {
+      "ae-missing-release-tag": {
+        "logLevel": "none"
+      },
       "default": {
         "logLevel": "warning"
-      },
+      }
     },
     "tsdocMessageReporting": {
       "default": {
