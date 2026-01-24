@@ -21,6 +21,10 @@
         {
           "type": "category",
           "label": "Variables",
+          "link": {
+            "type": "doc",
+            "id": "api/xpm-lib"
+          },
           "className": "tsdocEllipsis",
           "collapsed": true,
           "items": [
@@ -51,6 +55,10 @@
         {
           "type": "category",
           "label": "Functions",
+          "link": {
+            "type": "doc",
+            "id": "api/xpm-lib"
+          },
           "className": "tsdocEllipsis",
           "collapsed": true,
           "items": [
@@ -213,6 +221,10 @@
         {
           "type": "category",
           "label": "Type Aliases",
+          "link": {
+            "type": "doc",
+            "id": "api/xpm-lib"
+          },
           "className": "tsdocEllipsis",
           "collapsed": true,
           "items": [
@@ -397,6 +409,10 @@
         {
           "type": "category",
           "label": "Interfaces",
+          "link": {
+            "type": "doc",
+            "id": "api/xpm-lib"
+          },
           "className": "tsdocEllipsis",
           "collapsed": true,
           "items": [
@@ -981,6 +997,10 @@
         {
           "type": "category",
           "label": "Classes",
+          "link": {
+            "type": "doc",
+            "id": "api/xpm-lib"
+          },
           "className": "tsdocEllipsis",
           "collapsed": true,
           "items": [
