@@ -8,7 +8,8 @@
     "removeComments": false, 
     // To show internal docs in the generated API reference.
     "stripInternal": false,
-
+    // Only output d.ts files and not JavaScript files.
+    "emitDeclarationOnly": true,
     // https://api-extractor.com/pages/setup/invoking/
     // This enables generation of the .d.ts files that API Extractor will 
     // analyze. By design, TypeScript source files are not directly analyzed, 
