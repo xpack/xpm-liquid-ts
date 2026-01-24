@@ -60,8 +60,6 @@ import {
  *
  * Derived classes must implement {@link XpmInitTemplateBase.generate}
  * to define the specific files and folder structure to create.
- *
- * @public
  */
 export abstract class XpmInitTemplateBase {
   // --------------------------------------------------------------------------
@@ -69,50 +67,36 @@ export abstract class XpmInitTemplateBase {
 
   /**
    * The xpm context containing configuration and logging utilities.
-   *
-   * @public
    */
   context: XpmContext
 
   /**
    * The logger instance for output and diagnostics.
-   *
-   * @public
    */
   log: Logger
 
   /**
    * Definitions of all properties supported by this template.
-   *
-   * @public
    */
   propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {}
 
   /**
    * The absolute path to the module folder.
-   *
-   * @public
    */
   __dirname: string
 
   /**
    * The absolute path to the templates folder.
-   *
-   * @public
    */
   templatesPath: string
 
   /**
    * The Liquid templating engine instance.
-   *
-   * @public
    */
   engine: Liquid
 
   /**
    * The variables to be used for template substitutions.
-   *
-   * @public
    */
   substitutionsVariables?: XpmInitTemplateSubstitutionsVariables
 
@@ -126,8 +110,6 @@ export abstract class XpmInitTemplateBase {
    * @param __dirname - The absolute path to the module folder.
    * @param templatesPath - The absolute path to the templates folder.
    * @param propertiesDefinitions - The definitions of all supported properties.
-   *
-   * @public
    */
   constructor({
     context,
@@ -184,8 +166,6 @@ export abstract class XpmInitTemplateBase {
    * @throws {@link XpmSyntaxError}
    * If property validation fails or interactive mode is required but not
    * available (non-TTY environment).
-   *
-   * @public
    */
   async run(): Promise<number> {
     const log = this.log
@@ -280,8 +260,6 @@ export abstract class XpmInitTemplateBase {
    *
    * @param isInteractive - Whether the template was run in interactive mode.
    * @returns A promise that resolves when generation is complete.
-   *
-   * @public
    */
   abstract generate(isInteractive: boolean): Promise<void>
 
@@ -311,8 +289,6 @@ export abstract class XpmInitTemplateBase {
    *
    * @throws `Error`
    * If the property is unsupported or the value is invalid.
-   *
-   * @public
    */
   validateValue(name: string, value: string): string | boolean | number {
     const propDef = this.propertiesDefinitions[name]
@@ -370,8 +346,6 @@ export abstract class XpmInitTemplateBase {
    *
    * @returns A promise that resolves when all missing values have been
    * collected.
-   *
-   * @public
    */
   async askForMoreValues() {
     const context = this.context
@@ -457,8 +431,6 @@ export abstract class XpmInitTemplateBase {
    * undefined if no platforms are specified.
    * @returns `true` if the current platform is supported, `false`
    * otherwise.
-   *
-   * @public
    */
   isPlatformSupported(platforms: string[] | undefined): boolean {
     if (!platforms || platforms.length === 0) {
@@ -492,8 +464,6 @@ export abstract class XpmInitTemplateBase {
    * @param destinationFilePath - The destination file path (defaults to
    * the same relative path as the source).
    * @returns A promise that resolves when the file has been copied.
-   *
-   * @public
    */
   async copyFile(
     sourceFileRelativePath: string,
@@ -527,8 +497,6 @@ export abstract class XpmInitTemplateBase {
    * @param destination - The destination folder path (defaults to the
    * same relative path as the source).
    * @returns A promise that resolves when the folder has been copied.
-   *
-   * @public
    */
   async copyFolder(source: string, destination = source): Promise<void> {
     const log = this.log
@@ -551,8 +519,6 @@ export abstract class XpmInitTemplateBase {
    * @param sourceFolderPath - The absolute path to the source folder.
    * @param destinationFolderPath - The absolute path to the destination folder.
    * @returns A promise that resolves when all contents have been copied.
-   *
-   * @public
    */
   protected async _copyFolderRecursively(
     sourceFolderPath: string,
@@ -610,8 +576,6 @@ export abstract class XpmInitTemplateBase {
    *
    * @throws {@link XpmOutputError}
    * If template rendering fails.
-   *
-   * @public
    */
   async render(
     inputFileRelativePath: string,

@@ -52,14 +52,10 @@ import semver from 'semver'
  *
  * Policy flags are evaluated once during initialization and cached for the
  * duration of the operation.
- *
- * @public
  */
 export class XpmPolicies {
   /**
    * The minimum xpm version used to derive policy flags.
-   *
-   * @public
    */
   minVersion = '0.0.0'
 
@@ -74,8 +70,6 @@ export class XpmPolicies {
    * xpack, providing better isolation and avoiding version conflicts.
    *
    * Set to `true` for packages with minimumXpmRequired \< 0.14.0.
-   *
-   * @public
    */
   shareNpmDependencies = false
 
@@ -91,8 +85,6 @@ export class XpmPolicies {
    * `xpacks/@scope/package`).
    *
    * Set to `true` for packages with minimumXpmRequired \< 0.16.0.
-   *
-   * @public
    */
   nonHierarchicalLocalXpacksFolder = false
 
@@ -108,8 +100,6 @@ export class XpmPolicies {
    * dependency configuration.
    *
    * Set to `true` for packages with minimumXpmRequired \< 0.16.0.
-   *
-   * @public
    */
   onlyStringDependencies = false
 
@@ -124,8 +114,6 @@ export class XpmPolicies {
    * for more flexible template initialization and configuration.
    *
    * Set to `true` for packages with minimumXpmRequired \< 0.22.0.
-   *
-   * @public
    */
   singleParameterXpmInitTemplate = false
 
@@ -155,8 +143,6 @@ export class XpmPolicies {
    *
    * @param log - The logger instance for output and diagnostics.
    * @param minVersion - The minimum xpm version to evaluate.
-   *
-   * @public
    */
   constructor({ log, minVersion }: { log: Logger; minVersion: string }) {
     log.trace(`${XpmPolicies.name}({minVersion: ${minVersion})`)

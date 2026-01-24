@@ -36,8 +36,6 @@ import * as path from 'node:path'
  * Templates access these values via namespaces like `properties.foo`,
  * `matrix.arch`, etc., with the Liquid Drop pattern providing lazy
  * evaluation and nested substitution support.
- *
- * @public
  */
 export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>
 
@@ -70,8 +68,6 @@ export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>
  * configurations inherit base + package + properties, then add their own
  * scoped variables. This ensures templates have access to appropriate
  * context without exposing unrelated data.
- *
- * @public
  */
 export interface XpmLiquidSubstitutionsVariables {
   /**
@@ -83,8 +79,6 @@ export interface XpmLiquidSubstitutionsVariables {
    * custom variables set by build scripts.
    *
    * See [Node.js process.env documentation](https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env)
-   *
-   * @public
    */
   env: NodeJS.ProcessEnv
   /**
@@ -106,8 +100,6 @@ export interface XpmLiquidSubstitutionsVariables {
    * - `os.homedir`: Reference user's home directory portably.
    *
    * See [Node.js os module documentation](https://nodejs.org/dist/latest-v16.x/docs/api/os.html)
-   *
-   * @public
    */
   os: {
     /**
@@ -204,8 +196,6 @@ export interface XpmLiquidSubstitutionsVariables {
    * automatically.
    *
    * See [Node.js path module documentation](https://nodejs.org/dist/latest-v16.x/docs/api/path.html)
-   *
-   * @public
    */
   path: {
     /**
@@ -246,8 +236,6 @@ export interface XpmLiquidSubstitutionsVariables {
    * - `{{ package.xpack.properties.key }}`: Access xpack properties.
    *
    * Undefined when processing templates outside of a package context.
-   *
-   * @public
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   package?: any
@@ -267,8 +255,6 @@ export interface XpmLiquidSubstitutionsVariables {
    * - `{{ configuration.properties.key }}`: Configuration-specific settings.
    *
    * Undefined when processing package-level templates.
-   *
-   * @public
    */
   configuration?: {
     name: string
@@ -288,8 +274,6 @@ export interface XpmLiquidSubstitutionsVariables {
    * syntax. The Liquid Drop pattern ensures recursive evaluation.
    *
    * Access via `{{ properties.key }}` in templates.
-   *
-   * @public
    */
   properties: XpmLiquidSubstitutionsStrings
 
@@ -308,8 +292,6 @@ export interface XpmLiquidSubstitutionsVariables {
    *
    * Access via `{{ matrix.key }}` in templates. Scoped to the individual
    * expanded instance, ensuring isolation between generated items.
-   *
-   * @public
    */
   matrix?: XpmLiquidSubstitutionsStrings
 }
@@ -335,8 +317,6 @@ export interface XpmLiquidSubstitutionsVariables {
  * application and extended with package, configuration, and matrix variables
  * as needed. The base object is typically spread into new contexts rather
  * than mutated, preserving the original snapshot.
- *
- * @public
  */
 // eslint-disable-next-line max-len
 export const xpmLiquidSubstitutionsVariablesBase: XpmLiquidSubstitutionsVariables =

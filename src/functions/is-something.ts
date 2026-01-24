@@ -32,8 +32,6 @@
  *
  * @param value - The value to test.
  * @returns `true` if the value is a primitive or null, `false` otherwise.
- *
- * @public
  */
 export function isPrimitive(value: unknown): boolean {
   return (
@@ -62,8 +60,6 @@ export function isPrimitive(value: unknown): boolean {
  *
  * @param value - The value to test.
  * @returns `true` if the value is a string, `false` otherwise.
- *
- * @public
  */
 export function isString(value: unknown): value is string {
   return typeof value === 'string'
@@ -87,8 +83,6 @@ export function isString(value: unknown): value is string {
  *
  * @param value - The value to test.
  * @returns `true` if the value is a non-array object, `false` otherwise.
- *
- * @public
  */
 export function isObject(value: unknown): boolean {
   return typeof value === 'object' && !Array.isArray(value)
@@ -111,8 +105,6 @@ export function isObject(value: unknown): boolean {
  *
  * @param value - The value to test.
  * @returns `true` if the value is a boolean, `false` otherwise.
- *
- * @public
  */
 export function isBoolean(value: unknown): boolean {
   return typeof value === 'boolean'
@@ -140,8 +132,6 @@ export function isBoolean(value: unknown): boolean {
  *
  * @param value - The value to test.
  * @returns `true` if the value is a JSON object, `false` otherwise.
- *
- * @public
  */
 export function isJsonObject(value: unknown): boolean {
   return value !== undefined && !isPrimitive(value) && !Array.isArray(value)
@@ -166,8 +156,6 @@ export function isJsonObject(value: unknown): boolean {
  *
  * @param value - The value to test.
  * @returns `true` if the value is a JSON array, `false` otherwise.
- *
- * @public
  */
 export function isJsonArray(value: unknown): boolean {
   return value !== undefined && Array.isArray(value)
@@ -196,8 +184,6 @@ export function isJsonArray(value: unknown): boolean {
  *
  * @param value - The value to test.
  * @returns `true` if the value is a non-empty JSON object, `false` otherwise.
- *
- * @public
  */
 export function isNonEmptyJsonObject(value: unknown): boolean {
   return isJsonObject(value) && Object.keys(value as object).length > 0

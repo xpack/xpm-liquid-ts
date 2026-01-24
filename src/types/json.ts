@@ -15,44 +15,32 @@
 
 /**
  * Represents a JSON property value.
- *
- * @public
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type JsonPropertyValue = any
 
 /**
  * Represents a JSON map of properties.
- *
- * @public
  */
 export type JsonProperties = Record<string, JsonPropertyValue>
 
 /**
  * Represents a JSON array of build configuration names to inherit from.
- *
- * @public
  */
 export type JsonBuildConfigurationInherits = string[]
 
 /**
  * Represents a JSON map of npm scripts.
- *
- * @public
  */
 export type JsonScripts = Record<string, string>
 
 /**
  * Represents a JSON map of dependencies.
- *
- * @public
  */
 export type JsonDependencies = Record<string, JsonDependenciesContent>
 
 /**
  * Represents a JSON dependency content as a string or extended definition.
- *
- * @public
  */
 export type JsonDependenciesContent = string | JsonDependencyExtended
 
@@ -79,26 +67,18 @@ export type JsonDependenciesContent = string | JsonDependencyExtended
  * binary packages that only work on certain operating systems or
  * architectures. Local installation modes control how dependencies are
  * installed in the workspace (symbolic link vs. file copy).
- *
- * @public
  */
 export interface JsonDependencyExtended {
   /**
    * The dependency version specifier.
-   *
-   * @public
    */
   specifier: string
   /**
    * The local installation mode, if applicable.
-   *
-   * @public
    */
   local?: 'link' | 'copy'
   /**
    * The supported platforms for the dependency.
-   *
-   * @public
    */
   platforms?: string | string[]
 }
@@ -107,8 +87,6 @@ export interface JsonDependencyExtended {
 
 /**
  * Represents a JSON action content as a string or string array.
- *
- * @public
  */
 export type JsonActionContent = string | string[]
 
@@ -136,35 +114,25 @@ export type JsonActionContent = string | string[]
  * This generates three actions: build-linux, build-darwin, and build-win32.
  * Matrix values are accessible in both the action name and template content
  * via `{{ matrix.key }}` Liquid syntax.
- *
- * @public
  */
 export interface JsonActionTemplate {
   /**
    * The matrix of parameters used to generate action variants.
-   *
-   * @public
    */
   matrix: Record<string, string[]>
   /**
    * The action template content.
-   *
-   * @public
    */
   template: JsonActionContent
 }
 
 /**
  * Represents a JSON action definition or a template of one.
- *
- * @public
  */
 export type JsonAction = JsonActionContent | JsonActionTemplate
 
 /**
  * Represents a JSON map of action definitions.
- *
- * @public
  */
 export type JsonActions = Record<string, JsonAction>
 
@@ -172,50 +140,34 @@ export type JsonActions = Record<string, JsonAction>
 
 /**
  * Represents a JSON build configuration definition.
- *
- * @public
  */
 export interface JsonBuildConfigurationContent {
   /**
    * The configurations to inherit from.
-   *
-   * @public
    */
   inherits?: JsonBuildConfigurationInherits | string
   /**
    * Deprecated alias of {@link JsonBuildConfigurationContent.inherits}.
-   *
-   * @public
    */
   inherit?: JsonBuildConfigurationInherits | string // Deprecated, use inherits
   /**
    * Whether the configuration should be hidden.
-   *
-   * @public
    */
   hidden?: boolean
   /**
    * The properties map for substitutions.
-   *
-   * @public
    */
   properties?: JsonProperties
   /**
    * The action definitions for this configuration.
-   *
-   * @public
    */
   actions?: JsonActions
   /**
    * The dependencies for this configuration.
-   *
-   * @public
    */
   dependencies?: JsonDependencies
   /**
    * The development dependencies for this configuration.
-   *
-   * @public
    */
   devDependencies?: JsonDependencies
 }
@@ -249,28 +201,20 @@ export interface JsonBuildConfigurationContent {
  * This generates four configurations: linux-x64, linux-arm64, darwin-x64,
  * and darwin-arm64, each with matrix values available for property
  * substitution.
- *
- * @public
  */
 export interface JsonBuildConfigurationTemplate {
   /**
    * The matrix of parameters used to generate configuration variants.
-   *
-   * @public
    */
   matrix: Record<string, string[]>
   /**
    * The configuration template content.
-   *
-   * @public
    */
   template: JsonBuildConfigurationContent
 }
 
 /**
  * Represents a JSON build configuration definition or a template of one.
- *
- * @public
  */
 export type JsonBuildConfiguration =
   | JsonBuildConfigurationContent
@@ -278,8 +222,6 @@ export type JsonBuildConfiguration =
 
 /**
  * Represents a JSON map of build configuration definitions.
- *
- * @public
  */
 export type JsonBuildConfigurations = Record<string, JsonBuildConfiguration>
 
@@ -313,70 +255,48 @@ export type JsonBuildConfigurations = Record<string, JsonBuildConfiguration>
  * The xpack section is optional in npm packages but required for packages
  * using xpm-specific features like build configurations or binary
  * distributions.
- *
- * @public
  */
 export interface JsonXpack {
   /**
    * The minimum required xpm version.
-   *
-   * @public
    */
   minimumXpmRequired?: string
   /**
    * The binaries definition, if the package provides binaries.
-   *
-   * @public
    */
   binaries?: JsonXpmBinaries
   /**
    * The executables map.
-   *
-   * @public
    */
   executables?: Record<string, string>
   /**
    * Deprecated alias of {@link JsonXpack.executables}.
-   *
-   * @public
    */
   bin?: Record<string, string> // Deprecated, use executables
   /**
    * The dependencies map.
-   *
-   * @public
    */
   dependencies?: JsonDependencies
   /**
    * The development dependencies map.
-   *
-   * @public
    */
   devDependencies?: JsonDependencies
   /**
    * The properties map.
-   *
-   * @public
    */
   properties?: JsonProperties
   /**
    * The action definitions.
-   *
-   * @public
    */
   actions?: JsonActions
   /**
    * The build configurations map.
-   *
-   * @public
    */
   buildConfigurations?: JsonBuildConfigurations
 }
 
 /**
  * Represents a JSON map of binaries platforms.
- *
- * @public
  */
 export type JsonXpmBinariesPlatforms = Record<string, JsonXpmPlatformFile>
 
@@ -406,121 +326,83 @@ export type JsonXpmBinariesPlatforms = Record<string, JsonXpmPlatformFile>
  * The skip parameter removes leading path segments from archive entries
  * during extraction, useful for archives with wrapper folders. Checksums
  * ensure downloaded files haven't been corrupted or tampered with.
- *
- * @public
  */
 export interface JsonXpmBinaries {
   /**
    * The destination folder for extracted binaries.
-   *
-   * @public
    */
   destination: string
   /**
    * The base URL used to download binaries.
-   *
-   * @public
    */
   baseUrl: string
   /**
    * The number of path segments to skip when extracting.
-   *
-   * @public
    */
   skip?: number
   /**
    * The platforms map for available binaries.
-   *
-   * @public
    */
   platforms: JsonXpmBinariesPlatforms
 }
 
 /**
  * Represents a JSON platform-specific binary file definition.
- *
- * @public
  */
 export interface JsonXpmPlatformFile {
   /**
    * The binary archive file name.
-   *
-   * @public
    */
   fileName: string
   /**
    * The SHA-256 checksum for integrity verification.
-   *
-   * @public
    */
   sha256?: string
   /**
    * The SHA-512 checksum for integrity verification.
-   *
-   * @public
    */
   sha512?: string
   /**
    * Optional base URL override for this platform.
-   *
-   * @public
    */
   baseUrl?: string
   /**
    * The number of path segments to skip when extracting.
-   *
-   * @public
    */
   skip?: number
 }
 
 /**
  * Represents a JSON npm package.json structure.
- *
- * @public
  */
 export interface JsonNpmPackage {
   /**
    * The package name.
-   *
-   * @public
    */
   name?: string
   /**
    * The package version.
-   *
-   * @public
    */
   version?: string
   /**
    * The npm scripts map.
-   *
-   * @public
    */
   scripts?: JsonScripts
   /**
    * The binary entry points.
-   *
-   * @public
    */
   bin?: Record<string, string> | string
   /**
    * The dependencies map.
-   *
-   * @public
    */
   dependencies?: JsonDependencies
   /**
    * The development dependencies map.
-   *
-   * @public
    */
   devDependencies?: JsonDependencies
 
   /**
    * Allows additional package.json properties.
-   *
-   * @public
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any // Allow any additional property
@@ -551,14 +433,10 @@ export interface JsonNpmPackage {
  * substitution, and platform-specific binary distribution. Standard npm
  * fields (name, version, dependencies, etc.) are used for package
  * identification and dependency management.
- *
- * @public
  */
 export interface JsonXpmPackage extends JsonNpmPackage {
   /**
    * The xpm-specific configuration section.
-   *
-   * @public
    */
   xpack: JsonXpack
 }
@@ -567,26 +445,18 @@ export interface JsonXpmPackage extends JsonNpmPackage {
 
 /**
  * Represents a JSON npm package specifier.
- *
- * @public
  */
 export interface JsonPackageSpecifier {
   /**
    * The package scope, if present.
-   *
-   * @public
    */
   scope?: string
   /**
    * The package name.
-   *
-   * @public
    */
   name?: string
   /**
    * The version specifier, if present.
-   *
-   * @public
    */
   version?: string
 }

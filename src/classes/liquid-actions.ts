@@ -61,8 +61,6 @@ import { XpmLiquidBuildConfiguration } from './liquid-build-configurations.js'
  *
  * This multi-phase approach ensures efficient resource usage by deferring
  * expensive operations until actions are actually needed.
- *
- * @public
  */
 export class XpmLiquidActions {
   // --------------------------------------------------------------------------
@@ -77,8 +75,6 @@ export class XpmLiquidActions {
    * instantiation, and variable substitution. It enables visibility into the
    * lazy evaluation process without impacting runtime performance when tracing
    * is disabled.
-   *
-   * @public
    */
   readonly log: Logger
 
@@ -91,8 +87,6 @@ export class XpmLiquidActions {
    * and xpm-specific operations. It's used during both template action name
    * expansion and later during individual action command substitution,
    * ensuring consistent template processing throughout the action lifecycle.
-   *
-   * @public
    */
   readonly engine: XpmLiquidEngine
 
@@ -120,8 +114,6 @@ export class XpmLiquidActions {
    * These variables are accessible in Liquid templates using dot notation
    * (e.g., `{{ package.name }}`,
    * `{{ configuration.buildFolderRelativePath }}`).
-   *
-   * @public
    */
   readonly substitutionsVariables: XpmLiquidSubstitutionsVariables
 
@@ -143,8 +135,6 @@ export class XpmLiquidActions {
    * Template action names (containing `{{` markers) trigger matrix expansion
    * during initialisation, creating concrete actions from the Cartesian
    * product of matrix parameter values.
-   *
-   * @public
    */
   readonly jsonActions: JsonActions
 
@@ -170,8 +160,6 @@ export class XpmLiquidActions {
    * Actions transition from `undefined` to instantiated when first accessed
    * via {@link XpmLiquidActions.get}, implementing the lazy evaluation
    * pattern.
-   *
-   * @public
    */
   protected readonly _actionsMap: Map<string, XpmLiquidAction | undefined> =
     new Map<string, XpmLiquidAction | undefined>()
@@ -195,8 +183,6 @@ export class XpmLiquidActions {
    * This redundant storage (alongside `_actionsMap`) is justified by the
    * performance benefit for name existence checks, especially in packages
    * with many actions.
-   *
-   * @public
    */
   protected readonly _actionsNamesSet: Set<string> = new Set<string>()
 
@@ -220,8 +206,6 @@ export class XpmLiquidActions {
    * This indirection is essential for the lazy evaluation pattern, allowing
    * deferred instantiation while maintaining the connection to original
    * definitions.
-   *
-   * @public
    */
   protected readonly _jsonActionsNamesMap: Map<string, string> = new Map<
     string,
@@ -252,8 +236,6 @@ export class XpmLiquidActions {
    *
    * 2. Only package-level and global variables are available for
    *    substitution.
-   *
-   * @public
    */
   readonly buildConfiguration: XpmLiquidBuildConfiguration | undefined
 
@@ -277,8 +259,6 @@ export class XpmLiquidActions {
    *
    * This pattern supports safe repeated calls during complex initialisation
    * sequences without duplicating work or corrupting internal state.
-   *
-   * @public
    */
   protected _isInitialised = false
 
@@ -301,8 +281,6 @@ export class XpmLiquidActions {
    * undefined if no actions are defined.
    * @param buildConfiguration - Optional build configuration this actions
    * collection belongs to.
-   *
-   * @public
    */
   constructor({
     log,
@@ -375,8 +353,6 @@ export class XpmLiquidActions {
    *
    * @throws {@link XpmError}
    * If duplicate action names are detected or if template expansion fails.
-   *
-   * @public
    */
   async initialise(): Promise<boolean> {
     const log = this.log
@@ -457,8 +433,6 @@ export class XpmLiquidActions {
    * This value is known only after initialisation.
    *
    * @returns `true` if there are no actions, `false` otherwise.
-   *
-   * @public
    */
   empty(): boolean {
     return this._actionsMap.size === 0
@@ -471,8 +445,6 @@ export class XpmLiquidActions {
    * This value is known only after initialisation.
    *
    * @returns An array of action names.
-   *
-   * @public
    */
   names(): string[] {
     const actionNames = Array.from(this._actionsMap.keys())
@@ -489,8 +461,6 @@ export class XpmLiquidActions {
    *
    * @param actionName - The name of the action to check.
    * @returns `true` if the action exists, `false` otherwise.
-   *
-   * @public
    */
   has(actionName: string): boolean {
     return this._actionsMap.has(actionName)
@@ -517,8 +487,6 @@ export class XpmLiquidActions {
    *
    * @param actionName - The name of the action to retrieve.
    * @returns The action instance.
-   *
-   * @public
    */
   get(actionName: string): XpmLiquidAction {
     const log = this.log
@@ -579,8 +547,6 @@ export class XpmLiquidActions {
    * @throws {@link XpmError}
    * If the matrix structure is invalid, template format is incorrect, or
    * substitution fails.
-   *
-   * @public
    */
   protected async _expandTemplateActions({
     actionName,
@@ -750,8 +716,6 @@ export class XpmLiquidActions {
  * This design minimizes memory usage and computation for actions that are
  * defined but never executed, which is common when using matrix templates
  * to generate platform-specific or configuration-specific actions.
- *
- * @public
  */
 export class XpmLiquidAction {
   // --------------------------------------------------------------------------
@@ -776,8 +740,6 @@ export class XpmLiquidAction {
    *
    * Names must be unique within the actions collection, enforced during
    * {@link XpmLiquidActions.initialise}.
-   *
-   * @public
    */
   readonly actionName: string
 
@@ -803,8 +765,6 @@ export class XpmLiquidAction {
    *
    * This immutable storage ensures actions can be safely copied and
    * initialised multiple times without side effects.
-   *
-   * @public
    */
   readonly jsonAction: JsonActionContent
 
@@ -833,8 +793,6 @@ export class XpmLiquidAction {
    * initialisation, the action combines parent-level substitution variables
    * with its own matrix parameters to create a complete context for Liquid
    * template processing.
-   *
-   * @public
    */
   readonly parentActions: XpmLiquidActions
 
@@ -861,8 +819,6 @@ export class XpmLiquidAction {
    *
    * Example: A template with `{{ matrix.arch }}` becomes `x64` when this
    * action's matrix parameters include `{ arch: 'x64' }`.
-   *
-   * @public
    */
   protected readonly _matrixParameters?: XpmLiquidSubstitutionsStrings
 
@@ -888,8 +844,6 @@ export class XpmLiquidAction {
    *
    * Attempting to access via the `commands` getter before initialisation
    * will trigger an assertion error, enforcing correct usage order.
-   *
-   * @public
    */
   protected _commands?: string[]
 
@@ -913,8 +867,6 @@ export class XpmLiquidAction {
    * This pattern allows safe repeated calls during complex initialization
    * sequences or when actions are accessed multiple times, avoiding the
    * computational cost of re-evaluating templates unnecessarily.
-   *
-   * @public
    */
   protected _isInitialised = false
 
@@ -934,8 +886,6 @@ export class XpmLiquidAction {
    * to.
    * @param matrixParameters - Optional matrix parameter values for
    * template-generated actions.
-   *
-   * @public
    */
   constructor({
     actionName,
@@ -992,8 +942,6 @@ export class XpmLiquidAction {
    *
    * @throws {@link XpmError}
    * If command substitution fails.
-   *
-   * @public
    */
   async initialise(): Promise<boolean> {
     const log = this.parentActions.log
@@ -1056,8 +1004,6 @@ export class XpmLiquidAction {
    *
    * @throws `AssertionError`
    * If the action has not been initialised.
-   *
-   * @public
    */
   get commands(): string[] {
     assert(this._commands, 'Action not initialised, commands are undefined')

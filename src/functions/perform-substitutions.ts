@@ -79,8 +79,6 @@ import { XpmError } from '../classes/errors.js'
  *
  * @throws {@link XpmError}
  * If Liquid rendering fails.
- *
- * @public
  */
 export async function performSubstitutions({
   log,

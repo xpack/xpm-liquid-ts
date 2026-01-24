@@ -24,8 +24,6 @@
  * {@link XpmSyntaxError}, {@link XpmOutputError},
  * {@link XpmPrerequisitesError}) should be preferred when applicable,
  * as they provide clearer semantics for error handling.
- *
- * @public
  */
 export class XpmError extends Error {}
 
@@ -39,8 +37,6 @@ export class XpmError extends Error {}
  * platform versions, or insufficient xpm version requirements. Use this
  * error when validation of the execution environment fails before
  * attempting an operation.
- *
- * @public
  */
 export class XpmPrerequisitesError extends Error {}
 
@@ -54,8 +50,6 @@ export class XpmPrerequisitesError extends Error {}
  * inheritance references, or out-of-range parameter values. The error
  * message should clearly indicate what input was invalid and why, helping
  * users correct their configuration or arguments.
- *
- * @public
  */
 export class XpmInputError extends Error {}
 
@@ -69,8 +63,6 @@ export class XpmInputError extends Error {}
  * validation. Use this error when the structure of the input is
  * malformed, as opposed to {@link XpmInputError} which indicates
  * semantically invalid but syntactically correct input.
- *
- * @public
  */
 export class XpmSyntaxError extends Error {}
 
@@ -83,8 +75,6 @@ export class XpmSyntaxError extends Error {}
  * evaluation errors, file system write failures, or variable substitution
  * problems. This error indicates that the input was valid but the
  * transformation or output process encountered a problem during execution.
- *
- * @public
  */
 export class XpmOutputError extends Error {}
 

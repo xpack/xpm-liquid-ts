@@ -42,8 +42,6 @@ import * as os from 'node:os'
  *
  * @param input - A path candidate.
  * @returns A validated path.
- *
- * @public
  */
 export function filterPath(input: string): string {
   /* c8 ignore start */ /* istanbul ignore next */
@@ -78,8 +76,6 @@ export function filterPath(input: string): string {
  *
  * @param input - A path candidate.
  * @returns A validated path.
- *
- * @public
  */
 export function filterPosixPath(input: string): string {
   /* istanbul ignore next */
@@ -113,8 +109,6 @@ export function filterPosixPath(input: string): string {
  *
  * @param input - A path candidate.
  * @returns A validated path.
- *
- * @public
  */
 export function filterWin32Path(input: string): string {
   /* istanbul ignore next */

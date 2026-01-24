@@ -34,8 +34,6 @@ import { JsonXpmPackage } from '../types/json.js'
 
 /**
  * The property name used for the build folder relative path.
- *
- * @public
  */
 export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath'
 
@@ -68,8 +66,6 @@ export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath'
  * access to appropriate variables while maintaining clear scoping rules.
  * Package-level actions are available globally, while configuration-level
  * actions are scoped to their respective configurations.
- *
- * @public
  */
 export class XpmLiquidPackage {
   // --------------------------------------------------------------------------
@@ -85,8 +81,6 @@ export class XpmLiquidPackage {
    * preparation. It's passed down to child components (actions and build
    * configurations) to maintain consistent logging throughout the package
    * lifecycle.
-   *
-   * @public
    */
   protected _log: Logger
 
@@ -110,8 +104,6 @@ export class XpmLiquidPackage {
    *
    * 4. Shared instance reduces memory overhead and ensures consistent
    *    template evaluation across all package components.
-   *
-   * @public
    */
   protected _engine: Liquid
 
@@ -137,8 +129,6 @@ export class XpmLiquidPackage {
    *
    * The package definition is validated during construction, requiring the
    * xpack section to be present and be a valid JSON object.
-   *
-   * @public
    */
   protected _jsonPackage: JsonXpmPackage
 
@@ -167,8 +157,6 @@ export class XpmLiquidPackage {
    * modification. Child components (actions and configurations) extend this
    * context with their own scoped variables (configuration, matrix) without
    * modifying the original sealed object.
-   *
-   * @public
    */
   readonly substitutionsVariables: XpmLiquidSubstitutionsVariables
 
@@ -195,8 +183,6 @@ export class XpmLiquidPackage {
    *
    * 5. Can be used alongside configuration-specific actions, which inherit
    *    from package-level actions.
-   *
-   * @public
    */
   readonly actions: XpmLiquidActions
 
@@ -226,8 +212,6 @@ export class XpmLiquidPackage {
    *
    * 6. Each configuration maintains its own actions collection, inheriting
    *    package-level actions and adding configuration-specific ones.
-   *
-   * @public
    */
   readonly buildConfigurations: XpmLiquidBuildConfigurations
 
@@ -268,8 +252,6 @@ export class XpmLiquidPackage {
    *
    * @param log - The logger instance for output and diagnostics.
    * @param jsonPackage - The JSON package definition.
-   *
-   * @public
    */
   constructor({
     log,

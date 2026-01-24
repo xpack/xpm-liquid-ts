@@ -49,8 +49,6 @@ import { isJsonObject } from '../functions/is-something.js'
  * These filters enable templates to perform complex path manipulations and
  * string transformations without requiring external dependencies or custom
  * template tags.
- *
- * @public
  */
 export class XpmLiquidEngine extends Liquid {
   // --------------------------------------------------------------------------
@@ -93,8 +91,6 @@ export class XpmLiquidEngine extends Liquid {
    *
    * - All filters are registered during construction for immediate
    *   availability in templates.
-   *
-   * @public
    */
   constructor() {
     super({
