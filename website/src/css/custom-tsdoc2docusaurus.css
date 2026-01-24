@@ -5,6 +5,16 @@ div.tsdocPage table p:last-child {
     margin: 0;
 }
 
+div.tsdocPage th {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+div.tsdocPage td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
 /* Make the sidebar not wrap and display ellipsis for long items */
 
 .tsdocEllipsis .menu__list-item {
