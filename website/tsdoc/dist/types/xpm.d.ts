@@ -23,8 +23,6 @@ import { Logger } from '@xpack/logger';
  * Commands have access to the full shell environment and can reference
  * environment variables, pipe outputs, or chain operations using standard
  * shell syntax (&&, ||, |, etc.).
- *
- * @public
  */
 export type XpmLiquidActionCommands = string[];
 /**
@@ -61,38 +59,26 @@ export type XpmLiquidActionCommands = string[];
  *
  * The extensible design (additional properties allowed) supports future
  * configuration options without breaking changes.
- *
- * @public
  */
 export interface XpmConfig {
     /**
      * Whether to force operations even when safeguards would prevent them.
-     *
-     * @public
      */
     doForce?: boolean;
     /**
      * Whether to skip operations if the target is already installed.
-     *
-     * @public
      */
     doSkipIfInstalled?: boolean;
     /**
      * Whether to perform a dry run without making changes.
-     *
-     * @public
      */
     isDryRun?: boolean;
     /**
      * The properties map used for substitutions.
-     *
-     * @public
      */
     properties?: Record<string, string | boolean | number>;
     /**
      * Allows additional configuration properties.
-     *
-     * @public
      */
     [key: string]: unknown;
 }
@@ -131,26 +117,18 @@ export interface XpmConfig {
  * The context pattern enables dependency injection, making the code more
  * testable and allowing operations to access shared resources without
  * global state.
- *
- * @public
  */
 export interface XpmContext {
     /**
      * The logger instance for output and diagnostics.
-     *
-     * @public
      */
     log: Logger;
     /**
      * The xpm configuration options.
-     *
-     * @public
      */
     config: XpmConfig;
     /**
      * Allows additional context properties.
-     *
-     * @public
      */
     [key: string]: any;
 }

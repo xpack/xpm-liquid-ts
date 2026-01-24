@@ -35,8 +35,6 @@ import { Logger } from '@xpack/logger';
  * @param readOnly - Whether to set permissions to read-only.
  * @param log - The logger instance for output and diagnostics.
  * @returns A promise that resolves when all permissions have been updated.
- *
- * @public
  */
 export declare function chmodRecursive({ inputPath, readOnly, log, }: {
     inputPath: string;

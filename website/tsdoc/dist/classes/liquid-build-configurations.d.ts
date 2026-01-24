@@ -25,8 +25,6 @@ import { XpmLiquidActions } from './liquid-actions.js';
  * This lazy evaluation strategy ensures that only configurations actually
  * used incur the cost of template evaluation, inheritance resolution, and
  * variable substitution.
- *
- * @public
  */
 export declare class XpmLiquidBuildConfigurations {
     /**
@@ -38,8 +36,6 @@ export declare class XpmLiquidBuildConfigurations {
      * resolution, property merging, and dependency substitution. It enables
      * detailed debugging of complex build configuration hierarchies without
      * impacting runtime performance when tracing is disabled.
-     *
-     * @public
      */
     readonly log: Logger;
     /**
@@ -52,8 +48,6 @@ export declare class XpmLiquidBuildConfigurations {
      * configuration names, matrix parameters, properties, dependencies, and
      * actions, ensuring consistent template evaluation throughout the
      * configuration lifecycle.
-     *
-     * @public
      */
     readonly engine: XpmLiquidEngine;
     /**
@@ -77,8 +71,6 @@ export declare class XpmLiquidBuildConfigurations {
      *
      * Individual configurations extend this with their own `properties`,
      * `configuration`, and `matrix` namespaces during initialisation.
-     *
-     * @public
      */
     readonly substitutionsVariables: XpmLiquidSubstitutionsVariables;
     /**
@@ -99,8 +91,6 @@ export declare class XpmLiquidBuildConfigurations {
      * expansion during initialisation, creating concrete configurations from
      * the Cartesian product of matrix parameter values. Each configuration
      * can inherit from others, creating complex dependency hierarchies.
-     *
-     * @public
      */
     readonly jsonBuildConfigurations: JsonBuildConfigurations;
     /**
@@ -126,8 +116,6 @@ export declare class XpmLiquidBuildConfigurations {
      * Configurations transition from `undefined` to instantiated when first
      * accessed via {@link XpmLiquidBuildConfigurations.get}, implementing the
      * lazy evaluation pattern to avoid unnecessary processing.
-     *
-     * @public
      */
     protected readonly _buildConfigurationsMap: Map<string, XpmLiquidBuildConfiguration | undefined>;
     /**
@@ -155,8 +143,6 @@ export declare class XpmLiquidBuildConfigurations {
      *
      * This indirection is essential for lazy evaluation, allowing deferred
      * instantiation while maintaining the connection to original definitions.
-     *
-     * @public
      */
     protected readonly _jsonBuildConfigurationsNamesMap: Map<string, string>;
     /**
@@ -180,8 +166,6 @@ export declare class XpmLiquidBuildConfigurations {
      * Detection occurs during {@link XpmLiquidBuildConfigurations.initialise},
      * throwing {@link XpmError} when duplicates are found to ensure
      * configuration name uniqueness.
-     *
-     * @public
      */
     protected readonly _buildComfigurationsNamesSet: Set<string>;
     /**
@@ -205,8 +189,6 @@ export declare class XpmLiquidBuildConfigurations {
      *
      * This pattern supports safe repeated calls during complex initialisation
      * sequences without duplicating work or corrupting internal state.
-     *
-     * @public
      */
     protected _isInitialised: boolean;
     /**
@@ -222,8 +204,6 @@ export declare class XpmLiquidBuildConfigurations {
      * @param substitutionsVariables - The variables available for substitution.
      * @param jsonBuildConfigurations - The JSON build configurations definitions,
      * or undefined if no build configurations are defined.
-     *
-     * @public
      */
     constructor({ log, engine, substitutionsVariables, jsonBuildConfigurations, }: {
         log: Logger;
@@ -251,24 +231,18 @@ export declare class XpmLiquidBuildConfigurations {
      *
      * @throws {@link XpmError}
      * If duplicate names are detected or template expansion fails.
-     *
-     * @public
      */
     initialise(): Promise<boolean>;
     /**
      * Determines whether the collection is empty.
      *
      * @returns `true` if there are no build configurations, `false` otherwise.
-     *
-     * @public
      */
     empty(): boolean;
     /**
      * Retrieves the names of all build configurations.
      *
      * @returns An array of build configuration names.
-     *
-     * @public
      */
     names(): string[];
     /**
@@ -281,8 +255,6 @@ export declare class XpmLiquidBuildConfigurations {
      * @remarks
      * For template-generated configurations, this returns the template
      * name.
-     *
-     * @public
      */
     getJsonName(buildConfigurationName: string): string;
     /**
@@ -290,8 +262,6 @@ export declare class XpmLiquidBuildConfigurations {
      *
      * @param buildConfigurationName - The build configuration name to check.
      * @returns `true` if a JSON definition exists, `false` otherwise.
-     *
-     * @public
      */
     hasJson(buildConfigurationName: string): boolean;
     /**
@@ -299,8 +269,6 @@ export declare class XpmLiquidBuildConfigurations {
      *
      * @param buildConfigurationName - The build configuration name to resolve.
      * @returns The JSON build configuration definition.
-     *
-     * @public
      */
     getJson(buildConfigurationName: string): JsonBuildConfiguration;
     /**
@@ -308,8 +276,6 @@ export declare class XpmLiquidBuildConfigurations {
      *
      * @param buildConfigurationName - The build configuration name to check.
      * @returns `true` if the configuration is hidden, `false` otherwise.
-     *
-     * @public
      */
     isHidden(buildConfigurationName: string): boolean;
     /**
@@ -317,8 +283,6 @@ export declare class XpmLiquidBuildConfigurations {
      *
      * @param buildConfigurationName - The build configuration name to check.
      * @returns `true` if the configuration exists, `false` otherwise.
-     *
-     * @public
      */
     has(buildConfigurationName: string): boolean;
     /**
@@ -347,8 +311,6 @@ export declare class XpmLiquidBuildConfigurations {
      *
      * @param buildConfigurationName - The build configuration name to retrieve.
      * @returns The build configuration instance.
-     *
-     * @public
      */
     get(buildConfigurationName: string): XpmLiquidBuildConfiguration;
     /**
@@ -386,8 +348,6 @@ export declare class XpmLiquidBuildConfigurations {
      *
      * @throws {@link XpmError}
      * If the matrix structure is invalid or substitution fails.
-     *
-     * @public
      */
     protected _expandTemplateBuildConfigurations({ buildConfigurationName, jsonBuildConfigurationTemplate, }: {
         buildConfigurationName: string;
@@ -414,8 +374,6 @@ export declare class XpmLiquidBuildConfigurations {
  * Later inherited properties override earlier ones, and local properties
  * override all inherited ones. Dependencies and actions are merged from
  * all inherited configurations.
- *
- * @public
  */
 export declare class XpmLiquidBuildConfiguration {
     /**
@@ -439,8 +397,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * Names must be unique within the configurations collection, enforced
      * during {@link XpmLiquidBuildConfigurations.initialise}.
-     *
-     * @public
      */
     readonly buildConfigurationName: string;
     /**
@@ -464,8 +420,6 @@ export declare class XpmLiquidBuildConfiguration {
      *    configurations only substitute specific fields).
      *
      * 4. Enables tracing and debugging of template expansion process.
-     *
-     * @public
      */
     readonly templateBuildConfigurationName?: string;
     /**
@@ -492,8 +446,6 @@ export declare class XpmLiquidBuildConfiguration {
      * This design enables configurations to access shared resources without
      * duplicating them, while supporting complex inheritance relationships
      * where configurations reference and inherit from each other.
-     *
-     * @public
      */
     readonly parentBuildConfigurations: XpmLiquidBuildConfigurations;
     /**
@@ -520,8 +472,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * 5. Later inherited configurations override properties from earlier
      *    ones, and local properties override all inherited ones.
-     *
-     * @public
      */
     inheritsNames: string[];
     /**
@@ -547,8 +497,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * Common use case: Base configurations that define common properties,
      * dependencies, or actions inherited by multiple concrete configurations.
-     *
-     * @public
      */
     readonly hidden: boolean;
     /**
@@ -575,8 +523,6 @@ export declare class XpmLiquidBuildConfiguration {
      * Properties are accessible in templates as `{{ properties.key }}` and
      * commonly used for compiler flags, toolchain paths, optimization
      * settings, and build-specific configuration values.
-     *
-     * @public
      */
     properties: XpmLiquidSubstitutionsStrings;
     /**
@@ -601,8 +547,6 @@ export declare class XpmLiquidBuildConfiguration {
      * This enables configuration-specific dependencies with dynamic version
      * ranges or package selection based on matrix parameters, platform
      * detection, or configuration properties.
-     *
-     * @public
      */
     dependencies: JsonDependencies;
     /**
@@ -627,8 +571,6 @@ export declare class XpmLiquidBuildConfiguration {
      * Typical use: Test frameworks, build tools, or debugging utilities
      * specific to certain configurations (e.g., debug builds might include
      * additional analysis tools).
-     *
-     * @public
      */
     devDependencies: JsonDependencies;
     /**
@@ -653,8 +595,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * This immutable storage ensures configurations can be safely referenced
      * during inheritance resolution without side effects.
-     *
-     * @public
      */
     jsonBuildConfiguration: JsonBuildConfigurationContent;
     /**
@@ -681,8 +621,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * This complete context is used for all substitutions within the
      * configuration: properties, dependencies, devDependencies, and actions.
-     *
-     * @public
      */
     protected substitutionsVariables: XpmLiquidSubstitutionsVariables;
     /**
@@ -709,8 +647,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * Example: A template `release-{{ matrix.arch }}` with matrix parameters
      * `{ arch: 'x64' }` becomes the concrete configuration `release-x64`.
-     *
-     * @public
      */
     protected readonly matrixParameters?: XpmLiquidSubstitutionsStrings;
     /**
@@ -737,8 +673,6 @@ export declare class XpmLiquidBuildConfiguration {
      * Actions are accessible after configuration initialisation but remain
      * themselves uninitialised until retrieved and initialised individually,
      * maintaining the lazy evaluation pattern.
-     *
-     * @public
      */
     protected _actions: XpmLiquidActions | undefined;
     /**
@@ -766,8 +700,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * The path is relative to the package root and used by build tools to
      * organize outputs from different configurations.
-     *
-     * @public
      */
     protected _buildFolderRelativePath?: string;
     /**
@@ -792,8 +724,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * Example: If config A inherits from B, B from C, and C from A, the
      * circular dependency is detected when C attempts to inherit from A.
-     *
-     * @public
      */
     protected _inheritedNamesSet: Set<string>;
     /**
@@ -818,8 +748,6 @@ export declare class XpmLiquidBuildConfiguration {
      * This pattern is critical for inheritance processing, as configurations
      * may be initialised multiple times when referenced by multiple children,
      * but should only process their inheritance chain once.
-     *
-     * @public
      */
     protected _isInitialised: boolean;
     /**
@@ -844,8 +772,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * Set to `true` when `templateBuildConfigurationName` is defined,
      * indicating the configuration was generated from a template expansion.
-     *
-     * @public
      */
     isTemplate: boolean;
     /**
@@ -862,8 +788,6 @@ export declare class XpmLiquidBuildConfiguration {
      * @remarks
      * The constructor performs partial initialisation. Full initialisation
      * requires calling {@link XpmLiquidBuildConfiguration.initialise}.
-     *
-     * @public
      */
     constructor({ buildConfigurationName, templateBuildConfigurationName, jsonBuildConfiguration, parentBuildConfigurations, matrixParameters, }: {
         buildConfigurationName: string;
@@ -912,8 +836,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * @throws {@link XpmInputError}
      * If inheritance references are invalid or circular.
-     *
-     * @public
      */
     initialise(): Promise<boolean>;
     /**
@@ -923,8 +845,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * @throws `AssertionError`
      * If the configuration has not been initialised.
-     *
-     * @public
      */
     get actions(): XpmLiquidActions;
     /**
@@ -934,8 +854,6 @@ export declare class XpmLiquidBuildConfiguration {
      *
      * @throws `AssertionError`
      * If the configuration has not been initialised.
-     *
-     * @public
      */
     get buildFolderRelativePath(): string;
     /**
@@ -962,8 +880,6 @@ export declare class XpmLiquidBuildConfiguration {
      * `buildFolderRelativePath` for use in subsequent substitutions.
      *
      * @returns A promise that resolves to the build folder relative path.
-     *
-     * @public
      */
     protected _getBuildFolderRelativePath(): Promise<string>;
 }

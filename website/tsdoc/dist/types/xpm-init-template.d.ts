@@ -26,8 +26,6 @@
  *   }
  * }
  * ```
- *
- * @public
  */
 export type XpmInitTemplatePropertiesDefinitions = Record<string, XpmInitTemplatePropertiesDefinition>;
 /**
@@ -56,44 +54,30 @@ export type XpmInitTemplatePropertiesDefinitions = Record<string, XpmInitTemplat
  * Mandatory properties without defaults will block template initialization
  * until the user provides a value. Optional properties with defaults use
  * the default when the user skips the prompt.
- *
- * @public
  */
 export interface XpmInitTemplatePropertiesDefinition {
     /**
      * The human-readable label used in prompts.
-     *
-     * @public
      */
     label: string;
     /**
      * The description shown when the user requests help.
-     *
-     * @public
      */
     description: string;
     /**
      * The property value type.
-     *
-     * @public
      */
     type: 'select' | 'string' | 'number' | 'boolean';
     /**
      * The selectable items for a `select` property.
-     *
-     * @public
      */
     items: Record<string, string | XpmInitTemplateItemValue>;
     /**
      * Indicates whether the property is mandatory.
-     *
-     * @public
      */
     isMandatory?: boolean;
     /**
      * The default value for the property.
-     *
-     * @public
      */
     default?: string | number | boolean;
 }
@@ -118,8 +102,6 @@ export interface XpmInitTemplatePropertiesDefinition {
  *
  * Common use case: Offering different toolchain options based on whether
  * the user is on Windows, macOS Intel, macOS ARM, or Linux.
- *
- * @public
  */
 export type XpmInitTemplatePlatform = 'linux' | 'linux-x64' | 'linux-arm64' | 'win32' | 'darwin' | 'darwin-x64' | 'darwin-arm64';
 /**
@@ -157,20 +139,14 @@ export type XpmInitTemplatePlatform = 'linux' | 'linux-x64' | 'linux-arm64' | 'w
  *
  * When running on Windows, only the "msvc" option appears. On Linux or
  * macOS Intel, only "gcc-arm" appears.
- *
- * @public
  */
 export interface XpmInitTemplateItemValue {
     /**
      * The list of supported platforms.
-     *
-     * @public
      */
     platforms: XpmInitTemplatePlatform[];
     /**
      * The description message for this item.
-     *
-     * @public
      */
     message: string;
 }
@@ -203,20 +179,14 @@ export interface XpmInitTemplateItemValue {
  * Language: C++
  * {% endif %}
  * ```
- *
- * @public
  */
 export interface XpmInitTemplateSubstitutionsVariables {
     /**
      * The resolved template properties.
-     *
-     * @public
      */
     properties: Record<string, string | boolean | number>;
     /**
      * Additional template variables.
-     *
-     * @public
      */
     [key: string]: unknown;
 }

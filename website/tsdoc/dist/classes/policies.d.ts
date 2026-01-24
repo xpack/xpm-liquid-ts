@@ -28,14 +28,10 @@ import { Logger } from '@xpack/logger';
  *
  * Policy flags are evaluated once during initialization and cached for the
  * duration of the operation.
- *
- * @public
  */
 export declare class XpmPolicies {
     /**
      * The minimum xpm version used to derive policy flags.
-     *
-     * @public
      */
     minVersion: string;
     /**
@@ -49,8 +45,6 @@ export declare class XpmPolicies {
      * xpack, providing better isolation and avoiding version conflicts.
      *
      * Set to `true` for packages with minimumXpmRequired \< 0.14.0.
-     *
-     * @public
      */
     shareNpmDependencies: boolean;
     /**
@@ -65,8 +59,6 @@ export declare class XpmPolicies {
      * `xpacks/@scope/package`).
      *
      * Set to `true` for packages with minimumXpmRequired \< 0.16.0.
-     *
-     * @public
      */
     nonHierarchicalLocalXpacksFolder: boolean;
     /**
@@ -81,8 +73,6 @@ export declare class XpmPolicies {
      * dependency configuration.
      *
      * Set to `true` for packages with minimumXpmRequired \< 0.16.0.
-     *
-     * @public
      */
     onlyStringDependencies: boolean;
     /**
@@ -96,8 +86,6 @@ export declare class XpmPolicies {
      * for more flexible template initialization and configuration.
      *
      * Set to `true` for packages with minimumXpmRequired \< 0.22.0.
-     *
-     * @public
      */
     singleParameterXpmInitTemplate: boolean;
     /**
@@ -126,8 +114,6 @@ export declare class XpmPolicies {
      *
      * @param log - The logger instance for output and diagnostics.
      * @param minVersion - The minimum xpm version to evaluate.
-     *
-     * @public
      */
     constructor({ log, minVersion }: {
         log: Logger;

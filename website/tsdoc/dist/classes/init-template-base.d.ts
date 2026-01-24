@@ -23,50 +23,34 @@ import { XpmInitTemplatePropertiesDefinitions, XpmInitTemplateSubstitutionsVaria
  *
  * Derived classes must implement {@link XpmInitTemplateBase.generate}
  * to define the specific files and folder structure to create.
- *
- * @public
  */
 export declare abstract class XpmInitTemplateBase {
     /**
      * The xpm context containing configuration and logging utilities.
-     *
-     * @public
      */
     context: XpmContext;
     /**
      * The logger instance for output and diagnostics.
-     *
-     * @public
      */
     log: Logger;
     /**
      * Definitions of all properties supported by this template.
-     *
-     * @public
      */
     propertiesDefinitions: XpmInitTemplatePropertiesDefinitions;
     /**
      * The absolute path to the module folder.
-     *
-     * @public
      */
     __dirname: string;
     /**
      * The absolute path to the templates folder.
-     *
-     * @public
      */
     templatesPath: string;
     /**
      * The Liquid templating engine instance.
-     *
-     * @public
      */
     engine: Liquid;
     /**
      * The variables to be used for template substitutions.
-     *
-     * @public
      */
     substitutionsVariables?: XpmInitTemplateSubstitutionsVariables;
     /**
@@ -76,8 +60,6 @@ export declare abstract class XpmInitTemplateBase {
      * @param __dirname - The absolute path to the module folder.
      * @param templatesPath - The absolute path to the templates folder.
      * @param propertiesDefinitions - The definitions of all supported properties.
-     *
-     * @public
      */
     constructor({ context, __dirname, templatesPath, propertiesDefinitions, }: {
         context: XpmContext;
@@ -105,8 +87,6 @@ export declare abstract class XpmInitTemplateBase {
      * @throws {@link XpmSyntaxError}
      * If property validation fails or interactive mode is required but not
      * available (non-TTY environment).
-     *
-     * @public
      */
     run(): Promise<number>;
     /**
@@ -123,8 +103,6 @@ export declare abstract class XpmInitTemplateBase {
      *
      * @param isInteractive - Whether the template was run in interactive mode.
      * @returns A promise that resolves when generation is complete.
-     *
-     * @public
      */
     abstract generate(isInteractive: boolean): Promise<void>;
     /**
@@ -153,8 +131,6 @@ export declare abstract class XpmInitTemplateBase {
      *
      * @throws `Error`
      * If the property is unsupported or the value is invalid.
-     *
-     * @public
      */
     validateValue(name: string, value: string): string | boolean | number;
     /**
@@ -179,8 +155,6 @@ export declare abstract class XpmInitTemplateBase {
      *
      * @returns A promise that resolves when all missing values have been
      * collected.
-     *
-     * @public
      */
     askForMoreValues(): Promise<void>;
     /**
@@ -198,8 +172,6 @@ export declare abstract class XpmInitTemplateBase {
      * undefined if no platforms are specified.
      * @returns `true` if the current platform is supported, `false`
      * otherwise.
-     *
-     * @public
      */
     isPlatformSupported(platforms: string[] | undefined): boolean;
     /**
@@ -218,8 +190,6 @@ export declare abstract class XpmInitTemplateBase {
      * @param destinationFilePath - The destination file path (defaults to
      * the same relative path as the source).
      * @returns A promise that resolves when the file has been copied.
-     *
-     * @public
      */
     copyFile(sourceFileRelativePath: string, destinationFilePath?: string): Promise<void>;
     /**
@@ -238,8 +208,6 @@ export declare abstract class XpmInitTemplateBase {
      * @param destination - The destination folder path (defaults to the
      * same relative path as the source).
      * @returns A promise that resolves when the folder has been copied.
-     *
-     * @public
      */
     copyFolder(source: string, destination?: string): Promise<void>;
     /**
@@ -253,8 +221,6 @@ export declare abstract class XpmInitTemplateBase {
      * @param sourceFolderPath - The absolute path to the source folder.
      * @param destinationFolderPath - The absolute path to the destination folder.
      * @returns A promise that resolves when all contents have been copied.
-     *
-     * @public
      */
     protected _copyFolderRecursively(sourceFolderPath: string, destinationFolderPath: string): Promise<void>;
     /**
@@ -284,8 +250,6 @@ export declare abstract class XpmInitTemplateBase {
      *
      * @throws {@link XpmOutputError}
      * If template rendering fails.
-     *
-     * @public
      */
     render(inputFileRelativePath: string, outputFileRelativePath: string, substitutionsVariables?: XpmInitTemplateSubstitutionsVariables): Promise<void>;
 }

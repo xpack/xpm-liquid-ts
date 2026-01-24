@@ -17,8 +17,6 @@
  *
  * @param value - The value to test.
  * @returns `true` if the value is a primitive or null, `false` otherwise.
- *
- * @public
  */
 export declare function isPrimitive(value: unknown): boolean;
 /**
@@ -42,8 +40,6 @@ export declare function isPrimitive(value: unknown): boolean;
  *
  * @param value - The value to test.
  * @returns `true` if the value is a string, `false` otherwise.
- *
- * @public
  */
 export declare function isString(value: unknown): value is string;
 /**
@@ -64,8 +60,6 @@ export declare function isString(value: unknown): value is string;
  *
  * @param value - The value to test.
  * @returns `true` if the value is a non-array object, `false` otherwise.
- *
- * @public
  */
 export declare function isObject(value: unknown): boolean;
 /**
@@ -85,8 +79,6 @@ export declare function isObject(value: unknown): boolean;
  *
  * @param value - The value to test.
  * @returns `true` if the value is a boolean, `false` otherwise.
- *
- * @public
  */
 export declare function isBoolean(value: unknown): boolean;
 /**
@@ -109,8 +101,6 @@ export declare function isBoolean(value: unknown): boolean;
  *
  * @param value - The value to test.
  * @returns `true` if the value is a JSON object, `false` otherwise.
- *
- * @public
  */
 export declare function isJsonObject(value: unknown): boolean;
 /**
@@ -132,8 +122,6 @@ export declare function isJsonObject(value: unknown): boolean;
  *
  * @param value - The value to test.
  * @returns `true` if the value is a JSON array, `false` otherwise.
- *
- * @public
  */
 export declare function isJsonArray(value: unknown): boolean;
 /**
@@ -159,8 +147,6 @@ export declare function isJsonArray(value: unknown): boolean;
  *
  * @param value - The value to test.
  * @returns `true` if the value is a non-empty JSON object, `false` otherwise.
- *
- * @public
  */
 export declare function isNonEmptyJsonObject(value: unknown): boolean;
 //# sourceMappingURL=is-something.d.ts.map

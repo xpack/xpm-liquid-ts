@@ -31,8 +31,6 @@ import { JsonPackageSpecifier } from '../types/json.js';
  *
  * This hierarchy allows validation to be performed incrementally as needed,
  * avoiding unnecessary checks for packages that don't meet earlier criteria.
- *
- * @public
  */
 export declare class XpmPackage {
     /**
@@ -55,8 +53,6 @@ export declare class XpmPackage {
      *
      * The path is set during construction and used by all methods that access
      * or modify package.json.
-     *
-     * @public
      */
     packageFolderPath: string;
     /**
@@ -83,8 +79,6 @@ export declare class XpmPackage {
      *
      * The cached content improves performance for packages that perform
      * multiple validation checks without file system access overhead.
-     *
-     * @public
      */
     jsonPackage?: JsonXpmPackage;
     /**
@@ -109,8 +103,6 @@ export declare class XpmPackage {
      *
      * The logger enables detailed diagnostics without affecting normal
      * operation, as trace-level output is typically disabled in production.
-     *
-     * @public
      */
     protected _log: Logger;
     /**
@@ -118,8 +110,6 @@ export declare class XpmPackage {
      *
      * @param log - The logger instance for output and diagnostics.
      * @param packageFolderPath - The absolute path to the package folder.
-     *
-     * @public
      */
     constructor({ log, packageFolderPath, }: {
         log: Logger;
@@ -145,8 +135,6 @@ export declare class XpmPackage {
      *
      * @throws {@link XpmInputError}
      * If package.json is missing or invalid and `withThrow` is true.
-     *
-     * @public
      */
     readPackageDotJson({ withThrow, }?: {
         withThrow?: boolean;
@@ -160,8 +148,6 @@ export declare class XpmPackage {
      *
      * @param jsonPackage - The package.json content to write.
      * @returns A promise that resolves when the file has been written.
-     *
-     * @public
      */
     rewritePackageDotJson(jsonPackage: JsonXpmPackage): Promise<void>;
     /**
@@ -169,8 +155,6 @@ export declare class XpmPackage {
      *
      * @returns `true` if the package has a valid name and version, `false`
      * otherwise.
-     *
-     * @public
      */
     isNpmPackage(): boolean;
     /**
@@ -178,8 +162,6 @@ export declare class XpmPackage {
      *
      * @returns `true` if the package is a valid npm package with an xpack
      * section, `false` otherwise.
-     *
-     * @public
      */
     isXpmPackage(): boolean;
     /**
@@ -207,8 +189,6 @@ export declare class XpmPackage {
      *
      * @throws {@link XpmInputError}
      * If required binary package fields are missing.
-     *
-     * @public
      */
     isBinaryXpmPackage(): boolean;
     /**
@@ -216,8 +196,6 @@ export declare class XpmPackage {
      *
      * @returns `true` if the package is a Node module without xpm metadata,
      * `false` otherwise.
-     *
-     * @public
      */
     isNodeModule(): false;
     /**
@@ -225,16 +203,12 @@ export declare class XpmPackage {
      *
      * @returns `true` if the package is a Node module with a bin entry,
      * `false` otherwise.
-     *
-     * @public
      */
     isBinaryNodeModule(): false;
     /**
      * Determines whether the package defines any npm scripts.
      *
      * @returns `true` if at least one script is defined, `false` otherwise.
-     *
-     * @public
      */
     hasNpmScripts(): boolean;
     /**
@@ -267,8 +241,6 @@ export declare class XpmPackage {
      *
      * @returns `true` if actions are defined directly or within build
      * configurations, `false` otherwise.
-     *
-     * @public
      */
     hasXpmActions(): boolean;
     /**
@@ -276,8 +248,6 @@ export declare class XpmPackage {
      *
      * @returns The minimum required xpm version without pre-release suffixes, or
      * undefined if not specified.
-     *
-     * @public
      */
     getMinimumXpmRequired(): string | undefined;
     /**
@@ -312,8 +282,6 @@ export declare class XpmPackage {
      *
      * @throws {@link XpmPrerequisitesError}
      * If the installed xpm version is lower than the required minimum.
-     *
-     * @public
      */
     checkMinimumXpmRequired({ xpmRootFolderPath, }: {
         xpmRootFolderPath: string;
@@ -352,8 +320,6 @@ export declare class XpmPackage {
      *
      * @throws {@link XpmInputError}
      * If the specifier is not a valid package name format.
-     *
-     * @public
      */
     parsePackageSpecifier({ npmPackageSpecifier, }: {
         npmPackageSpecifier: string;

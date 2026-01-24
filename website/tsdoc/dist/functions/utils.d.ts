@@ -27,8 +27,6 @@
  *
  * @param error - The error value to convert.
  * @returns The error message string.
- *
- * @public
  */
 export declare function getErrorMessage(error: unknown): string;
 /**
@@ -65,8 +63,6 @@ export declare function getErrorMessage(error: unknown): string;
  * @param doForce32bit - Whether to coerce certain 64-bit platforms to their
  * 32-bit equivalents.
  * @returns The platform key in the form `platform-arch`.
- *
- * @public
  */
 export declare function getPlatformKey({ doForce32bit, }?: {
     doForce32bit?: boolean;

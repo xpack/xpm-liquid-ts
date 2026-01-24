@@ -49,8 +49,6 @@ import { XpmLiquidSubstitutionsVariables } from '../data/substitutions-variables
  *
  * @throws {@link XpmError}
  * If Liquid rendering fails.
- *
- * @public
  */
 export declare function performSubstitutions({ log, engine, input, substitutionsVariables, }: {
     log: Logger;

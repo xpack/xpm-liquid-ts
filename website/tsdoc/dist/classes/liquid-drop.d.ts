@@ -24,26 +24,18 @@ import { XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.j
  * This enables multi-level property references where one property can
  * reference another, which can reference yet another, with the engine
  * automatically resolving the entire chain.
- *
- * @public
  */
 export declare class XpmLiquidPropertiesDrop extends Drop {
     /**
      * The logger instance for output and diagnostics.
-     *
-     * @public
      */
     protected _log: Logger;
     /**
      * The properties map used for substitutions.
-     *
-     * @public
      */
     protected _properties: XpmLiquidSubstitutionsStrings;
     /**
      * The Liquid engine used to render nested substitutions.
-     *
-     * @public
      */
     protected _engine: Liquid;
     /**
@@ -52,8 +44,6 @@ export declare class XpmLiquidPropertiesDrop extends Drop {
      * @param log - The logger instance for output and diagnostics.
      * @param engine - The Liquid engine used to render nested substitutions.
      * @param properties - The properties map used for substitutions.
-     *
-     * @public
      */
     constructor({ log, engine, properties, }: {
         log: Logger;
@@ -92,8 +82,6 @@ export declare class XpmLiquidPropertiesDrop extends Drop {
      *
      * @throws {@link XpmInputError}
      * If the property is not defined.
-     *
-     * @public
      */
     liquidMethodMissing(key: string, context: Context): Promise<any>;
 }
@@ -116,26 +104,18 @@ export declare class XpmLiquidPropertiesDrop extends Drop {
  * Matrix parameters are isolated per template instance, ensuring that each
  * generated action or configuration has access only to its specific matrix
  * combination.
- *
- * @public
  */
 export declare class XpmLiquidMatrixDrop extends Drop {
     /**
      * The logger instance for output and diagnostics.
-     *
-     * @public
      */
     protected _log: Logger;
     /**
      * The matrix parameters map used for substitutions.
-     *
-     * @public
      */
     protected _matrix: XpmLiquidSubstitutionsStrings;
     /**
      * The Liquid engine used to render nested substitutions.
-     *
-     * @public
      */
     protected _engine: Liquid;
     /**
@@ -144,8 +124,6 @@ export declare class XpmLiquidMatrixDrop extends Drop {
      * @param log - The logger instance for output and diagnostics.
      * @param engine - The Liquid engine used to render nested substitutions.
      * @param matrix - The matrix parameters map used for substitutions.
-     *
-     * @public
      */
     constructor({ log, engine, matrix, }: {
         log: Logger;
@@ -185,8 +163,6 @@ export declare class XpmLiquidMatrixDrop extends Drop {
      *
      * @throws {@link XpmInputError}
      * If the matrix parameter is not defined.
-     *
-     * @public
      */
     liquidMethodMissing(key: string, context: Context): Promise<any>;
 }
