@@ -442,7 +442,7 @@ export class XpmActions {
    * Determines whether the actions collection is empty.
    *
    * @remarks
-   * This value is known only after initialisation.
+   * This value is known only after `initialise()`.
    *
    * @returns `true` if there are no actions, `false` otherwise.
    */
@@ -454,7 +454,7 @@ export class XpmActions {
    * Retrieves the names of all actions in the collection.
    *
    * @remarks
-   * This value is known only after initialisation.
+   * This value is known only after `initialise()`.
    *
    * @returns An array of action names.
    */
@@ -469,7 +469,7 @@ export class XpmActions {
    * Checks whether an action with the specified name exists.
    *
    * @remarks
-   * This value is known only after initialisation.
+   * This value is known only after `initialise()`.
    *
    * @param actionName - The name of the action to check.
    * @returns `true` if the action exists, `false` otherwise.
