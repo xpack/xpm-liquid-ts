@@ -35,16 +35,15 @@ import { isJsonObject } from '../functions/is-something.js'
  * errors early during development. Custom filters are organized into
  * categories:
  *
- * 1. Path manipulation: Platform-specific and cross-platform path operations
+ * <ol>
+ * <li>Path manipulation: Platform-specific and cross-platform path operations
  *    (basename, dirname, join, relative, normalize) for default, POSIX, and
- *    Win32 paths.
- *
- * 2. String formatting: Utilities for printf-style formatting and filename
- *    sanitization.
- *
- * 3. Array/string conversion: Filters for joining and splitting lines.
- *
- * 4. Object introspection: Filters for extracting object keys.
+ *    Win32 paths.</li>
+ * <li>String formatting: Utilities for printf-style formatting and filename
+ *    sanitization.</li>
+ * <li>Array/string conversion: Filters for joining and splitting lines.</li>
+ * <li>Object introspection: Filters for extracting object keys.</li>
+ * </ol>
  *
  * These filters enable templates to perform complex path manipulations and
  * string transformations without requiring external dependencies or custom
@@ -67,30 +66,28 @@ export class XpmLiquidEngine extends Liquid {
    *
    * Configuration options:
    *
-   * - strictFilters: Throw errors for undefined filters rather than
-   *   silently ignoring them.
-   *
-   * - strictVariables: Throw errors for undefined variables rather than
-   *   rendering empty strings.
-   *
-   * - trimTagLeft/Right: Preserve whitespace around template tags.
-   *
-   * - trimOutputLeft/Right: Preserve whitespace around output expressions.
-   *
-   * - greedy: Use non-greedy matching for better template compatibility.
-   *
-   * - lenientIf: Allow flexible truthiness in conditional expressions.
+   * <ul>
+   * <li>strictFilters: Throw errors for undefined filters rather than
+   *   silently ignoring them.</li>
+   * <li>strictVariables: Throw errors for undefined variables rather than
+   *   rendering empty strings.</li>
+   * <li>trimTagLeft/Right: Preserve whitespace around template tags.</li>
+   * <li>trimOutputLeft/Right: Preserve whitespace around output
+   * expressions.</li>
+   * <li>greedy: Use non-greedy matching for better template compatibility.</li>
+   * <li>lenientIf: Allow flexible truthiness in conditional expressions.</li>
+   * </ul>
    *
    * Filter registration:
    *
-   * - Platform-aware path filters (default, posix, win32) delegate to
-   *   Node.js path module for consistent cross-platform behavior.
-   *
-   * - Custom filters (to_filename, join_lines, split_lines, keys) provide
-   *   template-specific functionality not available in standard Liquid.
-   *
-   * - All filters are registered during construction for immediate
-   *   availability in templates.
+   * <ul>
+   * <li>Platform-aware path filters (default, posix, win32) delegate to
+   *   Node.js path module for consistent cross-platform behavior.</li>
+   * <li>Custom filters (to_filename, join_lines, split_lines, keys) provide
+   *   template-specific functionality not available in standard Liquid.</li>
+   * <li>All filters are registered during construction for immediate
+   *   availability in templates.</li>
+   * </ul>
    */
   constructor() {
     super({

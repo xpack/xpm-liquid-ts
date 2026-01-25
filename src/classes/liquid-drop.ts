@@ -40,13 +40,13 @@ import { XpmInputError } from '../classes/errors.js'
  * the Liquid engine calls {@link XpmLiquidPropertiesDrop.liquidMethodMissing}
  * which:
  *
- * 1. Looks up the property value in the properties map.
- *
- * 2. Checks if the value contains Liquid syntax (`{{` or `{%`).
- *
- * 3. If yes, recursively evaluates the value as a Liquid template.
- *
- * 4. Returns the final resolved value.
+ * <ol>
+ * <li>Looks up the property value in the properties map.</li>
+ * <li>Checks if the value contains Liquid syntax
+ *   (<code>\{\{</code> or <code>\{%</code>).</li>
+ * <li>If yes, recursively evaluates the value as a Liquid template.</li>
+ * <li>Returns the final resolved value.</li>
+ * </ol>
  *
  * This enables multi-level property references where one property can
  * reference another, which can reference yet another, with the engine
@@ -112,18 +112,16 @@ export class XpmLiquidPropertiesDrop extends Drop {
    *
    * Resolution process:
    *
-   * 1. Validate the property exists, throw {@link XpmInputError} if not.
-   *
-   * 2. Retrieve the property value (string, array, or object).
-   *
-   * 3. If object, return as-is for Liquid to access nested properties.
-   *
-   * 4. If array, join elements into a single string for processing.
-   *
-   * 5. If the value contains Liquid syntax, recursively render it with the
-   *    current context to resolve nested references.
-   *
-   * 6. Return the final resolved value.
+   * <ol>
+   * <li>Validate the property exists, throw <code>XpmInputError</code> if
+   * not.</li>
+   * <li>Retrieve the property value (string, array, or object).</li>
+   * <li>If object, return as-is for Liquid to access nested properties.</li>
+   * <li>If array, join elements into a single string for processing.</li>
+   * <li>If the value contains Liquid syntax, recursively render it with the
+   *    current context to resolve nested references.</li>
+   * <li>Return the final resolved value.</li>
+   * </ol>
    *
    * Array values are concatenated without separators, allowing properties
    * to span multiple lines in JSON while producing a single string output.
@@ -262,18 +260,16 @@ export class XpmLiquidMatrixDrop extends Drop {
    *
    * Resolution process:
    *
-   * 1. Validate the parameter exists, throw {@link XpmInputError} if not.
-   *
-   * 2. Retrieve the parameter value (string, array, or object).
-   *
-   * 3. If object, return as-is for Liquid to access nested properties.
-   *
-   * 4. If array, join elements into a single string for processing.
-   *
-   * 5. If the value contains Liquid syntax, recursively render it with the
-   *    current context to resolve nested references.
-   *
-   * 6. Return the final resolved value.
+   * <ol>
+   * <li>Validate the parameter exists, throw <code>XpmInputError</code> if
+   * not.</li>
+   * <li>Retrieve the parameter value (string, array, or object).</li>
+   * <li>If object, return as-is for Liquid to access nested properties.</li>
+   * <li>If array, join elements into a single string for processing.</li>
+   * <li>If the value contains Liquid syntax, recursively render it with the
+   *    current context to resolve nested references.</li>
+   * <li>Return the final resolved value.</li>
+   * </ol>
    *
    * This mirrors the behavior of {@link XpmLiquidPropertiesDrop} but operates
    * on matrix parameters instead of properties. Matrix values can reference

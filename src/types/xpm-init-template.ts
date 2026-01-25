@@ -56,14 +56,14 @@ export type XpmInitTemplatePropertiesDefinitions = Record<
  *
  * Property types:
  *
- * - `select`: Present a list of options for the user to choose from.
- *   Requires `items` to be populated with available choices.
- *
- * - `string`: Accept free-form text input from the user.
- *
- * - `number`: Accept numeric input with validation.
- *
- * - `boolean`: Accept yes/no input (typically true/false).
+ * <ul>
+ * <li><code>select</code>: Present a list of options for the user to
+ *   choose from.
+ *   Requires <code>items</code> to be populated with available choices.</li>
+ * <li><code>string</code>: Accept free-form text input from the user.</li>
+ * <li><code>number</code>: Accept numeric input with validation.</li>
+ * <li><code>boolean</code>: Accept yes/no input (typically true/false).</li>
+ * </ul>
  *
  * Platform filtering: For `select` types, items can specify platform
  * constraints via `XpmInitTemplateItemValue`, hiding options that
@@ -110,11 +110,12 @@ export interface XpmInitTemplatePropertiesDefinition {
  *
  * Platform matching strategy:
  *
- * - Generic platforms (linux, win32, darwin) match any architecture on that
- *   operating system.
- *
- * - Specific platforms (linux-x64, darwin-arm64, etc.) match only the exact
- *   OS and architecture combination.
+ * <ul>
+ * <li>Generic platforms (linux, win32, darwin) match any architecture on that
+ *   operating system.</li>
+ * <li>Specific platforms (linux-x64, darwin-arm64, etc.) match only the exact
+ *   OS and architecture combination.</li>
+ * </ul>
  *
  * Example: An item with `platforms: ["darwin-arm64"]` only appears when
  * running on Apple Silicon Macs, while `platforms: ["darwin"]` appears on
@@ -189,12 +190,14 @@ export interface XpmInitTemplateItemValue {
  *
  * Variable structure:
  *
- * - `properties`: Contains all user-provided or default values from the
+ * <ul>
+ * <li><code>properties</code>: Contains all user-provided or default values
+ *   from the
  *   template property definitions, accessible via
- *   `{{ properties.propertyName }}` in template files.
- *
- * - Additional variables: Templates can define custom variables for reuse
- *   across multiple files or for computed values based on properties.
+ *   <code>\{\{ properties.propertyName \}\}</code> in template files.</li>
+ * <li>Additional variables: Templates can define custom variables for reuse
+ *   across multiple files or for computed values based on properties.</li>
+ * </ul>
  *
  * Template files (with `.liquid` extension or configured patterns) are
  * processed with this context, allowing conditional content, loops, and

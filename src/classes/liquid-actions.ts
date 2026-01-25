@@ -51,13 +51,14 @@ import { XpmLiquidBuildConfiguration } from './liquid-build-configurations.js'
  *
  * Action lifecycle phases:
  *
- * 1. Construction: Basic setup with optional inheritance from parent package.
- *
- * 2. Initialisation: Template name expansion without content evaluation.
- *
- * 3. Retrieval: On-demand instantiation when accessed via get().
- *
- * 4. Action Initialisation: Liquid template evaluation and substitution.
+ * <ol>
+ * <li>Construction: Basic setup with optional inheritance from parent
+ *   package.</li>
+ * <li>Initialisation: Template name expansion without content evaluation.</li>
+ * <li>Retrieval: On-demand instantiation when accessed via
+ *   <code>get()</code>.</li>
+ * <li>Action Initialisation: Liquid template evaluation and substitution.</li>
+ * </ol>
  *
  * This multi-phase approach ensures efficient resource usage by deferring
  * expensive operations until actions are actually needed.
@@ -100,16 +101,15 @@ export class XpmLiquidActions {
    *
    * The hierarchy structure:
    *
-   * 1. Base variables: `env`, `os`, `path` (always available).
-   *
-   * 2. Package variables: name, version, dependencies, devDependencies.
-   *
-   * 3. Configuration variables: build folder paths, compiler settings.
-   *
-   * 4. Properties: custom key-value pairs from package or configuration.
-   *
-   * 5. Matrix: parameter combinations for template-generated actions (added
-   *    per action during initialisation).
+   * <ol>
+   * <li>Base variables: <code>env</code>, <code>os</code>, <code>path</code>
+   *   (always available).</li>
+   * <li>Package variables: name, version, dependencies, devDependencies.</li>
+   * <li>Configuration variables: build folder paths, compiler settings.</li>
+   * <li>Properties: custom key-value pairs from package or configuration.</li>
+   * <li>Matrix: parameter combinations for template-generated actions (added
+   * per action during initialisation).</li>
+   * </ol>
    *
    * These variables are accessible in Liquid templates using dot notation
    * (e.g., `{{ package.name }}`,
@@ -125,12 +125,13 @@ export class XpmLiquidActions {
    * package.json `xpack.actions` section or within a build configuration's
    * actions. Action definitions can be:
    *
-   * 1. Simple strings: Single command to execute.
-   *
-   * 2. String arrays: Multiple commands executed sequentially.
-   *
-   * 3. Template objects: With `matrix` and `template` properties for
-   *    generating multiple actions from a single definition.
+   * <ol>
+   * <li>Simple strings: Single command to execute.</li>
+   * <li>String arrays: Multiple commands executed sequentially.</li>
+   * <li>Template objects: With <code>matrix</code> and <code>template</code>
+   *   properties for
+   *   generating multiple actions from a single definition.</li>
+   * </ol>
    *
    * Template action names (containing `{{` markers) trigger matrix expansion
    * during initialisation, creating concrete actions from the Cartesian
@@ -147,15 +148,16 @@ export class XpmLiquidActions {
    *
    * Key characteristics:
    *
-   * 1. Known only after {@link XpmLiquidActions.initialise} completes.
-   *
-   * 2. Possibly empty if there are no actions defined.
-   *
-   * 3. Values can be `undefined` to indicate an action exists but hasn't
-   *    been instantiated yet (lazy loading).
-   *
-   * 4. For template actions, contains one entry per expanded combination,
-   *    not the original template definition.
+   * <ol>
+   * <li>Known only after <code>XpmLiquidActions.initialise</code>
+   *   completes.</li>
+   * <li>Possibly empty if there are no actions defined.</li>
+   * <li>Values can be <code>undefined</code> to indicate an action
+   *   exists but hasn't
+   *   been instantiated yet (lazy loading).</li>
+   * <li>For template actions, contains one entry per expanded combination,
+   *   not the original template definition.</li>
+   * </ol>
    *
    * Actions transition from `undefined` to instantiated when first accessed
    * via {@link XpmLiquidActions.get}, implementing the lazy evaluation
@@ -173,12 +175,14 @@ export class XpmLiquidActions {
    *
    * Key characteristics:
    *
-   * 1. Known only after {@link XpmLiquidActions.initialise} completes.
-   *
-   * 2. Contains all action names including those generated from templates.
-   *
-   * 3. Used to detect duplicate action names that might arise from template
-   *    expansion conflicts or explicit duplicates in package.json.
+   * <ol>
+   * <li>Known only after <code>XpmLiquidActions.initialise</code>
+   *   completes.</li>
+   * <li>Contains all action names including those generated from
+   *   templates.</li>
+   * <li>Used to detect duplicate action names that might arise from template
+   *   expansion conflicts or explicit duplicates in package.json.</li>
+   * </ol>
    *
    * This redundant storage (alongside `_actionsMap`) is justified by the
    * performance benefit for name existence checks, especially in packages
@@ -195,13 +199,15 @@ export class XpmLiquidActions {
    *
    * Mapping behavior:
    *
-   * 1. For regular actions: Maps action name to itself (identity mapping).
-   *
-   * 2. For template actions: Maps each generated action name back to the
-   *    original template name (e.g., `test-x64` → `test-{{ matrix.arch }}`).
-   *
-   * 3. Enables {@link XpmLiquidActions.get} to locate the correct JSON
-   *    definition when instantiating an action on demand.
+   * <ol>
+   * <li>For regular actions: Maps action name to itself (identity
+   *   mapping).</li>
+   * <li>For template actions: Maps each generated action name back to the
+   *   original template name (e.g.,
+   *   <code>test-x64</code> → <code>test-\{\{ matrix.arch \}\}</code>).</li>
+   * <li>Enables <code>XpmLiquidActions.get</code> to locate the correct JSON
+   *   definition when instantiating an action on demand.</li>
+   * </ol>
    *
    * This indirection is essential for the lazy evaluation pattern, allowing
    * deferred instantiation while maintaining the connection to original
@@ -222,20 +228,23 @@ export class XpmLiquidActions {
    *
    * When defined:
    *
-   * 1. Actions inherit configuration-specific variables (build folder paths,
-   *    compiler settings, toolchain properties).
-   *
-   * 2. Actions belong to a specific configuration namespace rather than the
-   *    package root.
-   *
-   * 3. Logging and diagnostics include the configuration name for context.
+   * <ol>
+   * <li>Actions inherit configuration-specific variables (build folder paths,
+   *   compiler settings, toolchain properties).</li>
+   * <li>Actions belong to a specific configuration namespace rather than the
+   *   package root.</li>
+   * <li>Logging and diagnostics include the configuration name for
+   *   context.</li>
+   * </ol>
    *
    * When `undefined`:
    *
-   * 1. Actions belong to the package root (`xpack.actions` in package.json).
-   *
-   * 2. Only package-level and global variables are available for
-   *    substitution.
+   * <ol>
+   * <li>Actions belong to the package root (<code>xpack.actions</code> in
+   *   package.json).</li>
+   * <li>Only package-level and global variables are available for
+   *  substitution.</li>
+   * </ol>
    */
   readonly buildConfiguration: XpmLiquidBuildConfiguration | undefined
 
@@ -249,13 +258,14 @@ export class XpmLiquidActions {
    *
    * State transitions:
    *
-   * 1. Initially `false` after construction.
-   *
-   * 2. Set to `true` after successful template expansion and action name
-   *    registration.
-   *
-   * 3. Checked at the beginning of {@link XpmLiquidActions.initialise} to
-   *    return early if already initialised.
+   * <ol>
+   * <li>Initially <code>false</code> after construction.</li>
+   * <li>Set to <code>true</code> after successful template expansion and
+   *   action name
+   *   registration.</li>
+   * <li>Checked at the beginning of <code>XpmLiquidActions.initialise</code> to
+   *   return early if already initialised.</li>
+   * </ol>
    *
    * This pattern supports safe repeated calls during complex initialisation
    * sequences without duplicating work or corrupting internal state.
@@ -474,13 +484,16 @@ export class XpmLiquidActions {
    * Actions are instantiated on demand but remain uninitialised until actually
    * used. The two-step process works as follows:
    *
-   * 1. During collection initialisation ({@link XpmLiquidActions.initialise}),
-   *    only the matrix of options is evaluated for each template, expanding
-   *    only the action names without processing their content.
-   *
-   * 2. Later, when an action is accessed via this method and subsequently
-   *    initialised ({@link XpmLiquidAction.initialise}), the template is
-   *    fully evaluated and Liquid substitutions are performed on the commands.
+   * <ol>
+   * <li>During collection initialisation
+   *   (<code>XpmLiquidActions.initialise</code>),
+   *   only the matrix of options is evaluated for each template, expanding
+   *   only the action names without processing their content.</li>
+   * <li>Later, when an action is accessed via this method and subsequently
+   *   initialised (<code>XpmLiquidAction.initialise</code>), the template is
+   *   fully evaluated and Liquid substitutions are performed on the
+   *   commands.</li>
+   * </ol>
    *
    * This approach ensures that only actions that are actually used incur the
    * cost of template evaluation and variable substitution.
@@ -523,17 +536,15 @@ export class XpmLiquidActions {
    *
    * Processing steps:
    *
-   * 1. Validates matrix structure (object with array values).
-   *
-   * 2. Validates template format (string or array).
-   *
-   * 3. Performs Liquid substitutions on matrix values if they contain
-   *    template syntax.
-   *
-   * 4. Recursively generates all combinations using Cartesian product.
-   *
-   * 5. Creates an action instance for each combination with matrix
-   *    parameters available for later substitution.
+   * <ol>
+   * <li>Validates matrix structure (object with array values).</li>
+   * <li>Validates template format (string or array).</li>
+   * <li>Performs Liquid substitutions on matrix values if they contain
+   *   template syntax.</li>
+   * <li>Recursively generates all combinations using Cartesian product.</li>
+   * <li>Creates an action instance for each combination with matrix
+   *   parameters available for later substitution.</li>
+   * </ol>
    *
    * Matrix variables are scoped to individual actions and accessible via
    * the `matrix` namespace during action command evaluation.
@@ -707,11 +718,11 @@ export class XpmLiquidActions {
  *
  * An action can exist in three states:
  *
- * 1. Undefined: Name is known but instance not yet created.
- *
- * 2. Instantiated: Object exists but commands not yet evaluated.
- *
- * 3. Initialised: Commands fully evaluated with Liquid substitutions.
+ * <ol>
+ * <li>Undefined: Name is known but instance not yet created.</li>
+ * <li>Instantiated: Object exists but commands not yet evaluated.</li>
+ * <li>Initialised: Commands fully evaluated with Liquid substitutions.</li>
+ * </ol>
  *
  * This design minimizes memory usage and computation for actions that are
  * defined but never executed, which is common when using matrix templates
@@ -732,11 +743,11 @@ export class XpmLiquidAction {
    *
    * The name is used for:
    *
-   * 1. User-facing identification when listing or executing actions.
-   *
-   * 2. Logging and diagnostic output to track action lifecycle.
-   *
-   * 3. Creating copies of inherited actions with preserved names.
+   * <ol>
+   * <li>User-facing identification when listing or executing actions.</li>
+   * <li>Logging and diagnostic output to track action lifecycle.</li>
+   * <li>Creating copies of inherited actions with preserved names.</li>
+   * </ol>
    *
    * Names must be unique within the actions collection, enforced during
    * {@link XpmLiquidActions.initialise}.
@@ -750,18 +761,19 @@ export class XpmLiquidAction {
    * This holds the raw command definition as it appears in package.json,
    * before variable substitution. The format can be:
    *
-   * 1. Simple string: Single command line.
-   *
-   * 2. String array: Multiple commands for sequential execution.
+   * <ol>
+   * <li>Simple string: Single command line.</li>
+   * <li>String array: Multiple commands for sequential execution.</li>
+   * </ol>
    *
    * The definition is preserved in its original form to enable:
    *
-   * 1. Creating copies of inherited actions with identical definitions.
-   *
-   * 2. Deferred template evaluation during
-   *    {@link XpmLiquidAction.initialise}.
-   *
-   * 3. Re-evaluation if needed with different variable contexts.
+   * <ol>
+   * <li>Creating copies of inherited actions with identical definitions.</li>
+   * <li>Deferred template evaluation during
+   * <code>XpmLiquidAction.initialise</code>.</li>
+   * <li>Re-evaluation if needed with different variable contexts.</li>
+   * </ol>
    *
    * This immutable storage ensures actions can be safely copied and
    * initialised multiple times without side effects.
@@ -778,15 +790,14 @@ export class XpmLiquidAction {
    *
    * The parent collection provides access to:
    *
-   * 1. Liquid templating engine for variable substitution.
-   *
-   * 2. Substitution variables hierarchy (package metadata, configuration,
-   *    environment, platform detection).
-   *
-   * 3. Logger instance for diagnostic output.
-   *
-   * 4. Build configuration context when actions belong to a specific
-   *    configuration rather than the package root.
+   * <ol>
+   * <li>Liquid templating engine for variable substitution.</li>
+   * <li>Substitution variables hierarchy (package metadata, configuration,
+   *   environment, platform detection).</li>
+   * <li>Logger instance for diagnostic output.</li>
+   * <li>Build configuration context when actions belong to a specific
+   *   configuration rather than the package root.</li>
+   * </ol>
    *
    * This design enables actions to access shared resources without duplicating
    * them, while maintaining proper scoping for template evaluation. During
@@ -805,17 +816,17 @@ export class XpmLiquidAction {
    *
    * Usage pattern:
    *
-   * 1. Undefined for regular (non-template) actions.
-   *
-   * 2. For template actions, contains key-value pairs from the matrix
-   *    combination (e.g., `{ arch: 'x64', platform: 'linux' }`).
-   *
-   * 3. Merged into substitution variables during
-   *    {@link XpmLiquidAction.initialise}, making values accessible via the
-   *    `matrix` namespace in command templates.
-   *
-   * 4. Enables the same command template to generate different concrete
-   *    commands for each matrix combination.
+   * <ol>
+   * <li>Undefined for regular (non-template) actions.</li>
+   * <li>For template actions, contains key-value pairs from the matrix
+   *   combination (e.g.,
+   *   <code>\{ arch: 'x64', platform: 'linux' \}</code>).</li>
+   * <li>Merged into substitution variables during
+   *   <code>XpmLiquidAction.initialise</code>, making values accessible via the
+   *   <code>matrix</code> namespace in command templates.</li>
+   * <li>Enables the same command template to generate different concrete
+   *   commands for each matrix combination.</li>
+   * </ol>
    *
    * Example: A template with `{{ matrix.arch }}` becomes `x64` when this
    * action's matrix parameters include `{ arch: 'x64' }`.
@@ -831,16 +842,17 @@ export class XpmLiquidAction {
    *
    * Lifecycle states:
    *
-   * 1. Undefined initially and until {@link XpmLiquidAction.initialise} is
-   *    called.
-   *
-   * 2. Populated during initialisation by evaluating `jsonAction` with the
-   *    Liquid engine and complete variable context.
-   *
-   * 3. Array-based JSON definitions are joined, substituted, then split back
-   *    into individual command lines.
-   *
-   * 4. Each string represents one command line to be executed sequentially.
+   * <ol>
+   * <li>Undefined initially and until <code>XpmLiquidAction.initialise</code>
+   *   is called.</li>
+   * <li>Populated during initialisation by evaluating
+   *   <code>jsonAction</code> with the
+   *   Liquid engine and complete variable context.</li>
+   * <li>Array-based JSON definitions are joined, substituted, then split back
+   *   into individual command lines.</li>
+   * <li>Each string represents one command line to be executed
+   *   sequentially.</li>
+   * </ol>
    *
    * Attempting to access via the `commands` getter before initialisation
    * will trigger an assertion error, enforcing correct usage order.
@@ -857,12 +869,13 @@ export class XpmLiquidAction {
    *
    * State transitions:
    *
-   * 1. Initially `false` after construction.
-   *
-   * 2. Set to `true` after successful command substitution and evaluation.
-   *
-   * 3. Checked at the start of {@link XpmLiquidAction.initialise} to return
-   *    early if already initialised.
+   * <ol>
+   * <li>Initially <code>false</code> after construction.</li>
+   * <li>Set to <code>true</code> after successful command substitution and
+   *   evaluation.</li>
+   * <li>Checked at the start of <code>XpmLiquidAction.initialise</code> to
+   *   return early if already initialised.</li>
+   * </ol>
    *
    * This pattern allows safe repeated calls during complex initialization
    * sequences or when actions are accessed multiple times, avoiding the
@@ -923,14 +936,15 @@ export class XpmLiquidAction {
    *
    * The substitution context includes:
    *
-   * 1. All package-level substitution variables (configuration, package
-   *    metadata, platform detection, etc.).
-   *
-   * 2. Build configuration variables if this action belongs to a
-   *    configuration.
-   *
-   * 3. Matrix parameters for template-generated actions, accessible via
-   *    the `matrix` namespace (e.g., `{{ matrix.arch }}`).
+   * <ol>
+   * <li>All package-level substitution variables (configuration, package
+   *   metadata, platform detection, etc.).</li>
+   * <li>Build configuration variables if this action belongs to a
+   *   configuration.</li>
+   * <li>Matrix parameters for template-generated actions, accessible via
+   *   the <code>matrix</code> namespace (e.g.,
+   *   <code>\{\{ matrix.arch \}\}</code>).</li>
+   * </ol>
    *
    * Array-based command definitions are joined with newlines before
    * substitution, then split back into individual commands after processing.

@@ -31,16 +31,16 @@ import { Logger } from '@xpack/logger'
  *
  * The array structure enables:
  *
- * - Multi-step actions: Execute multiple commands in order.
- *
- * - Error handling: Stop execution on first command failure (default
- *   behavior).
- *
- * - Logging: Report progress as each command completes.
+ * <ul>
+ * <li>Multi-step actions: Execute multiple commands in order.</li>
+ * <li>Error handling: Stop execution on first command failure (default
+ *   behavior).</li>
+ * <li>Logging: Report progress as each command completes.</li>
+ * </ul>
  *
  * Commands have access to the full shell environment and can reference
  * environment variables, pipe outputs, or chain operations using standard
- * shell syntax (&&, ||, |, etc.).
+ * shell syntax (`&&`, `||`, `|`, etc.).
  */
 export type XpmLiquidActionCommands = string[]
 
@@ -54,27 +54,30 @@ export type XpmLiquidActionCommands = string[]
  *
  * Configuration lifecycle:
  *
- * 1. Created from CLI arguments or programmatic API calls.
- *
- * 2. Merged with defaults to form complete configuration.
- *
- * 3. Passed through {@link XpmContext} to all xpm operations.
- *
- * 4. Consulted by operations to determine behavior (skip, force, dry-run).
+ * <ol>
+ * <li>Created from CLI arguments or programmatic API calls.</li>
+ * <li>Merged with defaults to form complete configuration.</li>
+ * <li>Passed through <code>XpmContext</code> to all xpm operations.</li>
+ * <li>Consulted by operations to determine behavior (skip, force,
+ * dry-run).</li>
+ * </ol>
  *
  * Key configuration patterns:
  *
- * - Force mode (`doForce: true`): Bypasses safety checks like "already
- *   installed" or "files exist". Use with caution as it can overwrite data.
- *
- * - Skip if installed (`doSkipIfInstalled: true`): Optimization to avoid
- *   reinstalling packages that are already present, useful for CI/CD.
- *
- * - Dry run (`isDryRun: true`): Simulates operations without making changes,
- *   useful for testing or previewing actions.
- *
- * - Property overrides: Command-line or API-provided properties that
- *   override values from package.json, enabling dynamic configuration.
+ * <ul>
+ * <li>Force mode (<code>doForce: true</code>): Bypasses safety checks
+ *   like "already
+ *   installed" or "files exist". Use with caution as it can overwrite
+ *   data.</li>
+ * <li>Skip if installed (<code>doSkipIfInstalled: true</code>):
+ *   Optimization to avoid
+ *   reinstalling packages that are already present, useful for CI/CD.</li>
+ * <li>Dry run (<code>isDryRun: true</code>): Simulates operations without
+ *   making changes,
+ *   useful for testing or previewing actions.</li>
+ * <li>Property overrides: Command-line or API-provided properties that
+ *   override values from package.json, enabling dynamic configuration.</li>
+ * </ul>
  *
  * The extensible design (additional properties allowed) supports future
  * configuration options without breaking changes.
@@ -112,27 +115,26 @@ export interface XpmConfig {
  *
  * Context flow:
  *
- * 1. Created at the start of each xpm command execution.
- *
- * 2. Initialized with logger instance and configuration options.
- *
- * 3. Passed to all library functions and classes that perform xpm
- *    operations.
- *
- * 4. Extended with additional properties as needed by specific operations
- *    (e.g., package paths, temporary directories, cache state).
+ * <ol>
+ * <li>Created at the start of each xpm command execution.</li>
+ * <li>Initialized with logger instance and configuration options.</li>
+ * <li>Passed to all library functions and classes that perform xpm
+ *    operations.</li>
+ * <li>Extended with additional properties as needed by specific operations
+ *    (e.g., package paths, temporary directories, cache state).</li>
+ * </ol>
  *
  * Core responsibilities:
  *
- * - Logging: Provides consistent output and diagnostics through the logger
- *   instance, enabling verbosity control and structured output.
- *
- * - Configuration: Makes operational flags and user preferences accessible
- *   to all components.
- *
- * - State sharing: The extensible design allows operations to attach
+ * <ul>
+ * <li>Logging: Provides consistent output and diagnostics through the logger
+ *   instance, enabling verbosity control and structured output.</li>
+ * <li>Configuration: Makes operational flags and user preferences accessible
+ *   to all components.</li>
+ * <li>State sharing: The extensible design allows operations to attach
  *   computed values or state that should be available to subsequent
- *   operations within the same execution.
+ *   operations within the same execution.</li>
+ * </ul>
  *
  * The context pattern enables dependency injection, making the code more
  * testable and allowing operations to access shared resources without

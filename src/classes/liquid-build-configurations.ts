@@ -56,14 +56,13 @@ import { XpmError, XpmInputError } from './errors.js'
  *
  * Configuration lifecycle phases:
  *
- * 1. Construction: Basic setup without processing configurations.
- *
- * 2. Initialisation: Template name expansion without content evaluation.
- *
- * 3. Retrieval: On-demand instantiation when accessed via get().
- *
- * 4. Configuration Initialisation: Full processing including inheritance,
- *    property resolution, dependency substitution, and action preparation.
+ * <ol>
+ * <li>Construction: Basic setup without processing configurations.</li>
+ * <li>Initialisation: Template name expansion without content evaluation.</li>
+ * <li>Retrieval: On-demand instantiation when accessed via get().</li>
+ * <li>Configuration Initialisation: Full processing including inheritance,
+ *    property resolution, dependency substitution, and action preparation.</li>
+ * </ol>
  *
  * This lazy evaluation strategy ensures that only configurations actually
  * used incur the cost of template evaluation, inheritance resolution, and
@@ -108,14 +107,16 @@ export class XpmLiquidBuildConfigurations {
    *
    * Base hierarchy includes:
    *
-   * 1. Environment variables: `env` namespace with system environment.
-   *
-   * 2. Platform detection: `os` namespace with platform-specific values.
-   *
-   * 3. Path utilities: `path` namespace with path manipulation functions.
-   *
-   * 4. Package metadata: `package` namespace with name, version,
-   *    dependencies.
+   * <ol>
+   * <li>Environment variables: <code>env</code> namespace with system
+   *   environment.</li>
+   * <li>Platform detection: <code>os</code> namespace with platform-specific
+   *   values.</li>
+   * <li>Path utilities: <code>path</code> namespace with path manipulation
+   *   functions.</li>
+   * <li>Package metadata: <code>package</code> namespace with name, version,
+   *    dependencies.</li>
+   * </ol>
    *
    * Individual configurations extend this with their own `properties`,
    * `configuration`, and `matrix` namespaces during initialisation.
@@ -129,12 +130,14 @@ export class XpmLiquidBuildConfigurations {
    * This object holds raw build configuration definitions from the
    * package.json `xpack.buildConfigurations` section. Configurations can be:
    *
-   * 1. Regular configurations: Direct objects with properties, dependencies,
-   *    actions, and inheritance.
-   *
-   * 2. Template configurations: Objects with `matrix` and `template`
+   * <ol>
+   * <li>Regular configurations: Direct objects with properties, dependencies,
+   *    actions, and inheritance.</li>
+   * <li>Template configurations: Objects with <code>matrix</code>
+   *    and <code>template</code>
    *    properties for generating multiple configurations from a single
-   *    definition.
+   *    definition.</li>
+   * </ol>
    *
    * Template configuration names (containing `{{` markers) trigger matrix
    * expansion during initialisation, creating concrete configurations from
@@ -152,16 +155,15 @@ export class XpmLiquidBuildConfigurations {
    *
    * Key characteristics:
    *
-   * 1. Known only after {@link XpmLiquidBuildConfigurations.initialise}
-   *    completes.
-   *
-   * 2. Possibly empty if there are no build configurations defined.
-   *
-   * 3. Values can be `undefined` to indicate a configuration exists but
-   *    hasn't been instantiated yet (lazy loading).
-   *
-   * 4. For template configurations, contains one entry per expanded
-   *    combination, not the original template definition.
+   * <ol>
+   * <li>Known only after <code>XpmLiquidBuildConfigurations.initialise</code>
+   *    completes.</li>
+   * <li>Possibly empty if there are no build configurations defined.</li>
+   * <li>Values can be <code>undefined</code> to indicate a configuration
+   *    exists but hasn't been instantiated yet (lazy loading).</li>
+   * <li>For template configurations, contains one entry per expanded
+   *    combination, not the original template definition.</li>
+   * </ol>
    *
    * Configurations transition from `undefined` to instantiated when first
    * accessed via {@link XpmLiquidBuildConfigurations.get}, implementing the
@@ -182,18 +184,18 @@ export class XpmLiquidBuildConfigurations {
    *
    * Mapping behavior:
    *
-   * 1. For regular configurations: Maps configuration name to itself
-   *    (identity mapping).
-   *
-   * 2. For template configurations: Maps each generated configuration name
-   *    back to the original template name (e.g., `release-x64` →
-   *    `release-{{ matrix.arch }}`).
-   *
-   * 3. Known only after {@link XpmLiquidBuildConfigurations.initialise}
-   *    completes.
-   *
-   * 4. Enables {@link XpmLiquidBuildConfigurations.get} to locate the
-   *    correct JSON definition when instantiating a configuration on demand.
+   * <ol>
+   * <li>For regular configurations: Maps configuration name to itself
+   *    (identity mapping).</li>
+   * <li>For template configurations: Maps each generated configuration name
+   *    back to the original template name (e.g., <code>release-x64</code> →
+   *    <code>release-\{\{ matrix.arch \}\}</code>).</li>
+   * <li>Known only after <code>XpmLiquidBuildConfigurations.initialise</code>
+   *    completes.</li>
+   * <li>Enables <code>XpmLiquidBuildConfigurations.get</code> to locate the
+   *    correct JSON definition when instantiating a configuration on
+   *    demand.</li>
+   * </ol>
    *
    * This indirection is essential for lazy evaluation, allowing deferred
    * instantiation while maintaining the connection to original definitions.
@@ -211,13 +213,13 @@ export class XpmLiquidBuildConfigurations {
    *
    * Duplicate scenarios detected:
    *
-   * 1. Explicit duplicates in package.json with identical names.
-   *
-   * 2. Template expansion conflicts where different templates generate the
-   *    same concrete configuration name.
-   *
-   * 3. Conflicts between template-generated names and explicitly defined
-   *    configuration names.
+   * <ol>
+   * <li>Explicit duplicates in package.json with identical names.</li>
+   * <li>Template expansion conflicts where different templates generate the
+   *    same concrete configuration name.</li>
+   * <li>Conflicts between template-generated names and explicitly defined
+   *    configuration names.</li>
+   * </ol>
    *
    * Detection occurs during {@link XpmLiquidBuildConfigurations.initialise},
    * throwing {@link XpmError} when duplicates are found to ensure
@@ -236,14 +238,15 @@ export class XpmLiquidBuildConfigurations {
    *
    * State transitions:
    *
-   * 1. Initially `false` after construction.
-   *
-   * 2. Set to `true` after successful template expansion and configuration
-   *    name registration.
-   *
-   * 3. Checked at the beginning of
-   *    {@link XpmLiquidBuildConfigurations.initialise} to return early if
-   *    already initialised.
+   * <ol>
+   * <li>Initially <code>false</code> after construction.</li>
+   * <li>Set to <code>true</code> after successful template expansion
+   *    and configuration
+   *    name registration.</li>
+   * <li>Checked at the beginning of
+   *    <code>XpmLiquidBuildConfigurations.initialise</code> to return early if
+   *    already initialised.</li>
+   * </ol>
    *
    * This pattern supports safe repeated calls during complex initialisation
    * sequences without duplicating work or corrupting internal state.
@@ -503,16 +506,17 @@ export class XpmLiquidBuildConfigurations {
    * remain uninitialised until actually used. The two-step process
    * works as follows:
    *
-   * 1. During collection initialisation
-   *    ({@link XpmLiquidBuildConfigurations.initialise}), only the
+   * <ol>
+   * <li>During collection initialisation
+   *    (<code>XpmLiquidBuildConfigurations.initialise</code>), only the
    *    matrix of options is evaluated for each template, expanding
-   *    configuration names without processing their content.
-   *
-   * 2. Later, when a configuration is accessed via this method and
+   *    configuration names without processing their content.</li>
+   * <li>Later, when a configuration is accessed via this method and
    *    subsequently initialised
-   *    ({@link XpmLiquidBuildConfiguration.initialise}), the template
+   *    (<code>XpmLiquidBuildConfiguration.initialise</code>), the template
    *    is fully evaluated and Liquid substitutions are performed on
-   *    all properties.
+   *    all properties.</li>
+   * </ol>
    *
    * This approach ensures that only build configurations that are
    * actually used incur the cost of template evaluation and variable
@@ -567,17 +571,15 @@ export class XpmLiquidBuildConfigurations {
    *
    * Processing steps:
    *
-   * 1. Validates matrix structure (object with array values).
-   *
-   * 2. Validates template format (must be a JSON object).
-   *
-   * 3. Performs Liquid substitutions on matrix values if they contain
-   *    template syntax.
-   *
-   * 4. Recursively generates all combinations using Cartesian product.
-   *
-   * 5. Creates a configuration instance for each combination with matrix
-   *    parameters stored for later full evaluation.
+   * <ol>
+   * <li>Validates matrix structure (object with array values).</li>
+   * <li>Validates template format (must be a JSON object).</li>
+   * <li>Performs Liquid substitutions on matrix values if they contain
+   *    template syntax.</li>
+   * <li>Recursively generates all combinations using Cartesian product.</li>
+   * <li>Creates a configuration instance for each combination with matrix
+   *    parameters stored for later full evaluation.</li>
+   * </ol>
    *
    * Matrix variables are scoped to individual configurations and accessible
    * via the `matrix` namespace during property, dependency, and action
@@ -766,12 +768,12 @@ export class XpmLiquidBuildConfigurations {
  *
  * A configuration can exist in three states:
  *
- * 1. Undefined: Name is known but instance not yet created.
- *
- * 2. Instantiated: Object exists but not yet fully processed.
- *
- * 3. Initialised: Inheritance resolved, properties evaluated, dependencies
- *    substituted, and actions prepared.
+ * <ol>
+ * <li>Undefined: Name is known but instance not yet created.</li>
+ * <li>Instantiated: Object exists but not yet fully processed.</li>
+ * <li>Initialised: Inheritance resolved, properties evaluated, dependencies
+ *    substituted, and actions prepared.</li>
+ * </ol>
  *
  * Inheritance is processed recursively with circular reference detection.
  * Later inherited properties override earlier ones, and local properties
@@ -793,13 +795,14 @@ export class XpmLiquidBuildConfiguration {
    *
    * The name is used for:
    *
-   * 1. User-facing identification when listing or selecting configurations.
-   *
-   * 2. Build folder path generation (default: `build/{name}`).
-   *
-   * 3. Logging and diagnostic output to track configuration lifecycle.
-   *
-   * 4. Inheritance references from other configurations.
+   * <ol>
+   * <li>User-facing identification when listing or selecting
+   *   configurations.</li>
+   * <li>Build folder path generation (default:
+   *   <code>build/\{name\}</code>).</li>
+   * <li>Logging and diagnostic output to track configuration lifecycle.</li>
+   * <li>Inheritance references from other configurations.</li>
+   * </ol>
    *
    * Names must be unique within the configurations collection, enforced
    * during {@link XpmLiquidBuildConfigurations.initialise}.
@@ -817,16 +820,15 @@ export class XpmLiquidBuildConfiguration {
    *
    * Usage:
    *
-   * 1. Undefined for regular (non-template) configurations.
-   *
-   * 2. Set to the template name for configurations generated from matrix
-   *    expansion.
-   *
-   * 3. Used to determine whether full JSON substitution is needed during
+   * <ol>
+   * <li>Undefined for regular (non-template) configurations.</li>
+   * <li>Set to the template name for configurations generated from matrix
+   *    expansion.</li>
+   * <li>Used to determine whether full JSON substitution is needed during
    *    initialisation (templates require complete substitution, regular
-   *    configurations only substitute specific fields).
-   *
-   * 4. Enables tracing and debugging of template expansion process.
+   *    configurations only substitute specific fields).</li>
+   * <li>Enables tracing and debugging of template expansion process.</li>
+   * </ol>
    */
   readonly templateBuildConfigurationName?: string
 
@@ -840,16 +842,14 @@ export class XpmLiquidBuildConfiguration {
    *
    * The parent collection provides access to:
    *
-   * 1. Liquid templating engine for variable substitution.
-   *
-   * 2. Base substitution variables hierarchy (package metadata,
-   *    environment, platform detection).
-   *
-   * 3. Logger instance for diagnostic output.
-   *
-   * 4. JSON build configurations lookup for inheritance resolution.
-   *
-   * 5. Other configuration instances when processing inheritance chains.
+   * <ol>
+   * <li>Liquid templating engine for variable substitution.</li>
+   * <li>Base substitution variables hierarchy (package metadata,
+   *    environment, platform detection).</li>
+   * <li>Logger instance for diagnostic output.</li>
+   * <li>JSON build configurations lookup for inheritance resolution.</li>
+   * <li>Other configuration instances when processing inheritance chains.</li>
+   * </ol>
    *
    * This design enables configurations to access shared resources without
    * duplicating them, while supporting complex inheritance relationships
@@ -867,20 +867,19 @@ export class XpmLiquidBuildConfiguration {
    *
    * Inheritance processing:
    *
-   * 1. Populated from `inherits` or deprecated `inherit` field during
-   *    initialisation.
-   *
-   * 2. Supports both string (single parent) and array (multiple parents)
-   *    formats.
-   *
-   * 3. Each inherited configuration is initialised recursively before
-   *    merging its properties, dependencies, and actions.
-   *
-   * 4. Circular references are detected and rejected with
-   *    {@link XpmInputError}.
-   *
-   * 5. Later inherited configurations override properties from earlier
-   *    ones, and local properties override all inherited ones.
+   * <ol>
+   * <li>Populated from <code>inherits</code> or deprecated
+   *    <code>inherit</code> field during
+   *    initialisation.</li>
+   * <li>Supports both string (single parent) and array (multiple parents)
+   *    formats.</li>
+   * <li>Each inherited configuration is initialised recursively before
+   *    merging its properties, dependencies, and actions.</li>
+   * <li>Circular references are detected and rejected with
+   *    <code>XpmInputError</code>.</li>
+   * <li>Later inherited configurations override properties from earlier
+   *    ones, and local properties override all inherited ones.</li>
+   * </ol>
    */
   inheritsNames: string[] = []
 
@@ -893,17 +892,16 @@ export class XpmLiquidBuildConfiguration {
    *
    * Effects of hidden status:
    *
-   * 1. Hidden configurations don't compute build folder relative paths
-   *    during initialisation (optimization for inheritance-only configs).
-   *
-   * 2. May be excluded from user-facing configuration lists depending on
-   *    application logic.
-   *
-   * 3. Still fully initialised and available for inheritance by other
-   *    configurations.
-   *
-   * 4. Derived from `hidden` field in JSON configuration definition
-   *    (defaults to `false`).
+   * <ol>
+   * <li>Hidden configurations don't compute build folder relative paths
+   *    during initialisation (optimization for inheritance-only configs).</li>
+   * <li>May be excluded from user-facing configuration lists depending on
+   *    application logic.</li>
+   * <li>Still fully initialised and available for inheritance by other
+   *    configurations.</li>
+   * <li>Derived from <code>hidden</code> field in JSON configuration definition
+   *    (defaults to <code>false</code>).</li>
+   * </ol>
    *
    * Common use case: Base configurations that define common properties,
    * dependencies, or actions inherited by multiple concrete configurations.
@@ -920,16 +918,16 @@ export class XpmLiquidBuildConfiguration {
    *
    * Property resolution order:
    *
-   * 1. Start with empty object.
-   *
-   * 2. Merge properties from each inherited configuration in sequence
-   *    (later overrides earlier).
-   *
-   * 3. Merge local properties from JSON definition (overrides all
-   *    inherited).
-   *
-   * 4. Add computed `buildFolderRelativePath` property for non-hidden
-   *    configurations.
+   * <ol>
+   * <li>Start with empty object.</li>
+   * <li>Merge properties from each inherited configuration in sequence
+   *    (later overrides earlier).</li>
+   * <li>Merge local properties from JSON definition (overrides all
+   *    inherited).</li>
+   * <li>Add computed <code>buildFolderRelativePath</code> property
+   *    for non-hidden
+   *    configurations.</li>
+   * </ol>
    *
    * Properties are accessible in templates as `{{ properties.key }}` and
    * commonly used for compiler flags, toolchain paths, optimization
@@ -946,15 +944,14 @@ export class XpmLiquidBuildConfiguration {
    *
    * Dependency resolution workflow:
    *
-   * 1. Start with empty object.
-   *
-   * 2. Merge dependencies from each inherited configuration in sequence
-   *    (later overrides earlier).
-   *
-   * 3. Merge local dependencies from JSON definition.
-   *
-   * 4. Perform Liquid template substitution on the entire dependencies
-   *    object with full configuration context (properties, matrix, etc.).
+   * <ol>
+   * <li>Start with empty object.</li>
+   * <li>Merge dependencies from each inherited configuration in sequence
+   *    (later overrides earlier).</li>
+   * <li>Merge local dependencies from JSON definition.</li>
+   * <li>Perform Liquid template substitution on the entire dependencies
+   *    object with full configuration context (properties, matrix, etc.).</li>
+   * </ol>
    *
    * This enables configuration-specific dependencies with dynamic version
    * ranges or package selection based on matrix parameters, platform
@@ -971,15 +968,14 @@ export class XpmLiquidBuildConfiguration {
    *
    * Resolution workflow mirrors `dependencies`:
    *
-   * 1. Start with empty object.
-   *
-   * 2. Merge devDependencies from each inherited configuration in sequence
-   *    (later overrides earlier).
-   *
-   * 3. Merge local devDependencies from JSON definition.
-   *
-   * 4. Perform Liquid template substitution on the entire devDependencies
-   *    object with full configuration context.
+   * <ol>
+   * <li>Start with empty object.</li>
+   * <li>Merge devDependencies from each inherited configuration in sequence
+   *    (later overrides earlier).</li>
+   * <li>Merge local devDependencies from JSON definition.</li>
+   * <li>Perform Liquid template substitution on the entire devDependencies
+   *    object with full configuration context.</li>
+   * </ol>
    *
    * Typical use: Test frameworks, build tools, or debugging utilities
    * specific to certain configurations (e.g., debug builds might include
@@ -996,16 +992,15 @@ export class XpmLiquidBuildConfiguration {
    *
    * The definition is preserved to:
    *
-   * 1. Enable external modification (e.g., `xpm uninstall` updates this
-   *    directly).
-   *
-   * 2. Support deferred template evaluation during
-   *    {@link XpmLiquidBuildConfiguration.initialise}.
-   *
-   * 3. Provide the source for inheritance when other configurations
-   *    reference this one.
-   *
-   * 4. Allow re-evaluation with different variable contexts if needed.
+   * <ol>
+   * <li>Enable external modification (e.g., `xpm uninstall` updates this
+   *    directly).</li>
+   * <li>Support deferred template evaluation during
+   *    <code>XpmLiquidBuildConfiguration.initialise</code>.</li>
+   * <li>Provide the source for inheritance when other configurations
+   *    reference this one.</li>
+   * <li>Allow re-evaluation with different variable contexts if needed.</li>
+   * </ol>
    *
    * This immutable storage ensures configurations can be safely referenced
    * during inheritance resolution without side effects.
@@ -1022,17 +1017,19 @@ export class XpmLiquidBuildConfiguration {
    *
    * Extension hierarchy:
    *
-   * 1. Starts with parent collection's base variables (env, os, path,
-   *    package).
-   *
-   * 2. Extended with `properties`: Merged from inheritance chain and local
-   *    properties.
-   *
-   * 3. Extended with `matrix`: Parameter values for template-generated
-   *    configurations.
-   *
-   * 4. Extended with `configuration`: The configuration object itself
-   *    (name, dependencies, properties) accessible for self-reference.
+   * <ol>
+   * <li>Starts with parent collection's base variables (env, os, path,
+   *    package).</li>
+   * <li>Extended with <code>properties</code>: Merged from inheritance
+   *    chain and local
+   *    properties.</li>
+   * <li>Extended with <code>matrix</code>: Parameter values for
+   *    template-generated
+   *    configurations.</li>
+   * <li>Extended with <code>configuration</code>: The configuration
+   *    object itself
+   *    (name, dependencies, properties) accessible for self-reference.</li>
+   * </ol>
    *
    * This complete context is used for all substitutions within the
    * configuration: properties, dependencies, devDependencies, and actions.
@@ -1049,17 +1046,17 @@ export class XpmLiquidBuildConfiguration {
    *
    * Usage pattern:
    *
-   * 1. Undefined for regular (non-template) configurations.
-   *
-   * 2. For template configurations, contains key-value pairs from the matrix
-   *    combination (e.g., `{ arch: 'x64', optimize: 'speed' }`).
-   *
-   * 3. Merged into substitution variables during initialisation, making
-   *    values accessible via the `matrix` namespace throughout the
-   *    configuration.
-   *
-   * 4. Used in configuration name substitution, property values,
-   *    dependencies, and action commands.
+   * <ol>
+   * <li>Undefined for regular (non-template) configurations.</li>
+   * <li>For template configurations, contains key-value pairs from the matrix
+   *    combination (e.g.,
+   *   <code>\{ arch: 'x64', optimize: 'speed' \}</code>).</li>
+   * <li>Merged into substitution variables during initialisation, making
+   *    values accessible via the <code>matrix</code> namespace throughout the
+   *    configuration.</li>
+   * <li>Used in configuration name substitution, property values,
+   *    dependencies, and action commands.</li>
+   * </ol>
    *
    * Example: A template `release-{{ matrix.arch }}` with matrix parameters
    * `{ arch: 'x64' }` becomes the concrete configuration `release-x64`.
@@ -1075,17 +1072,16 @@ export class XpmLiquidBuildConfiguration {
    *
    * Action assembly workflow:
    *
-   * 1. Undefined until {@link XpmLiquidBuildConfiguration.initialise} is
-   *    called.
-   *
-   * 2. Collect actions from all inherited configurations in the inheritance
-   *    chain.
-   *
-   * 3. Create new {@link XpmLiquidActions} collection with inherited
-   *    actions map and local action definitions.
-   *
-   * 4. Actions inherit the configuration's substitution variables context,
-   *    including properties and matrix parameters.
+   * <ol>
+   * <li>Undefined until <code>XpmLiquidBuildConfiguration.initialise</code> is
+   *    called.</li>
+   * <li>Collect actions from all inherited configurations in the inheritance
+   *    chain.</li>
+   * <li>Create new <code>XpmLiquidActions</code> collection with inherited
+   *    actions map and local action definitions.</li>
+   * <li>Actions inherit the configuration's substitution variables context,
+   *    including properties and matrix parameters.</li>
+   * </ol>
    *
    * Actions are accessible after configuration initialisation but remain
    * themselves uninitialised until retrieved and initialised individually,
@@ -1103,18 +1099,18 @@ export class XpmLiquidBuildConfiguration {
    *
    * Computation workflow:
    *
-   * 1. Undefined until {@link XpmLiquidBuildConfiguration.initialise} is
-   *    called.
-   *
-   * 2. Not computed for hidden configurations (optimization).
-   *
-   * 3. If `buildFolderRelativePath` property exists, perform Liquid
-   *    substitution with full configuration context.
-   *
-   * 4. Otherwise, generate default path: `build/{sanitized-config-name}`.
-   *
-   * 5. Added to `properties.buildFolderRelativePath` for use in action
-   *    commands and dependency references.
+   * <ol>
+   * <li>Undefined until <code>XpmLiquidBuildConfiguration.initialise</code> is
+   *    called.</li>
+   * <li>Not computed for hidden configurations (optimization).</li>
+   * <li>If <code>buildFolderRelativePath</code> property exists, perform Liquid
+   *    substitution with full configuration context.</li>
+   * <li>Otherwise, generate default path:
+   *    <code>build/\{sanitized-config-name\}</code>.</li>
+   * <li>Added to <code>properties.buildFolderRelativePath</code> for use
+   *    in action
+   *    commands and dependency references.</li>
+   * </ol>
    *
    * The path is relative to the package root and used by build tools to
    * organize outputs from different configurations.
@@ -1130,16 +1126,15 @@ export class XpmLiquidBuildConfiguration {
    *
    * Detection mechanism:
    *
-   * 1. Initially empty when configuration initialisation begins.
-   *
-   * 2. Each inherited configuration name is added before processing that
-   *    configuration's inheritance.
-   *
-   * 3. If a configuration attempts to inherit from a name already in the
-   *    set, a circular reference exists.
-   *
-   * 4. Circular references trigger {@link XpmInputError} with details about
-   *    the problematic inheritance chain.
+   * <ol>
+   * <li>Initially empty when configuration initialisation begins.</li>
+   * <li>Each inherited configuration name is added before processing that
+   *    configuration's inheritance.</li>
+   * <li>If a configuration attempts to inherit from a name already in the
+   *    set, a circular reference exists.</li>
+   * <li>Circular references trigger <code>XpmInputError</code> with details
+   * about    the problematic inheritance chain.</li>
+   * </ol>
    *
    * Example: If config A inherits from B, B from C, and C from A, the
    * circular dependency is detected when C attempts to inherit from A.
@@ -1156,14 +1151,15 @@ export class XpmLiquidBuildConfiguration {
    *
    * State transitions:
    *
-   * 1. Initially `false` after construction.
-   *
-   * 2. Set to `true` after successful inheritance resolution, property
-   *    merging, dependency substitution, and action preparation.
-   *
-   * 3. Checked at the start of
-   *    {@link XpmLiquidBuildConfiguration.initialise} to return early if
-   *    already initialised.
+   * <ol>
+   * <li>Initially <code>false</code> after construction.</li>
+   * <li>Set to <code>true</code> after successful inheritance resolution,
+   *    property
+   *    merging, dependency substitution, and action preparation.</li>
+   * <li>Checked at the start of
+   *    <code>XpmLiquidBuildConfiguration.initialise</code> to return early if
+   *    already initialised.</li>
+   * </ol>
    *
    * This pattern is critical for inheritance processing, as configurations
    * may be initialised multiple times when referenced by multiple children,
@@ -1181,15 +1177,23 @@ export class XpmLiquidBuildConfiguration {
    *
    * Template vs regular configuration processing:
    *
-   * 1. Template configurations (`isTemplate === true`):
-   *    - Entire JSON configuration is stringified and substituted.
-   *    - Matrix parameters available throughout all fields.
-   *    - More expensive but supports matrix references anywhere.
-   *
-   * 2. Regular configurations (`isTemplate === false`):
-   *    - Only `inherits` field is substituted initially.
-   *    - Other fields processed selectively during inheritance resolution.
-   *    - More efficient for configurations without matrix parameters.
+   * <ol>
+   * <li>Template configurations (<code>isTemplate === true</code>):
+   *   <ul>
+   *   <li>Entire JSON configuration is stringified and substituted.</li>
+   *   <li>Matrix parameters available throughout all fields.</li>
+   *   <li>More expensive but supports matrix references anywhere.</li>
+   *   </ul>
+   * </li>
+   * <li>Regular configurations (<code>isTemplate === false</code>):
+   *   <ul>
+   *   <li>Only <code>inherits</code> field is substituted initially.</li>
+   *   <li>Other fields processed selectively during inheritance
+   *     resolution.</li>
+   *   <li>More efficient for configurations without matrix parameters.</li>
+   *   </ul>
+   * </li>
+   * </ol>
    *
    * Set to `true` when `templateBuildConfigurationName` is defined,
    * indicating the configuration was generated from a template expansion.
@@ -1264,24 +1268,21 @@ export class XpmLiquidBuildConfiguration {
    *
    * Initialisation workflow:
    *
-   * 1. For template configurations: Substitute matrix parameters throughout
-   *    the entire JSON structure.
-   *
-   * 2. For non-template configurations: Substitute only the inherits field.
-   *
-   * 3. Process inheritance chain recursively with circular reference
-   *    detection.
-   *
-   * 4. Merge properties, dependencies, and devDependencies from inherited
-   *    configurations (later overrides earlier).
-   *
-   * 5. Apply local properties and update substitution variables context.
-   *
-   * 6. For visible configurations: Compute build folder relative path.
-   *
-   * 7. Substitute Liquid templates in dependencies and devDependencies.
-   *
-   * 8. Create actions collection with inherited actions and local actions.
+   * <ol>
+   * <li>For template configurations: Substitute matrix parameters throughout
+   *    the entire JSON structure.</li>
+   * <li>For non-template configurations: Substitute only the inherits
+   * field.</li>
+   * <li>Process inheritance chain recursively with circular reference
+   *    detection.</li>
+   * <li>Merge properties, dependencies, and devDependencies from inherited
+   *    configurations (later overrides earlier).</li>
+   * <li>Apply local properties and update substitution variables context.</li>
+   * <li>For visible configurations: Compute build folder relative path.</li>
+   * <li>Substitute Liquid templates in dependencies and devDependencies.</li>
+   * <li>Create actions collection with inherited actions and local
+   * actions.</li>
+   * </ol>
    *
    * The substitution context includes package variables, configuration
    * properties, matrix parameters (for templates), and the configuration
@@ -1633,15 +1634,15 @@ export class XpmLiquidBuildConfiguration {
    *
    * Resolution strategy:
    *
-   * 1. Check if buildFolderRelativePath property exists in configuration
-   *    properties.
-   *
-   * 2. If present and non-empty, perform Liquid substitutions with the
-   *    full configuration context.
-   *
-   * 3. If substitution fails or property is empty/missing, generate a
+   * <ol>
+   * <li>Check if buildFolderRelativePath property exists in configuration
+   *    properties.</li>
+   * <li>If present and non-empty, perform Liquid substitutions with the
+   *    full configuration context.</li>
+   * <li>If substitution fails or property is empty/missing, generate a
    *    default path: `build/{filtered-configuration-name}` where the
-   *    configuration name is sanitized for filesystem compatibility.
+   *    configuration name is sanitized for filesystem compatibility.</li>
+   * </ol>
    *
    * The computed path is added back to the properties as
    * `buildFolderRelativePath` for use in subsequent substitutions.
