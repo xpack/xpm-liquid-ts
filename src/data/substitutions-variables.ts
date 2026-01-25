@@ -28,7 +28,7 @@ import * as path from 'node:path'
  * Common use cases:
  *
  * <ul>
- * <li><b>Properties:</b> User-defined configuration values from 
+ * <li><b>Properties:</b> User-defined configuration values from
  *   <code>xpack.properties.</code></li>
  * <li><b>Matrix parameters:</b> Template expansion variables from matrix
  * definitions.</li>
@@ -52,33 +52,33 @@ export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>
  * Variable hierarchy and scoping:
  *
  * <ol>
- * <li><b>Base variables</b> (<code>env</code>, <code>os</code>, 
+ * <li><b>Base variables</b> (<code>env</code>, <code>os</code>,
  *    <code>path</code>): Available globally, initialized once
  *    from Node.js runtime at startup.</li>
- * <li><b>Package variables:</b> Added when processing 
+ * <li><b>Package variables:</b> Added when processing
  *    <code>package.json</code>, contains
  *    package metadata accessible via <code>package.name</code>,
  *    <code>package.version</code>,
  *    etc.</li>
- * <li><b>Properties:</b> User-defined values from 
+ * <li><b>Properties:</b> User-defined values from
  *    <code>xpack.properties</code>, accessible via
  *    <code>properties.key</code>.</li>
- * <li><b>Configuration:</b> Build configuration metadata, available when 
- *    processing configuration-specific templates via 
+ * <li><b>Configuration:</b> Build configuration metadata, available when
+ *    processing configuration-specific templates via
  *    <code>configuration.name</code>,
  *    etc.</li>
- * <li><b>Matrix:</b> Template expansion parameters, scoped to individual 
+ * <li><b>Matrix:</b> Template expansion parameters, scoped to individual
  *    expanded instances, accessible via <code>matrix.key</code>.</li>
  * </ol>
  *
  * Variables are inherited and extended through the hierarchy:
- *  
+ *
  * <ul>
  * <li>package actions use package properties</li>
- * <li>configuration actions use: 
+ * <li>configuration actions use:
  *    <ul>
  *    <li>package actions</li>
- *    <li>actions inherited from parent configurations, recursively, 
+ *    <li>actions inherited from parent configurations, recursively,
  *      in order of inheritance</li>
  *    <li>configuration properties</li>
  *    </ul>

@@ -24,7 +24,7 @@ import { test } from 'tap'
 
 // ----------------------------------------------------------------------------
 
-import { JsonXpmPackage, XpmLiquidPackage } from '../../src/index.js'
+import { JsonXpmPackage, XpmDataModel } from '../../src/index.js'
 import { Logger } from '@xpack/logger'
 
 // const __filename = fileURLToPath(import.meta.url)
@@ -76,12 +76,12 @@ await test('actions', async (t): Promise<void> => {
     },
   }
 
-  const xpmLiquidPackage = new XpmLiquidPackage({
+  const xpmDataModel = new XpmDataModel({
     log,
     jsonPackage: json,
   })
 
-  const topActions = xpmLiquidPackage.actions
+  const topActions = xpmDataModel.actions
   t.ok(topActions, 'has topActions')
 
   // console.log(topActions.substitutionsVariables.properties)

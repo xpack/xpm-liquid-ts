@@ -24,7 +24,7 @@ import { test } from 'tap'
 
 // ----------------------------------------------------------------------------
 
-import { JsonXpmPackage, XpmLiquidPackage } from '../../src/index.js'
+import { JsonXpmPackage, XpmDataModel } from '../../src/index.js'
 import { Logger } from '@xpack/logger'
 import { AssertionError } from 'node:assert'
 
@@ -39,7 +39,7 @@ const log = new Logger({ level: 'info' })
 await test('constructor', async (t): Promise<void> => {
   const jsonNoXpack = { name: 'test', version: '1.2.3', xpack: [] }
   try {
-    new XpmLiquidPackage({
+    new XpmDataModel({
       log,
       jsonPackage: jsonNoXpack as JsonXpmPackage,
     })
@@ -60,44 +60,44 @@ await test('constructor', async (t): Promise<void> => {
     xpack: { properties: { one: '1' } },
   }
 
-  const xpmLiquidPackage = new XpmLiquidPackage({
+  const xpmDataModel = new XpmDataModel({
     log,
     jsonPackage: json as JsonXpmPackage,
   })
 
-  // console.log(xpmLiquidPackage)
+  // console.log(xpmDataModel)
   t.ok(
-    xpmLiquidPackage.substitutionsVariables,
+    xpmDataModel.substitutionsVariables,
     'has topLiquidSubstitutionsVariables'
   )
   t.ok(
-    xpmLiquidPackage.substitutionsVariables.package,
+    xpmDataModel.substitutionsVariables.package,
     'has topLiquidSubstitutionsVariables.package'
   )
   t.equal(
-    xpmLiquidPackage.substitutionsVariables.package.version,
+    xpmDataModel.substitutionsVariables.package.version,
     '1.2.3',
     'package.version is 1.2.3'
   )
 
   t.ok(
-    xpmLiquidPackage.substitutionsVariables.properties,
+    xpmDataModel.substitutionsVariables.properties,
     'has substitutionsVariables.properties'
   )
   t.equal(
-    xpmLiquidPackage.substitutionsVariables.properties.one,
+    xpmDataModel.substitutionsVariables.properties.one,
     '1',
     'properties.one is 1'
   )
 
-  const topActions = xpmLiquidPackage.actions
+  const topActions = xpmDataModel.actions
   t.ok(topActions, 'has topActions')
   t.equal(topActions.empty(), true, 'topActions is empty')
   const actionsNames = topActions.names()
   t.ok(Array.isArray(actionsNames), 'topActions.names() is array')
   t.equal(actionsNames.length, 0, 'topActions has 0 names')
 
-  const buildConfigurations = xpmLiquidPackage.buildConfigurations
+  const buildConfigurations = xpmDataModel.buildConfigurations
 
   t.ok(buildConfigurations, 'has buildConfigurations')
   t.equal(buildConfigurations.empty(), true, 'buildConfigurations is empty')

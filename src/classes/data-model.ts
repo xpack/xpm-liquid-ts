@@ -26,8 +26,8 @@ import {
   XpmLiquidSubstitutionsVariables,
 } from '../data/substitutions-variables.js'
 import { XpmLiquidEngine } from './liquid-engine.js'
-import { XpmLiquidActions } from './liquid-actions.js'
-import { XpmLiquidBuildConfigurations } from './liquid-build-configurations.js'
+import { XpmActions } from './actions.js'
+import { XpmBuildConfigurations } from './build-configurations.js'
 import { JsonXpmPackage } from '../types/json.js'
 
 // ----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath'
  * Package-level actions are available globally, while configuration-level
  * actions are scoped to their respective configurations.
  */
-export class XpmLiquidPackage {
+export class XpmDataModel {
   // --------------------------------------------------------------------------
   // Members.
 
@@ -177,7 +177,7 @@ export class XpmLiquidPackage {
    * <ol>
    * <li>Created during construction but initially unpopulated.</li>
    * <li>Populated during the collection's own initialisation when
-   *    <code>XpmLiquidActions.initialise</code> is called.</li>
+   *    <code>XpmActions.initialise</code> is called.</li>
    * <li>Have access to package-level substitution variables but not
    *    configuration-specific variables.</li>
    * <li>Suitable for package-wide tasks like testing, documentation
@@ -186,7 +186,7 @@ export class XpmLiquidPackage {
    *    from package-level actions.</li>
    * </ol>
    */
-  readonly actions: XpmLiquidActions
+  readonly actions: XpmActions
 
   /**
    * The build configurations collection for this package.
@@ -201,7 +201,7 @@ export class XpmLiquidPackage {
    * <ol>
    * <li>Created during construction but initially unpopulated.</li>
    * <li>Populated during the collection's own initialisation when
-   *    <code>XpmLiquidBuildConfigurations.initialise</code> is called.</li>
+   *    <code>XpmBuildConfigurations.initialise</code> is called.</li>
    * <li>Each configuration inherits the package-level substitution variables
    *    and extends them with configuration-specific context.</li>
    * <li>Support complex inheritance chains where configurations can inherit
@@ -212,7 +212,7 @@ export class XpmLiquidPackage {
    *    package-level actions and adding configuration-specific ones.</li>
    * </ol>
    */
-  readonly buildConfigurations: XpmLiquidBuildConfigurations
+  readonly buildConfigurations: XpmBuildConfigurations
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -256,7 +256,7 @@ export class XpmLiquidPackage {
     log: Logger
     jsonPackage: JsonXpmPackage
   }) {
-    log.trace(`${XpmLiquidPackage.name}()`)
+    log.trace(`${XpmDataModel.name}()`)
 
     this._log = log
     this._engine = new XpmLiquidEngine()
@@ -288,7 +288,7 @@ export class XpmLiquidPackage {
     Object.seal(this.substitutionsVariables)
 
     // Empty actions.
-    this.actions = new XpmLiquidActions({
+    this.actions = new XpmActions({
       log: this._log,
       engine: this._engine,
       substitutionsVariables: this.substitutionsVariables,
@@ -296,7 +296,7 @@ export class XpmLiquidPackage {
     })
 
     // Empty build configurations.
-    this.buildConfigurations = new XpmLiquidBuildConfigurations({
+    this.buildConfigurations = new XpmBuildConfigurations({
       log: this._log,
       engine: this._engine,
       substitutionsVariables: this.substitutionsVariables,

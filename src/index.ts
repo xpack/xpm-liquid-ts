@@ -26,8 +26,8 @@
  *
  * The Lazy Evaluation Mechanism
  *
- * Actions ({@link XpmLiquidActions}) and build configurations
- * ({@link XpmLiquidBuildConfigurations}) implement a two-step lazy evaluation
+ * Actions ({@link XpmActions}) and build configurations
+ * ({@link XpmBuildConfigurations}) implement a two-step lazy evaluation
  * process to avoid unnecessary operations:
  *
  * <ol>
@@ -37,8 +37,8 @@
  * content.</li>
  * <li>Content Evaluation: Later, when an action or build configuration is
  *    actually accessed and initialised (via
- * <code>XpmLiquidAction.initialise</code>
- *    or <code>XpmLiquidBuildConfiguration.initialise</code>), the template
+ * <code>XpmAction.initialise</code>
+ *    or <code>XpmBuildConfiguration.initialise</code>), the template
  * is fully
  *    evaluated and Liquid substitutions are performed.</li>
  * </ol>
@@ -61,11 +61,11 @@ export * from './functions/utils.js'
 
 export * from './classes/errors.js'
 export * from './classes/init-template-base.js'
-export * from './classes/liquid-actions.js'
-export * from './classes/liquid-build-configurations.js'
+export * from './classes/actions.js'
+export * from './classes/build-configurations.js'
 export * from './classes/liquid-drop.js'
 export * from './classes/liquid-engine.js'
-export * from './classes/liquid-package.js'
+export * from './classes/data-model.js'
 export * from './classes/package.js'
 export * from './classes/policies.js'
 

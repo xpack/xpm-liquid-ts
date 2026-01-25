@@ -24,7 +24,7 @@ import {
   XpmLiquidSubstitutionsVariables,
   XpmLiquidSubstitutionsStrings,
 } from '../data/substitutions-variables.js'
-import { buildFolderRelativePathPropertyName } from './liquid-package.js'
+import { buildFolderRelativePathPropertyName } from './data-model.js'
 import {
   JsonBuildConfiguration,
   JsonBuildConfigurationContent,
@@ -34,7 +34,7 @@ import {
   JsonDependencies,
 } from '../types/json.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
-import { XpmLiquidAction, XpmLiquidActions } from './liquid-actions.js'
+import { XpmAction, XpmActions } from './actions.js'
 import { getErrorMessage } from '../functions/utils.js'
 import {
   isJsonArray,
@@ -68,7 +68,7 @@ import { XpmError, XpmInputError } from './errors.js'
  * used incur the cost of template evaluation, inheritance resolution, and
  * variable substitution.
  */
-export class XpmLiquidBuildConfigurations {
+export class XpmBuildConfigurations {
   // --------------------------------------------------------------------------
   // Members.
 
@@ -156,7 +156,7 @@ export class XpmLiquidBuildConfigurations {
    * Key characteristics:
    *
    * <ol>
-   * <li>Known only after <code>XpmLiquidBuildConfigurations.initialise</code>
+   * <li>Known only after <code>XpmBuildConfigurations.initialise</code>
    *    completes.</li>
    * <li>Possibly empty if there are no build configurations defined.</li>
    * <li>Values can be <code>undefined</code> to indicate a configuration
@@ -166,13 +166,13 @@ export class XpmLiquidBuildConfigurations {
    * </ol>
    *
    * Configurations transition from `undefined` to instantiated when first
-   * accessed via {@link XpmLiquidBuildConfigurations.get}, implementing the
+   * accessed via {@link XpmBuildConfigurations.get}, implementing the
    * lazy evaluation pattern to avoid unnecessary processing.
    */
   protected readonly _buildConfigurationsMap: Map<
     string,
-    XpmLiquidBuildConfiguration | undefined
-  > = new Map<string, XpmLiquidBuildConfiguration | undefined>()
+    XpmBuildConfiguration | undefined
+  > = new Map<string, XpmBuildConfiguration | undefined>()
 
   /**
    * Map of expanded build configuration names to their JSON source names.
@@ -190,9 +190,9 @@ export class XpmLiquidBuildConfigurations {
    * <li>For template configurations: Maps each generated configuration name
    *    back to the original template name (e.g., <code>release-x64</code> →
    *    <code>release-\{\{ matrix.arch \}\}</code>).</li>
-   * <li>Known only after <code>XpmLiquidBuildConfigurations.initialise</code>
+   * <li>Known only after <code>XpmBuildConfigurations.initialise</code>
    *    completes.</li>
-   * <li>Enables <code>XpmLiquidBuildConfigurations.get</code> to locate the
+   * <li>Enables <code>XpmBuildConfigurations.get</code> to locate the
    *    correct JSON definition when instantiating a configuration on
    *    demand.</li>
    * </ol>
@@ -221,7 +221,7 @@ export class XpmLiquidBuildConfigurations {
    *    configuration names.</li>
    * </ol>
    *
-   * Detection occurs during {@link XpmLiquidBuildConfigurations.initialise},
+   * Detection occurs during {@link XpmBuildConfigurations.initialise},
    * throwing {@link XpmError} when duplicates are found to ensure
    * configuration name uniqueness.
    */
@@ -233,7 +233,7 @@ export class XpmLiquidBuildConfigurations {
    *
    * @remarks
    * This flag prevents redundant initialisation and ensures idempotent
-   * behavior when {@link XpmLiquidBuildConfigurations.initialise} is called
+   * behavior when {@link XpmBuildConfigurations.initialise} is called
    * multiple times.
    *
    * State transitions:
@@ -244,7 +244,7 @@ export class XpmLiquidBuildConfigurations {
    *    and configuration
    *    name registration.</li>
    * <li>Checked at the beginning of
-   *    <code>XpmLiquidBuildConfigurations.initialise</code> to return early if
+   *    <code>XpmBuildConfigurations.initialise</code> to return early if
    *    already initialised.</li>
    * </ol>
    *
@@ -262,7 +262,7 @@ export class XpmLiquidBuildConfigurations {
    * @remarks
    * The constructor performs partial initialisation. Complete
    * initialisation requires calling
-   * {@link XpmLiquidBuildConfigurations.initialise}.
+   * {@link XpmBuildConfigurations.initialise}.
    *
    * @param log - The logger instance for output and diagnostics.
    * @param engine - The Liquid templating engine for variable substitution.
@@ -285,7 +285,7 @@ export class XpmLiquidBuildConfigurations {
     assert(engine)
     assert(substitutionsVariables)
 
-    log.trace(`${XpmLiquidBuildConfigurations.name}()`)
+    log.trace(`${XpmBuildConfigurations.name}()`)
 
     this.log = log
     this.engine = engine
@@ -304,7 +304,7 @@ export class XpmLiquidBuildConfigurations {
    * names based on matrix parameters, but does not evaluate the configuration
    * content or perform Liquid substitutions. The actual template evaluation
    * and variable substitution occur later when individual configurations are
-   * initialised via {@link XpmLiquidBuildConfiguration.initialise}, and only
+   * initialised via {@link XpmBuildConfiguration.initialise}, and only
    * for configurations that are actually used. This approach avoids unnecessary
    * operations on unused configurations. The method also validates that all
    * expanded configuration names are unique and prepares the internal lookup
@@ -320,11 +320,11 @@ export class XpmLiquidBuildConfigurations {
     const log = this.log
 
     if (this._isInitialised) {
-      log.trace(`${XpmLiquidBuildConfigurations.name}.initialise() again`)
+      log.trace(`${XpmBuildConfigurations.name}.initialise() again`)
       return false
     }
 
-    log.trace(`${XpmLiquidBuildConfigurations.name}.initialise()`)
+    log.trace(`${XpmBuildConfigurations.name}.initialise()`)
 
     for (const buildConfigurationName of Object.keys(
       this.jsonBuildConfigurations
@@ -389,7 +389,7 @@ export class XpmLiquidBuildConfigurations {
     }
 
     log.trace(
-      `${XpmLiquidBuildConfigurations.name}.initialise() =>`,
+      `${XpmBuildConfigurations.name}.initialise() =>`,
       Array.from(this._buildConfigurationsMap.keys())
     )
 
@@ -420,7 +420,7 @@ export class XpmLiquidBuildConfigurations {
     )
 
     this.log.trace(
-      `${XpmLiquidBuildConfigurations.name}.names() =>`,
+      `${XpmBuildConfigurations.name}.names() =>`,
       buildConfigurationsNames
     )
     return buildConfigurationsNames
@@ -508,12 +508,12 @@ export class XpmLiquidBuildConfigurations {
    *
    * <ol>
    * <li>During collection initialisation
-   *    (<code>XpmLiquidBuildConfigurations.initialise</code>), only the
+   *    (<code>XpmBuildConfigurations.initialise</code>), only the
    *    matrix of options is evaluated for each template, expanding
    *    configuration names without processing their content.</li>
    * <li>Later, when a configuration is accessed via this method and
    *    subsequently initialised
-   *    (<code>XpmLiquidBuildConfiguration.initialise</code>), the template
+   *    (<code>XpmBuildConfiguration.initialise</code>), the template
    *    is fully evaluated and Liquid substitutions are performed on
    *    all properties.</li>
    * </ol>
@@ -525,11 +525,9 @@ export class XpmLiquidBuildConfigurations {
    * @param buildConfigurationName - The build configuration name to retrieve.
    * @returns The build configuration instance.
    */
-  get(buildConfigurationName: string): XpmLiquidBuildConfiguration {
+  get(buildConfigurationName: string): XpmBuildConfiguration {
     const log = this.log
-    log.trace(
-      `${XpmLiquidBuildConfigurations.name}.get(${buildConfigurationName})`
-    )
+    log.trace(`${XpmBuildConfigurations.name}.get(${buildConfigurationName})`)
 
     let buildConfiguration = this._buildConfigurationsMap.get(
       buildConfigurationName
@@ -543,7 +541,7 @@ export class XpmLiquidBuildConfigurations {
         .jsonBuildConfigurations[jsonBuildConfigurationName] ??
         {}) as JsonBuildConfigurationContent
 
-      buildConfiguration = new XpmLiquidBuildConfiguration({
+      buildConfiguration = new XpmBuildConfiguration({
         buildConfigurationName,
         jsonBuildConfiguration,
         parentBuildConfigurations: this,
@@ -601,17 +599,14 @@ export class XpmLiquidBuildConfigurations {
   }: {
     buildConfigurationName: string
     jsonBuildConfigurationTemplate: JsonBuildConfigurationTemplate
-  }): Promise<Map<string, XpmLiquidBuildConfiguration>> {
+  }): Promise<Map<string, XpmBuildConfiguration>> {
     const log = this.log
     log.trace(
-      `${XpmLiquidBuildConfigurations.name}.` +
+      `${XpmBuildConfigurations.name}.` +
         `#expandTemplateBuildConfigurations(${buildConfigurationName})`
     )
 
-    const newBuildConfigurationsMap = new Map<
-      string,
-      XpmLiquidBuildConfiguration
-    >()
+    const newBuildConfigurationsMap = new Map<string, XpmBuildConfiguration>()
 
     if (!isJsonObject(jsonBuildConfigurationTemplate.matrix)) {
       throw new XpmError(
@@ -703,7 +698,7 @@ export class XpmLiquidBuildConfigurations {
 
       // console.log(substitutedActionName)
 
-      const newBuildConfiguration = new XpmLiquidBuildConfiguration({
+      const newBuildConfiguration = new XpmBuildConfiguration({
         buildConfigurationName: substitutedBuildConfigurationName,
         templateBuildConfigurationName: buildConfigurationName,
         jsonBuildConfiguration: jsonBuildConfigurationTemplate.template,
@@ -729,7 +724,7 @@ export class XpmLiquidBuildConfigurations {
     ): Promise<void> => {
       const log = this.log
       log.trace(
-        `${XpmLiquidBuildConfigurations.name}.` +
+        `${XpmBuildConfigurations.name}.` +
           `#expandTemplateBuildConfigurations().` +
           `generateCombinationsRecursively(${String(index)}, ${JSON.stringify(
             combination
@@ -780,7 +775,7 @@ export class XpmLiquidBuildConfigurations {
  * override all inherited ones. Dependencies and actions are merged from
  * all inherited configurations.
  */
-export class XpmLiquidBuildConfiguration {
+export class XpmBuildConfiguration {
   // --------------------------------------------------------------------------
   // Members.
 
@@ -805,7 +800,7 @@ export class XpmLiquidBuildConfiguration {
    * </ol>
    *
    * Names must be unique within the configurations collection, enforced
-   * during {@link XpmLiquidBuildConfigurations.initialise}.
+   * during {@link XpmBuildConfigurations.initialise}.
    */
   readonly buildConfigurationName: string
 
@@ -855,7 +850,7 @@ export class XpmLiquidBuildConfiguration {
    * duplicating them, while supporting complex inheritance relationships
    * where configurations reference and inherit from each other.
    */
-  readonly parentBuildConfigurations: XpmLiquidBuildConfigurations
+  readonly parentBuildConfigurations: XpmBuildConfigurations
 
   /**
    * The list of inherited configuration names.
@@ -996,7 +991,7 @@ export class XpmLiquidBuildConfiguration {
    * <li>Enable external modification (e.g., `xpm uninstall` updates this
    *    directly).</li>
    * <li>Support deferred template evaluation during
-   *    <code>XpmLiquidBuildConfiguration.initialise</code>.</li>
+   *    <code>XpmBuildConfiguration.initialise</code>.</li>
    * <li>Provide the source for inheritance when other configurations
    *    reference this one.</li>
    * <li>Allow re-evaluation with different variable contexts if needed.</li>
@@ -1073,11 +1068,11 @@ export class XpmLiquidBuildConfiguration {
    * Action assembly workflow:
    *
    * <ol>
-   * <li>Undefined until <code>XpmLiquidBuildConfiguration.initialise</code> is
+   * <li>Undefined until <code>XpmBuildConfiguration.initialise</code> is
    *    called.</li>
    * <li>Collect actions from all inherited configurations in the inheritance
    *    chain.</li>
-   * <li>Create new <code>XpmLiquidActions</code> collection with inherited
+   * <li>Create new <code>XpmActions</code> collection with inherited
    *    actions map and local action definitions.</li>
    * <li>Actions inherit the configuration's substitution variables context,
    *    including properties and matrix parameters.</li>
@@ -1087,7 +1082,7 @@ export class XpmLiquidBuildConfiguration {
    * themselves uninitialised until retrieved and initialised individually,
    * maintaining the lazy evaluation pattern.
    */
-  protected _actions: XpmLiquidActions | undefined
+  protected _actions: XpmActions | undefined
 
   /**
    * The resolved build folder relative path.
@@ -1100,7 +1095,7 @@ export class XpmLiquidBuildConfiguration {
    * Computation workflow:
    *
    * <ol>
-   * <li>Undefined until <code>XpmLiquidBuildConfiguration.initialise</code> is
+   * <li>Undefined until <code>XpmBuildConfiguration.initialise</code> is
    *    called.</li>
    * <li>Not computed for hidden configurations (optimization).</li>
    * <li>If <code>buildFolderRelativePath</code> property exists, perform Liquid
@@ -1146,7 +1141,7 @@ export class XpmLiquidBuildConfiguration {
    *
    * @remarks
    * This flag ensures idempotent initialization and prevents redundant
-   * processing when {@link XpmLiquidBuildConfiguration.initialise} is called
+   * processing when {@link XpmBuildConfiguration.initialise} is called
    * multiple times.
    *
    * State transitions:
@@ -1157,7 +1152,7 @@ export class XpmLiquidBuildConfiguration {
    *    property
    *    merging, dependency substitution, and action preparation.</li>
    * <li>Checked at the start of
-   *    <code>XpmLiquidBuildConfiguration.initialise</code> to return early if
+   *    <code>XpmBuildConfiguration.initialise</code> to return early if
    *    already initialised.</li>
    * </ol>
    *
@@ -1216,7 +1211,7 @@ export class XpmLiquidBuildConfiguration {
    *
    * @remarks
    * The constructor performs partial initialisation. Full initialisation
-   * requires calling {@link XpmLiquidBuildConfiguration.initialise}.
+   * requires calling {@link XpmBuildConfiguration.initialise}.
    */
   constructor({
     buildConfigurationName,
@@ -1228,7 +1223,7 @@ export class XpmLiquidBuildConfiguration {
     buildConfigurationName: string
     templateBuildConfigurationName?: string
     jsonBuildConfiguration: JsonBuildConfigurationContent
-    parentBuildConfigurations: XpmLiquidBuildConfigurations
+    parentBuildConfigurations: XpmBuildConfigurations
     matrixParameters?: XpmLiquidSubstitutionsStrings
   }) {
     assert(buildConfigurationName)
@@ -1236,7 +1231,7 @@ export class XpmLiquidBuildConfiguration {
     assert(parentBuildConfigurations)
 
     const log = parentBuildConfigurations.log
-    log.trace(`${XpmLiquidBuildConfiguration.name}(${buildConfigurationName})`)
+    log.trace(`${XpmBuildConfiguration.name}(${buildConfigurationName})`)
 
     this.buildConfigurationName = buildConfigurationName
     this.jsonBuildConfiguration = jsonBuildConfiguration
@@ -1300,20 +1295,20 @@ export class XpmLiquidBuildConfiguration {
   async initialise(): Promise<boolean> {
     const log = this.parentBuildConfigurations.log
     log.trace(
-      `${XpmLiquidBuildConfiguration.name}.initialise()` +
+      `${XpmBuildConfiguration.name}.initialise()` +
         ` @${this.buildConfigurationName}`
     )
 
     if (this._isInitialised) {
       log.trace(
-        `${XpmLiquidBuildConfiguration.name}.initialise()` +
+        `${XpmBuildConfiguration.name}.initialise()` +
           ` @${this.buildConfigurationName} again`
       )
       return false
     }
 
     log.trace(
-      `${XpmLiquidBuildConfiguration.name}.initialise()` +
+      `${XpmBuildConfiguration.name}.initialise()` +
         ` @${this.buildConfigurationName}`
     )
     let localJsonBuildConfiguration: JsonBuildConfigurationContent
@@ -1420,9 +1415,9 @@ export class XpmLiquidBuildConfiguration {
     // console.log(this.inheritsNames)
     log.trace(this.buildConfigurationName, 'inherits from', this.inheritsNames)
 
-    const inheritedActionsMap: Map<string, XpmLiquidAction> = new Map<
+    const inheritedActionsMap: Map<string, XpmAction> = new Map<
       string,
-      XpmLiquidAction
+      XpmAction
     >()
 
     // Add inherited configuration properties.
@@ -1554,7 +1549,7 @@ export class XpmLiquidBuildConfiguration {
       this.devDependencies = parsedDependencies.devDependencies ?? {}
     }
 
-    this._actions = new XpmLiquidActions({
+    this._actions = new XpmActions({
       log: this.parentBuildConfigurations.log,
       engine: this.parentBuildConfigurations.engine,
       substitutionsVariables: this.substitutionsVariables,
@@ -1564,7 +1559,7 @@ export class XpmLiquidBuildConfiguration {
     })
 
     log.trace(
-      `${XpmLiquidBuildConfiguration.name}.initialise() `,
+      `${XpmBuildConfiguration.name}.initialise() `,
       `@{this.buildConfigurationName}`
     )
 
@@ -1603,7 +1598,7 @@ export class XpmLiquidBuildConfiguration {
    * @throws `AssertionError`
    * If the configuration has not been initialised.
    */
-  get actions(): XpmLiquidActions {
+  get actions(): XpmActions {
     assert(this._actions !== undefined)
     return this._actions
   }

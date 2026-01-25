@@ -25,7 +25,7 @@ import { test } from 'tap'
 
 // ----------------------------------------------------------------------------
 
-import { JsonXpmPackage, XpmLiquidPackage } from '../../src/index.js'
+import { JsonXpmPackage, XpmDataModel } from '../../src/index.js'
 import { Logger } from '@xpack/logger'
 
 // const __filename = fileURLToPath(import.meta.url)
@@ -65,12 +65,12 @@ await test('configurations', async (t): Promise<void> => {
     },
   }
 
-  const xpmLiquidPackage = new XpmLiquidPackage({
+  const xpmDataModel = new XpmDataModel({
     log,
     jsonPackage: json,
   })
 
-  const buildConfigurations = xpmLiquidPackage.buildConfigurations
+  const buildConfigurations = xpmDataModel.buildConfigurations
   t.ok(buildConfigurations, 'has buildConfigurations')
 
   // console.log(buildConfigurations.substitutionsVariables.properties)
@@ -317,12 +317,12 @@ await test('configurations inheritance', async (t): Promise<void> => {
     },
   }
 
-  const xpmLiquidPackage = new XpmLiquidPackage({
+  const xpmDataModel = new XpmDataModel({
     log,
     jsonPackage: json,
   })
 
-  const buildConfigurations = xpmLiquidPackage.buildConfigurations
+  const buildConfigurations = xpmDataModel.buildConfigurations
   t.ok(buildConfigurations, 'has buildConfigurations')
 
   let initialised = await buildConfigurations.initialise()
@@ -577,14 +577,14 @@ await test('configurations template', async (t): Promise<void> => {
   }
 
   // log.level = 'trace'
-  const xpmLiquidPackage = new XpmLiquidPackage({
+  const xpmDataModel = new XpmDataModel({
     log,
     jsonPackage: json,
   })
 
   // -----
 
-  let actions = xpmLiquidPackage.actions
+  let actions = xpmDataModel.actions
   t.ok(actions, 'has actions')
 
   let actionsInitialised = await actions.initialise()
@@ -607,7 +607,7 @@ await test('configurations template', async (t): Promise<void> => {
 
   // -----
 
-  const buildConfigurations = xpmLiquidPackage.buildConfigurations
+  const buildConfigurations = xpmDataModel.buildConfigurations
   t.ok(buildConfigurations, 'has buildConfigurations')
 
   // -----

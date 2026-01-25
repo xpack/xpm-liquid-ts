@@ -191,7 +191,7 @@ export interface XpmInitTemplateItemValue {
  * Variable structure:
  *
  * <ul>
- * <li><b><code>properties</code></b>: Contains all user-provided or 
+ * <li><b><code>properties</code></b>: Contains all user-provided or
  *    default values from the
  *    template property definitions, accessible via
  *    <code>\{\{ properties.propertyName \}\}</code> in template files.</li>
