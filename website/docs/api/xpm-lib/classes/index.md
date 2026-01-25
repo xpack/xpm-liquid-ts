@@ -19,6 +19,51 @@ The following classes are defined:
 <tbody>
 <tr><td>
 
+[XpmAction](/docs/api/xpm-lib/classes/xpmaction)
+
+</td><td>
+
+An individual xpm action containing commands to be executed.
+
+</td></tr>
+<tr><td>
+
+[XpmActions](/docs/api/xpm-lib/classes/xpmactions)
+
+</td><td>
+
+A collection of xpm actions for a build configuration or the entire package.
+
+</td></tr>
+<tr><td>
+
+[XpmBuildConfiguration](/docs/api/xpm-lib/classes/xpmbuildconfiguration)
+
+</td><td>
+
+An individual xpm build configuration.
+
+</td></tr>
+<tr><td>
+
+[XpmBuildConfigurations](/docs/api/xpm-lib/classes/xpmbuildconfigurations)
+
+</td><td>
+
+A collection of xpm build configurations.
+
+</td></tr>
+<tr><td>
+
+[XpmDataModel](/docs/api/xpm-lib/classes/xpmdatamodel)
+
+</td><td>
+
+Provides Liquid-based processing for an xpm package.
+
+</td></tr>
+<tr><td>
+
 [XpmError](/docs/api/xpm-lib/classes/xpmerror)
 
 </td><td>
@@ -46,42 +91,6 @@ Error indicating that user input is invalid.
 </td></tr>
 <tr><td>
 
-[XpmLiquidAction](/docs/api/xpm-lib/classes/xpmliquidaction)
-
-</td><td>
-
-An individual xpm action containing commands to be executed.
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidActions](/docs/api/xpm-lib/classes/xpmliquidactions)
-
-</td><td>
-
-A collection of xpm actions for a build configuration or the entire package.
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidBuildConfiguration](/docs/api/xpm-lib/classes/xpmliquidbuildconfiguration)
-
-</td><td>
-
-An individual xpm build configuration.
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidBuildConfigurations](/docs/api/xpm-lib/classes/xpmliquidbuildconfigurations)
-
-</td><td>
-
-A collection of xpm build configurations.
-
-</td></tr>
-<tr><td>
-
 [XpmLiquidEngine](/docs/api/xpm-lib/classes/xpmliquidengine)
 
 </td><td>
@@ -96,15 +105,6 @@ Liquid engine configured for xpm templates.
 </td><td>
 
 Liquid drop that resolves `matrix` parameter values for templates.
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidPackage](/docs/api/xpm-lib/classes/xpmliquidpackage)
-
-</td><td>
-
-Provides Liquid-based processing for an xpm package.
 
 </td></tr>
 <tr><td>

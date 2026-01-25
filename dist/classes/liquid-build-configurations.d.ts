@@ -2,13 +2,13 @@ import { Logger } from '@xpack/logger';
 import { XpmLiquidEngine } from './liquid-engine.js';
 import { XpmLiquidSubstitutionsVariables, XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.js';
 import { JsonBuildConfiguration, JsonBuildConfigurationContent, JsonBuildConfigurations, JsonBuildConfigurationTemplate, JsonDependencies } from '../types/json.js';
-import { XpmLiquidActions } from './liquid-actions.js';
-export declare class XpmLiquidBuildConfigurations {
+import { XpmActions } from './liquid-actions.js';
+export declare class XpmBuildConfigurations {
     readonly log: Logger;
     readonly engine: XpmLiquidEngine;
     readonly substitutionsVariables: XpmLiquidSubstitutionsVariables;
     readonly jsonBuildConfigurations: JsonBuildConfigurations;
-    protected readonly _buildConfigurationsMap: Map<string, XpmLiquidBuildConfiguration | undefined>;
+    protected readonly _buildConfigurationsMap: Map<string, XpmBuildConfiguration | undefined>;
     protected readonly _jsonBuildConfigurationsNamesMap: Map<string, string>;
     protected readonly _buildComfigurationsNamesSet: Set<string>;
     protected _isInitialised: boolean;
@@ -26,16 +26,16 @@ export declare class XpmLiquidBuildConfigurations {
     getJson(buildConfigurationName: string): JsonBuildConfiguration;
     isHidden(buildConfigurationName: string): boolean;
     has(buildConfigurationName: string): boolean;
-    get(buildConfigurationName: string): XpmLiquidBuildConfiguration;
+    get(buildConfigurationName: string): XpmBuildConfiguration;
     protected _expandTemplateBuildConfigurations({ buildConfigurationName, jsonBuildConfigurationTemplate, }: {
         buildConfigurationName: string;
         jsonBuildConfigurationTemplate: JsonBuildConfigurationTemplate;
-    }): Promise<Map<string, XpmLiquidBuildConfiguration>>;
+    }): Promise<Map<string, XpmBuildConfiguration>>;
 }
-export declare class XpmLiquidBuildConfiguration {
+export declare class XpmBuildConfiguration {
     readonly buildConfigurationName: string;
     readonly templateBuildConfigurationName?: string;
-    readonly parentBuildConfigurations: XpmLiquidBuildConfigurations;
+    readonly parentBuildConfigurations: XpmBuildConfigurations;
     inheritsNames: string[];
     readonly hidden: boolean;
     properties: XpmLiquidSubstitutionsStrings;
@@ -44,7 +44,7 @@ export declare class XpmLiquidBuildConfiguration {
     jsonBuildConfiguration: JsonBuildConfigurationContent;
     protected substitutionsVariables: XpmLiquidSubstitutionsVariables;
     protected readonly matrixParameters?: XpmLiquidSubstitutionsStrings;
-    protected _actions: XpmLiquidActions | undefined;
+    protected _actions: XpmActions | undefined;
     protected _buildFolderRelativePath?: string;
     protected _inheritedNamesSet: Set<string>;
     protected _isInitialised: boolean;
@@ -53,11 +53,11 @@ export declare class XpmLiquidBuildConfiguration {
         buildConfigurationName: string;
         templateBuildConfigurationName?: string;
         jsonBuildConfiguration: JsonBuildConfigurationContent;
-        parentBuildConfigurations: XpmLiquidBuildConfigurations;
+        parentBuildConfigurations: XpmBuildConfigurations;
         matrixParameters?: XpmLiquidSubstitutionsStrings;
     });
     initialise(): Promise<boolean>;
-    get actions(): XpmLiquidActions;
+    get actions(): XpmActions;
     get buildFolderRelativePath(): string;
     protected _getBuildFolderRelativePath(): Promise<string>;
 }

@@ -14,9 +14,9 @@ The main functionality is to manage actions and build configurations, especially
 
 The Lazy Evaluation Mechanism
 
-Actions ([XpmLiquidActions](./xpm-lib.xpmliquidactions.md)<!-- -->) and build configurations ([XpmLiquidBuildConfigurations](./xpm-lib.xpmliquidbuildconfigurations.md)<!-- -->) implement a two-step lazy evaluation process to avoid unnecessary operations:
+Actions ([XpmActions](./xpm-lib.xpmactions.md)<!-- -->) and build configurations ([XpmBuildConfigurations](./xpm-lib.xpmbuildconfigurations.md)<!-- -->) implement a two-step lazy evaluation process to avoid unnecessary operations:
 
-<ol> <li>Name Expansion: During collection initialisation, only the matrix of options is evaluated for each template, expanding template names into concrete action or configuration names without processing their content.</li> <li>Content Evaluation: Later, when an action or build configuration is actually accessed and initialised (via <code>XpmLiquidAction.initialise</code> or <code>XpmLiquidBuildConfiguration.initialise</code>), the template is fully evaluated and Liquid substitutions are performed.</li> </ol>
+<ol> <li>Name Expansion: During collection initialisation, only the matrix of options is evaluated for each template, expanding template names into concrete action or configuration names without processing their content.</li> <li>Content Evaluation: Later, when an action or build configuration is actually accessed and initialised (via <code>XpmAction.initialise</code> or <code>XpmBuildConfiguration.initialise</code>), the template is fully evaluated and Liquid substitutions are performed.</li> </ol>
 
 This approach ensures that only items that are actually used incur the cost of template evaluation and variable substitution, significantly improving performance for projects with many actions or configurations.
 
@@ -34,6 +34,61 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[XpmAction](./xpm-lib.xpmaction.md)
+
+
+</td><td>
+
+An individual xpm action containing commands to be executed.
+
+
+</td></tr>
+<tr><td>
+
+[XpmActions](./xpm-lib.xpmactions.md)
+
+
+</td><td>
+
+A collection of xpm actions for a build configuration or the entire package.
+
+
+</td></tr>
+<tr><td>
+
+[XpmBuildConfiguration](./xpm-lib.xpmbuildconfiguration.md)
+
+
+</td><td>
+
+An individual xpm build configuration.
+
+
+</td></tr>
+<tr><td>
+
+[XpmBuildConfigurations](./xpm-lib.xpmbuildconfigurations.md)
+
+
+</td><td>
+
+A collection of xpm build configurations.
+
+
+</td></tr>
+<tr><td>
+
+[XpmDataModel](./xpm-lib.xpmdatamodel.md)
+
+
+</td><td>
+
+Provides Liquid-based processing for an xpm package.
+
+
+</td></tr>
+<tr><td>
 
 [XpmError](./xpm-lib.xpmerror.md)
 
@@ -57,50 +112,6 @@ Error indicating that user input is invalid.
 </td></tr>
 <tr><td>
 
-[XpmLiquidAction](./xpm-lib.xpmliquidaction.md)
-
-
-</td><td>
-
-An individual xpm action containing commands to be executed.
-
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidActions](./xpm-lib.xpmliquidactions.md)
-
-
-</td><td>
-
-A collection of xpm actions for a build configuration or the entire package.
-
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidBuildConfiguration](./xpm-lib.xpmliquidbuildconfiguration.md)
-
-
-</td><td>
-
-An individual xpm build configuration.
-
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidBuildConfigurations](./xpm-lib.xpmliquidbuildconfigurations.md)
-
-
-</td><td>
-
-A collection of xpm build configurations.
-
-
-</td></tr>
-<tr><td>
-
 [XpmLiquidEngine](./xpm-lib.xpmliquidengine.md)
 
 
@@ -118,17 +129,6 @@ Liquid engine configured for xpm templates.
 </td><td>
 
 Liquid drop that resolves `matrix` parameter values for templates.
-
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidPackage](./xpm-lib.xpmliquidpackage.md)
-
-
-</td><td>
-
-Provides Liquid-based processing for an xpm package.
 
 
 </td></tr>
@@ -770,6 +770,17 @@ Represents a JSON map of binaries platforms.
 </td></tr>
 <tr><td>
 
+[XpmActionCommands](./xpm-lib.xpmactioncommands.md)
+
+
+</td><td>
+
+Represents a list of action command strings.
+
+
+</td></tr>
+<tr><td>
+
 [XpmInitTemplatePlatform](./xpm-lib.xpminittemplateplatform.md)
 
 
@@ -787,17 +798,6 @@ Represents the supported platform identifiers for `xpm init` template items.
 </td><td>
 
 Represents a map of `xpm init` template property definitions.
-
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidActionCommands](./xpm-lib.xpmliquidactioncommands.md)
-
-
-</td><td>
-
-Represents a list of action command strings.
 
 
 </td></tr>

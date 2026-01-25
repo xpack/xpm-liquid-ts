@@ -4,9 +4,9 @@
 [![license](https://img.shields.io/github/license/xpack/xpm-lib-ts)](https://github.com/xpack/xpm-lib-ts/blob/master/LICENSE)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fxpack.github.io%2Fxpm-lib-ts%2F)](https://xpack.github.io/xpm-lib-ts/)
 
-# The 
+# The xpm Core Library
 
-A Node.js TypeScript module with the common code for xpm and xpm enabled projects.
+A TypeScript Node.js module with the common code for xpm and xpm enabled projects.
 
 ## Project documentation
 

@@ -72,30 +72,20 @@ Known and accepted exceptions:
 ## Documentation metadata
 
 The documentation metadata utilises the
-[TypeDoc](https://typedoc.org/guides/doccomments/) tags, without
+[TSDoc](https://tsdoc.org) tags, without
 explicit types, as they are provided by TypeScript.
-
-:::note
-
-Microsoft is currently developing a new project ([TSDoc](https://tsdoc.org))
-which attempts to standardise TypeScript documentation metadata.
-
-This standard is generally compatible with TypeDoc; at the time of
-this writing, amongst the visible differences is the absence
-of the `@category` or `@group` tags.
-
-:::
 
 ### Continuous Integration (CI)
 
 The module is 
 subject to CI testing on every push via
 [GitHub Actions](https://github.com/xpack/xpm-lib-ts/actions), on Ubuntu,
-Windows and macOS, utilising node 18, 20 and 22.
+Windows and macOS, utilising node 20, 22 and 24.
 
 ## Tips & tricks
 
-To trace TypeScript module resolution:
+To trace which files module imports resolve to, enable TypeScript
+module resolution tracing:
 
 ```json
     "compile": "tsc --traceResolution  -p ./",

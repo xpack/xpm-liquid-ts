@@ -127,6 +127,15 @@ Represents a JSON map of binaries platforms.
 </td></tr>
 <tr><td>
 
+[XpmActionCommands](/docs/api/xpm-lib/typealiases/xpmactioncommands)
+
+</td><td>
+
+Represents a list of action command strings.
+
+</td></tr>
+<tr><td>
+
 [XpmInitTemplatePlatform](/docs/api/xpm-lib/typealiases/xpminittemplateplatform)
 
 </td><td>
@@ -141,15 +150,6 @@ Represents the supported platform identifiers for `xpm init` template items.
 </td><td>
 
 Represents a map of `xpm init` template property definitions.
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidActionCommands](/docs/api/xpm-lib/typealiases/xpmliquidactioncommands)
-
-</td><td>
-
-Represents a list of action command strings.
 
 </td></tr>
 <tr><td>

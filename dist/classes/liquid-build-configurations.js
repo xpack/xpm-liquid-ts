@@ -3,12 +3,12 @@ import * as path from 'node:path';
 import * as os from 'node:os';
 import { buildFolderRelativePathPropertyName } from './liquid-package.js';
 import { performSubstitutions } from '../functions/perform-substitutions.js';
-import { XpmLiquidActions } from './liquid-actions.js';
+import { XpmActions } from './liquid-actions.js';
 import { getErrorMessage } from '../functions/utils.js';
 import { isJsonArray, isJsonObject, isString, } from '../functions/is-something.js';
 import { filterPath } from '../functions/filter-paths.js';
 import { XpmError, XpmInputError } from './errors.js';
-export class XpmLiquidBuildConfigurations {
+export class XpmBuildConfigurations {
     log;
     engine;
     substitutionsVariables;
@@ -21,7 +21,7 @@ export class XpmLiquidBuildConfigurations {
         assert(log);
         assert(engine);
         assert(substitutionsVariables);
-        log.trace(`${XpmLiquidBuildConfigurations.name}()`);
+        log.trace(`${XpmBuildConfigurations.name}()`);
         this.log = log;
         this.engine = engine;
         this.substitutionsVariables = substitutionsVariables;
@@ -30,10 +30,10 @@ export class XpmLiquidBuildConfigurations {
     async initialise() {
         const log = this.log;
         if (this._isInitialised) {
-            log.trace(`${XpmLiquidBuildConfigurations.name}.initialise() again`);
+            log.trace(`${XpmBuildConfigurations.name}.initialise() again`);
             return false;
         }
-        log.trace(`${XpmLiquidBuildConfigurations.name}.initialise()`);
+        log.trace(`${XpmBuildConfigurations.name}.initialise()`);
         for (const buildConfigurationName of Object.keys(this.jsonBuildConfigurations)) {
             if (buildConfigurationName.includes('{{')) {
                 try {
@@ -72,7 +72,7 @@ export class XpmLiquidBuildConfigurations {
                 }
             }
         }
-        log.trace(`${XpmLiquidBuildConfigurations.name}.initialise() =>`, Array.from(this._buildConfigurationsMap.keys()));
+        log.trace(`${XpmBuildConfigurations.name}.initialise() =>`, Array.from(this._buildConfigurationsMap.keys()));
         this._isInitialised = true;
         return true;
     }
@@ -81,7 +81,7 @@ export class XpmLiquidBuildConfigurations {
     }
     names() {
         const buildConfigurationsNames = Array.from(this._buildConfigurationsMap.keys());
-        this.log.trace(`${XpmLiquidBuildConfigurations.name}.names() =>`, buildConfigurationsNames);
+        this.log.trace(`${XpmBuildConfigurations.name}.names() =>`, buildConfigurationsNames);
         return buildConfigurationsNames;
     }
     getJsonName(buildConfigurationName) {
@@ -108,14 +108,14 @@ export class XpmLiquidBuildConfigurations {
     }
     get(buildConfigurationName) {
         const log = this.log;
-        log.trace(`${XpmLiquidBuildConfigurations.name}.get(${buildConfigurationName})`);
+        log.trace(`${XpmBuildConfigurations.name}.get(${buildConfigurationName})`);
         let buildConfiguration = this._buildConfigurationsMap.get(buildConfigurationName);
         if (buildConfiguration === undefined) {
             const jsonBuildConfigurationName = this._jsonBuildConfigurationsNamesMap.get(buildConfigurationName);
             const jsonBuildConfiguration = (this
                 .jsonBuildConfigurations[jsonBuildConfigurationName] ??
                 {});
-            buildConfiguration = new XpmLiquidBuildConfiguration({
+            buildConfiguration = new XpmBuildConfiguration({
                 buildConfigurationName,
                 jsonBuildConfiguration,
                 parentBuildConfigurations: this,
@@ -126,7 +126,7 @@ export class XpmLiquidBuildConfigurations {
     }
     async _expandTemplateBuildConfigurations({ buildConfigurationName, jsonBuildConfigurationTemplate, }) {
         const log = this.log;
-        log.trace(`${XpmLiquidBuildConfigurations.name}.` +
+        log.trace(`${XpmBuildConfigurations.name}.` +
             `#expandTemplateBuildConfigurations(${buildConfigurationName})`);
         const newBuildConfigurationsMap = new Map();
         if (!isJsonObject(jsonBuildConfigurationTemplate.matrix)) {
@@ -195,7 +195,7 @@ export class XpmLiquidBuildConfigurations {
                     `name substitution`;
                 throw new XpmError(message);
             }
-            const newBuildConfiguration = new XpmLiquidBuildConfiguration({
+            const newBuildConfiguration = new XpmBuildConfiguration({
                 buildConfigurationName: substitutedBuildConfigurationName,
                 templateBuildConfigurationName: buildConfigurationName,
                 jsonBuildConfiguration: jsonBuildConfigurationTemplate.template,
@@ -206,7 +206,7 @@ export class XpmLiquidBuildConfigurations {
         };
         const generateCombinationsRecursively = async (index, combination) => {
             const log = this.log;
-            log.trace(`${XpmLiquidBuildConfigurations.name}.` +
+            log.trace(`${XpmBuildConfigurations.name}.` +
                 `#expandTemplateBuildConfigurations().` +
                 `generateCombinationsRecursively(${String(index)}, ${JSON.stringify(combination)})`);
             if (index === matrixKeys.length) {
@@ -224,7 +224,7 @@ export class XpmLiquidBuildConfigurations {
         return newBuildConfigurationsMap;
     }
 }
-export class XpmLiquidBuildConfiguration {
+export class XpmBuildConfiguration {
     buildConfigurationName;
     templateBuildConfigurationName;
     parentBuildConfigurations;
@@ -246,7 +246,7 @@ export class XpmLiquidBuildConfiguration {
         assert(jsonBuildConfiguration);
         assert(parentBuildConfigurations);
         const log = parentBuildConfigurations.log;
-        log.trace(`${XpmLiquidBuildConfiguration.name}(${buildConfigurationName})`);
+        log.trace(`${XpmBuildConfiguration.name}(${buildConfigurationName})`);
         this.buildConfigurationName = buildConfigurationName;
         this.jsonBuildConfiguration = jsonBuildConfiguration;
         this.parentBuildConfigurations = parentBuildConfigurations;
@@ -264,14 +264,14 @@ export class XpmLiquidBuildConfiguration {
     }
     async initialise() {
         const log = this.parentBuildConfigurations.log;
-        log.trace(`${XpmLiquidBuildConfiguration.name}.initialise()` +
+        log.trace(`${XpmBuildConfiguration.name}.initialise()` +
             ` @${this.buildConfigurationName}`);
         if (this._isInitialised) {
-            log.trace(`${XpmLiquidBuildConfiguration.name}.initialise()` +
+            log.trace(`${XpmBuildConfiguration.name}.initialise()` +
                 ` @${this.buildConfigurationName} again`);
             return false;
         }
-        log.trace(`${XpmLiquidBuildConfiguration.name}.initialise()` +
+        log.trace(`${XpmBuildConfiguration.name}.initialise()` +
             ` @${this.buildConfigurationName}`);
         let localJsonBuildConfiguration;
         if (this.isTemplate) {
@@ -453,7 +453,7 @@ export class XpmLiquidBuildConfiguration {
             this.dependencies = parsedDependencies.dependencies ?? {};
             this.devDependencies = parsedDependencies.devDependencies ?? {};
         }
-        this._actions = new XpmLiquidActions({
+        this._actions = new XpmActions({
             log: this.parentBuildConfigurations.log,
             engine: this.parentBuildConfigurations.engine,
             substitutionsVariables: this.substitutionsVariables,
@@ -461,7 +461,7 @@ export class XpmLiquidBuildConfiguration {
             jsonActions: localJsonBuildConfiguration.actions,
             buildConfiguration: this,
         });
-        log.trace(`${XpmLiquidBuildConfiguration.name}.initialise() `, `@{this.buildConfigurationName}`);
+        log.trace(`${XpmBuildConfiguration.name}.initialise() `, `@{this.buildConfigurationName}`);
         if (!this.hidden) {
             log.trace(this.buildConfigurationName, 'buildFolderRelativePath =>', this._buildFolderRelativePath);
         }

@@ -3,8 +3,8 @@ import * as os from 'node:os';
 import { isJsonObject } from '../functions/is-something.js';
 import { xpmLiquidSubstitutionsVariablesBase, } from '../data/substitutions-variables.js';
 import { XpmLiquidEngine } from './liquid-engine.js';
-import { XpmLiquidActions } from './liquid-actions.js';
-import { XpmLiquidBuildConfigurations } from './liquid-build-configurations.js';
+import { XpmActions } from './actions.js';
+import { XpmBuildConfigurations } from './build-configurations.js';
 export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath';
 export class XpmLiquidPackage {
     _log;
@@ -30,13 +30,13 @@ export class XpmLiquidPackage {
             };
         }
         Object.seal(this.substitutionsVariables);
-        this.actions = new XpmLiquidActions({
+        this.actions = new XpmActions({
             log: this._log,
             engine: this._engine,
             substitutionsVariables: this.substitutionsVariables,
             jsonActions: this._jsonPackage.xpack.actions,
         });
-        this.buildConfigurations = new XpmLiquidBuildConfigurations({
+        this.buildConfigurations = new XpmBuildConfigurations({
             log: this._log,
             engine: this._engine,
             substitutionsVariables: this.substitutionsVariables,

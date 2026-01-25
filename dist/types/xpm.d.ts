@@ -1,5 +1,5 @@
 import { Logger } from '@xpack/logger';
-export type XpmLiquidActionCommands = string[];
+export type XpmActionCommands = string[];
 export interface XpmConfig {
     doForce?: boolean;
     doSkipIfInstalled?: boolean;

@@ -24,7 +24,7 @@ import { Logger } from '@xpack/logger';
  * environment variables, pipe outputs, or chain operations using standard
  * shell syntax (`&&`, `||`, `|`, etc.).
  */
-export type XpmLiquidActionCommands = string[];
+export type XpmActionCommands = string[];
 /**
  * Defines the xpm configuration options.
  *

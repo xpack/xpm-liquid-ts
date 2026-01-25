@@ -4,7 +4,7 @@ import { performSubstitutions } from '../functions/perform-substitutions.js';
 import { getErrorMessage } from '../functions/utils.js';
 import { isJsonArray, isJsonObject, isString, } from '../functions/is-something.js';
 import { XpmError } from './errors.js';
-export class XpmLiquidActions {
+export class XpmActions {
     log;
     engine;
     substitutionsVariables;
@@ -19,11 +19,11 @@ export class XpmLiquidActions {
         assert(engine);
         assert(substitutionsVariables);
         if (buildConfiguration !== undefined) {
-            log.trace(`${XpmLiquidActions.name}()` +
+            log.trace(`${XpmActions.name}()` +
                 ` @${buildConfiguration.buildConfigurationName}`);
         }
         else {
-            log.trace(`${XpmLiquidActions.name}()`);
+            log.trace(`${XpmActions.name}()`);
         }
         this.log = log;
         this.engine = engine;
@@ -32,7 +32,7 @@ export class XpmLiquidActions {
         this.buildConfiguration = buildConfiguration;
         if (inheritedActionsMap !== undefined) {
             for (const [inheritedActionName, inheritedAction,] of inheritedActionsMap) {
-                const action = new XpmLiquidAction({
+                const action = new XpmAction({
                     actionName: inheritedActionName,
                     jsonAction: inheritedAction.jsonAction,
                     parentActions: this,
@@ -45,20 +45,20 @@ export class XpmLiquidActions {
         const log = this.log;
         if (this._isInitialised) {
             if (this.buildConfiguration !== undefined) {
-                log.trace(`${XpmLiquidActions.name}.initialise()` +
+                log.trace(`${XpmActions.name}.initialise()` +
                     ` @${this.buildConfiguration.buildConfigurationName} again`);
             }
             else {
-                log.trace(`${XpmLiquidActions.name}.initialise() again`);
+                log.trace(`${XpmActions.name}.initialise() again`);
             }
             return false;
         }
         if (this.buildConfiguration !== undefined) {
-            log.trace(`${XpmLiquidActions.name}.initialise()` +
+            log.trace(`${XpmActions.name}.initialise()` +
                 ` @${this.buildConfiguration.buildConfigurationName}`);
         }
         else {
-            log.trace(`${XpmLiquidActions.name}.initialise()`);
+            log.trace(`${XpmActions.name}.initialise()`);
         }
         for (const [actionName, jsonAction] of Object.entries(this.jsonActions)) {
             if (actionName.includes('{{')) {
@@ -104,7 +104,7 @@ export class XpmLiquidActions {
     }
     names() {
         const actionNames = Array.from(this._actionsMap.keys());
-        this.log.trace(`${XpmLiquidActions.name}.names() =>`, actionNames);
+        this.log.trace(`${XpmActions.name}.names() =>`, actionNames);
         return actionNames;
     }
     has(actionName) {
@@ -112,13 +112,13 @@ export class XpmLiquidActions {
     }
     get(actionName) {
         const log = this.log;
-        log.trace(`${XpmLiquidActions.name}.get(${actionName})`);
+        log.trace(`${XpmActions.name}.get(${actionName})`);
         let action = this._actionsMap.get(actionName);
         if (action === undefined) {
             const jsonActionName = this._jsonActionsNamesMap.get(actionName);
             const jsonAction = (this.jsonActions[jsonActionName] ??
                 '');
-            action = new XpmLiquidAction({
+            action = new XpmAction({
                 actionName,
                 jsonAction,
                 parentActions: this,
@@ -129,7 +129,7 @@ export class XpmLiquidActions {
     }
     async _expandTemplateActions({ actionName, jsonActionTemplate, }) {
         const log = this.log;
-        log.trace(`${XpmLiquidActions.name}.#expandTemplateActions(${actionName})`);
+        log.trace(`${XpmActions.name}.#expandTemplateActions(${actionName})`);
         const newActionsMap = new Map();
         if (!isJsonObject(jsonActionTemplate.matrix)) {
             throw new XpmError(`action "${actionName}" matrix is not an object`);
@@ -192,7 +192,7 @@ export class XpmLiquidActions {
                     ` in action "${actionName}" name substitution`;
                 throw new XpmError(message);
             }
-            const newAction = new XpmLiquidAction({
+            const newAction = new XpmAction({
                 actionName: substitutedActionName,
                 jsonAction: jsonActionTemplate.template,
                 parentActions: this,
@@ -202,7 +202,7 @@ export class XpmLiquidActions {
         };
         const generateCombinationsRecursively = async (index, combination) => {
             const log = this.log;
-            log.trace(`${XpmLiquidActions.name}.#expandTemplateActions().` +
+            log.trace(`${XpmActions.name}.#expandTemplateActions().` +
                 `generateCombinationsRecursively(${String(index)}, ${JSON.stringify(combination)})`);
             if (index === matrixKeys.length) {
                 await createSubstitutedAction(combination);
@@ -219,7 +219,7 @@ export class XpmLiquidActions {
         return newActionsMap;
     }
 }
-export class XpmLiquidAction {
+export class XpmAction {
     actionName;
     jsonAction;
     parentActions;
@@ -231,7 +231,7 @@ export class XpmLiquidAction {
         assert(jsonAction);
         assert(parentActions);
         const log = parentActions.log;
-        log.trace(`${XpmLiquidAction.name}(${actionName})`);
+        log.trace(`${XpmAction.name}(${actionName})`);
         this.actionName = actionName;
         this.jsonAction = jsonAction;
         this.parentActions = parentActions;
@@ -242,10 +242,10 @@ export class XpmLiquidAction {
     async initialise() {
         const log = this.parentActions.log;
         if (this._isInitialised) {
-            log.trace(`${XpmLiquidAction.name}.initialise(${this.actionName}) again`);
+            log.trace(`${XpmAction.name}.initialise(${this.actionName}) again`);
             return false;
         }
-        log.trace(`${XpmLiquidAction.name}.initialise(${this.actionName})`);
+        log.trace(`${XpmAction.name}.initialise(${this.actionName})`);
         const jsonAction = this.jsonAction;
         const inputCommands = Array.isArray(jsonAction)
             ? jsonAction.join(os.EOL)
@@ -270,7 +270,7 @@ export class XpmLiquidAction {
         this._commands = substitutedCommands
             .replace(new RegExp(os.EOL + '$'), '')
             .split(os.EOL);
-        log.trace(`${XpmLiquidAction.name}.initialise() =>`, this.actionName);
+        log.trace(`${XpmAction.name}.initialise() =>`, this.actionName);
         log.trace(this.actionName, 'commands =>', this._commands);
         this._isInitialised = true;
         return true;

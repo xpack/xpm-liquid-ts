@@ -31,7 +31,7 @@ const actualBaseUrl = process.env.DOCUSAURUS_BASEURL ??
 const config: Config = {
   title: 'xpm-lib - The xpm core library (work in progress)' +
     ((process.env.DOCUSAURUS_IS_PREVIEW === 'true') ? ' (preview)' : ''),
-  tagline: 'A Node.js TypeScript module with the common code for xpm and xpm enabled projects',
+  tagline: 'A TypeScript Node.js module with the common code for xpm and xpm enabled projects',
 
   // Explicitly set in headTags.
   // favicon: '/img/favicon.ico',
