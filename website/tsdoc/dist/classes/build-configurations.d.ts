@@ -496,7 +496,7 @@ export declare class XpmBuildConfiguration {
      * Common use case: Base configurations that define common properties,
      * dependencies, or actions inherited by multiple concrete configurations.
      */
-    readonly hidden: boolean;
+    readonly isHidden: boolean;
     /**
      * The resolved properties for this configuration.
      *
@@ -619,7 +619,7 @@ export declare class XpmBuildConfiguration {
      * This complete context is used for all substitutions within the
      * configuration: properties, dependencies, devDependencies, and actions.
      */
-    protected substitutionsVariables: XpmLiquidSubstitutionsVariables;
+    protected _substitutionsVariables: XpmLiquidSubstitutionsVariables;
     /**
      * The matrix parameter values for template-generated configurations.
      *

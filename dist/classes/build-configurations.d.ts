@@ -37,12 +37,12 @@ export declare class XpmBuildConfiguration {
     readonly templateBuildConfigurationName?: string;
     readonly parentBuildConfigurations: XpmBuildConfigurations;
     inheritsNames: string[];
-    readonly hidden: boolean;
+    readonly isHidden: boolean;
     properties: XpmLiquidSubstitutionsStrings;
     dependencies: JsonDependencies;
     devDependencies: JsonDependencies;
     jsonBuildConfiguration: JsonBuildConfigurationContent;
-    protected substitutionsVariables: XpmLiquidSubstitutionsVariables;
+    protected _substitutionsVariables: XpmLiquidSubstitutionsVariables;
     protected readonly matrixParameters?: XpmLiquidSubstitutionsStrings;
     protected _actions: XpmActions | undefined;
     protected _buildFolderRelativePath?: string;

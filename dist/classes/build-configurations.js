@@ -229,12 +229,12 @@ export class XpmBuildConfiguration {
     templateBuildConfigurationName;
     parentBuildConfigurations;
     inheritsNames = [];
-    hidden;
+    isHidden;
     properties = {};
     dependencies = {};
     devDependencies = {};
     jsonBuildConfiguration;
-    substitutionsVariables;
+    _substitutionsVariables;
     matrixParameters;
     _actions;
     _buildFolderRelativePath;
@@ -256,10 +256,10 @@ export class XpmBuildConfiguration {
         if (templateBuildConfigurationName !== undefined) {
             this.templateBuildConfigurationName = templateBuildConfigurationName;
         }
-        this.substitutionsVariables = {
+        this._substitutionsVariables = {
             ...this.parentBuildConfigurations.substitutionsVariables,
         };
-        this.hidden = this.jsonBuildConfiguration.hidden ?? false;
+        this.isHidden = this.jsonBuildConfiguration.hidden ?? false;
         this.isTemplate = this.templateBuildConfigurationName !== undefined;
     }
     async initialise() {
@@ -285,7 +285,7 @@ export class XpmBuildConfiguration {
                         engine: this.parentBuildConfigurations.engine,
                         input: stringifiedJsonBuildConfiguration,
                         substitutionsVariables: {
-                            ...this.substitutionsVariables,
+                            ...this._substitutionsVariables,
                             matrix: this.matrixParameters ?? {},
                             configuration: {
                                 ...this.jsonBuildConfiguration,
@@ -316,7 +316,7 @@ export class XpmBuildConfiguration {
                         engine: this.parentBuildConfigurations.engine,
                         input: stringifiedJsonInherits,
                         substitutionsVariables: {
-                            ...this.substitutionsVariables,
+                            ...this._substitutionsVariables,
                             configuration: {
                                 ...this.jsonBuildConfiguration,
                                 name: this.buildConfigurationName,
@@ -403,10 +403,10 @@ export class XpmBuildConfiguration {
             ...localJsonBuildConfiguration.properties,
         };
         assert(this.buildConfigurationName, 'buildConfigurationName missing');
-        this.substitutionsVariables = {
+        this._substitutionsVariables = {
             ...this.parentBuildConfigurations.substitutionsVariables,
             properties: {
-                ...this.substitutionsVariables.properties,
+                ...this._substitutionsVariables.properties,
                 ...this.properties,
             },
             matrix: this.matrixParameters ?? {},
@@ -415,9 +415,9 @@ export class XpmBuildConfiguration {
                 name: this.buildConfigurationName,
             },
         };
-        if (!this.hidden) {
+        if (!this.isHidden) {
             this._buildFolderRelativePath = await this._getBuildFolderRelativePath();
-            const properties = this.substitutionsVariables.properties;
+            const properties = this._substitutionsVariables.properties;
             properties.buildFolderRelativePath = this._buildFolderRelativePath;
         }
         this.dependencies = {
@@ -441,7 +441,7 @@ export class XpmBuildConfiguration {
                     log,
                     engine: this.parentBuildConfigurations.engine,
                     input: stringifiedDependencies,
-                    substitutionsVariables: this.substitutionsVariables,
+                    substitutionsVariables: this._substitutionsVariables,
                 });
             }
             catch (error) {
@@ -456,13 +456,13 @@ export class XpmBuildConfiguration {
         this._actions = new XpmActions({
             log: this.parentBuildConfigurations.log,
             engine: this.parentBuildConfigurations.engine,
-            substitutionsVariables: this.substitutionsVariables,
+            substitutionsVariables: this._substitutionsVariables,
             inheritedActionsMap,
             jsonActions: localJsonBuildConfiguration.actions,
             buildConfiguration: this,
         });
         log.trace(`${XpmBuildConfiguration.name}.initialise() `, `@{this.buildConfigurationName}`);
-        if (!this.hidden) {
+        if (!this.isHidden) {
             log.trace(this.buildConfigurationName, 'buildFolderRelativePath =>', this._buildFolderRelativePath);
         }
         log.trace(this.buildConfigurationName, 'properties => ', this.properties);
@@ -484,15 +484,15 @@ export class XpmBuildConfiguration {
         const log = this.parentBuildConfigurations.log;
         let folderPath;
         if (buildFolderRelativePathPropertyName in
-            this.substitutionsVariables.properties) {
-            folderPath = this.substitutionsVariables.properties[buildFolderRelativePathPropertyName];
+            this._substitutionsVariables.properties) {
+            folderPath = this._substitutionsVariables.properties[buildFolderRelativePathPropertyName];
             if (folderPath !== '') {
                 try {
                     const substitutedFolderPath = await performSubstitutions({
                         log,
                         engine: this.parentBuildConfigurations.engine,
                         input: folderPath,
-                        substitutionsVariables: this.substitutionsVariables,
+                        substitutionsVariables: this._substitutionsVariables,
                     });
                     return substitutedFolderPath;
                 }

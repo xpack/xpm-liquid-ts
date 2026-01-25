@@ -175,6 +175,27 @@ Flag indicating whether the configuration has been initialised.
 </td></tr>
 <tr><td>
 
+[\_substitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/_substitutionsvariables)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[XpmLiquidSubstitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpmliquidsubstitutionsvariables)
+
+
+</td><td>
+
+The variables used for substitution in this configuration.
+
+
+</td></tr>
+<tr><td>
+
 [actions](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/actions)
 
 
@@ -276,7 +297,26 @@ The resolved development dependencies after substitutions.
 </td></tr>
 <tr><td>
 
-[hidden](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/hidden)
+[inheritsNames](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/inheritsnames)
+
+
+</td><td>
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+The list of inherited configuration names.
+
+
+</td></tr>
+<tr><td>
+
+[isHidden](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/ishidden)
 
 
 </td><td>
@@ -292,25 +332,6 @@ boolean
 </td><td>
 
 Indicates whether the configuration is hidden.
-
-
-</td></tr>
-<tr><td>
-
-[inheritsNames](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/inheritsnames)
-
-
-</td><td>
-
-
-</td><td>
-
-string\[\]
-
-
-</td><td>
-
-The list of inherited configuration names.
 
 
 </td></tr>
@@ -412,27 +433,6 @@ The parent build configurations collection.
 </td><td>
 
 The resolved properties for this configuration.
-
-
-</td></tr>
-<tr><td>
-
-[substitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/substitutionsvariables)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-[XpmLiquidSubstitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpmliquidsubstitutionsvariables)
-
-
-</td><td>
-
-The variables used for substitution in this configuration.
 
 
 </td></tr>

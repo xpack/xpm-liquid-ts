@@ -3459,7 +3459,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmActions#empty:member(1)",
-              "docComment": "/**\n * Determines whether the actions collection is empty.\n *\n * @remarks\n *\n * This value is known only after initialisation.\n *\n * @returns `true` if there are no actions, `false` otherwise.\n */\n",
+              "docComment": "/**\n * Determines whether the actions collection is empty.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * @returns `true` if there are no actions, `false` otherwise.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3570,7 +3570,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmActions#has:member(1)",
-              "docComment": "/**\n * Checks whether an action with the specified name exists.\n *\n * @remarks\n *\n * This value is known only after initialisation.\n *\n * @param actionName - The name of the action to check.\n *\n * @returns `true` if the action exists, `false` otherwise.\n */\n",
+              "docComment": "/**\n * Checks whether an action with the specified name exists.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * @param actionName - The name of the action to check.\n *\n * @returns `true` if the action exists, `false` otherwise.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3716,7 +3716,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmActions#names:member(1)",
-              "docComment": "/**\n * Retrieves the names of all actions in the collection.\n *\n * @remarks\n *\n * This value is known only after initialisation.\n *\n * @returns An array of action names.\n */\n",
+              "docComment": "/**\n * Retrieves the names of all actions in the collection.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * @returns An array of action names.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3961,6 +3961,37 @@
               "isAbstract": false
             },
             {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#_substitutionsVariables:member",
+              "docComment": "/**\n * The variables used for substitution in this configuration.\n *\n * @remarks\n *\n * This extended variable hierarchy combines the base collection variables with configuration-specific context, enabling accurate template evaluation.\n *\n * Extension hierarchy:\n *\n * <ol> <li>Starts with parent collection's base variables (env, os, path, package).</li> <li>Extended with <code>properties</code>: Merged from inheritance chain and local properties.</li> <li>Extended with <code>matrix</code>: Parameter values for template-generated configurations.</li> <li>Extended with <code>configuration</code>: The configuration object itself (name, dependencies, properties) accessible for self-reference.</li> </ol>\n *\n * This complete context is used for all substitutions within the configuration: properties, dependencies, devDependencies, and actions.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _substitutionsVariables: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "XpmLiquidSubstitutionsVariables",
+                  "canonicalReference": "@xpack/xpm-lib!XpmLiquidSubstitutionsVariables:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_substitutionsVariables",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
               "kind": "Constructor",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration:constructor(1)",
               "docComment": "/**\n * Constructs a build configuration instance.\n *\n * @remarks\n *\n * The constructor performs partial initialisation. Full initialisation requires calling {@link XpmBuildConfiguration.initialise}.\n *\n * @param buildConfigurationName - The configuration name after substitution.\n *\n * @param templateBuildConfigurationName - The template configuration name, if derived from a template.\n *\n * @param jsonBuildConfiguration - The JSON configuration definition.\n *\n * @param parentBuildConfigurations - The parent configurations collection.\n *\n * @param matrixParameters - Optional matrix parameter values for template-generated configurations.\n */\n",
@@ -4174,36 +4205,6 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#hidden:member",
-              "docComment": "/**\n * Indicates whether the configuration is hidden.\n *\n * @remarks\n *\n * Hidden configurations are used for inheritance bases or intermediate configurations that shouldn't be directly selected for building.\n *\n * Effects of hidden status:\n *\n * <ol> <li>Hidden configurations don't compute build folder relative paths during initialisation (optimization for inheritance-only configs).</li> <li>May be excluded from user-facing configuration lists depending on application logic.</li> <li>Still fully initialised and available for inheritance by other configurations.</li> <li>Derived from <code>hidden</code> field in JSON configuration definition (defaults to <code>false</code>).</li> </ol>\n *\n * Common use case: Base configurations that define common properties, dependencies, or actions inherited by multiple concrete configurations.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "readonly hidden: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "hidden",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#inheritsNames:member",
               "docComment": "/**\n * The list of inherited configuration names.\n *\n * @remarks\n *\n * This array specifies the inheritance chain for this configuration, processed sequentially during initialisation with later entries overriding earlier ones.\n *\n * Inheritance processing:\n *\n * <ol> <li>Populated from <code>inherits</code> or deprecated <code>inherit</code> field during initialisation.</li> <li>Supports both string (single parent) and array (multiple parents) formats.</li> <li>Each inherited configuration is initialised recursively before merging its properties, dependencies, and actions.</li> <li>Circular references are detected and rejected with <code>XpmInputError</code>.</li> <li>Later inherited configurations override properties from earlier ones, and local properties override all inherited ones.</li> </ol>\n */\n",
               "excerptTokens": [
@@ -4267,6 +4268,36 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "initialise"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#isHidden:member",
+              "docComment": "/**\n * Indicates whether the configuration is hidden.\n *\n * @remarks\n *\n * Hidden configurations are used for inheritance bases or intermediate configurations that shouldn't be directly selected for building.\n *\n * Effects of hidden status:\n *\n * <ol> <li>Hidden configurations don't compute build folder relative paths during initialisation (optimization for inheritance-only configs).</li> <li>May be excluded from user-facing configuration lists depending on application logic.</li> <li>Still fully initialised and available for inheritance by other configurations.</li> <li>Derived from <code>hidden</code> field in JSON configuration definition (defaults to <code>false</code>).</li> </ol>\n *\n * Common use case: Base configurations that define common properties, dependencies, or actions inherited by multiple concrete configurations.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly isHidden: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "isHidden",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
             },
             {
               "kind": "Property",
@@ -4420,37 +4451,6 @@
               },
               "isStatic": false,
               "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#substitutionsVariables:member",
-              "docComment": "/**\n * The variables used for substitution in this configuration.\n *\n * @remarks\n *\n * This extended variable hierarchy combines the base collection variables with configuration-specific context, enabling accurate template evaluation.\n *\n * Extension hierarchy:\n *\n * <ol> <li>Starts with parent collection's base variables (env, os, path, package).</li> <li>Extended with <code>properties</code>: Merged from inheritance chain and local properties.</li> <li>Extended with <code>matrix</code>: Parameter values for template-generated configurations.</li> <li>Extended with <code>configuration</code>: The configuration object itself (name, dependencies, properties) accessible for self-reference.</li> </ol>\n *\n * This complete context is used for all substitutions within the configuration: properties, dependencies, devDependencies, and actions.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected substitutionsVariables: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "XpmLiquidSubstitutionsVariables",
-                  "canonicalReference": "@xpack/xpm-lib!XpmLiquidSubstitutionsVariables:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "substitutionsVariables",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
               "isAbstract": false
             },
             {

@@ -14,7 +14,8 @@
   },
   "files.associations": {
     "api-extractor.json": "jsonc"
-  }
+  },
+  "cSpell.language": "en-GB",
   "cSpell.ignoreWords": [
     "Funcs",
     "Ionescu",

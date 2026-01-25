@@ -19,5 +19,5 @@ An array of action names.
 
 ## Remarks
 
-This value is known only after initialisation.
+This value is known only after `initialise()`<!-- -->.
 

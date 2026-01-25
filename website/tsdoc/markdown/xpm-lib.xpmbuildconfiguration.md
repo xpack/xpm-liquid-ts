@@ -165,6 +165,27 @@ Flag indicating whether the configuration has been initialised.
 </td></tr>
 <tr><td>
 
+[\_substitutionsVariables](./xpm-lib.xpmbuildconfiguration._substitutionsvariables.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[XpmLiquidSubstitutionsVariables](./xpm-lib.xpmliquidsubstitutionsvariables.md)
+
+
+</td><td>
+
+The variables used for substitution in this configuration.
+
+
+</td></tr>
+<tr><td>
+
 [actions](./xpm-lib.xpmbuildconfiguration.actions.md)
 
 
@@ -266,7 +287,26 @@ The resolved development dependencies after substitutions.
 </td></tr>
 <tr><td>
 
-[hidden](./xpm-lib.xpmbuildconfiguration.hidden.md)
+[inheritsNames](./xpm-lib.xpmbuildconfiguration.inheritsnames.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+The list of inherited configuration names.
+
+
+</td></tr>
+<tr><td>
+
+[isHidden](./xpm-lib.xpmbuildconfiguration.ishidden.md)
 
 
 </td><td>
@@ -282,25 +322,6 @@ boolean
 </td><td>
 
 Indicates whether the configuration is hidden.
-
-
-</td></tr>
-<tr><td>
-
-[inheritsNames](./xpm-lib.xpmbuildconfiguration.inheritsnames.md)
-
-
-</td><td>
-
-
-</td><td>
-
-string\[\]
-
-
-</td><td>
-
-The list of inherited configuration names.
 
 
 </td></tr>
@@ -402,27 +423,6 @@ The parent build configurations collection.
 </td><td>
 
 The resolved properties for this configuration.
-
-
-</td></tr>
-<tr><td>
-
-[substitutionsVariables](./xpm-lib.xpmbuildconfiguration.substitutionsvariables.md)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-[XpmLiquidSubstitutionsVariables](./xpm-lib.xpmliquidsubstitutionsvariables.md)
-
-
-</td><td>
-
-The variables used for substitution in this configuration.
 
 
 </td></tr>

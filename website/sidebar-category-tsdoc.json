@@ -1214,6 +1214,12 @@
                 },
                 {
                   "type": "doc",
+                  "label": "_substitutionsVariables",
+                  "className": "tsdocEllipsis",
+                  "id": "api/xpm-lib/classes/xpmbuildconfiguration/$_substitutionsvariables$"
+                },
+                {
+                  "type": "doc",
                   "label": "actions",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/xpmbuildconfiguration/actions"
@@ -1244,15 +1250,15 @@
                 },
                 {
                   "type": "doc",
-                  "label": "hidden",
-                  "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/xpmbuildconfiguration/hidden"
-                },
-                {
-                  "type": "doc",
                   "label": "inheritsNames",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/xpmbuildconfiguration/inheritsnames"
+                },
+                {
+                  "type": "doc",
+                  "label": "isHidden",
+                  "className": "tsdocEllipsis",
+                  "id": "api/xpm-lib/classes/xpmbuildconfiguration/ishidden"
                 },
                 {
                   "type": "doc",
@@ -1283,12 +1289,6 @@
                   "label": "properties",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/xpmbuildconfiguration/properties"
-                },
-                {
-                  "type": "doc",
-                  "label": "substitutionsVariables",
-                  "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/xpmbuildconfiguration/substitutionsvariables"
                 },
                 {
                   "type": "doc",
