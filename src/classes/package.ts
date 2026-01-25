@@ -72,22 +72,22 @@ export class XpmPackage {
    * The absolute path to the package folder.
    *
    * @remarks
-   * This path serves as the base directory for all package operations,
+   * This path serves as the base folder for all package operations,
    * including reading/writing package.json and resolving relative paths.
    *
    * Path requirements:
    *
    * <ol>
-   * <li>Must be an absolute path to a directory.</li>
-   * <li>Directory should contain (or will contain) a package.json file.</li>
-   * <li>Used to construct the path to package.json as
+   * <li>Must be an absolute path to a folder.</li>
+   * <li>Folder should contain (or will contain) a package.json file.</li>
+   * <li>Used to construct the path to <code>package.json</code> as
    *    <code>\{packageFolderPath\}/package.json</code>.</li>
    * <li>Remains constant throughout the lifecycle of the XpmPackage
    *    instance.</li>
    * </ol>
    *
    * The path is set during construction and used by all methods that access
-   * or modify package.json.
+   * or modify `package.json`.
    */
   packageFolderPath: string
 

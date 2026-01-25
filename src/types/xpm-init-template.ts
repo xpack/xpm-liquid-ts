@@ -191,15 +191,15 @@ export interface XpmInitTemplateItemValue {
  * Variable structure:
  *
  * <ul>
- * <li><code>properties</code>: Contains all user-provided or default values
- *   from the
- *   template property definitions, accessible via
- *   <code>\{\{ properties.propertyName \}\}</code> in template files.</li>
+ * <li><b><code>properties</code></b>: Contains all user-provided or 
+ *    default values from the
+ *    template property definitions, accessible via
+ *    <code>\{\{ properties.propertyName \}\}</code> in template files.</li>
  * <li>Additional variables: Templates can define custom variables for reuse
- *   across multiple files or for computed values based on properties.</li>
+ *    across multiple files or for computed values based on properties.</li>
  * </ul>
  *
- * Template files (with `.liquid` extension or configured patterns) are
+ * Template files (with `.liquid` extension) are
  * processed with this context, allowing conditional content, loops, and
  * value substitution. Non-template files are copied as-is without
  * processing.

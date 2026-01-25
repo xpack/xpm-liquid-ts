@@ -28,10 +28,11 @@ import * as path from 'node:path'
  * Common use cases:
  *
  * <ul>
- * <li>Properties: User-defined configuration values from xpack.properties.</li>
- * <li>Matrix parameters: Template expansion variables from matrix
+ * <li><b>Properties:</b> User-defined configuration values from 
+ *   <code>xpack.properties.</code></li>
+ * <li><b>Matrix parameters:</b> Template expansion variables from matrix
  * definitions.</li>
- * <li>Configuration data: Build-specific settings and metadata.</li>
+ * <li><b>Configuration data:</b> Build-specific settings and metadata.</li>
  * </ul>
  *
  * Templates access these values via namespaces like `properties.foo`,
@@ -51,24 +52,40 @@ export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>
  * Variable hierarchy and scoping:
  *
  * <ol>
- * <li>Base variables (env, os, path): Available globally, initialized once
+ * <li><b>Base variables</b> (<code>env</code>, <code>os</code>, 
+ *    <code>path</code>): Available globally, initialized once
  *    from Node.js runtime at startup.</li>
- * <li>Package variables: Added when processing package.json, contains
+ * <li><b>Package variables:</b> Added when processing 
+ *    <code>package.json</code>, contains
  *    package metadata accessible via <code>package.name</code>,
  *    <code>package.version</code>,
  *    etc.</li>
- * <li>Properties: User-defined values from xpack.properties, accessible via
+ * <li><b>Properties:</b> User-defined values from 
+ *    <code>xpack.properties</code>, accessible via
  *    <code>properties.key</code>.</li>
- * <li>Configuration: Build configuration metadata, available when processing
- *    configuration-specific templates via <code>configuration.name</code>,
+ * <li><b>Configuration:</b> Build configuration metadata, available when 
+ *    processing configuration-specific templates via 
+ *    <code>configuration.name</code>,
  *    etc.</li>
- * <li>Matrix: Template expansion parameters, scoped to individual expanded
- *    instances, accessible via <code>matrix.key</code>.</li>
+ * <li><b>Matrix:</b> Template expansion parameters, scoped to individual 
+ *    expanded instances, accessible via <code>matrix.key</code>.</li>
  * </ol>
  *
- * Variables are inherited and extended through the hierarchy: actions and
- * configurations inherit base + package + properties, then add their own
- * scoped variables. This ensures templates have access to appropriate
+ * Variables are inherited and extended through the hierarchy:
+ *  
+ * <ul>
+ * <li>package actions use package properties</li>
+ * <li>configuration actions use: 
+ *    <ul>
+ *    <li>package actions</li>
+ *    <li>actions inherited from parent configurations, recursively, 
+ *      in order of inheritance</li>
+ *    <li>configuration properties</li>
+ *    </ul>
+ * </li>
+ * </ul>
+ *
+ * This ensures templates have access to appropriate
  * context without exposing unrelated data.
  */
 export interface XpmLiquidSubstitutionsVariables {
@@ -77,10 +94,10 @@ export interface XpmLiquidSubstitutionsVariables {
    *
    * @remarks
    * Provides access to all environment variables via `env.VARIABLE_NAME`
-   * in templates. Common uses include accessing PATH, HOME, USER, or
+   * in templates. Common uses include accessing `PATH`, `HOME`, `USER`, or
    * custom variables set by build scripts.
    *
-   * See [Node.js process.env documentation](https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env)
+   * See {@link https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env | Node.js process.env documentation}
    */
   env: NodeJS.ProcessEnv
   /**
@@ -98,10 +115,10 @@ export interface XpmLiquidSubstitutionsVariables {
    * <li><code>os.arch</code>: Detect CPU architecture ('x64', 'arm64',
    *   etc.).</li>
    * <li><code>os.EOL</code>: Use correct line endings for generated files.</li>
-   * <li><code>os.homedir</code>: Reference user's home directory portably.</li>
+   * <li><code>os.homedir</code>: Reference user's home folder portably.</li>
    * </ul>
    *
-   * See [Node.js os module documentation](https://nodejs.org/dist/latest-v16.x/docs/api/os.html)
+   * See {@link https://nodejs.org/dist/latest-v16.x/docs/api/os.html | Node.js os module documentation}
    */
   os: {
     /**
@@ -121,7 +138,7 @@ export interface XpmLiquidSubstitutionsVariables {
      * Contains commonly used operating system-specific constants
      * for error codes, process signals, and so on. The specific
      * constants defined are described in
-     * [OS constants](https://nodejs.org/dist/latest-v16.x/docs/api/os.html#os_os_constants_1)
+     * {@link https://nodejs.org/dist/latest-v16.x/docs/api/os.html#os_os_constants_1 | OS constants}
      */
     constants: {
       signals: Record<string, number>
@@ -140,7 +157,7 @@ export interface XpmLiquidSubstitutionsVariables {
      */
     endianness: 'BE' | 'LE'
     /**
-     * The string path of the current user's home directory.
+     * The string path of the current user's home folder.
      */
     homedir: string
     /**
@@ -158,7 +175,7 @@ export interface XpmLiquidSubstitutionsVariables {
      */
     release: string
     /**
-     * Returns the operating system's default directory for
+     * Returns the operating system's default folder for
      * temporary files as a string.
      */
     tmpdir: string

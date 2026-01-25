@@ -24,9 +24,9 @@ env: NodeJS.ProcessEnv;
 
 ## Remarks
 
-Provides access to all environment variables via `env.VARIABLE_NAME` in templates. Common uses include accessing PATH, HOME, USER, or custom variables set by build scripts.
+Provides access to all environment variables via `env.VARIABLE_NAME` in templates. Common uses include accessing `PATH`<!-- -->, `HOME`<!-- -->, `USER`<!-- -->, or custom variables set by build scripts.
 
-See \[Node.js process.env documentation\](https://nodejs.org/dist/latest-v16.x/docs/api/process.html\#process\_process\_env)
+See [Node.js process.env documentation](https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_process_env)
 
 <hr/>
 
