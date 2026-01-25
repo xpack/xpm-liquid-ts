@@ -23,7 +23,7 @@
           "label": "Variables",
           "link": {
             "type": "doc",
-            "id": "api/xpm-lib"
+            "id": "api/xpm-lib/variables/index"
           },
           "className": "tsdocEllipsis",
           "collapsed": true,
@@ -57,7 +57,7 @@
           "label": "Functions",
           "link": {
             "type": "doc",
-            "id": "api/xpm-lib"
+            "id": "api/xpm-lib/functions/index"
           },
           "className": "tsdocEllipsis",
           "collapsed": true,
@@ -223,7 +223,7 @@
           "label": "Type Aliases",
           "link": {
             "type": "doc",
-            "id": "api/xpm-lib"
+            "id": "api/xpm-lib/typealiases/index"
           },
           "className": "tsdocEllipsis",
           "collapsed": true,
@@ -411,7 +411,7 @@
           "label": "Interfaces",
           "link": {
             "type": "doc",
-            "id": "api/xpm-lib"
+            "id": "api/xpm-lib/interfaces/index"
           },
           "className": "tsdocEllipsis",
           "collapsed": true,
@@ -999,7 +999,7 @@
           "label": "Classes",
           "link": {
             "type": "doc",
-            "id": "api/xpm-lib"
+            "id": "api/xpm-lib/classes/index"
           },
           "className": "tsdocEllipsis",
           "collapsed": true,
