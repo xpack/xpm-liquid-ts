@@ -1,4 +1,238 @@
 
 {/* ------------------------------------------------------------------------ */}
 
-TODO
+The `@xpack/xpm-lib` module can be imported as usual by name into both 
+TypeScript and JavaScript Node.js code.
+
+
+## `XpmPackage`
+
+The `XpmPackage` is the top object that includes all xpm specific definitions
+in the `package.json` file.
+
+To import its definition in a file, use:
+
+```typescript
+import { XpmPackage } from '@xpack/xpm-lib'
+```
+
+### Constructor
+
+The object constructor requires a logger instance and the path where 
+the xpm package is located:
+
+```typescript
+const xpmPackage = new XpmPackage({ log, packageFolderPath: config.cwd })
+```
+
+### Read the `package.json`
+
+The next step is to try to read the `package.json` file.
+
+```typescript
+const jsonPackage = await xpmPackage.readPackageDotJson()
+```
+
+If the file does not exist or is not valid JSON, the result is undefined.
+
+In certain situations where the file must be present and correct,
+it is preferable to use exceptions.
+
+```typescript
+await xpmPackage.readPackageDotJson({withThrow: true})
+```
+
+The advantage is that exceptions clearly document the failure reason
+(missing file or invalid JSON).
+
+### Write `package.json`
+
+To update the `package.json` content (for example, after `xpm install` 
+or `xpm uninstall`), use the rewrite method:
+
+```typescript
+await rewritePackageDotJson(jsonPackage)
+```
+
+### Status methods
+
+There are several functions that can be used to know more about the 
+package:
+
+- `isNpmPackage()`
+- `isXpmPackage()`
+- `isBinaryXpmPackage()`
+- `isNodeModule()`
+- `isBinaryNodeModule()`
+- `hasNpmScripts()`
+- `hasXpmActions()`
+
+### Minimum xpm version
+
+To retrieve the minimum version of xpm required by the package:
+
+- `getMinimumXpmRequired()`
+
+A more elaborate method checks whether the current package is compatible with
+the current xpm version:
+
+- `checkMinimumXpmRequired()`
+
+### Other methods
+
+A utility function to parse package specifier:
+
+- `parsePackageSpecifier()`
+
+### Other members
+
+- `substitutionsVariables`
+
+## `XpmDataModel`
+
+Once the `package.json` is validated, the next step is to create the top
+data model object.
+
+```typescript
+const xpmDataModel = new XpmDataModel({ log, jsonPackage })
+```
+
+The constructor uses lazy processing: it creates empty objects without 
+performing any processing. Objects must be initialised before use.
+
+## `XpmBuildConfigurations`
+
+With the data model created, it is possible to create the list 
+of build configurations and enumerate the names:
+
+```typescript
+const buildConfigurations = xpmDataModel.buildConfigurations
+await buildConfigurations.initialise()
+
+for (const buildConfigurationName of buildConfigurations.names()) {
+  console.log(buildConfigurationName)
+}
+```
+
+The `initialise()` async function enumerates the definitions in `package.json`.
+For template-defined build configurations, it performs the first expansion step:
+computing the names. The actual content processing is delayed until needed.
+
+### Other methods
+
+- `empty()`
+- `has()`
+- `getJsonName()`
+- `hasJson()`
+- `getJson()`
+- `isHidden()`
+
+### Other members
+
+- log
+- engine
+- substitutionsVariables
+- jsonBuildConfigurations
+
+## `XpmBuildConfiguration`
+
+With the collection of build configurations initialised, it is now possible to 
+access an individual build configuration:
+
+```typescript
+const buildConfiguration = buildConfigurations.get(buildConfigurationName)
+await buildConfiguration.initialise()
+```
+
+The lazy processing pattern is consistent: objects are first created 
+in an empty state, then initialised when needed.
+
+### Other members
+
+- `buildConfigurationName`
+- `templateBuildConfigurationName`
+- `parentBuildConfigurations`
+- `inheritsNames`
+- `isHidden`
+- `properties`
+- `dependencies`
+- `devDependencies`
+- `jsonBuildConfiguration`
+- `buildFolderRelativePath`
+- `isTemplate`
+
+## `XpmActions`
+
+The next class of objects managed by the data model are actions.
+
+They are also organised as collections, with objects accessible by name.
+
+There can be actions defined at the top package level, and for each 
+build configuration.
+
+The package actions can be retrieved directly from the data model object:
+
+```typescript
+const actions = xpmDataModel.actions
+await actions.initialise()
+```
+
+The build configuration actions can be retrieved similarly from the build 
+configuration object:
+
+```typescript
+const actions = buildConfiguration.actions
+await actions.initialise()
+```
+
+Consistent with other objects, the actions collection also uses lazy processing.
+
+The `initialise()` async function enumerates the definitions in `package.json`.
+For template-defined actions, it performs the first expansion step: computing 
+the names. The actual content processing is delayed until needed.
+
+With the collection initialised, it is now possible to enumerate the
+names of the available actions.
+
+```typescript
+for (const actionName of actions.names()) {
+  console.log(actionName)
+}
+```
+
+### Other methods
+
+- `empty()`
+- `has()`
+
+### Other members
+
+- `log`
+- `engine`
+- `substitutionsVariables`
+- `jsonActions`
+- `buildConfiguration`
+
+## `XpmAction`
+
+With the collection of actions initialised, it is now possible to 
+access an individual action:
+
+```typescript
+const action = actions.get(actionName)
+await action.initialise()
+
+console.log(action.commands)
+```
+
+### Other methods
+
+- `actionName`
+- `jsonAction`
+- `parentActions`
+
+:::info
+
+For more details, please read the [API Reference](/docs/api) pages.
+
+:::
