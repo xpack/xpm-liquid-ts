@@ -47,24 +47,11 @@ There are no fixed releases.
 
 ### Update npm packages
 
-:::note
-
-This package is also utilised by the VS Code extension and, until VS Code
-accepts ESM dependencies, it must be
-maintained as a legacy CommonJS dependency.
-
-:::
-
 - `npm outdated`
 - `npm update` or edit and `npm install`
 - Repeat and possibly manually edit `package.json` until everything is
   up to date
 - **Commit** the changes
-
-Maintain:
-
-- [`@types/node`](https://www.npmjs.com/package/@types/node?activeTab=versions)
-  locked to the latest version that still matches the oldest supported node (20).
 
 <ProjectDependenciesDetails />
 
