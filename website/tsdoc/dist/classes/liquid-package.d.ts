@@ -19,17 +19,15 @@ export declare const buildFolderRelativePathPropertyName = "buildFolderRelativeP
  * Liquid-based template processing in an xpm package. It establishes the
  * foundation for variable substitution throughout the package hierarchy:
  *
- * 1. Initializes base substitution variables (platform detection, system
- *    information, etc.).
- *
- * 2. Adds package-specific variables from package.json metadata.
- *
- * 3. Merges user-defined properties from xpack.properties.
- *
- * 4. Creates package-level actions accessible across all contexts.
- *
- * 5. Creates build configurations, each inheriting the base substitution
- *    context and adding configuration-specific variables.
+ * <ol>
+ * <li>Initializes base substitution variables (platform detection, system
+ *    information, etc.).</li>
+ * <li>Adds package-specific variables from package.json metadata.</li>
+ * <li>Merges user-defined properties from xpack.properties.</li>
+ * <li>Creates package-level actions accessible across all contexts.</li>
+ * <li>Creates build configurations, each inheriting the base substitution
+ *    context and adding configuration-specific variables.</li>
+ * </ol>
  *
  * This hierarchical structure ensures that templates at any level have
  * access to appropriate variables while maintaining clear scoping rules.
@@ -60,15 +58,14 @@ export declare class XpmLiquidPackage {
      *
      * Engine characteristics:
      *
-     * 1. Strict mode enabled to catch undefined variable references.
-     *
-     * 2. Custom filters for platform detection (isPlatform, isArch).
-     *
-     * 3. Custom filters for path sanitization (filterPath, filterPosixPath,
-     *    filterWin32Path).
-     *
-     * 4. Shared instance reduces memory overhead and ensures consistent
-     *    template evaluation across all package components.
+     * <ol>
+     * <li>Strict mode enabled to catch undefined variable references.</li>
+     * <li>Custom filters for platform detection (isPlatform, isArch).</li>
+     * <li>Custom filters for path sanitization (filterPath, filterPosixPath,
+     *    filterWin32Path).</li>
+     * <li>Shared instance reduces memory overhead and ensures consistent
+     *    template evaluation across all package components.</li>
+     * </ol>
      */
     protected _engine: Liquid;
     /**
@@ -80,16 +77,14 @@ export declare class XpmLiquidPackage {
      *
      * Required structure:
      *
-     * 1. Standard npm fields: name, version, dependencies, devDependencies.
-     *
-     * 2. Required `xpack` section containing xpm-specific configuration.
-     *
-     * 3. Optional xpack.properties for user-defined substitution variables.
-     *
-     * 4. Optional xpack.actions for package-level executable actions.
-     *
-     * 5. Optional xpack.buildConfigurations for build configuration
-     *    definitions.
+     * <ol>
+     * <li>Standard npm fields: name, version, dependencies, devDependencies.</li>
+     * <li>Required `xpack` section containing xpm-specific configuration.</li>
+     * <li>Optional xpack.properties for user-defined substitution variables.</li>
+     * <li>Optional xpack.actions for package-level executable actions.</li>
+     * <li>Optional xpack.buildConfigurations for build configuration
+     *    definitions.</li>
+     * </ol>
      *
      * The package definition is validated during construction, requiring the
      * xpack section to be present and be a valid JSON object.
@@ -104,17 +99,26 @@ export declare class XpmLiquidPackage {
      *
      * Variable hierarchy:
      *
-     * 1. Base variables (xpmLiquidSubstitutionsVariablesBase):
-     *    - `env`: Environment variables from process.env
-     *    - `os`: Platform detection (platform, arch, endianness, version)
-     *    - `path`: Path utilities (sep, delimiter, cwd)
-     *
-     * 2. Package metadata:
-     *    - `package`: Complete package.json content (name, version,
-     *      dependencies, etc.)
-     *
-     * 3. User-defined properties:
-     *    - `properties`: Merged from xpack.properties if present
+     * <ol>
+     * <li>Base variables (xpmLiquidSubstitutionsVariablesBase):
+     *   <ul>
+     *   <li>`env`: Environment variables from process.env</li>
+     *   <li>`os`: Platform detection (platform, arch, endianness, version)</li>
+     *   <li>`path`: Path utilities (sep, delimiter, cwd)</li>
+     *   </ul>
+     * </li>
+     * <li>Package metadata:
+     *   <ul>
+     *   <li>`package`: Complete package.json content (name, version,
+     *      dependencies, etc.)</li>
+     *   </ul>
+     * </li>
+     * <li>User-defined properties:
+     *   <ul>
+     *   <li>`properties`: Merged from xpack.properties if present</li>
+     *   </ul>
+     * </li>
+     * </ol>
      *
      * The object is sealed after initialization to prevent accidental
      * modification. Child components (actions and configurations) extend this
@@ -132,19 +136,17 @@ export declare class XpmLiquidPackage {
      *
      * Package-level actions characteristics:
      *
-     * 1. Created during construction but initially unpopulated.
-     *
-     * 2. Populated during the collection's own initialisation when
-     *    {@link XpmLiquidActions.initialise} is called.
-     *
-     * 3. Have access to package-level substitution variables but not
-     *    configuration-specific variables.
-     *
-     * 4. Suitable for package-wide tasks like testing, documentation
-     *    generation, or global cleanup.
-     *
-     * 5. Can be used alongside configuration-specific actions, which inherit
-     *    from package-level actions.
+     * <ol>
+     * <li>Created during construction but initially unpopulated.</li>
+     * <li>Populated during the collection's own initialisation when
+     *    <code>XpmLiquidActions.initialise</code> is called.</li>
+     * <li>Have access to package-level substitution variables but not
+     *    configuration-specific variables.</li>
+     * <li>Suitable for package-wide tasks like testing, documentation
+     *    generation, or global cleanup.</li>
+     * <li>Can be used alongside configuration-specific actions, which inherit
+     *    from package-level actions.</li>
+     * </ol>
      */
     readonly actions: XpmLiquidActions;
     /**
@@ -157,22 +159,19 @@ export declare class XpmLiquidPackage {
      *
      * Build configurations characteristics:
      *
-     * 1. Created during construction but initially unpopulated.
-     *
-     * 2. Populated during the collection's own initialisation when
-     *    {@link XpmLiquidBuildConfigurations.initialise} is called.
-     *
-     * 3. Each configuration inherits the package-level substitution variables
-     *    and extends them with configuration-specific context.
-     *
-     * 4. Support complex inheritance chains where configurations can inherit
-     *    properties, dependencies, and actions from other configurations.
-     *
-     * 5. Can be generated from templates with matrix expansion for
-     *    multi-platform or multi-variant builds.
-     *
-     * 6. Each configuration maintains its own actions collection, inheriting
-     *    package-level actions and adding configuration-specific ones.
+     * <ol>
+     * <li>Created during construction but initially unpopulated.</li>
+     * <li>Populated during the collection's own initialisation when
+     *    <code>XpmLiquidBuildConfigurations.initialise</code> is called.</li>
+     * <li>Each configuration inherits the package-level substitution variables
+     *    and extends them with configuration-specific context.</li>
+     * <li>Support complex inheritance chains where configurations can inherit
+     *    properties, dependencies, and actions from other configurations.</li>
+     * <li>Can be generated from templates with matrix expansion for
+     *    multi-platform or multi-variant builds.</li>
+     * <li>Each configuration maintains its own actions collection, inheriting
+     *    package-level actions and adding configuration-specific ones.</li>
+     * </ol>
      */
     readonly buildConfigurations: XpmLiquidBuildConfigurations;
     /**
@@ -185,23 +184,20 @@ export declare class XpmLiquidPackage {
      *
      * Initialization sequence:
      *
-     * 1. Create XpmLiquidEngine with custom filters and strict configuration.
-     *
-     * 2. Validate xpack section exists in package.json.
-     *
-     * 3. Initialize base substitution variables (os, platform, arch, etc.).
-     *
-     * 4. Add package metadata to substitution context.
-     *
-     * 5. Merge xpack.properties if defined, allowing user-defined variables.
-     *
-     * 6. Seal substitution variables to prevent accidental modification.
-     *
-     * 7. Create package-level actions collection (initially empty, populated
-     *    during initialisation).
-     *
-     * 8. Create build configurations collection (initially empty, populated
-     *    during initialisation).
+     * <ol>
+     * <li>Create XpmLiquidEngine with custom filters and strict
+     * configuration.</li>
+     * <li>Validate xpack section exists in package.json.</li>
+     * <li>Initialize base substitution variables (os, platform, arch, etc.).</li>
+     * <li>Add package metadata to substitution context.</li>
+     * <li>Merge xpack.properties if defined, allowing user-defined
+     * variables.</li>
+     * <li>Seal substitution variables to prevent accidental modification.</li>
+     * <li>Create package-level actions collection (initially empty, populated
+     *    during initialisation).</li>
+     * <li>Create build configurations collection (initially empty, populated
+     *    during initialisation).</li>
+     * </ol>
      *
      * The substitution variables object is sealed to ensure immutability of
      * the base context. Individual actions and configurations will extend this

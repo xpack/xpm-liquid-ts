@@ -28,15 +28,7 @@ This path specifies where build outputs for this configuration should be placed,
 
 Computation workflow:
 
-1. Undefined until [XpmLiquidBuildConfiguration.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidbuildconfiguration/initialise) is called.
-
-2. Not computed for hidden configurations (optimization).
-
-3. If `buildFolderRelativePath` property exists, perform Liquid substitution with full configuration context.
-
-4. Otherwise, generate default path: `build/{sanitized-config-name}`<!-- -->.
-
-5. Added to `properties.buildFolderRelativePath` for use in action commands and dependency references.
+<ol> <li>Undefined until <code>XpmLiquidBuildConfiguration.initialise</code> is called.</li> <li>Not computed for hidden configurations (optimization).</li> <li>If <code>buildFolderRelativePath</code> property exists, perform Liquid substitution with full configuration context.</li> <li>Otherwise, generate default path: <code>build/<!-- -->{<!-- -->sanitized-config-name<!-- -->}</code>.</li> <li>Added to <code>properties.buildFolderRelativePath</code> for use in action commands and dependency references.</li> </ol>
 
 The path is relative to the package root and used by build tools to organize outputs from different configurations.
 

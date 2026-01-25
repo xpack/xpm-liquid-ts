@@ -28,13 +28,7 @@ This array contains the fully evaluated command lines ready for execution, with 
 
 Lifecycle states:
 
-1. Undefined initially and until [XpmLiquidAction.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidaction/initialise) is called.
-
-2. Populated during initialisation by evaluating `jsonAction` with the Liquid engine and complete variable context.
-
-3. Array-based JSON definitions are joined, substituted, then split back into individual command lines.
-
-4. Each string represents one command line to be executed sequentially.
+<ol> <li>Undefined initially and until <code>XpmLiquidAction.initialise</code> is called.</li> <li>Populated during initialisation by evaluating <code>jsonAction</code> with the Liquid engine and complete variable context.</li> <li>Array-based JSON definitions are joined, substituted, then split back into individual command lines.</li> <li>Each string represents one command line to be executed sequentially.</li> </ol>
 
 Attempting to access via the `commands` getter before initialisation will trigger an assertion error, enforcing correct usage order.
 

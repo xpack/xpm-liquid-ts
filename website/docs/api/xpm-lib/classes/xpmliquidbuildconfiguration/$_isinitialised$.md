@@ -28,11 +28,7 @@ This flag ensures idempotent initialization and prevents redundant processing wh
 
 State transitions:
 
-1. Initially `false` after construction.
-
-2. Set to `true` after successful inheritance resolution, property merging, dependency substitution, and action preparation.
-
-3. Checked at the start of [XpmLiquidBuildConfiguration.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidbuildconfiguration/initialise) to return early if already initialised.
+<ol> <li>Initially <code>false</code> after construction.</li> <li>Set to <code>true</code> after successful inheritance resolution, property merging, dependency substitution, and action preparation.</li> <li>Checked at the start of <code>XpmLiquidBuildConfiguration.initialise</code> to return early if already initialised.</li> </ol>
 
 This pattern is critical for inheritance processing, as configurations may be initialised multiple times when referenced by multiple children, but should only process their inheritance chain once.
 

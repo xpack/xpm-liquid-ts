@@ -1,6 +1,6 @@
 /**
- * A Node.js TypeScript module with the core code for xpm and xpm enabled
- * projects.
+ * A Node.js TypeScript module with the core code for <b>xpm</b> and
+ * <b>xpm enabled</b> projects.
  *
  * @remarks
  * This library groups together various classes and functions used in common
@@ -15,14 +15,18 @@
  * ({@link XpmLiquidBuildConfigurations}) implement a two-step lazy evaluation
  * process to avoid unnecessary operations:
  *
- * 1. Name Expansion: During collection initialisation, only the matrix of
+ * <ol>
+ * <li>Name Expansion: During collection initialisation, only the matrix of
  *    options is evaluated for each template, expanding template names into
- *    concrete action or configuration names without processing their content.
- *
- * 2. Content Evaluation: Later, when an action or build configuration is
- *    actually accessed and initialised (via {@link XpmLiquidAction.initialise}
- *    or {@link XpmLiquidBuildConfiguration.initialise}), the template is fully
- *    evaluated and Liquid substitutions are performed.
+ *    concrete action or configuration names without processing their
+ * content.</li>
+ * <li>Content Evaluation: Later, when an action or build configuration is
+ *    actually accessed and initialised (via
+ * <code>XpmLiquidAction.initialise</code>
+ *    or <code>XpmLiquidBuildConfiguration.initialise</code>), the template
+ * is fully
+ *    evaluated and Liquid substitutions are performed.</li>
+ * </ol>
  *
  * This approach ensures that only items that are actually used incur the cost
  * of template evaluation and variable substitution, significantly improving

@@ -18,11 +18,5 @@ This XpmLiquidEngine instance is configured with strict mode and custom filters 
 
 Engine characteristics:
 
-1. Strict mode enabled to catch undefined variable references.
-
-2. Custom filters for platform detection (isPlatform, isArch).
-
-3. Custom filters for path sanitization (filterPath, filterPosixPath, filterWin32Path).
-
-4. Shared instance reduces memory overhead and ensures consistent template evaluation across all package components.
+<ol> <li>Strict mode enabled to catch undefined variable references.</li> <li>Custom filters for platform detection (isPlatform, isArch).</li> <li>Custom filters for path sanitization (filterPath, filterPosixPath, filterWin32Path).</li> <li>Shared instance reduces memory overhead and ensures consistent template evaluation across all package components.</li> </ol>
 

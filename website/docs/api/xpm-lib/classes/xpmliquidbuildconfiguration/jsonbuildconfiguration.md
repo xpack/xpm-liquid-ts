@@ -28,13 +28,7 @@ This holds the raw configuration definition as it appears in package.json, befor
 
 The definition is preserved to:
 
-1. Enable external modification (e.g., `xpm uninstall` updates this directly).
-
-2. Support deferred template evaluation during [XpmLiquidBuildConfiguration.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidbuildconfiguration/initialise)<!-- -->.
-
-3. Provide the source for inheritance when other configurations reference this one.
-
-4. Allow re-evaluation with different variable contexts if needed.
+<ol> <li>Enable external modification (e.g., `xpm uninstall` updates this directly).</li> <li>Support deferred template evaluation during <code>XpmLiquidBuildConfiguration.initialise</code>.</li> <li>Provide the source for inheritance when other configurations reference this one.</li> <li>Allow re-evaluation with different variable contexts if needed.</li> </ol>
 
 This immutable storage ensures configurations can be safely referenced during inheritance resolution without side effects.
 

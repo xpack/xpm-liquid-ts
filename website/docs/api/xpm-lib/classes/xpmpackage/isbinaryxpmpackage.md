@@ -37,9 +37,7 @@ Binary packages must have both executables and binaries. The presence of one imp
 
 Validation rules:
 
-1. If `xpack.executables` (or deprecated `xpack.bin`<!-- -->) exists, then `xpack.binaries` and `xpack.binaries.platforms` must also exist.
-
-2. If `xpack.binaries` exists, then `xpack.binaries.platforms` and `xpack.executables` (or deprecated `xpack.bin`<!-- -->) must also exist.
+<ol> <li>If <code>xpack.executables</code> (or deprecated <code>xpack.bin</code>) exists, then <code>xpack.binaries</code> and <code>xpack.binaries.platforms</code> must also exist.</li> <li>If <code>xpack.binaries</code> exists, then <code>xpack.binaries.platforms</code> and <code>xpack.executables</code> (or deprecated <code>xpack.bin</code>) must also exist.</li> </ol>
 
 This bidirectional validation ensures package metadata consistency and catches incomplete binary package configurations early. The check helps prevent runtime errors when attempting to install or use binary packages with missing metadata.
 

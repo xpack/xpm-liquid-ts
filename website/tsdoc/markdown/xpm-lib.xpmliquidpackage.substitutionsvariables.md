@@ -18,11 +18,7 @@ This sealed object provides the base substitution context inherited by all actio
 
 Variable hierarchy:
 
-1. Base variables (xpmLiquidSubstitutionsVariablesBase): - `env`<!-- -->: Environment variables from process.env - `os`<!-- -->: Platform detection (platform, arch, endianness, version) - `path`<!-- -->: Path utilities (sep, delimiter, cwd)
-
-2. Package metadata: - `package`<!-- -->: Complete package.json content (name, version, dependencies, etc.)
-
-3. User-defined properties: - `properties`<!-- -->: Merged from xpack.properties if present
+<ol> <li>Base variables (xpmLiquidSubstitutionsVariablesBase): <ul> <li>`env`<!-- -->: Environment variables from process.env</li> <li>`os`<!-- -->: Platform detection (platform, arch, endianness, version)</li> <li>`path`<!-- -->: Path utilities (sep, delimiter, cwd)</li> </ul> </li> <li>Package metadata: <ul> <li>`package`<!-- -->: Complete package.json content (name, version, dependencies, etc.)</li> </ul> </li> <li>User-defined properties: <ul> <li>`properties`<!-- -->: Merged from xpack.properties if present</li> </ul> </li> </ol>
 
 The object is sealed after initialization to prevent accidental modification. Child components (actions and configurations) extend this context with their own scoped variables (configuration, matrix) without modifying the original sealed object.
 

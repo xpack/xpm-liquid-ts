@@ -28,25 +28,11 @@ The constructor configures strict parsing options and registers filters for path
 
 Configuration options:
 
-- strictFilters: Throw errors for undefined filters rather than silently ignoring them.
-
-- strictVariables: Throw errors for undefined variables rather than rendering empty strings.
-
-- trimTagLeft/Right: Preserve whitespace around template tags.
-
-- trimOutputLeft/Right: Preserve whitespace around output expressions.
-
-- greedy: Use non-greedy matching for better template compatibility.
-
-- lenientIf: Allow flexible truthiness in conditional expressions.
+<ul> <li>strictFilters: Throw errors for undefined filters rather than silently ignoring them.</li> <li>strictVariables: Throw errors for undefined variables rather than rendering empty strings.</li> <li>trimTagLeft/Right: Preserve whitespace around template tags.</li> <li>trimOutputLeft/Right: Preserve whitespace around output expressions.</li> <li>greedy: Use non-greedy matching for better template compatibility.</li> <li>lenientIf: Allow flexible truthiness in conditional expressions.</li> </ul>
 
 Filter registration:
 
-- Platform-aware path filters (default, posix, win32) delegate to Node.js path module for consistent cross-platform behavior.
-
-- Custom filters (to\_filename, join\_lines, split\_lines, keys) provide template-specific functionality not available in standard Liquid.
-
-- All filters are registered during construction for immediate availability in templates.
+<ul> <li>Platform-aware path filters (default, posix, win32) delegate to Node.js path module for consistent cross-platform behavior.</li> <li>Custom filters (to\_filename, join\_lines, split\_lines, keys) provide template-specific functionality not available in standard Liquid.</li> <li>All filters are registered during construction for immediate availability in templates.</li> </ul>
 
 <hr/>
 

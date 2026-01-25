@@ -60,11 +60,7 @@ This function provides explicit POSIX path sanitization regardless of the curren
 
 Processing rules:
 
-- Preserves forward slashes (/) for path separators.
-
-- Replaces all non-alphanumeric characters (except /) with dashes.
-
-- Collapses consecutive dashes to single dashes.
+<ul> <li>Preserves forward slashes (/) for path separators.</li> <li>Replaces all non-alphanumeric characters (except /) with dashes.</li> <li>Collapses consecutive dashes to single dashes.</li> </ul>
 
 Use this function instead of [filterPath()](./xpm-lib.filterpath.md) when you need guaranteed POSIX-style sanitization even when running on Windows, such as when generating paths for remote Linux systems or container images.
 

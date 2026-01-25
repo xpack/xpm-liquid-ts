@@ -29,13 +29,7 @@ Combines standard npm package.json properties with xpm-specific extensions via t
 
 An xpm package can be:
 
-- A source package: Contains code, build configurations, and actions.
-
-- A binary package: Distributes pre-built binaries for multiple platforms with automated installation.
-
-- A library package: Provides reusable code or resources for other packages.
-
-- A tool package: Provides command-line tools or build utilities.
+<ul> <li>A source package: Contains code, build configurations, and actions.</li> <li>A binary package: Distributes pre-built binaries for multiple platforms with automated installation.</li> <li>A library package: Provides reusable code or resources for other packages.</li> <li>A tool package: Provides command-line tools or build utilities.</li> </ul>
 
 The presence of the xpack section enables xpm-specific features like template-based build configurations, matrix expansion, property substitution, and platform-specific binary distribution. Standard npm fields (name, version, dependencies, etc.) are used for package identification and dependency management.
 

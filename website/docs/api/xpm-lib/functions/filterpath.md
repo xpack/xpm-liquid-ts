@@ -70,9 +70,7 @@ This function sanitizes strings to be safely used as file or folder names by rem
 
 Platform-specific processing:
 
-- Windows: Preserves backslashes (<!-- -->\\<!-- -->) and colons (:) for drive letters and path separators (e.g., C:<!-- -->\\<!-- -->path<!-- -->\\<!-- -->to<!-- -->\\<!-- -->file). Replaces all other non-alphanumeric characters with dashes.
-
-- POSIX (Linux, macOS): Preserves forward slashes (/) for path separators. Replaces all other non-alphanumeric characters with dashes.
+<ul> <li>Windows: Preserves backslashes (<!-- -->\\<!-- -->) and colons (:) for drive letters and path separators (e.g., C:<!-- -->\\<!-- -->path<!-- -->\\<!-- -->to<!-- -->\\<!-- -->file). Replaces all other non-alphanumeric characters with dashes.</li> <li>POSIX (Linux, macOS): Preserves forward slashes (/) for path separators. Replaces all other non-alphanumeric characters with dashes.</li> </ul>
 
 Post-processing: After character replacement, consecutive dashes are collapsed to a single dash to avoid excessive dashes from adjacent special characters (e.g., "foo--bar" becomes "foo-bar").
 

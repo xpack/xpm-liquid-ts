@@ -28,13 +28,7 @@ This is the final, expanded configuration name used for identification and selec
 
 The name is used for:
 
-1. User-facing identification when listing or selecting configurations.
-
-2. Build folder path generation (default: `build/{name}`<!-- -->).
-
-3. Logging and diagnostic output to track configuration lifecycle.
-
-4. Inheritance references from other configurations.
+<ol> <li>User-facing identification when listing or selecting configurations.</li> <li>Build folder path generation (default: <code>build/<!-- -->{<!-- -->name<!-- -->}</code>).</li> <li>Logging and diagnostic output to track configuration lifecycle.</li> <li>Inheritance references from other configurations.</li> </ol>
 
 Names must be unique within the configurations collection, enforced during [XpmLiquidBuildConfigurations.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidbuildconfigurations/initialise)<!-- -->.
 

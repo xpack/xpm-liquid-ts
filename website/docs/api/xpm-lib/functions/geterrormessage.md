@@ -70,9 +70,7 @@ This utility handles error values of any type, extracting the message property f
 
 TypeScript's catch clause types errors as `unknown` for safety, since JavaScript allows throwing any value (not just Error instances). This function provides a type-safe way to extract a message string:
 
-- For Error instances: Returns the `message` property.
-
-- For other types: Converts to string using `String()`<!-- -->, which handles primitives, objects with toString(), null, and undefined gracefully.
+<ul> <li>For Error instances: Returns the <code>message</code> property.</li> <li>For other types: Converts to string using <code>String()</code>, which handles primitives, objects with toString(), null, and undefined gracefully.</li> </ul>
 
 Common usage pattern:
 

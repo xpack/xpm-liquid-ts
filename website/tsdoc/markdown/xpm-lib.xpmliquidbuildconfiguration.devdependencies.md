@@ -18,13 +18,7 @@ This object contains the final merged development dependencies after inheritance
 
 Resolution workflow mirrors `dependencies`<!-- -->:
 
-1. Start with empty object.
-
-2. Merge devDependencies from each inherited configuration in sequence (later overrides earlier).
-
-3. Merge local devDependencies from JSON definition.
-
-4. Perform Liquid template substitution on the entire devDependencies object with full configuration context.
+<ol> <li>Start with empty object.</li> <li>Merge devDependencies from each inherited configuration in sequence (later overrides earlier).</li> <li>Merge local devDependencies from JSON definition.</li> <li>Perform Liquid template substitution on the entire devDependencies object with full configuration context.</li> </ol>
 
 Typical use: Test frameworks, build tools, or debugging utilities specific to certain configurations (e.g., debug builds might include additional analysis tools).
 

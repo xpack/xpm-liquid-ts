@@ -18,15 +18,9 @@ This optional reference establishes the hierarchical relationship between action
 
 When defined:
 
-1. Actions inherit configuration-specific variables (build folder paths, compiler settings, toolchain properties).
-
-2. Actions belong to a specific configuration namespace rather than the package root.
-
-3. Logging and diagnostics include the configuration name for context.
+<ol> <li>Actions inherit configuration-specific variables (build folder paths, compiler settings, toolchain properties).</li> <li>Actions belong to a specific configuration namespace rather than the package root.</li> <li>Logging and diagnostics include the configuration name for context.</li> </ol>
 
 When `undefined`<!-- -->:
 
-1. Actions belong to the package root (`xpack.actions` in package.json).
-
-2. Only package-level and global variables are available for substitution.
+<ol> <li>Actions belong to the package root (<code>xpack.actions</code> in package.json).</li> <li>Only package-level and global variables are available for substitution.</li> </ol>
 

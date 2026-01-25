@@ -18,9 +18,7 @@ Substitution variables provide the context for Liquid template processing during
 
 Variable structure:
 
-- `properties`<!-- -->: Contains all user-provided or default values from the template property definitions, accessible via `{{ properties.propertyName }}` in template files.
-
-- Additional variables: Templates can define custom variables for reuse across multiple files or for computed values based on properties.
+<ul> <li><code>properties</code>: Contains all user-provided or default values from the template property definitions, accessible via <code>{<!-- -->{ properties.propertyName }<!-- -->}</code> in template files.</li> <li>Additional variables: Templates can define custom variables for reuse across multiple files or for computed values based on properties.</li> </ul>
 
 Template files (with `.liquid` extension or configured patterns) are processed with this context, allowing conditional content, loops, and value substitution. Non-template files are copied as-is without processing.
 

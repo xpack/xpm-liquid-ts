@@ -18,15 +18,7 @@ This logger provides trace-level diagnostics for package operations, including f
 
 Logging use cases:
 
-1. Trace package folder path during construction.
-
-2. Log file read errors when investigating missing package.json.
-
-3. Trace JSON parsing errors for debugging invalid package.json.
-
-4. Log version validation details during minimumXpmRequired checks.
-
-5. Trace package specifier parsing for debugging dependency resolution.
+<ol> <li>Trace package folder path during construction.</li> <li>Log file read errors when investigating missing package.json.</li> <li>Trace JSON parsing errors for debugging invalid package.json.</li> <li>Log version validation details during minimumXpmRequired checks.</li> <li>Trace package specifier parsing for debugging dependency resolution.</li> </ol>
 
 The logger enables detailed diagnostics without affecting normal operation, as trace-level output is typically disabled in production.
 

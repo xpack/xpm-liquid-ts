@@ -18,9 +18,7 @@ Platform identifiers filter select items based on the current execution environm
 
 Platform matching strategy:
 
-- Generic platforms (linux, win32, darwin) match any architecture on that operating system.
-
-- Specific platforms (linux-x64, darwin-arm64, etc.) match only the exact OS and architecture combination.
+<ul> <li>Generic platforms (linux, win32, darwin) match any architecture on that operating system.</li> <li>Specific platforms (linux-x64, darwin-arm64, etc.) match only the exact OS and architecture combination.</li> </ul>
 
 Example: An item with `platforms: ["darwin-arm64"]` only appears when running on Apple Silicon Macs, while `platforms: ["darwin"]` appears on both Intel and ARM Macs.
 

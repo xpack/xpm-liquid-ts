@@ -18,11 +18,7 @@ This set provides O(1) existence checks for action names, enabling efficient val
 
 Key characteristics:
 
-1. Known only after [XpmLiquidActions.initialise()](./xpm-lib.xpmliquidactions.initialise.md) completes.
-
-2. Contains all action names including those generated from templates.
-
-3. Used to detect duplicate action names that might arise from template expansion conflicts or explicit duplicates in package.json.
+<ol> <li>Known only after <code>XpmLiquidActions.initialise</code> completes.</li> <li>Contains all action names including those generated from templates.</li> <li>Used to detect duplicate action names that might arise from template expansion conflicts or explicit duplicates in package.json.</li> </ol>
 
 This redundant storage (alongside `_actionsMap`<!-- -->) is justified by the performance benefit for name existence checks, especially in packages with many actions.
 

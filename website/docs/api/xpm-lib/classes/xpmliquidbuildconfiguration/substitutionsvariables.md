@@ -28,13 +28,7 @@ This extended variable hierarchy combines the base collection variables with con
 
 Extension hierarchy:
 
-1. Starts with parent collection's base variables (env, os, path, package).
-
-2. Extended with `properties`<!-- -->: Merged from inheritance chain and local properties.
-
-3. Extended with `matrix`<!-- -->: Parameter values for template-generated configurations.
-
-4. Extended with `configuration`<!-- -->: The configuration object itself (name, dependencies, properties) accessible for self-reference.
+<ol> <li>Starts with parent collection's base variables (env, os, path, package).</li> <li>Extended with <code>properties</code>: Merged from inheritance chain and local properties.</li> <li>Extended with <code>matrix</code>: Parameter values for template-generated configurations.</li> <li>Extended with <code>configuration</code>: The configuration object itself (name, dependencies, properties) accessible for self-reference.</li> </ol>
 
 This complete context is used for all substitutions within the configuration: properties, dependencies, devDependencies, and actions.
 

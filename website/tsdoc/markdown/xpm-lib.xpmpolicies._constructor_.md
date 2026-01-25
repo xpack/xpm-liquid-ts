@@ -55,15 +55,7 @@ The constructor evaluates each policy flag by comparing the provided minimum ver
 
 Evaluation process:
 
-1. Validate that minVersion is a valid semver string.
-
-2. If invalid, retain default values (all flags false = modern behavior).
-
-3. For each policy, use semver.lt() to check if minVersion is less than the threshold version.
-
-4. If minVersion &lt; threshold, enable legacy behavior (flag = true).
-
-5. If minVersion &gt;<!-- -->= threshold, use modern behavior (flag = false).
+<ol> <li>Validate that minVersion is a valid semver string.</li> <li>If invalid, retain default values (all flags false = modern behavior).</li> <li>For each policy, use semver.lt() to check if minVersion is less than the threshold version.</li> <li>If minVersion &lt; threshold, enable legacy behavior (flag = true).</li> <li>If minVersion &gt;<!-- -->= threshold, use modern behavior (flag = false).</li> </ol>
 
 This ensures that packages explicitly declaring their minimum version get the behavior that was current at that version, while packages without a valid minimum version default to the most modern behavior.
 

@@ -13,13 +13,13 @@ import { XpmInitTemplatePropertiesDefinitions, XpmInitTemplateSubstitutionsVaria
  *
  * Template workflow:
  *
- * 1. Properties are validated against their definitions
- *
- * 2. Missing mandatory properties trigger interactive prompts (if TTY)
- *
- * 3. Substitution variables are prepared from properties
- *
- * 4. The {@link XpmInitTemplateBase.generate} method creates project files
+ * <ol>
+ * <li>Properties are validated against their definitions</li>
+ * <li>Missing mandatory properties trigger interactive prompts (if TTY)</li>
+ * <li>Substitution variables are prepared from properties</li>
+ * <li>The <code>XpmInitTemplateBase.generate</code> method creates project
+ * files</li>
+ * </ol>
  *
  * Derived classes must implement {@link XpmInitTemplateBase.generate}
  * to define the specific files and folder structure to create.
@@ -113,12 +113,13 @@ export declare abstract class XpmInitTemplateBase {
      * specified property according to its type definition. It performs
      * type-specific validation and conversion:
      *
-     * - For `select` properties: validates against allowed items and
-     *   checks platform compatibility if specified
-     *
-     * - For `boolean` properties: converts 'true'/'false' strings to booleans
-     *
-     * - For `number` properties: converts strings to numbers
+     * <ul>
+     * <li>For <code>select</code> properties: validates against allowed items and
+     * checks platform compatibility if specified</li>
+     * <li>For <code>boolean</code> properties: converts 'true'/'false' strings to
+     * booleans</li>
+     * <li>For <code>number</code> properties: converts strings to numbers</li>
+     * </ul>
      *
      * If the value is empty and a default is defined, the default value is
      * returned. For select properties with platform restrictions, only
@@ -141,11 +142,11 @@ export declare abstract class XpmInitTemplateBase {
      * user to provide values for properties without explicit values. For
      * each property, the prompt displays:
      *
-     * - The property label
-     *
-     * - Valid options (for select and boolean types)
-     *
-     * - The default value in brackets, if available
+     * <ul>
+     * <li>The property label</li>
+     * <li>Valid options (for select and boolean types)</li>
+     * <li>The default value in brackets, if available</li>
+     * </ul>
      *
      * If the user enters '?', help text is displayed showing the property
      * description and all valid options with their descriptions. Invalid

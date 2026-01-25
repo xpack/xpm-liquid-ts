@@ -18,21 +18,11 @@ The context object serves as the central coordination point for all xpm operatio
 
 Context flow:
 
-1. Created at the start of each xpm command execution.
-
-2. Initialized with logger instance and configuration options.
-
-3. Passed to all library functions and classes that perform xpm operations.
-
-4. Extended with additional properties as needed by specific operations (e.g., package paths, temporary directories, cache state).
+<ol> <li>Created at the start of each xpm command execution.</li> <li>Initialized with logger instance and configuration options.</li> <li>Passed to all library functions and classes that perform xpm operations.</li> <li>Extended with additional properties as needed by specific operations (e.g., package paths, temporary directories, cache state).</li> </ol>
 
 Core responsibilities:
 
-- Logging: Provides consistent output and diagnostics through the logger instance, enabling verbosity control and structured output.
-
-- Configuration: Makes operational flags and user preferences accessible to all components.
-
-- State sharing: The extensible design allows operations to attach computed values or state that should be available to subsequent operations within the same execution.
+<ul> <li>Logging: Provides consistent output and diagnostics through the logger instance, enabling verbosity control and structured output.</li> <li>Configuration: Makes operational flags and user preferences accessible to all components.</li> <li>State sharing: The extensible design allows operations to attach computed values or state that should be available to subsequent operations within the same execution.</li> </ul>
 
 The context pattern enables dependency injection, making the code more testable and allowing operations to access shared resources without global state.
 

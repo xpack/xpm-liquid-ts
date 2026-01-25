@@ -62,23 +62,11 @@ The parsed package specifier components.
 
 npm package specifiers can take several forms:
 
-- Unscoped without version: `package-name`
-
-- Unscoped with version: `package-name@1.2.3`
-
-- Scoped without version: `@scope/package-name`
-
-- Scoped with version: `@scope/package-name@1.2.3`
+<ul> <li>Unscoped without version: <code>package-name</code></li> <li>Unscoped with version: <code>package-name<!-- -->@<!-- -->1.2.3</code></li> <li>Scoped without version: <code>@<!-- -->scope/package-name</code></li> <li>Scoped with version: <code>@<!-- -->scope/package-name<!-- -->@<!-- -->1.2.3</code></li> </ul>
 
 Parsing strategy:
 
-1. If specifier starts with `@`<!-- -->, extract scope and handle scoped format.
-
-2. Split on `/` to separate scope from name<!-- -->@<!-- -->version.
-
-3. Split the second part on `@` to separate name from version.
-
-4. For unscoped packages, split directly on `@` to separate name from version.
+<ol> <li>If specifier starts with <code>@</code>, extract scope and handle scoped format.</li> <li>Split on <code>/</code> to separate scope from name<!-- -->@<!-- -->version.</li> <li>Split the second part on <code>@</code> to separate name from version.</li> <li>For unscoped packages, split directly on <code>@</code> to separate name from version.</li> </ol>
 
 The parser handles all valid npm package specifier formats and returns structured components for downstream processing. Invalid formats with multiple slashes are rejected.
 

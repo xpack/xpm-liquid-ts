@@ -28,19 +28,7 @@ This class loads and validates package.json content, determines package capabili
 
 The package abstraction provides a layer over package.json processing with progressive validation:
 
-1. Basic file I/O: Read and write package.json with error handling.
-
-2. npm validation: Check for valid npm package structure (name, version).
-
-3. xpm validation: Verify xpack section presence and structure.
-
-4. Binary package validation: Validate binary-specific metadata (executables, binaries, platforms).
-
-5. Capability detection: Determine package features (scripts, actions, build configurations).
-
-6. Version checking: Validate minimum xpm version requirements.
-
-7. Specifier parsing: Extract scope, name, and version from package identifiers.
+<ol> <li>Basic file I/O: Read and write package.json with error handling.</li> <li>npm validation: Check for valid npm package structure (name, version).</li> <li>xpm validation: Verify xpack section presence and structure.</li> <li>Binary package validation: Validate binary-specific metadata (executables, binaries, platforms).</li> <li>Capability detection: Determine package features (scripts, actions, build configurations).</li> <li>Version checking: Validate minimum xpm version requirements.</li> <li>Specifier parsing: Extract scope, name, and version from package identifiers.</li> </ol>
 
 This hierarchy allows validation to be performed incrementally as needed, avoiding unnecessary checks for packages that don't meet earlier criteria.
 

@@ -80,17 +80,7 @@ Called by the Liquid engine when a matrix parameter is accessed that doesn't exi
 
 Resolution process:
 
-1. Validate the parameter exists, throw [XpmInputError](./xpm-lib.xpminputerror.md) if not.
-
-2. Retrieve the parameter value (string, array, or object).
-
-3. If object, return as-is for Liquid to access nested properties.
-
-4. If array, join elements into a single string for processing.
-
-5. If the value contains Liquid syntax, recursively render it with the current context to resolve nested references.
-
-6. Return the final resolved value.
+<ol> <li>Validate the parameter exists, throw <code>XpmInputError</code> if not.</li> <li>Retrieve the parameter value (string, array, or object).</li> <li>If object, return as-is for Liquid to access nested properties.</li> <li>If array, join elements into a single string for processing.</li> <li>If the value contains Liquid syntax, recursively render it with the current context to resolve nested references.</li> <li>Return the final resolved value.</li> </ol>
 
 This mirrors the behavior of [XpmLiquidPropertiesDrop](./xpm-lib.xpmliquidpropertiesdrop.md) but operates on matrix parameters instead of properties. Matrix values can reference other substitution variables, enabling complex template expansions.
 

@@ -18,15 +18,7 @@ This reference maintains the hierarchical relationship between individual config
 
 The parent collection provides access to:
 
-1. Liquid templating engine for variable substitution.
-
-2. Base substitution variables hierarchy (package metadata, environment, platform detection).
-
-3. Logger instance for diagnostic output.
-
-4. JSON build configurations lookup for inheritance resolution.
-
-5. Other configuration instances when processing inheritance chains.
+<ol> <li>Liquid templating engine for variable substitution.</li> <li>Base substitution variables hierarchy (package metadata, environment, platform detection).</li> <li>Logger instance for diagnostic output.</li> <li>JSON build configurations lookup for inheritance resolution.</li> <li>Other configuration instances when processing inheritance chains.</li> </ol>
 
 This design enables configurations to access shared resources without duplicating them, while supporting complex inheritance relationships where configurations reference and inherit from each other.
 

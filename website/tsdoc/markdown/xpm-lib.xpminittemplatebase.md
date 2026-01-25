@@ -18,13 +18,7 @@ This abstract class provides the foundation for template-based project initialis
 
 Template workflow:
 
-1. Properties are validated against their definitions
-
-2. Missing mandatory properties trigger interactive prompts (if TTY)
-
-3. Substitution variables are prepared from properties
-
-4. The [XpmInitTemplateBase.generate()](./xpm-lib.xpminittemplatebase.generate.md) method creates project files
+<ol> <li>Properties are validated against their definitions</li> <li>Missing mandatory properties trigger interactive prompts (if TTY)</li> <li>Substitution variables are prepared from properties</li> <li>The <code>XpmInitTemplateBase.generate</code> method creates project files</li> </ol>
 
 Derived classes must implement [XpmInitTemplateBase.generate()](./xpm-lib.xpminittemplatebase.generate.md) to define the specific files and folder structure to create.
 

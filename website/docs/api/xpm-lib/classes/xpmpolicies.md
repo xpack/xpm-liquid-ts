@@ -28,17 +28,11 @@ This class derives compatibility flags from a specified minimum version to prese
 
 Policy versioning allows xpm to evolve its behavior while maintaining backward compatibility for packages that specify older minimum versions. Each policy flag represents a breaking change introduced at a specific xpm version:
 
-- Packages with minimumXpmRequired &lt; version threshold get legacy behavior.
-
-- Packages with minimumXpmRequired &gt;<!-- -->= version threshold get new behavior.
+<ul> <li>Packages with minimumXpmRequired &lt; version threshold get legacy behavior.</li> <li>Packages with minimumXpmRequired &gt;<!-- -->= version threshold get new behavior.</li> </ul>
 
 This approach ensures that:
 
-1. Existing packages continue to work with newer xpm versions without modification.
-
-2. New packages can opt into modern behavior by specifying a recent minimumXpmRequired.
-
-3. Breaking changes are tied to explicit version declarations rather than xpm installation version.
+<ol> <li>Existing packages continue to work with newer xpm versions without modification.</li> <li>New packages can opt into modern behavior by specifying a recent minimumXpmRequired.</li> <li>Breaking changes are tied to explicit version declarations rather than xpm installation version.</li> </ol>
 
 Policy flags are evaluated once during initialization and cached for the duration of the operation.
 

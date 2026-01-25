@@ -28,13 +28,7 @@ This class manages a collection of named actions, each containing one or more co
 
 Action lifecycle phases:
 
-1. Construction: Basic setup with optional inheritance from parent package.
-
-2. Initialisation: Template name expansion without content evaluation.
-
-3. Retrieval: On-demand instantiation when accessed via get().
-
-4. Action Initialisation: Liquid template evaluation and substitution.
+<ol> <li>Construction: Basic setup with optional inheritance from parent package.</li> <li>Initialisation: Template name expansion without content evaluation.</li> <li>Retrieval: On-demand instantiation when accessed via <code>get()</code>.</li> <li>Action Initialisation: Liquid template evaluation and substitution.</li> </ol>
 
 This multi-phase approach ensures efficient resource usage by deferring expensive operations until actions are actually needed.
 

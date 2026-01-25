@@ -75,15 +75,7 @@ This method computes the Cartesian product of all matrix parameter values and cr
 
 Processing steps:
 
-1. Validates matrix structure (object with array values).
-
-2. Validates template format (string or array).
-
-3. Performs Liquid substitutions on matrix values if they contain template syntax.
-
-4. Recursively generates all combinations using Cartesian product.
-
-5. Creates an action instance for each combination with matrix parameters available for later substitution.
+<ol> <li>Validates matrix structure (object with array values).</li> <li>Validates template format (string or array).</li> <li>Performs Liquid substitutions on matrix values if they contain template syntax.</li> <li>Recursively generates all combinations using Cartesian product.</li> <li>Creates an action instance for each combination with matrix parameters available for later substitution.</li> </ol>
 
 Matrix variables are scoped to individual actions and accessible via the `matrix` namespace during action command evaluation.
 

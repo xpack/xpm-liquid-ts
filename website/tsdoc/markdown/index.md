@@ -24,7 +24,7 @@ Description
 
 </td><td>
 
-A Node.js TypeScript module with the core code for xpm and xpm enabled projects.
+A Node.js TypeScript module with the core code for <b>xpm</b> and <b>xpm enabled</b> projects.
 
 
 </td></tr>

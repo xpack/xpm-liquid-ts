@@ -8,11 +8,12 @@ import * as os from 'node:os';
  *
  * Common use cases:
  *
- * - Properties: User-defined configuration values from xpack.properties.
- *
- * - Matrix parameters: Template expansion variables from matrix definitions.
- *
- * - Configuration data: Build-specific settings and metadata.
+ * <ul>
+ * <li>Properties: User-defined configuration values from xpack.properties.</li>
+ * <li>Matrix parameters: Template expansion variables from matrix
+ * definitions.</li>
+ * <li>Configuration data: Build-specific settings and metadata.</li>
+ * </ul>
  *
  * Templates access these values via namespaces like `properties.foo`,
  * `matrix.arch`, etc., with the Liquid Drop pattern providing lazy
@@ -29,20 +30,21 @@ export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>;
  *
  * Variable hierarchy and scoping:
  *
- * 1. Base variables (env, os, path): Available globally, initialized once
- *    from Node.js runtime at startup.
- *
- * 2. Package variables: Added when processing package.json, contains
- *    package metadata accessible via `package.name`, `package.version`, etc.
- *
- * 3. Properties: User-defined values from xpack.properties, accessible via
- *    `properties.key`.
- *
- * 4. Configuration: Build configuration metadata, available when processing
- *    configuration-specific templates via `configuration.name`, etc.
- *
- * 5. Matrix: Template expansion parameters, scoped to individual expanded
- *    instances, accessible via `matrix.key`.
+ * <ol>
+ * <li>Base variables (env, os, path): Available globally, initialized once
+ *    from Node.js runtime at startup.</li>
+ * <li>Package variables: Added when processing package.json, contains
+ *    package metadata accessible via <code>package.name</code>,
+ *    <code>package.version</code>,
+ *    etc.</li>
+ * <li>Properties: User-defined values from xpack.properties, accessible via
+ *    <code>properties.key</code>.</li>
+ * <li>Configuration: Build configuration metadata, available when processing
+ *    configuration-specific templates via <code>configuration.name</code>,
+ *    etc.</li>
+ * <li>Matrix: Template expansion parameters, scoped to individual expanded
+ *    instances, accessible via <code>matrix.key</code>.</li>
+ * </ol>
  *
  * Variables are inherited and extended through the hierarchy: actions and
  * configurations inherit base + package + properties, then add their own
@@ -71,21 +73,23 @@ export interface XpmLiquidSubstitutionsVariables {
      *
      * Key properties for cross-platform templates:
      *
-     * - `os.platform`: Detect OS ('darwin', 'linux', 'win32').
-     *
-     * - `os.arch`: Detect CPU architecture ('x64', 'arm64', etc.).
-     *
-     * - `os.EOL`: Use correct line endings for generated files.
-     *
-     * - `os.homedir`: Reference user's home directory portably.
+     * <ul>
+     * <li><code>os.platform</code>: Detect OS ('darwin', 'linux', 'win32').</li>
+     * <li><code>os.arch</code>: Detect CPU architecture ('x64', 'arm64',
+     *   etc.).</li>
+     * <li><code>os.EOL</code>: Use correct line endings for generated files.</li>
+     * <li><code>os.homedir</code>: Reference user's home directory portably.</li>
+     * </ul>
      *
      * See [Node.js os module documentation](https://nodejs.org/dist/latest-v16.x/docs/api/os.html)
      */
     os: {
         /**
          * The operating system-specific end-of-line marker.
-         * - `\n` on POSIX
-         * - `\r\n` on Windows
+         * <ul>
+         * <li><code>\\n</code> on POSIX</li>
+         * <li><code>\\r\\n</code> on Windows</li>
+         * </ul>
          */
         EOL: string;
         /**
@@ -163,13 +167,15 @@ export interface XpmLiquidSubstitutionsVariables {
      *
      * Available constants:
      *
-     * - `path.sep`: Platform-specific path separator (/ or \).
-     *
-     * - `path.delimiter`: Platform-specific PATH delimiter (; or :).
-     *
-     * - `path.posix.*`: Force POSIX conventions regardless of platform.
-     *
-     * - `path.win32.*`: Force Windows conventions regardless of platform.
+     * <ul>
+     * <li><code>path.sep</code>: Platform-specific path separator (/ or \).</li>
+     * <li><code>path.delimiter</code>: Platform-specific PATH delimiter
+     *   (; or :).</li>
+     * <li><code>path.posix.*</code>: Force POSIX conventions regardless
+       of platform.</li>
+     * <li><code>path.win32.*</code>: Force Windows conventions regardless
+       of platform.</li>
+     * </ul>
      *
      * Note: For path manipulation, prefer using Liquid filters like
      * `path_join`, `path_dirname`, etc., which handle cross-platform concerns
@@ -180,14 +186,18 @@ export interface XpmLiquidSubstitutionsVariables {
     path: {
         /**
          * Provides the platform-specific path delimiter:
-         * - `;` for Windows
-         * - `:` for POSIX
+         * <ul>
+         * <li><code>;</code> for Windows</li>
+         * <li><code>:</code> for POSIX</li>
+         * </ul>
          */
         delimiter: string;
         /**
          * Provides the platform-specific path segment separator:
-         * - `\` on Windows
-         * - `/` on POSIX
+         * <ul>
+         * <li><code>\\</code> on Windows</li>
+         * <li><code>/</code> on POSIX</li>
+         * </ul>
          */
         sep: string;
         win32: {
@@ -209,11 +219,14 @@ export interface XpmLiquidSubstitutionsVariables {
      *
      * Common template patterns:
      *
-     * - `{{ package.name }}`: Package name for generated files.
-     *
-     * - `{{ package.version }}`: Version string for documentation.
-     *
-     * - `{{ package.xpack.properties.key }}`: Access xpack properties.
+     * <ul>
+     * <li><code>\{\{ package.name \}\}</code>: Package name for generated
+     *   files.</li>
+     * <li><code>\{\{ package.version \}\}</code>: Version string for
+     *   documentation.</li>
+     * <li><code>\{\{ package.xpack.properties.key \}\}</code>: Access xpack
+     *   properties.</li>
+     * </ul>
      *
      * Undefined when processing templates outside of a package context.
      */
@@ -229,9 +242,13 @@ export interface XpmLiquidSubstitutionsVariables {
      * Contains the configuration name and all configuration properties,
      * allowing templates to reference the current build context:
      *
-     * - `{{ configuration.name }}`: The build configuration name.
-     *
-     * - `{{ configuration.properties.key }}`: Configuration-specific settings.
+     * <ul>
+     * <li><code>\{\{ configuration.name \}\}</code>: The build configuration
+     *   name.</li>
+     * <li><code>\{\{ configuration.properties.key \}\}</code>:
+     *   Configuration-specific
+     *   settings.</li>
+     * </ul>
      *
      * Undefined when processing package-level templates.
      */
@@ -281,13 +298,12 @@ export interface XpmLiquidSubstitutionsVariables {
  *
  * Initialization strategy:
  *
- * 1. Environment variables: Snapshot of process.env at load time.
- *
- * 2. OS information: Calls to os module functions (platform, arch, etc.).
- *
- * 3. Path constants: Platform-specific separators and delimiters.
- *
- * 4. Empty properties: Placeholder for package-specific additions.
+ * <ol>
+ * <li>Environment variables: Snapshot of process.env at load time.</li>
+ * <li>OS information: Calls to os module functions (platform, arch, etc.).</li>
+ * <li>Path constants: Platform-specific separators and delimiters.</li>
+ * <li>Empty properties: Placeholder for package-specific additions.</li>
+ * </ol>
  *
  * These base variables are shared across all template processing within the
  * application and extended with package, configuration, and matrix variables

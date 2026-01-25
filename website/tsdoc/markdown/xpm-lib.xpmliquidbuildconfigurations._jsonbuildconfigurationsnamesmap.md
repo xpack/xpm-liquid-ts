@@ -18,13 +18,7 @@ This reverse mapping enables retrieving the original configuration definition fr
 
 Mapping behavior:
 
-1. For regular configurations: Maps configuration name to itself (identity mapping).
-
-2. For template configurations: Maps each generated configuration name back to the original template name (e.g., `release-x64` → `release-{{ matrix.arch }}`<!-- -->).
-
-3. Known only after [XpmLiquidBuildConfigurations.initialise()](./xpm-lib.xpmliquidbuildconfigurations.initialise.md) completes.
-
-4. Enables [XpmLiquidBuildConfigurations.get()](./xpm-lib.xpmliquidbuildconfigurations.get.md) to locate the correct JSON definition when instantiating a configuration on demand.
+<ol> <li>For regular configurations: Maps configuration name to itself (identity mapping).</li> <li>For template configurations: Maps each generated configuration name back to the original template name (e.g., <code>release-x64</code> → <code>release-<!-- -->{<!-- -->{ matrix.arch }<!-- -->}</code>).</li> <li>Known only after <code>XpmLiquidBuildConfigurations.initialise</code> completes.</li> <li>Enables <code>XpmLiquidBuildConfigurations.get</code> to locate the correct JSON definition when instantiating a configuration on demand.</li> </ol>
 
 This indirection is essential for lazy evaluation, allowing deferred instantiation while maintaining the connection to original definitions.
 

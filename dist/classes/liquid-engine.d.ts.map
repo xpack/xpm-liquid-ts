@@ -1,1 +1,1 @@
-{"version":3,"file":"liquid-engine.d.ts","sourceRoot":"","sources":["../../src/classes/liquid-engine.ts"],"names":[],"mappings":"AAoBA,OAAO,EAAE,MAAM,EAAE,MAAM,UAAU,CAAA;AAgCjC,qBAAa,eAAgB,SAAQ,MAAM;;CA6K1C"}
+{"version":3,"file":"liquid-engine.d.ts","sourceRoot":"","sources":["../../src/classes/liquid-engine.ts"],"names":[],"mappings":"AAoBA,OAAO,EAAE,MAAM,EAAE,MAAM,UAAU,CAAA;AA+BjC,qBAAa,eAAgB,SAAQ,MAAM;;CA2K1C"}

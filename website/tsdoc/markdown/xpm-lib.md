@@ -4,7 +4,7 @@
 
 ## xpm-lib package
 
-A Node.js TypeScript module with the core code for xpm and xpm enabled projects.
+A Node.js TypeScript module with the core code for <b>xpm</b> and <b>xpm enabled</b> projects.
 
 ## Remarks
 
@@ -16,9 +16,7 @@ The Lazy Evaluation Mechanism
 
 Actions ([XpmLiquidActions](./xpm-lib.xpmliquidactions.md)<!-- -->) and build configurations ([XpmLiquidBuildConfigurations](./xpm-lib.xpmliquidbuildconfigurations.md)<!-- -->) implement a two-step lazy evaluation process to avoid unnecessary operations:
 
-1. Name Expansion: During collection initialisation, only the matrix of options is evaluated for each template, expanding template names into concrete action or configuration names without processing their content.
-
-2. Content Evaluation: Later, when an action or build configuration is actually accessed and initialised (via [XpmLiquidAction.initialise()](./xpm-lib.xpmliquidaction.initialise.md) or [XpmLiquidBuildConfiguration.initialise()](./xpm-lib.xpmliquidbuildconfiguration.initialise.md)<!-- -->), the template is fully evaluated and Liquid substitutions are performed.
+<ol> <li>Name Expansion: During collection initialisation, only the matrix of options is evaluated for each template, expanding template names into concrete action or configuration names without processing their content.</li> <li>Content Evaluation: Later, when an action or build configuration is actually accessed and initialised (via <code>XpmLiquidAction.initialise</code> or <code>XpmLiquidBuildConfiguration.initialise</code>), the template is fully evaluated and Liquid substitutions are performed.</li> </ol>
 
 This approach ensures that only items that are actually used incur the cost of template evaluation and variable substitution, significantly improving performance for projects with many actions or configurations.
 

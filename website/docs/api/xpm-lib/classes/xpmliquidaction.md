@@ -28,11 +28,7 @@ Actions are lazily initialised, with variable substitution performed only when t
 
 An action can exist in three states:
 
-1. Undefined: Name is known but instance not yet created.
-
-2. Instantiated: Object exists but commands not yet evaluated.
-
-3. Initialised: Commands fully evaluated with Liquid substitutions.
+<ol> <li>Undefined: Name is known but instance not yet created.</li> <li>Instantiated: Object exists but commands not yet evaluated.</li> <li>Initialised: Commands fully evaluated with Liquid substitutions.</li> </ol>
 
 This design minimizes memory usage and computation for actions that are defined but never executed, which is common when using matrix templates to generate platform-specific or configuration-specific actions.
 

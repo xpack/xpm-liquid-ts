@@ -18,13 +18,5 @@ This array specifies the inheritance chain for this configuration, processed seq
 
 Inheritance processing:
 
-1. Populated from `inherits` or deprecated `inherit` field during initialisation.
-
-2. Supports both string (single parent) and array (multiple parents) formats.
-
-3. Each inherited configuration is initialised recursively before merging its properties, dependencies, and actions.
-
-4. Circular references are detected and rejected with [XpmInputError](./xpm-lib.xpminputerror.md)<!-- -->.
-
-5. Later inherited configurations override properties from earlier ones, and local properties override all inherited ones.
+<ol> <li>Populated from <code>inherits</code> or deprecated <code>inherit</code> field during initialisation.</li> <li>Supports both string (single parent) and array (multiple parents) formats.</li> <li>Each inherited configuration is initialised recursively before merging its properties, dependencies, and actions.</li> <li>Circular references are detected and rejected with <code>XpmInputError</code>.</li> <li>Later inherited configurations override properties from earlier ones, and local properties override all inherited ones.</li> </ol>
 

@@ -9,12 +9,14 @@
  *
  * Platform-specific processing:
  *
- * - Windows: Preserves backslashes (\\) and colons (:) for drive letters
+ * <ul>
+ * <li>Windows: Preserves backslashes (\\) and colons (:) for drive letters
  *   and path separators (e.g., C:\\path\\to\\file). Replaces all other
- *   non-alphanumeric characters with dashes.
- *
- * - POSIX (Linux, macOS): Preserves forward slashes (/) for path
- *   separators. Replaces all other non-alphanumeric characters with dashes.
+ *   non-alphanumeric characters with dashes.</li>
+ * <li>POSIX (Linux, macOS): Preserves forward slashes (/) for path
+ *   separators. Replaces all other non-alphanumeric characters with
+ *   dashes.</li>
+ * </ul>
  *
  * Post-processing: After character replacement, consecutive dashes are
  * collapsed to a single dash to avoid excessive dashes from adjacent
@@ -38,11 +40,11 @@ export declare function filterPath(input: string): string;
  *
  * Processing rules:
  *
- * - Preserves forward slashes (/) for path separators.
- *
- * - Replaces all non-alphanumeric characters (except /) with dashes.
- *
- * - Collapses consecutive dashes to single dashes.
+ * <ul>
+ * <li>Preserves forward slashes (/) for path separators.</li>
+ * <li>Replaces all non-alphanumeric characters (except /) with dashes.</li>
+ * <li>Collapses consecutive dashes to single dashes.</li>
+ * </ul>
  *
  * Use this function instead of {@link filterPath} when you need guaranteed
  * POSIX-style sanitization even when running on Windows, such as when
@@ -63,13 +65,12 @@ export declare function filterPosixPath(input: string): string;
  *
  * Processing rules:
  *
- * - Preserves backslashes (\) for path separators.
- *
- * - Preserves colons (:) for drive letter designation (e.g., C:).
- *
- * - Replaces all other non-alphanumeric characters with dashes.
- *
- * - Collapses consecutive dashes to single dashes.
+ * <ul>
+ * <li>Preserves backslashes (\) for path separators.</li>
+ * <li>Preserves colons (:) for drive letter designation (e.g., C:).</li>
+ * <li>Replaces all other non-alphanumeric characters with dashes.</li>
+ * <li>Collapses consecutive dashes to single dashes.</li>
+ * </ul>
  *
  * Use this function instead of {@link filterPath} when you need guaranteed
  * Windows-style sanitization even when running on POSIX systems, such as

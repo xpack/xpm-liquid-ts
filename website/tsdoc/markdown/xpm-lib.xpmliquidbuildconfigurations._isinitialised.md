@@ -18,11 +18,7 @@ This flag prevents redundant initialisation and ensures idempotent behavior when
 
 State transitions:
 
-1. Initially `false` after construction.
-
-2. Set to `true` after successful template expansion and configuration name registration.
-
-3. Checked at the beginning of [XpmLiquidBuildConfigurations.initialise()](./xpm-lib.xpmliquidbuildconfigurations.initialise.md) to return early if already initialised.
+<ol> <li>Initially <code>false</code> after construction.</li> <li>Set to <code>true</code> after successful template expansion and configuration name registration.</li> <li>Checked at the beginning of <code>XpmLiquidBuildConfigurations.initialise</code> to return early if already initialised.</li> </ol>
 
 This pattern supports safe repeated calls during complex initialisation sequences without duplicating work or corrupting internal state.
 

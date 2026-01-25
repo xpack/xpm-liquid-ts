@@ -8,24 +8,26 @@ import { Logger } from '@xpack/logger';
  *
  * Processing strategy:
  *
- * 1. Symbolic links: Ignored because lchmod was deprecated and permissions
- *    cannot be reliably changed across platforms.
- *
- * 2. Read-only mode: Process folder contents first (recursively), then set
+ * <ol>
+ * <li>Symbolic links: Ignored because lchmod was deprecated and permissions
+ *    cannot be reliably changed across platforms.</li>
+ * <li>Read-only mode: Process folder contents first (recursively), then set
  *    the folder itself to read-only. This prevents permission denied errors
- *    when trying to access a read-only folder's contents.
- *
- * 3. Read-write mode: Set folder to read-write first, then process contents
+ *    when trying to access a read-only folder's contents.</li>
+ * <li>Read-write mode: Set folder to read-write first, then process contents
  *    recursively. This ensures the folder is writable before attempting to
- *    modify nested items.
+ *    modify nested items.</li>
+ * </ol>
  *
  * Permission modes applied:
  *
- * - Read-only: Removes all write bits (user, group, other) using bitwise
- *   AND with negated S_IWUSR | S_IWGRP | S_IWOTH.
- *
- * - Read-write: Adds only user write bit using bitwise OR with S_IWUSR,
- *   preserving existing group and other permissions.
+ * <ul>
+ * <li>Read-only: Removes all write bits (user, group, other) using bitwise
+ *   AND with negated <code>S_IWUSR | S_IWGRP | S_IWOTH</code>.</li>
+ * <li>Read-write: Adds only user write bit using bitwise OR with
+ *   <code>S_IWUSR</code>,
+ *   preserving existing group and other permissions.</li>
+ * </ul>
  *
  * The function validates the result after each chmod operation and logs
  * warnings if the expected permission state is not achieved, which can

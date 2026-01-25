@@ -28,15 +28,7 @@ This collection manages package-level actions defined in xpack.actions, which ar
 
 Package-level actions characteristics:
 
-1. Created during construction but initially unpopulated.
-
-2. Populated during the collection's own initialisation when [XpmLiquidActions.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidactions/initialise) is called.
-
-3. Have access to package-level substitution variables but not configuration-specific variables.
-
-4. Suitable for package-wide tasks like testing, documentation generation, or global cleanup.
-
-5. Can be used alongside configuration-specific actions, which inherit from package-level actions.
+<ol> <li>Created during construction but initially unpopulated.</li> <li>Populated during the collection's own initialisation when <code>XpmLiquidActions.initialise</code> is called.</li> <li>Have access to package-level substitution variables but not configuration-specific variables.</li> <li>Suitable for package-wide tasks like testing, documentation generation, or global cleanup.</li> <li>Can be used alongside configuration-specific actions, which inherit from package-level actions.</li> </ol>
 
 <hr/>
 

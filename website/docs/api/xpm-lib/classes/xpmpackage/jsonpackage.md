@@ -28,15 +28,7 @@ This property caches the parsed package.json content after successful reading, a
 
 Lifecycle states:
 
-1. Initially undefined when the XpmPackage instance is created.
-
-2. Populated by [XpmPackage.readPackageDotJson()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmpackage/readpackagedotjson) upon successful read andparse.
-
-3. Cleared to undefined if parsing fails with `withThrow` enabled.
-
-4. Used by validation methods (isNpmPackage, isXpmPackage, isBinaryXpmPackage) to check package capabilities.
-
-5. Not automatically updated when package.json is modified externally; call [XpmPackage.readPackageDotJson()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmpackage/readpackagedotjson) again to refresh.
+<ol> <li>Initially undefined when the XpmPackage instance is created.</li> <li>Populated by <code>XpmPackage.readPackageDotJson</code> upon successful read andparse.</li> <li>Cleared to undefined if parsing fails with <code>withThrow</code> enabled.</li> <li>Used by validation methods (isNpmPackage, isXpmPackage, isBinaryXpmPackage) to check package capabilities.</li> <li>Not automatically updated when package.json is modified externally; call <code>XpmPackage.readPackageDotJson</code> again to refresh.</li> </ol>
 
 The cached content improves performance for packages that perform multiple validation checks without file system access overhead.
 

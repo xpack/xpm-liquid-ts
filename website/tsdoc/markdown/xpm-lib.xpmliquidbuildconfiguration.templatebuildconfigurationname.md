@@ -18,11 +18,5 @@ For template-generated configurations, this preserves the original template name
 
 Usage:
 
-1. Undefined for regular (non-template) configurations.
-
-2. Set to the template name for configurations generated from matrix expansion.
-
-3. Used to determine whether full JSON substitution is needed during initialisation (templates require complete substitution, regular configurations only substitute specific fields).
-
-4. Enables tracing and debugging of template expansion process.
+<ol> <li>Undefined for regular (non-template) configurations.</li> <li>Set to the template name for configurations generated from matrix expansion.</li> <li>Used to determine whether full JSON substitution is needed during initialisation (templates require complete substitution, regular configurations only substitute specific fields).</li> <li>Enables tracing and debugging of template expansion process.</li> </ol>
 

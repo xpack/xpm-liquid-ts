@@ -28,11 +28,7 @@ This set provides O(1) existence checks for configuration names, enabling effici
 
 Duplicate scenarios detected:
 
-1. Explicit duplicates in package.json with identical names.
-
-2. Template expansion conflicts where different templates generate the same concrete configuration name.
-
-3. Conflicts between template-generated names and explicitly defined configuration names.
+<ol> <li>Explicit duplicates in package.json with identical names.</li> <li>Template expansion conflicts where different templates generate the same concrete configuration name.</li> <li>Conflicts between template-generated names and explicitly defined configuration names.</li> </ol>
 
 Detection occurs during [XpmLiquidBuildConfigurations.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidbuildconfigurations/initialise)<!-- -->, throwing [XpmError](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmerror) when duplicates are found to ensure configuration name uniqueness.
 

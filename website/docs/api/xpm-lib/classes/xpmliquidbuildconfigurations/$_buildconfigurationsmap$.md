@@ -28,13 +28,7 @@ This map serves as the primary configuration registry, populated during collecti
 
 Key characteristics:
 
-1. Known only after [XpmLiquidBuildConfigurations.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidbuildconfigurations/initialise) completes.
-
-2. Possibly empty if there are no build configurations defined.
-
-3. Values can be `undefined` to indicate a configuration exists but hasn't been instantiated yet (lazy loading).
-
-4. For template configurations, contains one entry per expanded combination, not the original template definition.
+<ol> <li>Known only after <code>XpmLiquidBuildConfigurations.initialise</code> completes.</li> <li>Possibly empty if there are no build configurations defined.</li> <li>Values can be <code>undefined</code> to indicate a configuration exists but hasn't been instantiated yet (lazy loading).</li> <li>For template configurations, contains one entry per expanded combination, not the original template definition.</li> </ol>
 
 Configurations transition from `undefined` to instantiated when first accessed via [XpmLiquidBuildConfigurations.get()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidbuildconfigurations/get)<!-- -->, implementing the lazy evaluation pattern to avoid unnecessary processing.
 

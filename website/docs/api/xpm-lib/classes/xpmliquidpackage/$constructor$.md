@@ -65,21 +65,7 @@ The constructor initializes the Liquid engine and prepares the substitution vari
 
 Initialization sequence:
 
-1. Create XpmLiquidEngine with custom filters and strict configuration.
-
-2. Validate xpack section exists in package.json.
-
-3. Initialize base substitution variables (os, platform, arch, etc.).
-
-4. Add package metadata to substitution context.
-
-5. Merge xpack.properties if defined, allowing user-defined variables.
-
-6. Seal substitution variables to prevent accidental modification.
-
-7. Create package-level actions collection (initially empty, populated during initialisation).
-
-8. Create build configurations collection (initially empty, populated during initialisation).
+<ol> <li>Create XpmLiquidEngine with custom filters and strict configuration.</li> <li>Validate xpack section exists in package.json.</li> <li>Initialize base substitution variables (os, platform, arch, etc.).</li> <li>Add package metadata to substitution context.</li> <li>Merge xpack.properties if defined, allowing user-defined variables.</li> <li>Seal substitution variables to prevent accidental modification.</li> <li>Create package-level actions collection (initially empty, populated during initialisation).</li> <li>Create build configurations collection (initially empty, populated during initialisation).</li> </ol>
 
 The substitution variables object is sealed to ensure immutability of the base context. Individual actions and configurations will extend this context with their own scoped variables without modifying the original.
 

@@ -29,13 +29,7 @@ Provides platform-specific path constants for building file paths in templates. 
 
 Available constants:
 
-- `path.sep`<!-- -->: Platform-specific path separator (/ or )<!-- -->.
-
-- `path.delimiter`<!-- -->: Platform-specific PATH delimiter (; or :).
-
-- `path.posix.*`<!-- -->: Force POSIX conventions regardless of platform.
-
-- `path.win32.*`<!-- -->: Force Windows conventions regardless of platform.
+<ul> <li><code>path.sep</code>: Platform-specific path separator (/ or )<!-- -->.</li> <li><code>path.delimiter</code>: Platform-specific PATH delimiter (; or :).</li> <li><code>path.posix.\*</code>: Force POSIX conventions regardless of platform.</li> <li><code>path.win32.\*</code>: Force Windows conventions regardless of platform.</li> </ul>
 
 Note: For path manipulation, prefer using Liquid filters like `path_join`<!-- -->, `path_dirname`<!-- -->, etc., which handle cross-platform concerns automatically.
 

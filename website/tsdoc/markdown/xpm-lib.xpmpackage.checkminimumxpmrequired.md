@@ -64,17 +64,7 @@ This method ensures that packages requiring specific xpm features or bug fixes c
 
 Validation workflow:
 
-1. Check if package is an xpm package with `minimumXpmRequired` set.
-
-2. Clean the required version by removing pre-release suffixes.
-
-3. Load the xpm CLI's package.json from the provided root folder.
-
-4. Extract and clean the installed xpm version.
-
-5. Compare versions using semver to determine if upgrade is needed.
-
-6. Throw [XpmPrerequisitesError](./xpm-lib.xpmprerequisiteserror.md) if installed version is too old.
+<ol> <li>Check if package is an xpm package with <code>minimumXpmRequired</code> set.</li> <li>Clean the required version by removing pre-release suffixes.</li> <li>Load the xpm CLI's package.json from the provided root folder.</li> <li>Extract and clean the installed xpm version.</li> <li>Compare versions using semver to determine if upgrade is needed.</li> <li>Throw <code>XpmPrerequisitesError</code> if installed version is too old.</li> </ol>
 
 Pre-release suffixes are stripped from both versions to ensure that pre-release builds satisfy version requirements (e.g., 1.0.0-beta satisfies minimumXpmRequired: 1.0.0).
 

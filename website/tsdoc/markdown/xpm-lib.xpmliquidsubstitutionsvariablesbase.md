@@ -18,13 +18,7 @@ This constant provides the foundation for all Liquid template processing, captur
 
 Initialization strategy:
 
-1. Environment variables: Snapshot of process.env at load time.
-
-2. OS information: Calls to os module functions (platform, arch, etc.).
-
-3. Path constants: Platform-specific separators and delimiters.
-
-4. Empty properties: Placeholder for package-specific additions.
+<ol> <li>Environment variables: Snapshot of process.env at load time.</li> <li>OS information: Calls to os module functions (platform, arch, etc.).</li> <li>Path constants: Platform-specific separators and delimiters.</li> <li>Empty properties: Placeholder for package-specific additions.</li> </ol>
 
 These base variables are shared across all template processing within the application and extended with package, configuration, and matrix variables as needed. The base object is typically spread into new contexts rather than mutated, preserving the original snapshot.
 

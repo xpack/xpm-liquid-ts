@@ -18,13 +18,7 @@ This set tracks the inheritance chain being processed to detect and prevent circ
 
 Detection mechanism:
 
-1. Initially empty when configuration initialisation begins.
-
-2. Each inherited configuration name is added before processing that configuration's inheritance.
-
-3. If a configuration attempts to inherit from a name already in the set, a circular reference exists.
-
-4. Circular references trigger [XpmInputError](./xpm-lib.xpminputerror.md) with details about the problematic inheritance chain.
+<ol> <li>Initially empty when configuration initialisation begins.</li> <li>Each inherited configuration name is added before processing that configuration's inheritance.</li> <li>If a configuration attempts to inherit from a name already in the set, a circular reference exists.</li> <li>Circular references trigger <code>XpmInputError</code> with details about the problematic inheritance chain.</li> </ol>
 
 Example: If config A inherits from B, B from C, and C from A, the circular dependency is detected when C attempts to inherit from A.
 

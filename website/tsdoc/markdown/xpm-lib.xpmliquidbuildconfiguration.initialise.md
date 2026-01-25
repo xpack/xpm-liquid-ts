@@ -29,21 +29,7 @@ This method resolves inheritance, applies variable substitutions, computes depen
 
 Initialisation workflow:
 
-1. For template configurations: Substitute matrix parameters throughout the entire JSON structure.
-
-2. For non-template configurations: Substitute only the inherits field.
-
-3. Process inheritance chain recursively with circular reference detection.
-
-4. Merge properties, dependencies, and devDependencies from inherited configurations (later overrides earlier).
-
-5. Apply local properties and update substitution variables context.
-
-6. For visible configurations: Compute build folder relative path.
-
-7. Substitute Liquid templates in dependencies and devDependencies.
-
-8. Create actions collection with inherited actions and local actions.
+<ol> <li>For template configurations: Substitute matrix parameters throughout the entire JSON structure.</li> <li>For non-template configurations: Substitute only the inherits field.</li> <li>Process inheritance chain recursively with circular reference detection.</li> <li>Merge properties, dependencies, and devDependencies from inherited configurations (later overrides earlier).</li> <li>Apply local properties and update substitution variables context.</li> <li>For visible configurations: Compute build folder relative path.</li> <li>Substitute Liquid templates in dependencies and devDependencies.</li> <li>Create actions collection with inherited actions and local actions.</li> </ol>
 
 The substitution context includes package variables, configuration properties, matrix parameters (for templates), and the configuration object itself accessible via `configuration.name`<!-- -->, etc.
 

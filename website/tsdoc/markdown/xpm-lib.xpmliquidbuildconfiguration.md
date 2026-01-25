@@ -18,11 +18,7 @@ Build configurations are initialised lazily and may inherit properties, dependen
 
 A configuration can exist in three states:
 
-1. Undefined: Name is known but instance not yet created.
-
-2. Instantiated: Object exists but not yet fully processed.
-
-3. Initialised: Inheritance resolved, properties evaluated, dependencies substituted, and actions prepared.
+<ol> <li>Undefined: Name is known but instance not yet created.</li> <li>Instantiated: Object exists but not yet fully processed.</li> <li>Initialised: Inheritance resolved, properties evaluated, dependencies substituted, and actions prepared.</li> </ol>
 
 Inheritance is processed recursively with circular reference detection. Later inherited properties override earlier ones, and local properties override all inherited ones. Dependencies and actions are merged from all inherited configurations.
 

@@ -28,9 +28,7 @@ This flag determines the substitution strategy during configuration initialisati
 
 Template vs regular configuration processing:
 
-1. Template configurations (`isTemplate === true`<!-- -->): - Entire JSON configuration is stringified and substituted. - Matrix parameters available throughout all fields. - More expensive but supports matrix references anywhere.
-
-2. Regular configurations (`isTemplate === false`<!-- -->): - Only `inherits` field is substituted initially. - Other fields processed selectively during inheritance resolution. - More efficient for configurations without matrix parameters.
+<ol> <li>Template configurations (<code>isTemplate === true</code>): <ul> <li>Entire JSON configuration is stringified and substituted.</li> <li>Matrix parameters available throughout all fields.</li> <li>More expensive but supports matrix references anywhere.</li> </ul> </li> <li>Regular configurations (<code>isTemplate === false</code>): <ul> <li>Only <code>inherits</code> field is substituted initially.</li> <li>Other fields processed selectively during inheritance resolution.</li> <li>More efficient for configurations without matrix parameters.</li> </ul> </li> </ol>
 
 Set to `true` when `templateBuildConfigurationName` is defined, indicating the configuration was generated from a template expansion.
 

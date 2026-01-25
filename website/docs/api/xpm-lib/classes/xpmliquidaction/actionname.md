@@ -28,11 +28,7 @@ This is the final, expanded action name used for identification and execution. F
 
 The name is used for:
 
-1. User-facing identification when listing or executing actions.
-
-2. Logging and diagnostic output to track action lifecycle.
-
-3. Creating copies of inherited actions with preserved names.
+<ol> <li>User-facing identification when listing or executing actions.</li> <li>Logging and diagnostic output to track action lifecycle.</li> <li>Creating copies of inherited actions with preserved names.</li> </ol>
 
 Names must be unique within the actions collection, enforced during [XpmLiquidActions.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidactions/initialise)<!-- -->.
 

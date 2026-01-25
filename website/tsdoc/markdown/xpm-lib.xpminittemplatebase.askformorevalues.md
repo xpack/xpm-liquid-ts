@@ -21,11 +21,7 @@ A promise that resolves when all missing values have been collected.
 
 This method creates a readline interface and iteratively prompts the user to provide values for properties without explicit values. For each property, the prompt displays:
 
-- The property label
-
-- Valid options (for select and boolean types)
-
-- The default value in brackets, if available
+<ul> <li>The property label</li> <li>Valid options (for select and boolean types)</li> <li>The default value in brackets, if available</li> </ul>
 
 If the user enters '?', help text is displayed showing the property description and all valid options with their descriptions. Invalid responses are rejected and the prompt is repeated until a valid value is provided. Platform-incompatible options are excluded from select properties.
 

@@ -18,13 +18,7 @@ This class manages build configurations defined in package metadata, including t
 
 Configuration lifecycle phases:
 
-1. Construction: Basic setup without processing configurations.
-
-2. Initialisation: Template name expansion without content evaluation.
-
-3. Retrieval: On-demand instantiation when accessed via get().
-
-4. Configuration Initialisation: Full processing including inheritance, property resolution, dependency substitution, and action preparation.
+<ol> <li>Construction: Basic setup without processing configurations.</li> <li>Initialisation: Template name expansion without content evaluation.</li> <li>Retrieval: On-demand instantiation when accessed via get().</li> <li>Configuration Initialisation: Full processing including inheritance, property resolution, dependency substitution, and action preparation.</li> </ol>
 
 This lazy evaluation strategy ensures that only configurations actually used incur the cost of template evaluation, inheritance resolution, and variable substitution.
 

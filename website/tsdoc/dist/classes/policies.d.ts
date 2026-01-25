@@ -11,20 +11,23 @@ import { Logger } from '@xpack/logger';
  * Each policy flag represents a breaking change introduced at a specific
  * xpm version:
  *
- * - Packages with minimumXpmRequired \< version threshold get legacy behavior.
- *
- * - Packages with minimumXpmRequired \>= version threshold get new behavior.
+ * <ul>
+ * <li>Packages with minimumXpmRequired \< version threshold get
+ * legacy behavior.</li>
+ * <li>Packages with minimumXpmRequired \>= version threshold get
+ * new behavior.</li>
+ * </ul>
  *
  * This approach ensures that:
  *
- * 1. Existing packages continue to work with newer xpm versions without
- *    modification.
- *
- * 2. New packages can opt into modern behavior by specifying a recent
- *    minimumXpmRequired.
- *
- * 3. Breaking changes are tied to explicit version declarations rather than
- *    xpm installation version.
+ * <ol>
+ * <li>Existing packages continue to work with newer xpm versions without
+ *    modification.</li>
+ * <li>New packages can opt into modern behavior by specifying a recent
+ *    minimumXpmRequired.</li>
+ * <li>Breaking changes are tied to explicit version declarations rather than
+ *    xpm installation version.</li>
+ * </ol>
  *
  * Policy flags are evaluated once during initialization and cached for the
  * duration of the operation.
@@ -97,16 +100,15 @@ export declare class XpmPolicies {
      *
      * Evaluation process:
      *
-     * 1. Validate that minVersion is a valid semver string.
-     *
-     * 2. If invalid, retain default values (all flags false = modern behavior).
-     *
-     * 3. For each policy, use semver.lt() to check if minVersion is less than
-     *    the threshold version.
-     *
-     * 4. If minVersion \< threshold, enable legacy behavior (flag = true).
-     *
-     * 5. If minVersion \>= threshold, use modern behavior (flag = false).
+     * <ol>
+     * <li>Validate that minVersion is a valid semver string.</li>
+     * <li>If invalid, retain default values (all flags false = modern
+     * behavior).</li>
+     * <li>For each policy, use semver.lt() to check if minVersion is less than
+     *    the threshold version.</li>
+     * <li>If minVersion \< threshold, enable legacy behavior (flag = true).</li>
+     * <li>If minVersion \>= threshold, use modern behavior (flag = false).</li>
+     * </ol>
      *
      * This ensures that packages explicitly declaring their minimum version
      * get the behavior that was current at that version, while packages

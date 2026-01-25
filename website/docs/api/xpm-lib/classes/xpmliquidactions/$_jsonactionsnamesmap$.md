@@ -28,11 +28,7 @@ This reverse mapping enables retrieving the original action definition from `jso
 
 Mapping behavior:
 
-1. For regular actions: Maps action name to itself (identity mapping).
-
-2. For template actions: Maps each generated action name back to the original template name (e.g., `test-x64` → `test-{{ matrix.arch }}`<!-- -->).
-
-3. Enables [XpmLiquidActions.get()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidactions/get) to locate the correct JSON definition when instantiating an action on demand.
+<ol> <li>For regular actions: Maps action name to itself (identity mapping).</li> <li>For template actions: Maps each generated action name back to the original template name (e.g., <code>test-x64</code> → <code>test-<!-- -->{<!-- -->{ matrix.arch }<!-- -->}</code>).</li> <li>Enables <code>XpmLiquidActions.get</code> to locate the correct JSON definition when instantiating an action on demand.</li> </ol>
 
 This indirection is essential for the lazy evaluation pattern, allowing deferred instantiation while maintaining the connection to original definitions.
 

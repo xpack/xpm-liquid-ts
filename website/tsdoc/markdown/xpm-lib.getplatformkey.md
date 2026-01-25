@@ -62,21 +62,13 @@ Generates a platform identifier string used for matching binary packages to the 
 
 Platform key format: `<platform>-<arch>`
 
-Examples: - `darwin-x64` (macOS on Intel)
+Examples:
 
-- `darwin-arm64` (macOS on Apple Silicon)
-
-- `linux-x64` (Linux on 64-bit Intel/AMD)
-
-- `win32-x64` (Windows on 64-bit)
+<ul> <li><code>darwin-x64</code> (macOS on Intel)</li> <li><code>darwin-arm64</code> (macOS on Apple Silicon)</li> <li><code>linux-x64</code> (Linux on 64-bit Intel/AMD)</li> <li><code>win32-x64</code> (Windows on 64-bit)</li> </ul>
 
 32-bit coercion rules (when doForce32bit is true):
 
-- Windows x64 → ia32: Forces 32-bit binaries on 64-bit Windows.
-
-- Linux x64 → ia32: Forces 32-bit binaries on 64-bit Linux.
-
-- Linux arm64 → arm: Forces 32-bit ARM binaries on 64-bit ARM Linux.
+<ul> <li>Windows x64 → ia32: Forces 32-bit binaries on 64-bit Windows.</li> <li>Linux x64 → ia32: Forces 32-bit binaries on 64-bit Linux.</li> <li>Linux arm64 → arm: Forces 32-bit ARM binaries on 64-bit ARM Linux.</li> </ul>
 
 This coercion is useful for backward compatibility scenarios where only 32-bit binaries are available but can run on 64-bit systems. The platform key matches the naming conventions used in binary xPack distributions.
 

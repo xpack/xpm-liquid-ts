@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-A Node.js TypeScript module with the core code for xpm and xpm enabled projects.
+A Node.js TypeScript module with the core code for <b>xpm</b> and <b>xpm enabled</b> projects.
 
 ## Remarks
 
@@ -26,9 +26,7 @@ The Lazy Evaluation Mechanism
 
 Actions ([XpmLiquidActions](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidactions)<!-- -->) and build configurations ([XpmLiquidBuildConfigurations](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidbuildconfigurations)<!-- -->) implement a two-step lazy evaluation process to avoid unnecessary operations:
 
-1. Name Expansion: During collection initialisation, only the matrix of options is evaluated for each template, expanding template names into concrete action or configuration names without processing their content.
-
-2. Content Evaluation: Later, when an action or build configuration is actually accessed and initialised (via [XpmLiquidAction.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidaction/initialise) or [XpmLiquidBuildConfiguration.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidbuildconfiguration/initialise)<!-- -->), the template is fully evaluated and Liquid substitutions are performed.
+<ol> <li>Name Expansion: During collection initialisation, only the matrix of options is evaluated for each template, expanding template names into concrete action or configuration names without processing their content.</li> <li>Content Evaluation: Later, when an action or build configuration is actually accessed and initialised (via <code>XpmLiquidAction.initialise</code> or <code>XpmLiquidBuildConfiguration.initialise</code>), the template is fully evaluated and Liquid substitutions are performed.</li> </ol>
 
 This approach ensures that only items that are actually used incur the cost of template evaluation and variable substitution, significantly improving performance for projects with many actions or configurations.
 

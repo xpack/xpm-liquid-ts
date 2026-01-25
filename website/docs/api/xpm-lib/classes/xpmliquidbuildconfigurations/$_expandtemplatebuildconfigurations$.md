@@ -75,15 +75,7 @@ This method computes the Cartesian product of matrix parameter values and create
 
 Processing steps:
 
-1. Validates matrix structure (object with array values).
-
-2. Validates template format (must be a JSON object).
-
-3. Performs Liquid substitutions on matrix values if they contain template syntax.
-
-4. Recursively generates all combinations using Cartesian product.
-
-5. Creates a configuration instance for each combination with matrix parameters stored for later full evaluation.
+<ol> <li>Validates matrix structure (object with array values).</li> <li>Validates template format (must be a JSON object).</li> <li>Performs Liquid substitutions on matrix values if they contain template syntax.</li> <li>Recursively generates all combinations using Cartesian product.</li> <li>Creates a configuration instance for each combination with matrix parameters stored for later full evaluation.</li> </ol>
 
 Matrix variables are scoped to individual configurations and accessible via the `matrix` namespace during property, dependency, and action evaluation.
 

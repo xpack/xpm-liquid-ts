@@ -77,23 +77,7 @@ This function processes Liquid template syntax (variables and tags) by repeatedl
 
 Processing workflow:
 
-1. Skip processing for empty strings to avoid unnecessary overhead.
-
-2. Prepare Liquid context with substitution variables.
-
-3. If properties exist, wrap them in [XpmLiquidPropertiesDrop](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidpropertiesdrop) for lazy evaluation and nested substitution support.
-
-4. If matrix parameters exist, wrap them in [XpmLiquidMatrixDrop](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidmatrixdrop) for template expansion variable access.
-
-5. Iterate while Liquid syntax (`{{` or `{%`<!-- -->) is present:
-
-- Parse and render the current string.
-
-- Break if no changes occur (safety check).
-
-- Continue with the substituted result.
-
-6. Return the fully substituted string.
+<ol> <li>Skip processing for empty strings to avoid unnecessary overhead.</li> <li>Prepare Liquid context with substitution variables.</li> <li>If properties exist, wrap them in <code>XpmLiquidPropertiesDrop</code> for lazy evaluation and nested substitution support.</li> <li>If matrix parameters exist, wrap them in <code>XpmLiquidMatrixDrop</code> for template expansion variable access.</li> <li>Iterate while Liquid syntax (<code>{<!-- -->{</code> or <code>{<!-- -->%</code>) is present: <ul> <li>Parse and render the current string.</li> <li>Break if no changes occur (safety check).</li> <li>Continue with the substituted result.</li> </ul> </li> <li>Return the fully substituted string.</li> </ol>
 
 The Drop pattern enables recursive property resolution: when a template accesses `{{ properties.foo }}` and `foo` contains `{{ properties.bar }}`<!-- -->, the next iteration resolves `bar`<!-- -->, and so on until no Liquid syntax remains.
 

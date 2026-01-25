@@ -31,9 +31,7 @@ Available only when processing templates within a build configuration context (a
 
 Contains the configuration name and all configuration properties, allowing templates to reference the current build context:
 
-- `{{ configuration.name }}`<!-- -->: The build configuration name.
-
-- `{{ configuration.properties.key }}`<!-- -->: Configuration-specific settings.
+<ul> <li><code>{<!-- -->{ configuration.name }<!-- -->}</code>: The build configuration name.</li> <li><code>{<!-- -->{ configuration.properties.key }<!-- -->}</code>: Configuration-specific settings.</li> </ul>
 
 Undefined when processing package-level templates.
 

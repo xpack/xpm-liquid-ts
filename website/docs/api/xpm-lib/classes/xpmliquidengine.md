@@ -29,13 +29,7 @@ This class extends the Liquid engine and registers custom filters for path manip
 
 The engine is configured with strict parsing options to catch template errors early during development. Custom filters are organized into categories:
 
-1. Path manipulation: Platform-specific and cross-platform path operations (basename, dirname, join, relative, normalize) for default, POSIX, and Win32 paths.
-
-2. String formatting: Utilities for printf-style formatting and filename sanitization.
-
-3. Array/string conversion: Filters for joining and splitting lines.
-
-4. Object introspection: Filters for extracting object keys.
+<ol> <li>Path manipulation: Platform-specific and cross-platform path operations (basename, dirname, join, relative, normalize) for default, POSIX, and Win32 paths.</li> <li>String formatting: Utilities for printf-style formatting and filename sanitization.</li> <li>Array/string conversion: Filters for joining and splitting lines.</li> <li>Object introspection: Filters for extracting object keys.</li> </ol>
 
 These filters enable templates to perform complex path manipulations and string transformations without requiring external dependencies or custom template tags.
 

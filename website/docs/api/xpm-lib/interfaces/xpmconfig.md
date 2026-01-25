@@ -28,23 +28,11 @@ Configuration options control xpm operation behavior, providing flags for safe m
 
 Configuration lifecycle:
 
-1. Created from CLI arguments or programmatic API calls.
-
-2. Merged with defaults to form complete configuration.
-
-3. Passed through [XpmContext](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpmcontext) to all xpm operations.
-
-4. Consulted by operations to determine behavior (skip, force, dry-run).
+<ol> <li>Created from CLI arguments or programmatic API calls.</li> <li>Merged with defaults to form complete configuration.</li> <li>Passed through <code>XpmContext</code> to all xpm operations.</li> <li>Consulted by operations to determine behavior (skip, force, dry-run).</li> </ol>
 
 Key configuration patterns:
 
-- Force mode (`doForce: true`<!-- -->): Bypasses safety checks like "already installed" or "files exist". Use with caution as it can overwrite data.
-
-- Skip if installed (`doSkipIfInstalled: true`<!-- -->): Optimization to avoid reinstalling packages that are already present, useful for CI/CD.
-
-- Dry run (`isDryRun: true`<!-- -->): Simulates operations without making changes, useful for testing or previewing actions.
-
-- Property overrides: Command-line or API-provided properties that override values from package.json, enabling dynamic configuration.
+<ul> <li>Force mode (<code>doForce: true</code>): Bypasses safety checks like "already installed" or "files exist". Use with caution as it can overwrite data.</li> <li>Skip if installed (<code>doSkipIfInstalled: true</code>): Optimization to avoid reinstalling packages that are already present, useful for CI/CD.</li> <li>Dry run (<code>isDryRun: true</code>): Simulates operations without making changes, useful for testing or previewing actions.</li> <li>Property overrides: Command-line or API-provided properties that override values from package.json, enabling dynamic configuration.</li> </ul>
 
 The extensible design (additional properties allowed) supports future configuration options without breaking changes.
 

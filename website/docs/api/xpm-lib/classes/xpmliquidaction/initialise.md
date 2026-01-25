@@ -37,11 +37,7 @@ This method performs variable substitution on the action commands using the Liqu
 
 The substitution context includes:
 
-1. All package-level substitution variables (configuration, package metadata, platform detection, etc.).
-
-2. Build configuration variables if this action belongs to a configuration.
-
-3. Matrix parameters for template-generated actions, accessible via the `matrix` namespace (e.g., `{{ matrix.arch }}`<!-- -->).
+<ol> <li>All package-level substitution variables (configuration, package metadata, platform detection, etc.).</li> <li>Build configuration variables if this action belongs to a configuration.</li> <li>Matrix parameters for template-generated actions, accessible via the <code>matrix</code> namespace (e.g., <code>{<!-- -->{ matrix.arch }<!-- -->}</code>).</li> </ol>
 
 Array-based command definitions are joined with newlines before substitution, then split back into individual commands after processing. This allows commands to span multiple array elements while maintaining clean formatting in the package manifest.
 

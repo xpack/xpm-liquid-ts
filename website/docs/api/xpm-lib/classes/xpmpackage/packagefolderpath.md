@@ -28,13 +28,7 @@ This path serves as the base directory for all package operations, including rea
 
 Path requirements:
 
-1. Must be an absolute path to a directory.
-
-2. Directory should contain (or will contain) a package.json file.
-
-3. Used to construct the path to package.json as `{packageFolderPath}/package.json`<!-- -->.
-
-4. Remains constant throughout the lifecycle of the XpmPackage instance.
+<ol> <li>Must be an absolute path to a directory.</li> <li>Directory should contain (or will contain) a package.json file.</li> <li>Used to construct the path to package.json as <code>{<!-- -->packageFolderPath<!-- -->}<!-- -->/package.json</code>.</li> <li>Remains constant throughout the lifecycle of the XpmPackage instance.</li> </ol>
 
 The path is set during construction and used by all methods that access or modify package.json.
 

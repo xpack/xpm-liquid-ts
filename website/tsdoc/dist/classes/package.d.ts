@@ -12,22 +12,19 @@ import { JsonPackageSpecifier } from '../types/json.js';
  * The package abstraction provides a layer over package.json processing
  * with progressive validation:
  *
- * 1. Basic file I/O: Read and write package.json with error handling.
- *
- * 2. npm validation: Check for valid npm package structure (name, version).
- *
- * 3. xpm validation: Verify xpack section presence and structure.
- *
- * 4. Binary package validation: Validate binary-specific metadata
- *    (executables, binaries, platforms).
- *
- * 5. Capability detection: Determine package features (scripts, actions,
- *    build configurations).
- *
- * 6. Version checking: Validate minimum xpm version requirements.
- *
- * 7. Specifier parsing: Extract scope, name, and version from package
- *    identifiers.
+ * <ol>
+ * <li>Basic file I/O: Read and write package.json with error handling.</li>
+ * <li>npm validation: Check for valid npm package structure (name,
+ * version).</li>
+ * <li>xpm validation: Verify xpack section presence and structure.</li>
+ * <li>Binary package validation: Validate binary-specific metadata
+ *    (executables, binaries, platforms).</li>
+ * <li>Capability detection: Determine package features (scripts, actions,
+ *    build configurations).</li>
+ * <li>Version checking: Validate minimum xpm version requirements.</li>
+ * <li>Specifier parsing: Extract scope, name, and version from package
+ *    identifiers.</li>
+ * </ol>
  *
  * This hierarchy allows validation to be performed incrementally as needed,
  * avoiding unnecessary checks for packages that don't meet earlier criteria.
@@ -42,14 +39,14 @@ export declare class XpmPackage {
      *
      * Path requirements:
      *
-     * 1. Must be an absolute path to a directory.
-     *
-     * 2. Directory should contain (or will contain) a package.json file.
-     *
-     * 3. Used to construct the path to package.json as
-     *    `{packageFolderPath}/package.json`.
-     *
-     * 4. Remains constant throughout the lifecycle of the XpmPackage instance.
+     * <ol>
+     * <li>Must be an absolute path to a directory.</li>
+     * <li>Directory should contain (or will contain) a package.json file.</li>
+     * <li>Used to construct the path to package.json as
+     *    <code>\{packageFolderPath\}/package.json</code>.</li>
+     * <li>Remains constant throughout the lifecycle of the XpmPackage
+     *    instance.</li>
+     * </ol>
      *
      * The path is set during construction and used by all methods that access
      * or modify package.json.
@@ -64,18 +61,17 @@ export declare class XpmPackage {
      *
      * Lifecycle states:
      *
-     * 1. Initially undefined when the XpmPackage instance is created.
-     *
-     * 2. Populated by {@link XpmPackage.readPackageDotJson} upon successful
-     *    read andparse.
-     *
-     * 3. Cleared to undefined if parsing fails with `withThrow` enabled.
-     *
-     * 4. Used by validation methods (isNpmPackage, isXpmPackage,
-     *    isBinaryXpmPackage) to check package capabilities.
-     *
-     * 5. Not automatically updated when package.json is modified externally;
-     *    call {@link XpmPackage.readPackageDotJson} again to refresh.
+     * <ol>
+     * <li>Initially undefined when the XpmPackage instance is created.</li>
+     * <li>Populated by <code>XpmPackage.readPackageDotJson</code> upon successful
+     *    read andparse.</li>
+     * <li>Cleared to undefined if parsing fails with
+     *    <code>withThrow</code> enabled.</li>
+     * <li>Used by validation methods (isNpmPackage, isXpmPackage,
+     *    isBinaryXpmPackage) to check package capabilities.</li>
+     * <li>Not automatically updated when package.json is modified externally;
+     *    call <code>XpmPackage.readPackageDotJson</code> again to refresh.</li>
+     * </ol>
      *
      * The cached content improves performance for packages that perform
      * multiple validation checks without file system access overhead.
@@ -90,16 +86,14 @@ export declare class XpmPackage {
      *
      * Logging use cases:
      *
-     * 1. Trace package folder path during construction.
-     *
-     * 2. Log file read errors when investigating missing package.json.
-     *
-     * 3. Trace JSON parsing errors for debugging invalid package.json.
-     *
-     * 4. Log version validation details during minimumXpmRequired checks.
-     *
-     * 5. Trace package specifier parsing for debugging dependency
-     *    resolution.
+     * <ol>
+     * <li>Trace package folder path during construction.</li>
+     * <li>Log file read errors when investigating missing package.json.</li>
+     * <li>Trace JSON parsing errors for debugging invalid package.json.</li>
+     * <li>Log version validation details during minimumXpmRequired checks.</li>
+     * <li>Trace package specifier parsing for debugging dependency
+     *    resolution.</li>
+     * </ol>
      *
      * The logger enables detailed diagnostics without affecting normal
      * operation, as trace-level output is typically disabled in production.
@@ -173,11 +167,16 @@ export declare class XpmPackage {
      *
      * Validation rules:
      *
-     * 1. If `xpack.executables` (or deprecated `xpack.bin`) exists, then
-     *    `xpack.binaries` and `xpack.binaries.platforms` must also exist.
-     *
-     * 2. If `xpack.binaries` exists, then `xpack.binaries.platforms` and
-     *    `xpack.executables` (or deprecated `xpack.bin`) must also exist.
+     * <ol>
+     * <li>If <code>xpack.executables</code> (or deprecated
+     *    <code>xpack.bin</code>) exists, then
+     *    <code>xpack.binaries</code> and <code>xpack.binaries.platforms</code>
+     *    must also exist.</li>
+     * <li>If <code>xpack.binaries</code> exists, then
+     *    <code>xpack.binaries.platforms</code> and
+     *    <code>xpack.executables</code> (or deprecated
+     *    <code>xpack.bin</code>) must also exist.</li>
+     * </ol>
      *
      * This bidirectional validation ensures package metadata consistency and
      * catches incomplete binary package configurations early. The check helps
@@ -221,19 +220,17 @@ export declare class XpmPackage {
      *
      * Action detection strategy:
      *
-     * 1. Check for package-level actions in `xpack.actions`.
-     *
-     * 2. If no package-level actions, iterate through all build
-     *    configurations.
-     *
-     * 3. For each configuration, determine if it's a template (name contains
-     *    Liquid syntax) or a regular configuration.
-     *
-     * 4. For templates: Check `template.actions` for action definitions.
-     *
-     * 5. For regular configurations: Check `actions` directly.
-     *
-     * 6. Return true if any actions are found at any level.
+     * <ol>
+     * <li>Check for package-level actions in <code>xpack.actions</code>.</li>
+     * <li>If no package-level actions, iterate through all build
+     *    configurations.</li>
+     * <li>For each configuration, determine if it's a template (name contains
+     *    Liquid syntax) or a regular configuration.</li>
+     * <li>For templates: Check <code>template.actions</code> for action
+     *    definitions.</li>
+     * <li>For regular configurations: Check <code>actions</code> directly.</li>
+     * <li>Return true if any actions are found at any level.</li>
+     * </ol>
      *
      * This comprehensive check is useful for determining whether xpm action
      * commands should be available or whether the package requires xpm for
@@ -260,17 +257,16 @@ export declare class XpmPackage {
      *
      * Validation workflow:
      *
-     * 1. Check if package is an xpm package with `minimumXpmRequired` set.
-     *
-     * 2. Clean the required version by removing pre-release suffixes.
-     *
-     * 3. Load the xpm CLI's package.json from the provided root folder.
-     *
-     * 4. Extract and clean the installed xpm version.
-     *
-     * 5. Compare versions using semver to determine if upgrade is needed.
-     *
-     * 6. Throw {@link XpmPrerequisitesError} if installed version is too old.
+     * <ol>
+     * <li>Check if package is an xpm package with
+     *   <code>minimumXpmRequired</code> set.</li>
+     * <li>Clean the required version by removing pre-release suffixes.</li>
+     * <li>Load the xpm CLI's package.json from the provided root folder.</li>
+     * <li>Extract and clean the installed xpm version.</li>
+     * <li>Compare versions using semver to determine if upgrade is needed.</li>
+     * <li>Throw <code>XpmPrerequisitesError</code> if installed version is
+     * too old.</li>
+     * </ol>
      *
      * Pre-release suffixes are stripped from both versions to ensure that
      * pre-release builds satisfy version requirements (e.g., 1.0.0-beta
@@ -292,24 +288,24 @@ export declare class XpmPackage {
      * @remarks
      * npm package specifiers can take several forms:
      *
-     * - Unscoped without version: `package-name`
-     *
-     * - Unscoped with version: `package-name@1.2.3`
-     *
-     * - Scoped without version: `@scope/package-name`
-     *
-     * - Scoped with version: `@scope/package-name@1.2.3`
+     * <ul>
+     * <li>Unscoped without version: <code>package-name</code></li>
+     * <li>Unscoped with version: <code>package-name\@1.2.3</code></li>
+     * <li>Scoped without version: <code>\@scope/package-name</code></li>
+     * <li>Scoped with version: <code>\@scope/package-name\@1.2.3</code></li>
+     * </ul>
      *
      * Parsing strategy:
      *
-     * 1. If specifier starts with `@`, extract scope and handle scoped format.
-     *
-     * 2. Split on `/` to separate scope from name\@version.
-     *
-     * 3. Split the second part on `@` to separate name from version.
-     *
-     * 4. For unscoped packages, split directly on `@` to separate name from
-     *    version.
+     * <ol>
+     * <li>If specifier starts with <code>\@</code>, extract scope and handle
+     *   scoped format.</li>
+     * <li>Split on <code>/</code> to separate scope from name\@version.</li>
+     * <li>Split the second part on <code>\@</code> to separate name from
+     *   version.</li>
+     * <li>For unscoped packages, split directly on <code>\@</code> to separate
+     *    name from version.</li>
+     * </ol>
      *
      * The parser handles all valid npm package specifier formats and returns
      * structured components for downstream processing. Invalid formats with

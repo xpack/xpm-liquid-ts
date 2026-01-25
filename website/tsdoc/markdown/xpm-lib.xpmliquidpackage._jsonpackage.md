@@ -18,15 +18,7 @@ This object contains the complete package.json content, including both standard 
 
 Required structure:
 
-1. Standard npm fields: name, version, dependencies, devDependencies.
-
-2. Required `xpack` section containing xpm-specific configuration.
-
-3. Optional xpack.properties for user-defined substitution variables.
-
-4. Optional xpack.actions for package-level executable actions.
-
-5. Optional xpack.buildConfigurations for build configuration definitions.
+<ol> <li>Standard npm fields: name, version, dependencies, devDependencies.</li> <li>Required `xpack` section containing xpm-specific configuration.</li> <li>Optional xpack.properties for user-defined substitution variables.</li> <li>Optional xpack.actions for package-level executable actions.</li> <li>Optional xpack.buildConfigurations for build configuration definitions.</li> </ol>
 
 The package definition is validated during construction, requiring the xpack section to be present and be a valid JSON object.
 

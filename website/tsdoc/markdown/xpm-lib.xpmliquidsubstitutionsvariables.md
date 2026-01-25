@@ -18,15 +18,7 @@ This interface mirrors a subset of Node.js environment, operating system, and pa
 
 Variable hierarchy and scoping:
 
-1. Base variables (env, os, path): Available globally, initialized once from Node.js runtime at startup.
-
-2. Package variables: Added when processing package.json, contains package metadata accessible via `package.name`<!-- -->, `package.version`<!-- -->, etc.
-
-3. Properties: User-defined values from xpack.properties, accessible via `properties.key`<!-- -->.
-
-4. Configuration: Build configuration metadata, available when processing configuration-specific templates via `configuration.name`<!-- -->, etc.
-
-5. Matrix: Template expansion parameters, scoped to individual expanded instances, accessible via `matrix.key`<!-- -->.
+<ol> <li>Base variables (env, os, path): Available globally, initialized once from Node.js runtime at startup.</li> <li>Package variables: Added when processing package.json, contains package metadata accessible via <code>package.name</code>, <code>package.version</code>, etc.</li> <li>Properties: User-defined values from xpack.properties, accessible via <code>properties.key</code>.</li> <li>Configuration: Build configuration metadata, available when processing configuration-specific templates via <code>configuration.name</code>, etc.</li> <li>Matrix: Template expansion parameters, scoped to individual expanded instances, accessible via <code>matrix.key</code>.</li> </ol>
 
 Variables are inherited and extended through the hierarchy: actions and configurations inherit base + package + properties, then add their own scoped variables. This ensures templates have access to appropriate context without exposing unrelated data.
 
