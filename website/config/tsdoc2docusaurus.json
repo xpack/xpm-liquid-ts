@@ -8,7 +8,7 @@
     "navbarFilePath": "docusaurus-config-navbar-tsdoc.json",
     "sidebarCategoryFilePath": "sidebar-category-tsdoc.json",
     "customCssFilePath": "src/css/custom-tsdoc2docusaurus.css",
-    "navbarLabel": "API",
+    "navbarLabel": "API Reference",
     "navbarPosition": "left",
     "verbose": false,
     "debug": false
