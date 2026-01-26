@@ -18,12 +18,13 @@
  *
  * @remarks
  * In JavaScript, primitives are immutable values that are not objects:
- * string, number, bigint, boolean, undefined, and symbol. This function
- * also treats null as a primitive, following JavaScript's typeof behavior
+ * `string`, `number`, `bigint`, `boolean`, `undefined`, and `symbol`.
+ * This function
+ * also treats null as a primitive, following JavaScript's `typeof` behavior
  * despite null being technically an object type.
  *
- * Returns `true` for: string, number, bigint, boolean, undefined, symbol,
- * and null.
+ * Returns `true` for: `string`, `number`, `bigint`, `boolean`, `undefined`,
+ * `symbol`, and `null`.
  *
  * Returns `false` for: objects, arrays, functions, and class instances.
  *
@@ -31,7 +32,7 @@
  * processing JSON data or validating configuration inputs.
  *
  * @param value - The value to test.
- * @returns `true` if the value is a primitive or null, `false` otherwise.
+ * @returns `true` if the value is a primitive or `null`, `false` otherwise.
  */
 export function isPrimitive(value: unknown): boolean {
   return (
@@ -79,7 +80,7 @@ export function isString(value: unknown): value is string {
  *
  * Note: Arrays in JavaScript are objects, so this function explicitly
  * excludes them using `Array.isArray()`. Use {@link isJsonObject} for
- * stricter JSON object validation that also excludes undefined and null.
+ * stricter JSON object validation that also excludes `undefined` and `null`.
  *
  * @param value - The value to test.
  * @returns `true` if the value is a non-array object, `false` otherwise.
@@ -92,12 +93,12 @@ export function isObject(value: unknown): boolean {
  * Determines whether a value is a boolean.
  *
  * @remarks
- * Tests for primitive boolean values (true or false). Useful when
+ * Tests for primitive boolean values (`true` or `false`). Useful when
  * validating configuration options or parsing JSON where boolean flags
  * need to be distinguished from truthy/falsy values.
  *
  * Only returns `true` for the primitive boolean values `true` and `false`,
- * not for Boolean objects created with `new Boolean()`.
+ * not for boolean objects created with `new Boolean()`.
  *
  * Note: This does not check for truthy or falsy values - it only returns
  * `true` for actual boolean primitives. Use standard JavaScript truthiness
@@ -118,7 +119,7 @@ export function isBoolean(value: unknown): boolean {
  * @remarks
  * Validates that a value represents a JSON object, which is stricter than
  * JavaScript's general object type. This is essential when working with
- * parsed JSON data or package.json structures.
+ * parsed JSON data or `package.json` structures.
  *
  * Returns `true` for: plain objects and class instances (non-null,
  * non-primitive, non-array values).
@@ -126,9 +127,9 @@ export function isBoolean(value: unknown): boolean {
  * Returns `false` for: undefined, null, primitives (string, number,
  * boolean, etc.), and arrays.
  *
- * This is the primary validation function for JSON objects in the xpm
- * codebase, used extensively when parsing package.json sections like
- * xpack.properties, xpack.buildConfigurations, etc.
+ * This is the primary validation function for JSON objects in the <b>xpm</b>
+ * codebase, used extensively when parsing `package.json` sections like
+ * `xpack.properties`, `xpack.buildConfigurations`, etc.
  *
  * @param value - The value to test.
  * @returns `true` if the value is a JSON object, `false` otherwise.
@@ -141,7 +142,7 @@ export function isJsonObject(value: unknown): boolean {
  * Determines whether a value is a JSON array.
  *
  * @remarks
- * Validates that a value represents a JSON array, excluding undefined.
+ * Validates that a value represents a JSON array, excluding `undefined`.
  * This ensures the value is a proper array that could have been parsed
  * from JSON.
  *
@@ -178,8 +179,8 @@ export function isJsonArray(value: unknown): boolean {
  * own enumerable string-keyed properties, not inherited properties or
  * symbol-keyed properties.
  *
- * Common use cases include validating xpack.actions, xpack.dependencies,
- * and other package.json sections where an empty object would be
+ * Common use cases include validating `xpack.actions`, `xpack.dependencies`,
+ * and other `package.json` sections where an empty object would be
  * meaningless.
  *
  * @param value - The value to test.

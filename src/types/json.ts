@@ -52,7 +52,7 @@ export type JsonDependenciesContent = string | JsonDependencyExtended
  * dependency metadata beyond simple version strings. Allows specifying
  * platform constraints and local installation modes.
  *
- * Example usage in package.json:
+ * Example usage in `package.json`:
  * ```json
  * "dependencies": {
  *   "@scope/package": {
@@ -99,7 +99,7 @@ export type JsonActionContent = string | string[]
  * enables creating platform-specific or configuration-specific actions
  * without duplication.
  *
- * Example usage in package.json:
+ * Example usage in `package.json`:
  * ```json
  * "actions": {
  *   "build-{{ matrix.platform }}": {
@@ -111,7 +111,8 @@ export type JsonActionContent = string | string[]
  * }
  * ```
  *
- * This generates three actions: build-linux, build-darwin, and build-win32.
+ * This generates three actions: `build-linux`, `build-darwin`, and
+ * `build-win32`.
  * Matrix values are accessible in both the action name and template content
  * via `{{ matrix.key }}` Liquid syntax.
  */
@@ -181,7 +182,7 @@ export interface JsonBuildConfigurationContent {
  * expansion. Common for cross-compilation scenarios where multiple
  * architecture or platform combinations are needed.
  *
- * Example usage in package.json:
+ * Example usage in `package.json`:
  * ```json
  * "buildConfigurations": {
  *   "{{ matrix.os }}-{{ matrix.arch }}": {
@@ -198,8 +199,8 @@ export interface JsonBuildConfigurationContent {
  * }
  * ```
  *
- * This generates four configurations: linux-x64, linux-arm64, darwin-x64,
- * and darwin-arm64, each with matrix values available for property
+ * This generates four configurations: `linux-x64`, `linux-arm64`, `darwin-x64`,
+ * and `darwin-arm64`, each with matrix values available for property
  * substitution.
  */
 export interface JsonBuildConfigurationTemplate {
@@ -231,32 +232,33 @@ export type JsonBuildConfigurations = Record<string, JsonBuildConfiguration>
  * Represents a JSON xpm-specific section in package.json.
  *
  * @remarks
- * The xpack section extends standard npm package.json with xpm-specific
+ * The `xpack` section extends standard npm `package.json` with xpm-specific
  * metadata for binary package management, build automation, and
  * cross-platform development workflows.
  *
  * Key capabilities:
  *
  * <ul>
- * <li>Binary packages: Define platform-specific binary distributions with
- *   download URLs, checksums, and installation configuration.</li>
- * <li>Build configurations: Organize multiple build targets (debug, release,
- *   platform variants) with inherited properties and dependencies.</li>
- * <li>Actions: Define build automation commands that can reference
- *   properties and build configuration context via Liquid templates.</li>
- * <li>Properties: User-defined configuration values accessible throughout
- *   the package via template substitution.</li>
- * <li>Version requirements: Specify minimum xpm version for feature
- *   compatibility and policy enforcement.</li>
+ * <li><b>Binary packages:</b> Define platform-specific binary distributions
+ *    with download URLs, checksums, and installation configuration.</li>
+ * <li><b>Build configurations:</b> Organize multiple build targets (debug,
+ *    release,
+ *    platform variants) with inherited properties and dependencies.</li>
+ * <li><b>Actions:</b> Define build automation commands that can reference
+ *    properties and build configuration context via Liquid templates.</li>
+ * <li><b>Properties:</b> User-defined configuration values accessible
+ *    throughout the package via template substitution.</li>
+ * <li><b>Version requirements:</b> Specify minimum <b>xpm</b> version for
+ *    feature compatibility and policy enforcement.</li>
  * </ul>
  *
- * The xpack section is optional in npm packages but required for packages
+ * The `xpack` section is optional in npm packages but required for packages
  * using xpm-specific features like build configurations or binary
  * distributions.
  */
 export interface JsonXpack {
   /**
-   * The minimum required xpm version.
+   * The minimum required <b>xpm</b> version.
    */
   minimumXpmRequired?: string
   /**
@@ -303,10 +305,10 @@ export type JsonXpmBinariesPlatforms = Record<string, JsonXpmPlatformFile>
  *
  * @remarks
  * Configures binary package distribution for tools, SDKs, or compiled
- * applications. xpm downloads platform-specific archives, verifies their
+ * applications. <b>xpm</b> downloads platform-specific archives, verifies their
  * integrity, and extracts them to the specified destination.
  *
- * Example usage in package.json:
+ * Example usage in `package.json`:
  * ```json
  * "binaries": {
  *   "destination": ".content",
@@ -407,29 +409,28 @@ export interface JsonNpmPackage {
 }
 
 /**
- * Represents a JSON xpm package.json structure.
+ * Represents a JSON <b>xpm</b> package.json structure.
  *
  * @remarks
- * Combines standard npm package.json properties with xpm-specific
- * extensions via the required xpack section. All xpm packages are valid
- * npm packages, but not all npm packages are xpm packages.
+ * Combines standard npm `package.json` properties with xpm-specific
+ * extensions via the required `xpack` section. All <b>xpm</b> packages are
+ * valid npm packages, but not all npm packages are <b>xpm</b> packages.
  *
- * An xpm package can be:
+ * An <b>xpm</b> package can be:
  *
  * <ul>
- * <li>A source package: Contains code, build configurations, and actions.</li>
- * <li>A binary package: Distributes pre-built binaries for multiple
- *   platforms with automated installation.</li>
- * <li>A library package: Provides reusable code or resources for other
- *   packages.</li>
- * <li>A tool package: Provides command-line tools or build utilities.</li>
+ * <li><b>A source package:</b> Provides reusable code or resources for other
+ *    packages. It contains code, build configurations,
+ *    and actions.</li>
+ * <li><b>A binary package:</b> Distributes pre-built binaries for multiple
+ *    platforms with automated installation.</li>
  * </ul>
  *
- * The presence of the xpack section enables xpm-specific features like
+ * The presence of the `xpack` section enables <b>xpm</b>-specific features like
  * template-based build configurations, matrix expansion, property
  * substitution, and platform-specific binary distribution. Standard npm
- * fields (name, version, dependencies, etc.) are used for package
- * identification and dependency management.
+ * fields (name, version, etc.) are used for package
+ * identification.
  */
 export interface JsonXpmPackage extends JsonNpmPackage {
   /**

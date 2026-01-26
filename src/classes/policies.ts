@@ -24,16 +24,16 @@ import semver from 'semver'
 // ============================================================================
 
 /**
- * Computes feature policy flags based on a minimum xpm version.
+ * Computes feature policy flags based on a minimum <b>xpm</b> version.
  *
  * @remarks
  * This class derives compatibility flags from a specified minimum
  * version to preserve legacy behaviour when required.
  *
- * Policy versioning allows xpm to evolve its behavior while maintaining
+ * Policy versioning allows <b>xpm</b> to evolve its behavior while maintaining
  * backward compatibility for packages that specify older minimum versions.
  * Each policy flag represents a breaking change introduced at a specific
- * xpm version:
+ * <b>xpm</b> version:
  *
  * <ul>
  * <li>Packages with minimumXpmRequired \< version threshold get
@@ -45,12 +45,12 @@ import semver from 'semver'
  * This approach ensures that:
  *
  * <ol>
- * <li>Existing packages continue to work with newer xpm versions without
+ * <li>Existing packages continue to work with newer <b>xpm</b> versions without
  *    modification.</li>
  * <li>New packages can opt into modern behavior by specifying a recent
  *    minimumXpmRequired.</li>
  * <li>Breaking changes are tied to explicit version declarations rather than
- *    xpm installation version.</li>
+ *    <b>xpm</b> installation version.</li>
  * </ol>
  *
  * Policy flags are evaluated once during initialization and cached for the
@@ -58,7 +58,7 @@ import semver from 'semver'
  */
 export class XpmPolicies {
   /**
-   * The minimum xpm version used to derive policy flags.
+   * The minimum <b>xpm</b> version used to derive policy flags.
    */
   minVersion = '0.0.0'
 
@@ -67,10 +67,11 @@ export class XpmPolicies {
    *
    * @remarks
    * Legacy behavior (before 0.14.0): npm dependencies were shared in a global
-   * location, similar to how npm itself works with global node_modules.
+   * location, similar to how npm itself works with global `node_modules`.
    *
    * Modern behavior (0.14.0+): npm dependencies are installed locally per
-   * xpack, providing better isolation and avoiding version conflicts.
+   * <b>xpm</b> package, providing better isolation and avoiding version
+   * conflicts.
    *
    * Set to `true` for packages with minimumXpmRequired \< 0.14.0.
    */
@@ -107,7 +108,7 @@ export class XpmPolicies {
   onlyStringDependencies = false
 
   /**
-   * Indicates whether xpm init templates accept a single parameter.
+   * Indicates whether `xpm init` templates accept a single parameter.
    *
    * @remarks
    * Legacy behavior (before 0.22.0): init templates accepted only a single
@@ -121,7 +122,7 @@ export class XpmPolicies {
   singleParameterXpmInitTemplate = false
 
   /**
-   * Constructs policy flags based on a minimum xpm version.
+   * Constructs policy flags based on a minimum <b>xpm</b> version.
    *
    * @remarks
    * The constructor evaluates each policy flag by comparing the provided
@@ -130,13 +131,16 @@ export class XpmPolicies {
    * Evaluation process:
    *
    * <ol>
-   * <li>Validate that minVersion is a valid semver string.</li>
+   * <li>Validate that <code>minVersion</code> is a valid semver string.</li>
    * <li>If invalid, retain default values (all flags false = modern
    * behavior).</li>
-   * <li>For each policy, use semver.lt() to check if minVersion is less than
+   * <li>For each policy, use <code>semver.lt()</code> to check if
+   *    <code>minVersion</code> is less than
    *    the threshold version.</li>
-   * <li>If minVersion \< threshold, enable legacy behavior (flag = true).</li>
-   * <li>If minVersion \>= threshold, use modern behavior (flag = false).</li>
+   * <li>If <code>minVersion</code> \< threshold, enable legacy behavior
+   *    (flag = <code>true</code>).</li>
+   * <li>If <code>minVersion</code> \>= threshold, use modern behavior
+   *    (flag = <code>false</code>).</li>
    * </ol>
    *
    * This ensures that packages explicitly declaring their minimum version
@@ -144,7 +148,7 @@ export class XpmPolicies {
    * without a valid minimum version default to the most modern behavior.
    *
    * @param log - The logger instance for output and diagnostics.
-   * @param minVersion - The minimum xpm version to evaluate.
+   * @param minVersion - The minimum <b>xpm</b> version to evaluate.
    */
   constructor({ log, minVersion }: { log: Logger; minVersion: string }) {
     log.trace(`${XpmPolicies.name}({minVersion: ${minVersion})`)

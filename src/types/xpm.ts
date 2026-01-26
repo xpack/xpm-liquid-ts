@@ -32,10 +32,10 @@ import { Logger } from '@xpack/logger'
  * The array structure enables:
  *
  * <ul>
- * <li>Multi-step actions: Execute multiple commands in order.</li>
- * <li>Error handling: Stop execution on first command failure (default
+ * <li><b>Multi-step actions:</b> Execute multiple commands in order.</li>
+ * <li><b>Error handling:</b> Stop execution on first command failure (default
  *   behavior).</li>
- * <li>Logging: Report progress as each command completes.</li>
+ * <li><b>Logging:</b> Report progress as each command completes.</li>
  * </ul>
  *
  * Commands have access to the full shell environment and can reference
@@ -45,10 +45,11 @@ import { Logger } from '@xpack/logger'
 export type XpmActionCommands = string[]
 
 /**
- * Defines the xpm configuration options.
+ * Defines the <b>xpm</b> configuration options.
  *
  * @remarks
- * Configuration options control xpm operation behavior, providing flags for
+ * Configuration options control <b>xpm</b> operation behavior,
+ * providing flags for
  * safe mode overrides, installation optimizations, testing scenarios, and
  * property overrides.
  *
@@ -57,7 +58,7 @@ export type XpmActionCommands = string[]
  * <ol>
  * <li>Created from CLI arguments or programmatic API calls.</li>
  * <li>Merged with defaults to form complete configuration.</li>
- * <li>Passed through <code>XpmContext</code> to all xpm operations.</li>
+ * <li>Passed through <code>XpmContext</code> to all <b>xpm</b> operations.</li>
  * <li>Consulted by operations to determine behavior (skip, force,
  * dry-run).</li>
  * </ol>
@@ -65,18 +66,13 @@ export type XpmActionCommands = string[]
  * Key configuration patterns:
  *
  * <ul>
- * <li>Force mode (<code>doForce: true</code>): Bypasses safety checks
+ * <li><b>Force mode (<code>doForce: true</code>):</b> Bypasses safety checks
  *   like "already
  *   installed" or "files exist". Use with caution as it can overwrite
  *   data.</li>
- * <li>Skip if installed (<code>doSkipIfInstalled: true</code>):
- *   Optimization to avoid
- *   reinstalling packages that are already present, useful for CI/CD.</li>
- * <li>Dry run (<code>isDryRun: true</code>): Simulates operations without
- *   making changes,
+ * <li><b>Dry run (<code>isDryRun: true</code>):</b> Simulates operations
+ *   without making changes,
  *   useful for testing or previewing actions.</li>
- * <li>Property overrides: Command-line or API-provided properties that
- *   override values from package.json, enabling dynamic configuration.</li>
  * </ul>
  *
  * The extensible design (additional properties allowed) supports future
@@ -106,19 +102,20 @@ export interface XpmConfig {
 }
 
 /**
- * Provides the execution context for xpm operations.
+ * Provides the execution context for <b>xpm</b> operations.
  *
  * @remarks
- * The context object serves as the central coordination point for all xpm
+ * The context object serves as the central coordination point for all
+ * <b>xpm</b>
  * operations, providing access to logging, configuration, and extensible
  * state.
  *
  * Context flow:
  *
  * <ol>
- * <li>Created at the start of each xpm command execution.</li>
+ * <li>Created at the start of each <b>xpm</b> command execution.</li>
  * <li>Initialized with logger instance and configuration options.</li>
- * <li>Passed to all library functions and classes that perform xpm
+ * <li>Passed to all library functions and classes that perform <b>xpm</b>
  *    operations.</li>
  * <li>Extended with additional properties as needed by specific operations
  *    (e.g., package paths, temporary directories, cache state).</li>
@@ -127,11 +124,12 @@ export interface XpmConfig {
  * Core responsibilities:
  *
  * <ul>
- * <li>Logging: Provides consistent output and diagnostics through the logger
- *   instance, enabling verbosity control and structured output.</li>
- * <li>Configuration: Makes operational flags and user preferences accessible
- *   to all components.</li>
- * <li>State sharing: The extensible design allows operations to attach
+ * <li><b>Logging:</b> Provides consistent output and diagnostics
+ *    through the logger
+ *    instance, enabling verbosity control and structured output.</li>
+ * <li><b>Configuration:</b> Makes operational flags and user preferences
+ *    accessible to all components.</li>
+ * <li><b>State sharing:</b> The extensible design allows operations to attach
  *   computed values or state that should be available to subsequent
  *   operations within the same execution.</li>
  * </ul>
@@ -146,7 +144,7 @@ export interface XpmContext {
    */
   log: Logger
   /**
-   * The xpm configuration options.
+   * The <b>xpm</b> configuration options.
    */
   config: XpmConfig
 

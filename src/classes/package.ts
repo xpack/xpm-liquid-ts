@@ -40,24 +40,27 @@ import { JsonPackageSpecifier } from '../types/json.js'
  * Provides access to package metadata and xpm-specific validation.
  *
  * @remarks
- * This class loads and validates package.json content, determines
- * package capabilities, and provides helper methods used across xpm
+ * This class loads and validates `package.json` content, determines
+ * package capabilities, and provides helper methods used across <b>xpm</b>
  * workflows.
  *
- * The package abstraction provides a layer over package.json processing
+ * The package abstraction provides a layer over `package.json` processing
  * with progressive validation:
  *
  * <ol>
- * <li>Basic file I/O: Read and write package.json with error handling.</li>
- * <li>npm validation: Check for valid npm package structure (name,
+ * <li><b>Basic file I/O:</b> Read and write <code>package.json</code> with
+ *    error handling.</li>
+ * <li><b>npm validation:</b> Check for valid npm package structure (name,
  * version).</li>
- * <li>xpm validation: Verify xpack section presence and structure.</li>
- * <li>Binary package validation: Validate binary-specific metadata
+ * <li><b>xpm validation:</b> Verify <code>xpack</code> section presence
+ *    and structure.</li>
+ * <li><b>Binary package validation:</b> Validate binary-specific metadata
  *    (executables, binaries, platforms).</li>
- * <li>Capability detection: Determine package features (scripts, actions,
- *    build configurations).</li>
- * <li>Version checking: Validate minimum xpm version requirements.</li>
- * <li>Specifier parsing: Extract scope, name, and version from package
+ * <li><b>Capability detection:</b> Determine package features (scripts,
+ *    actions, build configurations).</li>
+ * <li><b>Version checking:</b> Validate minimum <b>xpm</b> version
+ *    requirements.</li>
+ * <li><b>Specifier parsing:</b> Extract scope, name, and version from package
  *    identifiers.</li>
  * </ol>
  *
@@ -82,8 +85,8 @@ export class XpmPackage {
    * <li>Folder should contain (or will contain) a package.json file.</li>
    * <li>Used to construct the path to <code>package.json</code> as
    *    <code>\{packageFolderPath\}/package.json</code>.</li>
-   * <li>Remains constant throughout the lifecycle of the XpmPackage
-   *    instance.</li>
+   * <li>Remains constant throughout the lifecycle of the
+   *    <code>XpmPackage</code> instance.</li>
    * </ol>
    *
    * The path is set during construction and used by all methods that access
@@ -101,15 +104,18 @@ export class XpmPackage {
    * Lifecycle states:
    *
    * <ol>
-   * <li>Initially undefined when the XpmPackage instance is created.</li>
-   * <li>Populated by <code>XpmPackage.readPackageDotJson</code> upon successful
-   *    read andparse.</li>
+   * <li>Initially undefined when the <code>XpmPackage</code> instance
+   *    is created.</li>
+   * <li>Populated by <code>XpmPackage.readPackageDotJson()</code> upon
+   *    successful read and parse.</li>
    * <li>Cleared to undefined if parsing fails with
    *    <code>withThrow</code> enabled.</li>
-   * <li>Used by validation methods (isNpmPackage, isXpmPackage,
-   *    isBinaryXpmPackage) to check package capabilities.</li>
-   * <li>Not automatically updated when package.json is modified externally;
-   *    call <code>XpmPackage.readPackageDotJson</code> again to refresh.</li>
+   * <li>Used by validation methods (<code>isNpmPackage</code>,
+   *    <code>isXpmPackage</code>,
+   *    <code>isBinaryXpmPackage</code>) to check package capabilities.</li>
+   * <li>Not automatically updated when <code>package.json</code> is
+   *    modified externally;
+   *    call <code>XpmPackage.readPackageDotJson()</code> again to refresh.</li>
    * </ol>
    *
    * The cached content improves performance for packages that perform
@@ -128,9 +134,12 @@ export class XpmPackage {
    *
    * <ol>
    * <li>Trace package folder path during construction.</li>
-   * <li>Log file read errors when investigating missing package.json.</li>
-   * <li>Trace JSON parsing errors for debugging invalid package.json.</li>
-   * <li>Log version validation details during minimumXpmRequired checks.</li>
+   * <li>Log file read errors when investigating missing
+   *    <code>package.json</code>.</li>
+   * <li>Trace JSON parsing errors for debugging invalid
+   *    <code>package.json</code>.</li>
+   * <li>Log version validation details during <code>minimumXpmRequired</code>
+   *    checks.</li>
    * <li>Trace package specifier parsing for debugging dependency
    *    resolution.</li>
    * </ol>
@@ -271,7 +280,7 @@ export class XpmPackage {
   }
 
   /**
-   * Determines whether the package is an xpm package.
+   * Determines whether the package is an <b>xpm</b> package.
    *
    * @returns `true` if the package is a valid npm package with an xpack
    * section, `false` otherwise.
@@ -288,7 +297,7 @@ export class XpmPackage {
   }
 
   /**
-   * Determines whether the package is a binary xpm package.
+   * Determines whether the package is a binary <b>xpm</b> package.
    *
    * @remarks
    * Binary packages must have both executables and binaries. The
@@ -366,10 +375,11 @@ export class XpmPackage {
   }
 
   /**
-   * Determines whether the package is a Node module without xpm metadata.
+   * Determines whether the package is a Node module without <b>xpm</b>
+   * metadata.
    *
-   * @returns `true` if the package is a Node module without xpm metadata,
-   * `false` otherwise.
+   * @returns `true` if the package is a Node module without <b>xpm</b>
+   * metadata, `false` otherwise.
    */
   isNodeModule() {
     const jsonPackage = this.jsonPackage
@@ -407,7 +417,7 @@ export class XpmPackage {
   }
 
   /**
-   * Determines whether the package defines any xpm actions.
+   * Determines whether the package defines any <b>xpm</b> actions.
    *
    * @remarks
    * This method performs a comprehensive search for action definitions at
@@ -428,8 +438,9 @@ export class XpmPackage {
    * <li>Return true if any actions are found at any level.</li>
    * </ol>
    *
-   * This comprehensive check is useful for determining whether xpm action
-   * commands should be available or whether the package requires xpm for
+   * This comprehensive check is useful for determining whether <b>xpm</b>
+   * action
+   * commands should be available or whether the package requires <b>xpm</b> for
    * build automation.
    *
    * @returns `true` if actions are defined directly or within build
@@ -490,9 +501,10 @@ export class XpmPackage {
   }
 
   /**
-   * Retrieves the minimum required xpm version specified by the package.
+   * Retrieves the minimum required <b>xpm</b> version specified by the package.
    *
-   * @returns The minimum required xpm version without pre-release suffixes, or
+   * @returns The minimum required <b>xpm</b> version without pre-release
+   * suffixes, or
    * undefined if not specified.
    */
   getMinimumXpmRequired(): string | undefined {
@@ -510,21 +522,24 @@ export class XpmPackage {
   }
 
   /**
-   * Validates the minimum required xpm version against the installed CLI.
+   * Validates the minimum required <b>xpm</b> version against the
+   * installed CLI.
    *
    * @remarks
-   * This method ensures that packages requiring specific xpm features or bug
+   * This method ensures that packages requiring specific <b>xpm</b>
+   * features or bug
    * fixes can enforce a minimum version requirement, preventing runtime
-   * errors or unexpected behavior with older xpm versions.
+   * errors or unexpected behavior with older <b>xpm</b> versions.
    *
    * Validation workflow:
    *
    * <ol>
-   * <li>Check if package is an xpm package with
-   *   <code>minimumXpmRequired</code> set.</li>
+   * <li>Check if package is an <b>xpm</b> package with
+   *    <code>minimumXpmRequired</code> set.</li>
    * <li>Clean the required version by removing pre-release suffixes.</li>
-   * <li>Load the xpm CLI's package.json from the provided root folder.</li>
-   * <li>Extract and clean the installed xpm version.</li>
+   * <li>Load the <b>xpm</b> CLI's package.json from the provided root
+   *    folder.</li>
+   * <li>Extract and clean the installed <b>xpm</b> version.</li>
    * <li>Compare versions using semver to determine if upgrade is needed.</li>
    * <li>Throw <code>XpmPrerequisitesError</code> if installed version is
    * too old.</li>
@@ -534,12 +549,12 @@ export class XpmPackage {
    * pre-release builds satisfy version requirements (e.g., 1.0.0-beta
    * satisfies minimumXpmRequired: 1.0.0).
    *
-   * @param xpmRootFolderPath - The folder path to the xpm CLI package.
+   * @param xpmRootFolderPath - The folder path to the <b>xpm</b> CLI package.
    * @returns The cleaned minimum required version, or undefined if no check is
    * required.
    *
    * @throws {@link XpmPrerequisitesError}
-   * If the installed xpm version is lower than the required minimum.
+   * If the installed <b>xpm</b> version is lower than the required minimum.
    */
   async checkMinimumXpmRequired({
     xpmRootFolderPath,
@@ -620,10 +635,11 @@ export class XpmPackage {
    * npm package specifiers can take several forms:
    *
    * <ul>
-   * <li>Unscoped without version: <code>package-name</code></li>
-   * <li>Unscoped with version: <code>package-name\@1.2.3</code></li>
-   * <li>Scoped without version: <code>\@scope/package-name</code></li>
-   * <li>Scoped with version: <code>\@scope/package-name\@1.2.3</code></li>
+   * <li><b>Unscoped without version:</b> <code>package-name</code></li>
+   * <li><b>Unscoped with version:</b> <code>package-name\@1.2.3</code></li>
+   * <li><b>Scoped without version:</b> <code>\@scope/package-name</code></li>
+   * <li><b>Scoped with version:</b>
+   *    <code>\@scope/package-name\@1.2.3</code></li>
    * </ul>
    *
    * Parsing strategy:

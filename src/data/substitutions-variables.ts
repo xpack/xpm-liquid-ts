@@ -29,9 +29,9 @@ import * as path from 'node:path'
  *
  * <ul>
  * <li><b>Properties:</b> User-defined configuration values from
- *   <code>xpack.properties.</code></li>
- * <li><b>Matrix parameters:</b> Template expansion variables from matrix
- * definitions.</li>
+ *    <code>xpack.properties.</code></li>
+ * <li><b>Matrix parameters:</b> Template expansion variables from
+ *     <code>matrix</code> definitions.</li>
  * <li><b>Configuration data:</b> Build-specific settings and metadata.</li>
  * </ul>
  *
@@ -340,10 +340,11 @@ export interface XpmLiquidSubstitutionsVariables {
  * Initialization strategy:
  *
  * <ol>
- * <li>Environment variables: Snapshot of process.env at load time.</li>
- * <li>OS information: Calls to os module functions (platform, arch, etc.).</li>
- * <li>Path constants: Platform-specific separators and delimiters.</li>
- * <li>Empty properties: Placeholder for package-specific additions.</li>
+ * <li><b>Environment variables:</b> Snapshot of process.env at load time.</li>
+ * <li><b>OS information:</b> OS specific definitions (platform, arch,
+ *    etc.).</li>
+ * <li><b>Path constants:</b> Platform-specific separators and delimiters.</li>
+ * <li><b>Properties:</b> Placeholder for package-specific additions.</li>
  * </ol>
  *
  * These base variables are shared across all template processing within the

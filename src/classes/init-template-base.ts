@@ -40,7 +40,7 @@ import {
 // ============================================================================
 
 /**
- * Base class for xpm initialisation templates.
+ * Base class for <b>xpm</b> initialisation templates.
  *
  * @remarks
  * This abstract class provides the foundation for template-based project
@@ -66,7 +66,7 @@ export abstract class XpmInitTemplateBase {
   // Members.
 
   /**
-   * The xpm context containing configuration and logging utilities.
+   * The <b>xpm</b> context containing configuration and logging utilities.
    */
   context: XpmContext
 
@@ -104,9 +104,10 @@ export abstract class XpmInitTemplateBase {
   // Constructor.
 
   /**
-   * Constructs an xpm initialisation template instance.
+   * Constructs an <b>xpm</b> initialisation template instance.
    *
-   * @param context - The xpm context containing configuration and logging.
+   * @param context - The <b>xpm</b> context containing configuration and
+   *    logging.
    * @param __dirname - The absolute path to the module folder.
    * @param templatesPath - The absolute path to the templates folder.
    * @param propertiesDefinitions - The definitions of all supported properties.
@@ -272,11 +273,13 @@ export abstract class XpmInitTemplateBase {
    * type-specific validation and conversion:
    *
    * <ul>
-   * <li>For <code>select</code> properties: validates against allowed items and
-   * checks platform compatibility if specified</li>
-   * <li>For <code>boolean</code> properties: converts 'true'/'false' strings to
-   * booleans</li>
-   * <li>For <code>number</code> properties: converts strings to numbers</li>
+   * <li><b>For <code>select</code> properties:</b> validates against
+   *    allowed items andchecks platform compatibility if specified</li>
+   * <li><b>For <code>boolean</code> properties:</b> converts
+   *    <code>'true'</code>/<code>'false'</code>
+   *    strings to booleans</li>
+   * <li><b>For <code>number</code> properties:</b> converts strings
+   *    to numbers</li>
    * </ul>
    *
    * If the value is empty and a default is defined, the default value is
@@ -423,9 +426,9 @@ export abstract class XpmInitTemplateBase {
    * @remarks
    * This method checks platform compatibility using a two-tier matching
    * strategy. First, it looks for an exact match with the current
-   * platform-architecture combination (e.g., 'darwin-arm64'). If not
-   * found, it checks for a platform-only match (e.g., 'darwin'). Returns
-   * false if the platforms array is undefined, empty, or contains no
+   * platform-architecture combination (e.g., `darwin-arm64`). If not
+   * found, it checks for a platform-only match (e.g., `darwin`). Returns
+   * `false` if the platforms array is undefined, empty, or contains no
    * matches for the current execution environment.
    *
    * @param platforms - The array of supported platform identifiers, or

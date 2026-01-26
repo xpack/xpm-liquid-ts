@@ -41,7 +41,8 @@ import { XpmBuildConfiguration } from './build-configurations.js'
 // ============================================================================
 
 /**
- * A collection of xpm actions for a build configuration or the entire package.
+ * A collection of <b>xpm</b> actions for a build configuration or
+ * the entire package.
  *
  * @remarks
  * This class manages a collection of named actions, each containing one or
@@ -52,12 +53,14 @@ import { XpmBuildConfiguration } from './build-configurations.js'
  * Action lifecycle phases:
  *
  * <ol>
- * <li>Construction: Basic setup with optional inheritance from parent
- *   package.</li>
- * <li>Initialisation: Template name expansion without content evaluation.</li>
- * <li>Retrieval: On-demand instantiation when accessed via
- *   <code>get()</code>.</li>
- * <li>Action Initialisation: Liquid template evaluation and substitution.</li>
+ * <li><b>Construction:</b> Basic setup with optional inheritance from parent
+ *    package.</li>
+ * <li><b>Initialisation:</b> Template name expansion without content
+ *    evaluation.</li>
+ * <li><b>Retrieval:</b> On-demand instantiation when accessed via
+ *    <code>get()</code>.</li>
+ * <li><b>Action Initialisation:</b> Liquid template evaluation and
+ *    substitution.</li>
  * </ol>
  *
  * This multi-phase approach ensures efficient resource usage by deferring
@@ -102,13 +105,17 @@ export class XpmActions {
    * The hierarchy structure:
    *
    * <ol>
-   * <li>Base variables: <code>env</code>, <code>os</code>, <code>path</code>
-   *   (always available).</li>
-   * <li>Package variables: name, version, dependencies, devDependencies.</li>
-   * <li>Configuration variables: build folder paths, compiler settings.</li>
-   * <li>Properties: custom key-value pairs from package or configuration.</li>
-   * <li>Matrix: parameter combinations for template-generated actions (added
-   * per action during initialisation).</li>
+   * <li><b>Base variables:</b> <code>env</code>, <code>os</code>,
+   *    <code>path</code> (always available).</li>
+   * <li><b>Package variables:</b> <code>name</code>, <code>version</code>,
+   *    <code>dependencies</code>,
+   *    <code>devDependencies</code>.</li>
+   * <li><b>Configuration variables:</b> build folder paths, compiler
+   *    settings.</li>
+   * <li><b>Properties:</b> custom key-value pairs from package or
+   *    configuration.</li>
+   * <li><b>Matrix:</b> parameter combinations for template-generated
+   *    actions (added per action during initialisation).</li>
    * </ol>
    *
    * These variables are accessible in Liquid templates using dot notation
@@ -126,11 +133,11 @@ export class XpmActions {
    * actions. Action definitions can be:
    *
    * <ol>
-   * <li>Simple strings: Single command to execute.</li>
-   * <li>String arrays: Multiple commands executed sequentially.</li>
-   * <li>Template objects: With <code>matrix</code> and <code>template</code>
-   *   properties for
-   *   generating multiple actions from a single definition.</li>
+   * <li><b>Simple strings:</b> Single command to execute.</li>
+   * <li><b>String arrays:</b> Multiple commands executed sequentially.</li>
+   * <li><b>Template objects:</b> With <code>matrix</code> and
+   *    <code>template</code> properties for
+   *    generating multiple actions from a single definition.</li>
    * </ol>
    *
    * Template action names (containing `{{` markers) trigger matrix expansion
@@ -149,7 +156,7 @@ export class XpmActions {
    * Key characteristics:
    *
    * <ol>
-   * <li>Known only after <code>XpmActions.initialise</code>
+   * <li>Known only after <code>XpmActions.initialise()()()</code>
    *   completes.</li>
    * <li>Possibly empty if there are no actions defined.</li>
    * <li>Values can be <code>undefined</code> to indicate an action
@@ -178,7 +185,7 @@ export class XpmActions {
    * Key characteristics:
    *
    * <ol>
-   * <li>Known only after <code>XpmActions.initialise</code>
+   * <li>Known only after <code>XpmActions.initialise()</code>
    *   completes.</li>
    * <li>Contains all action names including those generated from
    *   templates.</li>
@@ -202,13 +209,13 @@ export class XpmActions {
    * Mapping behavior:
    *
    * <ol>
-   * <li>For regular actions: Maps action name to itself (identity
-   *   mapping).</li>
-   * <li>For template actions: Maps each generated action name back to the
-   *   original template name (e.g.,
-   *   <code>test-x64</code> → <code>test-\{\{ matrix.arch \}\}</code>).</li>
+   * <li><b>For regular actions:</b> Maps action name to itself (identity
+   *    mapping).</li>
+   * <li><b>For template actions:</b> Maps each generated action name back to
+   *    the original template name (e.g.,
+   *    <code>test-x64</code> → <code>test-\{\{ matrix.arch \}\}</code>).</li>
    * <li>Enables <code>XpmActions.get</code> to locate the correct JSON
-   *   definition when instantiating an action on demand.</li>
+   *    definition when instantiating an action on demand.</li>
    * </ol>
    *
    * This indirection is essential for the lazy evaluation pattern, allowing
@@ -255,7 +262,7 @@ export class XpmActions {
    *
    * @remarks
    * This flag prevents redundant initialisation and ensures idempotent
-   * behavior when {@link XpmActions.initialise} is called multiple
+   * behavior when {@link XpmActions.initialise()} is called multiple
    * times.
    *
    * State transitions:
@@ -265,7 +272,7 @@ export class XpmActions {
    * <li>Set to <code>true</code> after successful template expansion and
    *   action name
    *   registration.</li>
-   * <li>Checked at the beginning of <code>XpmActions.initialise</code> to
+   * <li>Checked at the beginning of <code>XpmActions.initialise()</code> to
    *   return early if already initialised.</li>
    * </ol>
    *
@@ -282,7 +289,7 @@ export class XpmActions {
    *
    * @remarks
    * The constructor performs partial initialisation. Complete initialisation
-   * requires calling the {@link XpmActions.initialise} method.
+   * requires calling the {@link XpmActions.initialise()} method.
    *
    * @param log - The logger instance for output and diagnostics.
    * @param engine - The Liquid templating engine for variable substitution.
@@ -488,7 +495,7 @@ export class XpmActions {
    *
    * <ol>
    * <li>During collection initialisation
-   *   (<code>XpmActions.initialise</code>),
+   *   (<code>XpmActions.initialise()</code>),
    *   only the matrix of options is evaluated for each template, expanding
    *   only the action names without processing their content.</li>
    * <li>Later, when an action is accessed via this method and subsequently
@@ -710,7 +717,7 @@ export class XpmActions {
 // ============================================================================
 
 /**
- * An individual xpm action containing commands to be executed.
+ * An individual <b>xpm</b> action containing commands to be executed.
  *
  * @remarks
  * Actions are lazily initialised, with variable substitution performed
@@ -721,9 +728,10 @@ export class XpmActions {
  * An action can exist in three states:
  *
  * <ol>
- * <li>Undefined: Name is known but instance not yet created.</li>
- * <li>Instantiated: Object exists but commands not yet evaluated.</li>
- * <li>Initialised: Commands fully evaluated with Liquid substitutions.</li>
+ * <li><b>Undefined:</b> Name is known but instance not yet created.</li>
+ * <li><b>Instantiated:</b> Object exists but commands not yet evaluated.</li>
+ * <li><b>Initialised:</b> Commands fully evaluated with Liquid
+ *    substitutions.</li>
  * </ol>
  *
  * This design minimizes memory usage and computation for actions that are
@@ -764,8 +772,8 @@ export class XpmAction {
    * before variable substitution. The format can be:
    *
    * <ol>
-   * <li>Simple string: Single command line.</li>
-   * <li>String array: Multiple commands for sequential execution.</li>
+   * <li><b>Simple string:</b> Single command line.</li>
+   * <li><b>String array:</b> Multiple commands for sequential execution.</li>
    * </ol>
    *
    * The definition is preserved in its original form to enable:
@@ -773,7 +781,7 @@ export class XpmAction {
    * <ol>
    * <li>Creating copies of inherited actions with identical definitions.</li>
    * <li>Deferred template evaluation during
-   * <code>XpmAction.initialise</code>.</li>
+   * <code>XpmAction.initialise()</code>.</li>
    * <li>Re-evaluation if needed with different variable contexts.</li>
    * </ol>
    *
@@ -824,7 +832,7 @@ export class XpmAction {
    *   combination (e.g.,
    *   <code>\{ arch: 'x64', platform: 'linux' \}</code>).</li>
    * <li>Merged into substitution variables during
-   *   <code>XpmAction.initialise</code>, making values accessible via the
+   *   <code>XpmAction.initialise()</code>, making values accessible via the
    *   <code>matrix</code> namespace in command templates.</li>
    * <li>Enables the same command template to generate different concrete
    *   commands for each matrix combination.</li>
@@ -845,7 +853,7 @@ export class XpmAction {
    * Lifecycle states:
    *
    * <ol>
-   * <li>Undefined initially and until <code>XpmAction.initialise</code>
+   * <li>Undefined initially and until <code>XpmAction.initialise()</code>
    *   is called.</li>
    * <li>Populated during initialisation by evaluating
    *   <code>jsonAction</code> with the
@@ -875,7 +883,7 @@ export class XpmAction {
    * <li>Initially <code>false</code> after construction.</li>
    * <li>Set to <code>true</code> after successful command substitution and
    *   evaluation.</li>
-   * <li>Checked at the start of <code>XpmAction.initialise</code> to
+   * <li>Checked at the start of <code>XpmAction.initialise()</code> to
    *   return early if already initialised.</li>
    * </ol>
    *
