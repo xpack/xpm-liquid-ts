@@ -65,7 +65,7 @@ Description
 
 ## Remarks
 
-The constructor performs partial initialisation. Complete initialisation requires calling the [XpmActions.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/initialise) method.
+The constructor performs partial initialisation. Complete initialisation requires calling the  method.
 
 <hr/>
 

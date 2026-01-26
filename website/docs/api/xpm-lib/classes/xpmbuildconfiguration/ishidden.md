@@ -30,7 +30,9 @@ Effects of hidden status:
 
 <ol> <li>Hidden configurations don't compute build folder relative paths during initialisation (optimization for inheritance-only configs).</li> <li>May be excluded from user-facing configuration lists depending on application logic.</li> <li>Still fully initialised and available for inheritance by other configurations.</li> <li>Derived from <code>hidden</code> field in JSON configuration definition (defaults to <code>false</code>).</li> </ol>
 
-Common use case: Base configurations that define common properties, dependencies, or actions inherited by multiple concrete configurations.
+Common use case:
+
+Base configurations that define common properties, dependencies, or actions inherited by multiple concrete configurations.
 
 <hr/>
 

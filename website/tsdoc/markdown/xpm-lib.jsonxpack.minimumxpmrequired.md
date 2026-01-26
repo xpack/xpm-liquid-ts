@@ -4,7 +4,7 @@
 
 ## JsonXpack.minimumXpmRequired property
 
-The minimum required xpm version.
+The minimum required <b>xpm</b> version.
 
 **Signature:**
 

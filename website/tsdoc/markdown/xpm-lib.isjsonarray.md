@@ -56,7 +56,7 @@ boolean
 
 ## Remarks
 
-Validates that a value represents a JSON array, excluding undefined. This ensures the value is a proper array that could have been parsed from JSON.
+Validates that a value represents a JSON array, excluding `undefined`<!-- -->. This ensures the value is a proper array that could have been parsed from JSON.
 
 Returns `true` for: any array, including empty arrays.
 

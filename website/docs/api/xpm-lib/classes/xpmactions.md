@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-A collection of xpm actions for a build configuration or the entire package.
+A collection of <b>xpm</b> actions for a build configuration or the entire package.
 
 ## Signature
 
@@ -28,7 +28,7 @@ This class manages a collection of named actions, each containing one or more co
 
 Action lifecycle phases:
 
-<ol> <li>Construction: Basic setup with optional inheritance from parent package.</li> <li>Initialisation: Template name expansion without content evaluation.</li> <li>Retrieval: On-demand instantiation when accessed via <code>get()</code>.</li> <li>Action Initialisation: Liquid template evaluation and substitution.</li> </ol>
+<ol> <li><b>Construction:</b> Basic setup with optional inheritance from parent package.</li> <li><b>Initialisation:</b> Template name expansion without content evaluation.</li> <li><b>Retrieval:</b> On-demand instantiation when accessed via <code>get()</code>.</li> <li><b>Action Initialisation:</b> Liquid template evaluation and substitution.</li> </ol>
 
 This multi-phase approach ensures efficient resource usage by deferring expensive operations until actions are actually needed.
 

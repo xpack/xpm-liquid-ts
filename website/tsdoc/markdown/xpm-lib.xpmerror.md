@@ -15,5 +15,5 @@ export declare class XpmError extends Error
 
 ## Remarks
 
-This class extends the standard JavaScript `Error` class and serves as the foundation for all xpm-specific error types. Use this error for general xpm operations that don't fit into more specific error categories. More specialized errors ([XpmInputError](./xpm-lib.xpminputerror.md)<!-- -->, [XpmSyntaxError](./xpm-lib.xpmsyntaxerror.md)<!-- -->, [XpmOutputError](./xpm-lib.xpmoutputerror.md)<!-- -->, [XpmPrerequisitesError](./xpm-lib.xpmprerequisiteserror.md)<!-- -->) should be preferred when applicable, as they provide clearer semantics for error handling.
+This class extends the standard JavaScript `Error` class and serves as the foundation for all <b>xpm</b>-specific error types. Use this error for general <b>xpm</b> operations that don't fit into more specific error categories. More specialized errors ([XpmInputError](./xpm-lib.xpminputerror.md)<!-- -->, [XpmSyntaxError](./xpm-lib.xpmsyntaxerror.md)<!-- -->, [XpmOutputError](./xpm-lib.xpmoutputerror.md)<!-- -->, [XpmPrerequisitesError](./xpm-lib.xpmprerequisiteserror.md)<!-- -->) should be preferred when applicable, as they provide clearer semantics for error handling.
 

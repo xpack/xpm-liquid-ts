@@ -24,9 +24,9 @@ shareNpmDependencies: boolean;
 
 ## Remarks
 
-Legacy behavior (before 0.14.0): npm dependencies were shared in a global location, similar to how npm itself works with global node\_modules.
+Legacy behavior (before 0.14.0): npm dependencies were shared in a global location, similar to how npm itself works with global `node_modules`<!-- -->.
 
-Modern behavior (0.14.0+): npm dependencies are installed locally per xpack, providing better isolation and avoiding version conflicts.
+Modern behavior (0.14.0+): npm dependencies are installed locally per <b>xpm</b> package, providing better isolation and avoiding version conflicts.
 
 Set to `true` for packages with minimumXpmRequired &lt; 0.14.0.
 

@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Validates the minimum required xpm version against the installed CLI.
+Validates the minimum required <b>xpm</b> version against the installed CLI.
 
 ## Signature
 
@@ -66,15 +66,15 @@ The cleaned minimum required version, or undefined if no check is required.
 
 ## Exceptions
 
-[XpmPrerequisitesError](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmprerequisiteserror) If the installed xpm version is lower than the required minimum.
+[XpmPrerequisitesError](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmprerequisiteserror) If the installed <b>xpm</b> version is lower than the required minimum.
 
 ## Remarks
 
-This method ensures that packages requiring specific xpm features or bug fixes can enforce a minimum version requirement, preventing runtime errors or unexpected behavior with older xpm versions.
+This method ensures that packages requiring specific <b>xpm</b> features or bug fixes can enforce a minimum version requirement, preventing runtime errors or unexpected behavior with older <b>xpm</b> versions.
 
 Validation workflow:
 
-<ol> <li>Check if package is an xpm package with <code>minimumXpmRequired</code> set.</li> <li>Clean the required version by removing pre-release suffixes.</li> <li>Load the xpm CLI's package.json from the provided root folder.</li> <li>Extract and clean the installed xpm version.</li> <li>Compare versions using semver to determine if upgrade is needed.</li> <li>Throw <code>XpmPrerequisitesError</code> if installed version is too old.</li> </ol>
+<ol> <li>Check if package is an <b>xpm</b> package with <code>minimumXpmRequired</code> set.</li> <li>Clean the required version by removing pre-release suffixes.</li> <li>Load the <b>xpm</b> CLI's package.json from the provided root folder.</li> <li>Extract and clean the installed <b>xpm</b> version.</li> <li>Compare versions using semver to determine if upgrade is needed.</li> <li>Throw <code>XpmPrerequisitesError</code> if installed version is too old.</li> </ol>
 
 Pre-release suffixes are stripped from both versions to ensure that pre-release builds satisfy version requirements (e.g., 1.0.0-beta satisfies minimumXpmRequired: 1.0.0).
 

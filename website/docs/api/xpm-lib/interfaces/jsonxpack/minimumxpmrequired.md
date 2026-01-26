@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-The minimum required xpm version.
+The minimum required <b>xpm</b> version.
 
 ## Signature
 

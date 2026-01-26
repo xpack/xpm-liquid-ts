@@ -14,13 +14,13 @@ export interface JsonXpack
 
 ## Remarks
 
-The xpack section extends standard npm package.json with xpm-specific metadata for binary package management, build automation, and cross-platform development workflows.
+The `xpack` section extends standard npm `package.json` with xpm-specific metadata for binary package management, build automation, and cross-platform development workflows.
 
 Key capabilities:
 
-<ul> <li>Binary packages: Define platform-specific binary distributions with download URLs, checksums, and installation configuration.</li> <li>Build configurations: Organize multiple build targets (debug, release, platform variants) with inherited properties and dependencies.</li> <li>Actions: Define build automation commands that can reference properties and build configuration context via Liquid templates.</li> <li>Properties: User-defined configuration values accessible throughout the package via template substitution.</li> <li>Version requirements: Specify minimum xpm version for feature compatibility and policy enforcement.</li> </ul>
+<ul> <li><b>Binary packages:</b> Define platform-specific binary distributions with download URLs, checksums, and installation configuration.</li> <li><b>Build configurations:</b> Organize multiple build targets (debug, release, platform variants) with inherited properties and dependencies.</li> <li><b>Actions:</b> Define build automation commands that can reference properties and build configuration context via Liquid templates.</li> <li><b>Properties:</b> User-defined configuration values accessible throughout the package via template substitution.</li> <li><b>Version requirements:</b> Specify minimum <b>xpm</b> version for feature compatibility and policy enforcement.</li> </ul>
 
-The xpack section is optional in npm packages but required for packages using xpm-specific features like build configurations or binary distributions.
+The `xpack` section is optional in npm packages but required for packages using xpm-specific features like build configurations or binary distributions.
 
 ## Properties
 
@@ -193,7 +193,7 @@ string
 
 </td><td>
 
-_(Optional)_ The minimum required xpm version.
+_(Optional)_ The minimum required <b>xpm</b> version.
 
 
 </td></tr>

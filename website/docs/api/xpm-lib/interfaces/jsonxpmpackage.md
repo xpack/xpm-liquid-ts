@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Represents a JSON xpm package.json structure.
+Represents a JSON <b>xpm</b> package.json structure.
 
 ## Signature
 
@@ -25,13 +25,13 @@ export interface JsonXpmPackage extends JsonNpmPackage
 
 ## Remarks
 
-Combines standard npm package.json properties with xpm-specific extensions via the required xpack section. All xpm packages are valid npm packages, but not all npm packages are xpm packages.
+Combines standard npm `package.json` properties with xpm-specific extensions via the required `xpack` section. All <b>xpm</b> packages are valid npm packages, but not all npm packages are <b>xpm</b> packages.
 
-An xpm package can be:
+An <b>xpm</b> package can be:
 
-<ul> <li>A source package: Contains code, build configurations, and actions.</li> <li>A binary package: Distributes pre-built binaries for multiple platforms with automated installation.</li> <li>A library package: Provides reusable code or resources for other packages.</li> <li>A tool package: Provides command-line tools or build utilities.</li> </ul>
+<ul> <li><b>A source package:</b> Provides reusable code or resources for other packages. It contains code, build configurations, and actions.</li> <li><b>A binary package:</b> Distributes pre-built binaries for multiple platforms with automated installation.</li> </ul>
 
-The presence of the xpack section enables xpm-specific features like template-based build configurations, matrix expansion, property substitution, and platform-specific binary distribution. Standard npm fields (name, version, dependencies, etc.) are used for package identification and dependency management.
+The presence of the `xpack` section enables <b>xpm</b>-specific features like template-based build configurations, matrix expansion, property substitution, and platform-specific binary distribution. Standard npm fields (name, version, etc.) are used for package identification.
 
 ## Properties
 

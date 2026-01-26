@@ -4,7 +4,7 @@
 
 ## XpmPolicies class
 
-Computes feature policy flags based on a minimum xpm version.
+Computes feature policy flags based on a minimum <b>xpm</b> version.
 
 **Signature:**
 
@@ -16,13 +16,13 @@ export declare class XpmPolicies
 
 This class derives compatibility flags from a specified minimum version to preserve legacy behaviour when required.
 
-Policy versioning allows xpm to evolve its behavior while maintaining backward compatibility for packages that specify older minimum versions. Each policy flag represents a breaking change introduced at a specific xpm version:
+Policy versioning allows <b>xpm</b> to evolve its behavior while maintaining backward compatibility for packages that specify older minimum versions. Each policy flag represents a breaking change introduced at a specific <b>xpm</b> version:
 
 <ul> <li>Packages with minimumXpmRequired &lt; version threshold get legacy behavior.</li> <li>Packages with minimumXpmRequired &gt;<!-- -->= version threshold get new behavior.</li> </ul>
 
 This approach ensures that:
 
-<ol> <li>Existing packages continue to work with newer xpm versions without modification.</li> <li>New packages can opt into modern behavior by specifying a recent minimumXpmRequired.</li> <li>Breaking changes are tied to explicit version declarations rather than xpm installation version.</li> </ol>
+<ol> <li>Existing packages continue to work with newer <b>xpm</b> versions without modification.</li> <li>New packages can opt into modern behavior by specifying a recent minimumXpmRequired.</li> <li>Breaking changes are tied to explicit version declarations rather than <b>xpm</b> installation version.</li> </ol>
 
 Policy flags are evaluated once during initialization and cached for the duration of the operation.
 
@@ -54,7 +54,7 @@ Description
 
 </td><td>
 
-Constructs policy flags based on a minimum xpm version.
+Constructs policy flags based on a minimum <b>xpm</b> version.
 
 
 </td></tr>
@@ -98,7 +98,7 @@ string
 
 </td><td>
 
-The minimum xpm version used to derive policy flags.
+The minimum <b>xpm</b> version used to derive policy flags.
 
 
 </td></tr>
@@ -174,7 +174,7 @@ boolean
 
 </td><td>
 
-Indicates whether xpm init templates accept a single parameter.
+Indicates whether `xpm init` templates accept a single parameter.
 
 
 </td></tr>

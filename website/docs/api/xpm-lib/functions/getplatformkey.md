@@ -78,7 +78,7 @@ Examples:
 
 32-bit coercion rules (when doForce32bit is true):
 
-<ul> <li>Windows x64 → ia32: Forces 32-bit binaries on 64-bit Windows.</li> <li>Linux x64 → ia32: Forces 32-bit binaries on 64-bit Linux.</li> <li>Linux arm64 → arm: Forces 32-bit ARM binaries on 64-bit ARM Linux.</li> </ul>
+<ul> <li><b>Windows x64 → ia32:</b> Forces 32-bit binaries on 64-bit Windows.</li> <li><b>Linux x64 → ia32:</b> Forces 32-bit binaries on 64-bit Linux.</li> <li><b>Linux arm64 → arm:</b> Forces 32-bit ARM binaries on 64-bit ARM Linux.</li> </ul>
 
 This coercion is useful for backward compatibility scenarios where only 32-bit binaries are available but can run on 64-bit systems. The platform key matches the naming conventions used in binary xPack distributions.
 

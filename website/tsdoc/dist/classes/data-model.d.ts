@@ -9,14 +9,14 @@ import { JsonXpmPackage } from '../types/json.js';
  */
 export declare const buildFolderRelativePathPropertyName = "buildFolderRelativePath";
 /**
- * Provides Liquid-based processing for an xpm package.
+ * Represents a lazy-loading data model for an <b>xpm</b> package.
  *
  * @remarks
  * This class prepares substitution variables, creates the Liquid
  * engine, and exposes actions and build configurations defined in the package.
  *
  * The package processor serves as the top-level coordinator for all
- * Liquid-based template processing in an xpm package. It establishes the
+ * Liquid-based template processing in an <b>xpm</b> package. It establishes the
  * foundation for variable substitution throughout the package hierarchy:
  *
  * <ol>
@@ -60,9 +60,11 @@ export declare class XpmDataModel {
      *
      * <ol>
      * <li>Strict mode enabled to catch undefined variable references.</li>
-     * <li>Custom filters for platform detection (isPlatform, isArch).</li>
-     * <li>Custom filters for path sanitization (filterPath, filterPosixPath,
-     *    filterWin32Path).</li>
+     * <li>Custom filters for platform detection (<code>isPlatform</code>,
+     *    <code>isArch</code>).</li>
+     * <li>Custom filters for path sanitization (<code>filterPath</code>,
+     *    <code>filterPosixPath</code>,
+     *    <code>filterWin32Path</code>).</li>
      * <li>Shared instance reduces memory overhead and ensures consistent
      *    template evaluation across all package components.</li>
      * </ol>
@@ -79,15 +81,18 @@ export declare class XpmDataModel {
      *
      * <ol>
      * <li>Standard npm fields: name, version, dependencies, devDependencies.</li>
-     * <li>Required `xpack` section containing xpm-specific configuration.</li>
-     * <li>Optional xpack.properties for user-defined substitution variables.</li>
-     * <li>Optional xpack.actions for package-level executable actions.</li>
-     * <li>Optional xpack.buildConfigurations for build configuration
+     * <li>Required <code>xpack</code> section containing xpm-specific
+     *    configuration.</li>
+     * <li>Optional <code>xpack.properties</code> for user-defined
+     *    substitution variables.</li>
+     * <li>Optional <code>xpack.actions</code> for package-level executable
+     *    actions.</li>
+     * <li>Optional <code>xpack.buildConfigurations</code> for build configuration
      *    definitions.</li>
      * </ol>
      *
      * The package definition is validated during construction, requiring the
-     * xpack section to be present and be a valid JSON object.
+     * `xpack` section to be present and be a valid JSON object.
      */
     protected _jsonPackage: JsonXpmPackage;
     /**
@@ -100,22 +105,24 @@ export declare class XpmDataModel {
      * Variable hierarchy:
      *
      * <ol>
-     * <li>Base variables (xpmLiquidSubstitutionsVariablesBase):
+     * <li><b>Base variables (xpmLiquidSubstitutionsVariablesBase):</b>
      *   <ul>
-     *   <li>`env`: Environment variables from process.env</li>
-     *   <li>`os`: Platform detection (platform, arch, endianness, version)</li>
-     *   <li>`path`: Path utilities (sep, delimiter, cwd)</li>
+     *   <li><code>env</code>: Environment variables from process.env</li>
+     *   <li><code>os</code>: Platform detection (platform, arch, endianness,
+     *      version)</li>
+     *   <li><code>path</code>: Path utilities (sep, delimiter, cwd)</li>
      *   </ul>
      * </li>
-     * <li>Package metadata:
+     * <li><b>Package metadata:</b>
      *   <ul>
-     *   <li>`package`: Complete package.json content (name, version,
+     *   <li><code>package</code>: Complete package.json content (name, version,
      *      dependencies, etc.)</li>
      *   </ul>
      * </li>
-     * <li>User-defined properties:
+     * <li><b>User-defined properties:</b>
      *   <ul>
-     *   <li>`properties`: Merged from xpack.properties if present</li>
+     *   <li><code>properties</code>: Merged from
+     *      <code>xpack.properties</code> if present</li>
      *   </ul>
      * </li>
      * </ol>
@@ -131,7 +138,7 @@ export declare class XpmDataModel {
      *
      * @remarks
      * This collection manages package-level actions defined in
-     * xpack.actions, which are globally accessible and not tied to specific
+     * `xpack.actions`, which are globally accessible and not tied to specific
      * build configurations.
      *
      * Package-level actions characteristics:
@@ -139,7 +146,7 @@ export declare class XpmDataModel {
      * <ol>
      * <li>Created during construction but initially unpopulated.</li>
      * <li>Populated during the collection's own initialisation when
-     *    <code>XpmActions.initialise</code> is called.</li>
+     *    <code>XpmActions.initialise()</code> is called.</li>
      * <li>Have access to package-level substitution variables but not
      *    configuration-specific variables.</li>
      * <li>Suitable for package-wide tasks like testing, documentation
@@ -154,7 +161,7 @@ export declare class XpmDataModel {
      *
      * @remarks
      * This collection manages all build configurations defined in
-     * xpack.buildConfigurations, supporting inheritance, template expansion,
+     * `xpack.buildConfigurations`, supporting inheritance, template expansion,
      * and configuration-specific properties and dependencies.
      *
      * Build configurations characteristics:
@@ -162,7 +169,7 @@ export declare class XpmDataModel {
      * <ol>
      * <li>Created during construction but initially unpopulated.</li>
      * <li>Populated during the collection's own initialisation when
-     *    <code>XpmBuildConfigurations.initialise</code> is called.</li>
+     *    <code>XpmBuildConfigurations.initialise()</code> is called.</li>
      * <li>Each configuration inherits the package-level substitution variables
      *    and extends them with configuration-specific context.</li>
      * <li>Support complex inheritance chains where configurations can inherit
@@ -185,12 +192,13 @@ export declare class XpmDataModel {
      * Initialization sequence:
      *
      * <ol>
-     * <li>Create XpmLiquidEngine with custom filters and strict
+     * <li>Create <code>XpmLiquidEngine</code> with custom filters and strict
      * configuration.</li>
-     * <li>Validate xpack section exists in package.json.</li>
+     * <li>Validate <code>xpack</code> section exists in
+     *    <code>package.json</code>.</li>
      * <li>Initialize base substitution variables (os, platform, arch, etc.).</li>
      * <li>Add package metadata to substitution context.</li>
-     * <li>Merge xpack.properties if defined, allowing user-defined
+     * <li>Merge <code>xpack.properties</code> if defined, allowing user-defined
      * variables.</li>
      * <li>Seal substitution variables to prevent accidental modification.</li>
      * <li>Create package-level actions collection (initially empty, populated

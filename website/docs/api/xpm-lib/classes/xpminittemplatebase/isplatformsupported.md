@@ -66,7 +66,7 @@ boolean
 
 ## Remarks
 
-This method checks platform compatibility using a two-tier matching strategy. First, it looks for an exact match with the current platform-architecture combination (e.g., 'darwin-arm64'). If not found, it checks for a platform-only match (e.g., 'darwin'). Returns false if the platforms array is undefined, empty, or contains no matches for the current execution environment.
+This method checks platform compatibility using a two-tier matching strategy. First, it looks for an exact match with the current platform-architecture combination (e.g., `darwin-arm64`<!-- -->). If not found, it checks for a platform-only match (e.g., `darwin`<!-- -->). Returns `false` if the platforms array is undefined, empty, or contains no matches for the current execution environment.
 
 <hr/>
 

@@ -4,7 +4,7 @@
 
 ## XpmDataModel class
 
-Provides Liquid-based processing for an xpm package.
+Represents a lazy-loading data model for an <b>xpm</b> package.
 
 **Signature:**
 
@@ -16,7 +16,7 @@ export declare class XpmDataModel
 
 This class prepares substitution variables, creates the Liquid engine, and exposes actions and build configurations defined in the package.
 
-The package processor serves as the top-level coordinator for all Liquid-based template processing in an xpm package. It establishes the foundation for variable substitution throughout the package hierarchy:
+The package processor serves as the top-level coordinator for all Liquid-based template processing in an <b>xpm</b> package. It establishes the foundation for variable substitution throughout the package hierarchy:
 
 <ol> <li>Initializes base substitution variables (platform detection, system information, etc.).</li> <li>Adds package-specific variables from package.json metadata.</li> <li>Merges user-defined properties from xpack.properties.</li> <li>Creates package-level actions accessible across all contexts.</li> <li>Creates build configurations, each inheriting the base substitution context and adding configuration-specific variables.</li> </ol>
 

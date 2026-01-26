@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-An individual xpm build configuration.
+An individual <b>xpm</b> build configuration.
 
 ## Signature
 
@@ -28,7 +28,7 @@ Build configurations are initialised lazily and may inherit properties, dependen
 
 A configuration can exist in three states:
 
-<ol> <li>Undefined: Name is known but instance not yet created.</li> <li>Instantiated: Object exists but not yet fully processed.</li> <li>Initialised: Inheritance resolved, properties evaluated, dependencies substituted, and actions prepared.</li> </ol>
+<ol> <li><b>Undefined:</b> Name is known but instance not yet created.</li> <li><b>Instantiated:</b> Object exists but not yet fully processed.</li> <li><b>Initialised:</b> Inheritance resolved, properties evaluated, dependencies substituted, and actions prepared.</li> </ol>
 
 Inheritance is processed recursively with circular reference detection. Later inherited properties override earlier ones, and local properties override all inherited ones. Dependencies and actions are merged from all inherited configurations.
 

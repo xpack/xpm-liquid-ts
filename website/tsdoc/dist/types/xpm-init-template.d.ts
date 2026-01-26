@@ -11,7 +11,8 @@
  * validation, default values, and available options.
  *
  * Example usage in template metadata:
- * ```json
+ *
+ * ```js
  * {
  *   language: {
  *     label: 'Programming language',
@@ -39,11 +40,12 @@ export type XpmInitTemplatePropertiesDefinitions = Record<string, XpmInitTemplat
  *
  * <ul>
  * <li><code>select</code>: Present a list of options for the user to
- *   choose from.
- *   Requires <code>items</code> to be populated with available choices.</li>
+ *    choose from.
+ *    Requires <code>items</code> to be populated with available choices.</li>
  * <li><code>string</code>: Accept free-form text input from the user.</li>
  * <li><code>number</code>: Accept numeric input with validation.</li>
- * <li><code>boolean</code>: Accept yes/no input (typically true/false).</li>
+ * <li><code>boolean</code>: Accept yes/no input
+ *    (<code>true</code>/<code>false</code>).</li>
  * </ul>
  *
  * Platform filtering: For `select` types, items can specify platform
@@ -91,10 +93,10 @@ export interface XpmInitTemplatePropertiesDefinition {
  * Platform matching strategy:
  *
  * <ul>
- * <li>Generic platforms (linux, win32, darwin) match any architecture on that
- *   operating system.</li>
- * <li>Specific platforms (linux-x64, darwin-arm64, etc.) match only the exact
- *   OS and architecture combination.</li>
+ * <li><b>Generic platforms (linux, win32, darwin):</b> match any
+ *    architecture on  operating system.</li>
+ * <li><b>Specific platforms (linux-x64, darwin-arm64, etc.):</b> match
+ *    only the exact  OS and architecture combination.</li>
  * </ul>
  *
  * Example: An item with `platforms: ["darwin-arm64"]` only appears when
@@ -166,8 +168,9 @@ export interface XpmInitTemplateItemValue {
  *    default values from the
  *    template property definitions, accessible via
  *    <code>\{\{ properties.propertyName \}\}</code> in template files.</li>
- * <li>Additional variables: Templates can define custom variables for reuse
- *    across multiple files or for computed values based on properties.</li>
+ * <li><b>Additional variables:</b> Templates can define custom variables
+ *    for reuse across multiple files or for computed values based on
+ *    properties.</li>
  * </ul>
  *
  * Template files (with `.liquid` extension) are

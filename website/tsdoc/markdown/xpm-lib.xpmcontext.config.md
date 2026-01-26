@@ -4,7 +4,7 @@
 
 ## XpmContext.config property
 
-The xpm configuration options.
+The <b>xpm</b> configuration options.
 
 **Signature:**
 

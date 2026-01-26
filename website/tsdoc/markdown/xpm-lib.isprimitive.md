@@ -52,13 +52,13 @@ The value to test.
 
 boolean
 
-`true` if the value is a primitive or null, `false` otherwise.
+`true` if the value is a primitive or `null`<!-- -->, `false` otherwise.
 
 ## Remarks
 
-In JavaScript, primitives are immutable values that are not objects: string, number, bigint, boolean, undefined, and symbol. This function also treats null as a primitive, following JavaScript's typeof behavior despite null being technically an object type.
+In JavaScript, primitives are immutable values that are not objects: `string`<!-- -->, `number`<!-- -->, `bigint`<!-- -->, `boolean`<!-- -->, `undefined`<!-- -->, and `symbol`<!-- -->. This function also treats null as a primitive, following JavaScript's `typeof` behavior despite null being technically an object type.
 
-Returns `true` for: string, number, bigint, boolean, undefined, symbol, and null.
+Returns `true` for: `string`<!-- -->, `number`<!-- -->, `bigint`<!-- -->, `boolean`<!-- -->, `undefined`<!-- -->, `symbol`<!-- -->, and `null`<!-- -->.
 
 Returns `false` for: objects, arrays, functions, and class instances.
 

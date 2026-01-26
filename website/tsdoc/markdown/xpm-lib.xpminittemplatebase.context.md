@@ -4,7 +4,7 @@
 
 ## XpmInitTemplateBase.context property
 
-The xpm context containing configuration and logging utilities.
+The <b>xpm</b> context containing configuration and logging utilities.
 
 **Signature:**
 

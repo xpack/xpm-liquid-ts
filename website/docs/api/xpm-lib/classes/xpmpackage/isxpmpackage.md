@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Determines whether the package is an xpm package.
+Determines whether the package is an <b>xpm</b> package.
 
 ## Signature
 

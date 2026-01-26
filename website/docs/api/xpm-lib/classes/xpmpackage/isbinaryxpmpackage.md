@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Determines whether the package is a binary xpm package.
+Determines whether the package is a binary <b>xpm</b> package.
 
 ## Signature
 

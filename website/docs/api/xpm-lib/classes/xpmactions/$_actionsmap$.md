@@ -28,7 +28,7 @@ This map serves as the primary action registry, populated during collection init
 
 Key characteristics:
 
-<ol> <li>Known only after <code>XpmActions.initialise</code> completes.</li> <li>Possibly empty if there are no actions defined.</li> <li>Values can be <code>undefined</code> to indicate an action exists but hasn't been instantiated yet (lazy loading).</li> <li>For template actions, contains one entry per expanded combination, not the original template definition.</li> </ol>
+<ol> <li>Known only after <code>XpmActions.initialise()()()</code> completes.</li> <li>Possibly empty if there are no actions defined.</li> <li>Values can be <code>undefined</code> to indicate an action exists but hasn't been instantiated yet (lazy loading).</li> <li>For template actions, contains one entry per expanded combination, not the original template definition.</li> </ol>
 
 Actions transition from `undefined` to instantiated when first accessed via [XpmActions.get()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/get)<!-- -->, implementing the lazy evaluation pattern.
 

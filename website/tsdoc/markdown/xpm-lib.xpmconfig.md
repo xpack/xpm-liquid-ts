@@ -4,7 +4,7 @@
 
 ## XpmConfig interface
 
-Defines the xpm configuration options.
+Defines the <b>xpm</b> configuration options.
 
 **Signature:**
 
@@ -14,15 +14,15 @@ export interface XpmConfig
 
 ## Remarks
 
-Configuration options control xpm operation behavior, providing flags for safe mode overrides, installation optimizations, testing scenarios, and property overrides.
+Configuration options control <b>xpm</b> operation behavior, providing flags for safe mode overrides, installation optimizations, testing scenarios, and property overrides.
 
 Configuration lifecycle:
 
-<ol> <li>Created from CLI arguments or programmatic API calls.</li> <li>Merged with defaults to form complete configuration.</li> <li>Passed through <code>XpmContext</code> to all xpm operations.</li> <li>Consulted by operations to determine behavior (skip, force, dry-run).</li> </ol>
+<ol> <li>Created from CLI arguments or programmatic API calls.</li> <li>Merged with defaults to form complete configuration.</li> <li>Passed through <code>XpmContext</code> to all <b>xpm</b> operations.</li> <li>Consulted by operations to determine behavior (skip, force, dry-run).</li> </ol>
 
 Key configuration patterns:
 
-<ul> <li>Force mode (<code>doForce: true</code>): Bypasses safety checks like "already installed" or "files exist". Use with caution as it can overwrite data.</li> <li>Skip if installed (<code>doSkipIfInstalled: true</code>): Optimization to avoid reinstalling packages that are already present, useful for CI/CD.</li> <li>Dry run (<code>isDryRun: true</code>): Simulates operations without making changes, useful for testing or previewing actions.</li> <li>Property overrides: Command-line or API-provided properties that override values from package.json, enabling dynamic configuration.</li> </ul>
+<ul> <li><b>Force mode (<code>doForce: true</code>):</b> Bypasses safety checks like "already installed" or "files exist". Use with caution as it can overwrite data.</li> <li><b>Dry run (<code>isDryRun: true</code>):</b> Simulates operations without making changes, useful for testing or previewing actions.</li> </ul>
 
 The extensible design (additional properties allowed) supports future configuration options without breaking changes.
 

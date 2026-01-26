@@ -30,7 +30,7 @@ Each string represents a complete command to be executed in sequence. Commands a
 
 The array structure enables:
 
-<ul> <li>Multi-step actions: Execute multiple commands in order.</li> <li>Error handling: Stop execution on first command failure (default behavior).</li> <li>Logging: Report progress as each command completes.</li> </ul>
+<ul> <li><b>Multi-step actions:</b> Execute multiple commands in order.</li> <li><b>Error handling:</b> Stop execution on first command failure (default behavior).</li> <li><b>Logging:</b> Report progress as each command completes.</li> </ul>
 
 Commands have access to the full shell environment and can reference environment variables, pipe outputs, or chain operations using standard shell syntax (`&&`<!-- -->, `||`<!-- -->, `|`<!-- -->, etc.).
 

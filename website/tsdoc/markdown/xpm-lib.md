@@ -8,15 +8,15 @@ A Node.js TypeScript module with the core code for <b>xpm</b> and <b>xpm enabled
 
 ## Remarks
 
-This library groups together various classes and functions used in common by xpm and the Visual Studio Code extension.
+This library groups together various classes and functions used in common by <b>xpm</b> and the Visual Studio Code extension.
 
 The main functionality is to manage actions and build configurations, especially those defined using Liquid templates.
 
-The Lazy Evaluation Mechanism
+<h3>The Lazy Evaluation Mechanism</h3>
 
 Actions ([XpmActions](./xpm-lib.xpmactions.md)<!-- -->) and build configurations ([XpmBuildConfigurations](./xpm-lib.xpmbuildconfigurations.md)<!-- -->) implement a two-step lazy evaluation process to avoid unnecessary operations:
 
-<ol> <li>Name Expansion: During collection initialisation, only the matrix of options is evaluated for each template, expanding template names into concrete action or configuration names without processing their content.</li> <li>Content Evaluation: Later, when an action or build configuration is actually accessed and initialised (via <code>XpmAction.initialise</code> or <code>XpmBuildConfiguration.initialise</code>), the template is fully evaluated and Liquid substitutions are performed.</li> </ol>
+<ol> <li><b>Name Expansion:</b> During collection initialisation, only the matrix of options is evaluated for each template, expanding template names into concrete action or configuration names without processing their content.</li> <li><b>Content Evaluation:</b> Later, when an action or build configuration is actually accessed and initialised (via <code>XpmAction.initialise()</code> or <code>XpmBuildConfiguration.initialise()</code>), the template is fully evaluated and Liquid substitutions are performed.</li> </ol>
 
 This approach ensures that only items that are actually used incur the cost of template evaluation and variable substitution, significantly improving performance for projects with many actions or configurations.
 
@@ -40,7 +40,7 @@ Description
 
 </td><td>
 
-An individual xpm action containing commands to be executed.
+An individual <b>xpm</b> action containing commands to be executed.
 
 
 </td></tr>
@@ -51,7 +51,7 @@ An individual xpm action containing commands to be executed.
 
 </td><td>
 
-A collection of xpm actions for a build configuration or the entire package.
+A collection of <b>xpm</b> actions for a build configuration or the entire package.
 
 
 </td></tr>
@@ -62,7 +62,7 @@ A collection of xpm actions for a build configuration or the entire package.
 
 </td><td>
 
-An individual xpm build configuration.
+An individual <b>xpm</b> build configuration.
 
 
 </td></tr>
@@ -73,7 +73,7 @@ An individual xpm build configuration.
 
 </td><td>
 
-A collection of xpm build configurations.
+A collection of <b>xpm</b> build configurations.
 
 
 </td></tr>
@@ -84,7 +84,7 @@ A collection of xpm build configurations.
 
 </td><td>
 
-Provides Liquid-based processing for an xpm package.
+Represents a lazy-loading data model for an <b>xpm</b> package.
 
 
 </td></tr>
@@ -117,7 +117,7 @@ Error indicating that user input is invalid.
 
 </td><td>
 
-Liquid engine configured for xpm templates.
+Liquid engine configured for <b>xpm</b> templates.
 
 
 </td></tr>
@@ -172,7 +172,7 @@ Provides access to package metadata and xpm-specific validation.
 
 </td><td>
 
-Computes feature policy flags based on a minimum xpm version.
+Computes feature policy flags based on a minimum <b>xpm</b> version.
 
 
 </td></tr>
@@ -220,7 +220,7 @@ Description
 
 </td><td>
 
-Base class for xpm initialisation templates.
+Base class for <b>xpm</b> initialisation templates.
 
 
 </td></tr>
@@ -503,7 +503,7 @@ Represents a JSON binaries definition in package.json.
 
 </td><td>
 
-Represents a JSON xpm package.json structure.
+Represents a JSON <b>xpm</b> package.json structure.
 
 
 </td></tr>
@@ -525,7 +525,7 @@ Represents a JSON platform-specific binary file definition.
 
 </td><td>
 
-Defines the xpm configuration options.
+Defines the <b>xpm</b> configuration options.
 
 
 </td></tr>
@@ -536,7 +536,7 @@ Defines the xpm configuration options.
 
 </td><td>
 
-Provides the execution context for xpm operations.
+Provides the execution context for <b>xpm</b> operations.
 
 
 </td></tr>

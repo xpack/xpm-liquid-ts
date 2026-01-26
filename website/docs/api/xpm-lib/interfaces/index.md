@@ -95,7 +95,7 @@ Represents a JSON binaries definition in package.json.
 
 </td><td>
 
-Represents a JSON xpm package.json structure.
+Represents a JSON <b>xpm</b> package.json structure.
 
 </td></tr>
 <tr><td>
@@ -113,7 +113,7 @@ Represents a JSON platform-specific binary file definition.
 
 </td><td>
 
-Defines the xpm configuration options.
+Defines the <b>xpm</b> configuration options.
 
 </td></tr>
 <tr><td>
@@ -122,7 +122,7 @@ Defines the xpm configuration options.
 
 </td><td>
 
-Provides the execution context for xpm operations.
+Provides the execution context for <b>xpm</b> operations.
 
 </td></tr>
 <tr><td>

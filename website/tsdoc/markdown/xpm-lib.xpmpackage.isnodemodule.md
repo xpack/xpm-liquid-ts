@@ -4,7 +4,7 @@
 
 ## XpmPackage.isNodeModule() method
 
-Determines whether the package is a Node module without xpm metadata.
+Determines whether the package is a Node module without <b>xpm</b> metadata.
 
 **Signature:**
 
@@ -15,5 +15,5 @@ isNodeModule(): false;
 
 false
 
-`true` if the package is a Node module without xpm metadata, `false` otherwise.
+`true` if the package is a Node module without <b>xpm</b> metadata, `false` otherwise.
 

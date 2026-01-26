@@ -23,7 +23,7 @@ The following classes are defined:
 
 </td><td>
 
-An individual xpm action containing commands to be executed.
+An individual <b>xpm</b> action containing commands to be executed.
 
 </td></tr>
 <tr><td>
@@ -32,7 +32,7 @@ An individual xpm action containing commands to be executed.
 
 </td><td>
 
-A collection of xpm actions for a build configuration or the entire package.
+A collection of <b>xpm</b> actions for a build configuration or the entire package.
 
 </td></tr>
 <tr><td>
@@ -41,7 +41,7 @@ A collection of xpm actions for a build configuration or the entire package.
 
 </td><td>
 
-An individual xpm build configuration.
+An individual <b>xpm</b> build configuration.
 
 </td></tr>
 <tr><td>
@@ -50,7 +50,7 @@ An individual xpm build configuration.
 
 </td><td>
 
-A collection of xpm build configurations.
+A collection of <b>xpm</b> build configurations.
 
 </td></tr>
 <tr><td>
@@ -59,7 +59,7 @@ A collection of xpm build configurations.
 
 </td><td>
 
-Provides Liquid-based processing for an xpm package.
+Represents a lazy-loading data model for an <b>xpm</b> package.
 
 </td></tr>
 <tr><td>
@@ -77,7 +77,7 @@ Base class for xpm-related errors.
 
 </td><td>
 
-Base class for xpm initialisation templates.
+Base class for <b>xpm</b> initialisation templates.
 
 </td></tr>
 <tr><td>
@@ -95,7 +95,7 @@ Error indicating that user input is invalid.
 
 </td><td>
 
-Liquid engine configured for xpm templates.
+Liquid engine configured for <b>xpm</b> templates.
 
 </td></tr>
 <tr><td>
@@ -140,7 +140,7 @@ Provides access to package metadata and xpm-specific validation.
 
 </td><td>
 
-Computes feature policy flags based on a minimum xpm version.
+Computes feature policy flags based on a minimum <b>xpm</b> version.
 
 </td></tr>
 <tr><td>

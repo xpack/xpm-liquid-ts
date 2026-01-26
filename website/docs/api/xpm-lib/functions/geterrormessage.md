@@ -66,11 +66,11 @@ The error message string.
 
 ## Remarks
 
-This utility handles error values of any type, extracting the message property from Error instances or converting other types to strings. Useful for consistent error reporting when the error type is unknown.
+This utility handles error values of any type, extracting the message property from `Error` instances or converting other types to strings. Useful for consistent error reporting when the error type is unknown.
 
-TypeScript's catch clause types errors as `unknown` for safety, since JavaScript allows throwing any value (not just Error instances). This function provides a type-safe way to extract a message string:
+TypeScript's catch clause types errors as `unknown` for safety, since JavaScript allows throwing any value (not just `Error` instances). This function provides a type-safe way to extract a message string:
 
-<ul> <li>For Error instances: Returns the <code>message</code> property.</li> <li>For other types: Converts to string using <code>String()</code>, which handles primitives, objects with toString(), null, and undefined gracefully.</li> </ul>
+<ul> <li><b>For Error instances:</b> Returns the <code>message</code> property.</li> <li><b>For other types:</b> Converts to string using <code>String()</code>, which handles primitives, objects with <code>toString()</code>, <code>null</code>, and <code>undefined</code> gracefully.</li> </ul>
 
 Common usage pattern:
 

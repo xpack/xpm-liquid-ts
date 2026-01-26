@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-The minimum xpm version used to derive policy flags.
+The minimum <b>xpm</b> version used to derive policy flags.
 
 ## Signature
 

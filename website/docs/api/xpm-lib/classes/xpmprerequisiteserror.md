@@ -25,7 +25,7 @@ export declare class XpmPrerequisitesError extends Error
 
 ## Remarks
 
-This error is thrown when dependencies, tools, or system requirements necessary for an operation are missing or incompatible. Common scenarios include missing npm packages, unavailable system tools, unsupported platform versions, or insufficient xpm version requirements. Use this error when validation of the execution environment fails before attempting an operation.
+This error is thrown when dependencies, tools, or system requirements necessary for an operation are missing or incompatible. Common scenarios include missing npm packages, unavailable system tools, unsupported platform versions, or insufficient <b>xpm</b> version requirements. Use this error when validation of the execution environment fails before attempting an operation.
 
 <hr/>
 

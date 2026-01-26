@@ -4,7 +4,7 @@ import { XpmLiquidSubstitutionsVariables, XpmLiquidSubstitutionsStrings } from '
 import { JsonBuildConfiguration, JsonBuildConfigurationContent, JsonBuildConfigurations, JsonBuildConfigurationTemplate, JsonDependencies } from '../types/json.js';
 import { XpmActions } from './actions.js';
 /**
- * A collection of xpm build configurations.
+ * A collection of <b>xpm</b> build configurations.
  *
  * @remarks
  * This class manages build configurations defined in package metadata,
@@ -14,11 +14,14 @@ import { XpmActions } from './actions.js';
  * Configuration lifecycle phases:
  *
  * <ol>
- * <li>Construction: Basic setup without processing configurations.</li>
- * <li>Initialisation: Template name expansion without content evaluation.</li>
- * <li>Retrieval: On-demand instantiation when accessed via get().</li>
- * <li>Configuration Initialisation: Full processing including inheritance,
- *    property resolution, dependency substitution, and action preparation.</li>
+ * <li><b>Construction:</b> Basic setup without processing configurations.</li>
+ * <li><b>Initialisation:</b> Template name expansion without content
+ *    evaluation.</li>
+ * <li><b>Retrieval:</b> On-demand instantiation when accessed via
+ *    <code>get()</code>.</li>
+ * <li><b>Configuration Initialisation:</b> Full processing including
+ *    inheritance, property resolution, dependency substitution, and
+ *    action preparation.</li>
  * </ol>
  *
  * This lazy evaluation strategy ensures that only configurations actually
@@ -60,14 +63,14 @@ export declare class XpmBuildConfigurations {
      * Base hierarchy includes:
      *
      * <ol>
-     * <li>Environment variables: <code>env</code> namespace with system
-     *   environment.</li>
-     * <li>Platform detection: <code>os</code> namespace with platform-specific
-     *   values.</li>
-     * <li>Path utilities: <code>path</code> namespace with path manipulation
-     *   functions.</li>
-     * <li>Package metadata: <code>package</code> namespace with name, version,
-     *    dependencies.</li>
+     * <li><b>Environment variables:</b> <code>env</code> namespace with system
+     *    environment.</li>
+     * <li><b>Platform detection:</b> <code>os</code> namespace with
+     *    platform-specific values.</li>
+     * <li><b>Path utilities:</b> <code>path</code> namespace with path
+     *    manipulationfunctions.</li>
+     * <li><b>Package metadata:</b> <code>package</code> namespace with
+     *    name, version, dependencies.</li>
      * </ol>
      *
      * Individual configurations extend this with their own `properties`,
@@ -82,9 +85,9 @@ export declare class XpmBuildConfigurations {
      * package.json `xpack.buildConfigurations` section. Configurations can be:
      *
      * <ol>
-     * <li>Regular configurations: Direct objects with properties, dependencies,
-     *    actions, and inheritance.</li>
-     * <li>Template configurations: Objects with <code>matrix</code>
+     * <li><b>Regular configurations:</b> Direct objects with properties,
+     *    dependencies, actions, and inheritance.</li>
+     * <li><b>Template configurations:</b> Objects with <code>matrix</code>
      *    and <code>template</code>
      *    properties for generating multiple configurations from a single
      *    definition.</li>
@@ -131,9 +134,10 @@ export declare class XpmBuildConfigurations {
      * Mapping behavior:
      *
      * <ol>
-     * <li>For regular configurations: Maps configuration name to itself
+     * <li><b>For regular configurations:</b> Maps configuration name to itself
      *    (identity mapping).</li>
-     * <li>For template configurations: Maps each generated configuration name
+     * <li><b>For template configurations:</b> Maps each generated configuration
+     *    name
      *    back to the original template name (e.g., <code>release-x64</code> →
      *    <code>release-\{\{ matrix.arch \}\}</code>).</li>
      * <li>Known only after <code>XpmBuildConfigurations.initialise</code>
@@ -357,7 +361,7 @@ export declare class XpmBuildConfigurations {
     }): Promise<Map<string, XpmBuildConfiguration>>;
 }
 /**
- * An individual xpm build configuration.
+ * An individual <b>xpm</b> build configuration.
  *
  * @remarks
  * Build configurations are initialised lazily and may inherit
@@ -366,10 +370,10 @@ export declare class XpmBuildConfigurations {
  * A configuration can exist in three states:
  *
  * <ol>
- * <li>Undefined: Name is known but instance not yet created.</li>
- * <li>Instantiated: Object exists but not yet fully processed.</li>
- * <li>Initialised: Inheritance resolved, properties evaluated, dependencies
- *    substituted, and actions prepared.</li>
+ * <li><b>Undefined:</b> Name is known but instance not yet created.</li>
+ * <li><b>Instantiated:</b> Object exists but not yet fully processed.</li>
+ * <li><b>Initialised:</b> Inheritance resolved, properties evaluated,
+ *    dependencies substituted, and actions prepared.</li>
  * </ol>
  *
  * Inheritance is processed recursively with circular reference detection.
@@ -392,7 +396,7 @@ export declare class XpmBuildConfiguration {
      * <ol>
      * <li>User-facing identification when listing or selecting
      *   configurations.</li>
-     * <li>Build folder path generation (default:
+     * <li><b>Build folder path generation (default:</b>
      *   <code>build/\{name\}</code>).</li>
      * <li>Logging and diagnostic output to track configuration lifecycle.</li>
      * <li>Inheritance references from other configurations.</li>
@@ -493,7 +497,9 @@ export declare class XpmBuildConfiguration {
      *    (defaults to <code>false</code>).</li>
      * </ol>
      *
-     * Common use case: Base configurations that define common properties,
+     * Common use case:
+     *
+     * Base configurations that define common properties,
      * dependencies, or actions inherited by multiple concrete configurations.
      */
     readonly isHidden: boolean;
@@ -534,10 +540,12 @@ export declare class XpmBuildConfiguration {
      *
      * <ol>
      * <li>Start with empty object.</li>
-     * <li>Merge dependencies from each inherited configuration in sequence
+     * <li>Merge <code>dependencies</code> from each inherited configuration
+     *    in sequence
      *    (later overrides earlier).</li>
-     * <li>Merge local dependencies from JSON definition.</li>
-     * <li>Perform Liquid template substitution on the entire dependencies
+     * <li>Merge local <code>dependencies</code> from JSON definition.</li>
+     * <li>Perform Liquid template substitution on the entire
+     *    <code>dependencies</code>
      *    object with full configuration context (properties, matrix, etc.).</li>
      * </ol>
      *
@@ -557,10 +565,12 @@ export declare class XpmBuildConfiguration {
      *
      * <ol>
      * <li>Start with empty object.</li>
-     * <li>Merge devDependencies from each inherited configuration in sequence
+     * <li>Merge <code>devDependencies</code> from each inherited configuration
+     *    in sequence
      *    (later overrides earlier).</li>
-     * <li>Merge local devDependencies from JSON definition.</li>
-     * <li>Perform Liquid template substitution on the entire devDependencies
+     * <li>Merge local <code>devDependencies</code> from JSON definition.</li>
+     * <li>Perform Liquid template substitution on the entire
+     *    <code>devDependencies</code>
      *    object with full configuration context.</li>
      * </ol>
      *
@@ -579,7 +589,8 @@ export declare class XpmBuildConfiguration {
      * The definition is preserved to:
      *
      * <ol>
-     * <li>Enable external modification (e.g., `xpm uninstall` updates this
+     * <li>Enable external modification (e.g., <code>xpm uninstall</code>
+     *    updates this
      *    directly).</li>
      * <li>Support deferred template evaluation during
      *    <code>XpmBuildConfiguration.initialise</code>.</li>

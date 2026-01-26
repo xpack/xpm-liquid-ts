@@ -31,7 +31,7 @@ Each property key becomes accessible in template files via Liquid syntax as `{{ 
 
 Example usage in template metadata:
 
-```json
+```js
 {
   language: {
     label: 'Programming language',

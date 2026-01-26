@@ -24,11 +24,11 @@ readonly buildConfigurations: XpmBuildConfigurations;
 
 ## Remarks
 
-This collection manages all build configurations defined in xpack.buildConfigurations, supporting inheritance, template expansion, and configuration-specific properties and dependencies.
+This collection manages all build configurations defined in `xpack.buildConfigurations`<!-- -->, supporting inheritance, template expansion, and configuration-specific properties and dependencies.
 
 Build configurations characteristics:
 
-<ol> <li>Created during construction but initially unpopulated.</li> <li>Populated during the collection's own initialisation when <code>XpmBuildConfigurations.initialise</code> is called.</li> <li>Each configuration inherits the package-level substitution variables and extends them with configuration-specific context.</li> <li>Support complex inheritance chains where configurations can inherit properties, dependencies, and actions from other configurations.</li> <li>Can be generated from templates with matrix expansion for multi-platform or multi-variant builds.</li> <li>Each configuration maintains its own actions collection, inheriting package-level actions and adding configuration-specific ones.</li> </ol>
+<ol> <li>Created during construction but initially unpopulated.</li> <li>Populated during the collection's own initialisation when <code>XpmBuildConfigurations.initialise()</code> is called.</li> <li>Each configuration inherits the package-level substitution variables and extends them with configuration-specific context.</li> <li>Support complex inheritance chains where configurations can inherit properties, dependencies, and actions from other configurations.</li> <li>Can be generated from templates with matrix expansion for multi-platform or multi-variant builds.</li> <li>Each configuration maintains its own actions collection, inheriting package-level actions and adding configuration-specific ones.</li> </ol>
 
 <hr/>
 

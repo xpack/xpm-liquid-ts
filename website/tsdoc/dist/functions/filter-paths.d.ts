@@ -10,12 +10,13 @@
  * Platform-specific processing:
  *
  * <ul>
- * <li>Windows: Preserves backslashes (\\) and colons (:) for drive letters
- *   and path separators (e.g., C:\\path\\to\\file). Replaces all other
- *   non-alphanumeric characters with dashes.</li>
- * <li>POSIX (Linux, macOS): Preserves forward slashes (/) for path
- *   separators. Replaces all other non-alphanumeric characters with
- *   dashes.</li>
+ * <li><b>Windows:</b> Preserves backslashes (<code>\\</code>) and colons
+ *    (<code>:</code>) for drive letters
+ *    and path separators (e.g., <code>C:\\path\\to\\file</code>). Replaces all
+ *    other non-alphanumeric characters with dashes.</li>
+ * <li><b>POSIX (Linux, macOS):</b> Preserves forward slashes (<code>/</code>)
+ *    for path separators. Replaces all other non-alphanumeric characters with
+ *    dashes.</li>
  * </ul>
  *
  * Post-processing: After character replacement, consecutive dashes are
@@ -41,8 +42,9 @@ export declare function filterPath(input: string): string;
  * Processing rules:
  *
  * <ul>
- * <li>Preserves forward slashes (/) for path separators.</li>
- * <li>Replaces all non-alphanumeric characters (except /) with dashes.</li>
+ * <li>Preserves forward slashes (<code>/</code>) for path separators.</li>
+ * <li>Replaces all non-alphanumeric characters (except <code>/</code>) with
+ *    dashes.</li>
  * <li>Collapses consecutive dashes to single dashes.</li>
  * </ul>
  *
@@ -66,8 +68,9 @@ export declare function filterPosixPath(input: string): string;
  * Processing rules:
  *
  * <ul>
- * <li>Preserves backslashes (\) for path separators.</li>
- * <li>Preserves colons (:) for drive letter designation (e.g., C:).</li>
+ * <li>Preserves backslashes (<code>\\</code>) for path separators.</li>
+ * <li>Preserves colons (<code>:</code>) for drive letter designation (e.g.,
+ *    <code>C:</code>).</li>
  * <li>Replaces all other non-alphanumeric characters with dashes.</li>
  * <li>Collapses consecutive dashes to single dashes.</li>
  * </ul>

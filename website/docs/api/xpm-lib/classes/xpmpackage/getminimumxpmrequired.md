@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Retrieves the minimum required xpm version specified by the package.
+Retrieves the minimum required <b>xpm</b> version specified by the package.
 
 ## Signature
 
@@ -25,7 +25,7 @@ getMinimumXpmRequired(): string | undefined;
 
 string \| undefined
 
-The minimum required xpm version without pre-release suffixes, or undefined if not specified.
+The minimum required <b>xpm</b> version without pre-release suffixes, or undefined if not specified.
 
 <hr/>
 

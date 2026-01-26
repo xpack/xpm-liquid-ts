@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Base class for xpm initialisation templates.
+Base class for <b>xpm</b> initialisation templates.
 
 ## Signature
 
@@ -60,7 +60,7 @@ Description
 
 </td><td>
 
-Constructs an xpm initialisation template instance.
+Constructs an <b>xpm</b> initialisation template instance.
 
 
 </td></tr>
@@ -123,7 +123,7 @@ The absolute path to the module folder.
 
 </td><td>
 
-The xpm context containing configuration and logging utilities.
+The <b>xpm</b> context containing configuration and logging utilities.
 
 
 </td></tr>

@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Provides the execution context for xpm operations.
+Provides the execution context for <b>xpm</b> operations.
 
 ## Signature
 
@@ -24,15 +24,15 @@ export interface XpmContext
 
 ## Remarks
 
-The context object serves as the central coordination point for all xpm operations, providing access to logging, configuration, and extensible state.
+The context object serves as the central coordination point for all <b>xpm</b> operations, providing access to logging, configuration, and extensible state.
 
 Context flow:
 
-<ol> <li>Created at the start of each xpm command execution.</li> <li>Initialized with logger instance and configuration options.</li> <li>Passed to all library functions and classes that perform xpm operations.</li> <li>Extended with additional properties as needed by specific operations (e.g., package paths, temporary directories, cache state).</li> </ol>
+<ol> <li>Created at the start of each <b>xpm</b> command execution.</li> <li>Initialized with logger instance and configuration options.</li> <li>Passed to all library functions and classes that perform <b>xpm</b> operations.</li> <li>Extended with additional properties as needed by specific operations (e.g., package paths, temporary directories, cache state).</li> </ol>
 
 Core responsibilities:
 
-<ul> <li>Logging: Provides consistent output and diagnostics through the logger instance, enabling verbosity control and structured output.</li> <li>Configuration: Makes operational flags and user preferences accessible to all components.</li> <li>State sharing: The extensible design allows operations to attach computed values or state that should be available to subsequent operations within the same execution.</li> </ul>
+<ul> <li><b>Logging:</b> Provides consistent output and diagnostics through the logger instance, enabling verbosity control and structured output.</li> <li><b>Configuration:</b> Makes operational flags and user preferences accessible to all components.</li> <li><b>State sharing:</b> The extensible design allows operations to attach computed values or state that should be available to subsequent operations within the same execution.</li> </ul>
 
 The context pattern enables dependency injection, making the code more testable and allowing operations to access shared resources without global state.
 
@@ -74,7 +74,7 @@ Description
 
 </td><td>
 
-The xpm configuration options.
+The <b>xpm</b> configuration options.
 
 
 </td></tr>

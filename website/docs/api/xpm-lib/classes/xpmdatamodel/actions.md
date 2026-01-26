@@ -24,11 +24,11 @@ readonly actions: XpmActions;
 
 ## Remarks
 
-This collection manages package-level actions defined in xpack.actions, which are globally accessible and not tied to specific build configurations.
+This collection manages package-level actions defined in `xpack.actions`<!-- -->, which are globally accessible and not tied to specific build configurations.
 
 Package-level actions characteristics:
 
-<ol> <li>Created during construction but initially unpopulated.</li> <li>Populated during the collection's own initialisation when <code>XpmActions.initialise</code> is called.</li> <li>Have access to package-level substitution variables but not configuration-specific variables.</li> <li>Suitable for package-wide tasks like testing, documentation generation, or global cleanup.</li> <li>Can be used alongside configuration-specific actions, which inherit from package-level actions.</li> </ol>
+<ol> <li>Created during construction but initially unpopulated.</li> <li>Populated during the collection's own initialisation when <code>XpmActions.initialise()</code> is called.</li> <li>Have access to package-level substitution variables but not configuration-specific variables.</li> <li>Suitable for package-wide tasks like testing, documentation generation, or global cleanup.</li> <li>Can be used alongside configuration-specific actions, which inherit from package-level actions.</li> </ol>
 
 <hr/>
 

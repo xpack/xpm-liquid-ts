@@ -72,7 +72,7 @@ The parsed package specifier components.
 
 npm package specifiers can take several forms:
 
-<ul> <li>Unscoped without version: <code>package-name</code></li> <li>Unscoped with version: <code>package-name<!-- -->@<!-- -->1.2.3</code></li> <li>Scoped without version: <code>@<!-- -->scope/package-name</code></li> <li>Scoped with version: <code>@<!-- -->scope/package-name<!-- -->@<!-- -->1.2.3</code></li> </ul>
+<ul> <li><b>Unscoped without version:</b> <code>package-name</code></li> <li><b>Unscoped with version:</b> <code>package-name<!-- -->@<!-- -->1.2.3</code></li> <li><b>Scoped without version:</b> <code>@<!-- -->scope/package-name</code></li> <li><b>Scoped with version:</b> <code>@<!-- -->scope/package-name<!-- -->@<!-- -->1.2.3</code></li> </ul>
 
 Parsing strategy:
 

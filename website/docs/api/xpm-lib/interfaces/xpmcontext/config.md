@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-The xpm configuration options.
+The <b>xpm</b> configuration options.
 
 ## Signature
 

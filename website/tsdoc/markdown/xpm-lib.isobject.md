@@ -62,5 +62,5 @@ Returns `true` for: plain objects, class instances, and other object types.
 
 Returns `false` for: arrays, null, primitives, and functions.
 
-Note: Arrays in JavaScript are objects, so this function explicitly excludes them using `Array.isArray()`<!-- -->. Use [isJsonObject()](./xpm-lib.isjsonobject.md) for stricter JSON object validation that also excludes undefined and null.
+Note: Arrays in JavaScript are objects, so this function explicitly excludes them using `Array.isArray()`<!-- -->. Use [isJsonObject()](./xpm-lib.isjsonobject.md) for stricter JSON object validation that also excludes `undefined` and `null`<!-- -->.
 

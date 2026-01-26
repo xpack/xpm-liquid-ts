@@ -66,9 +66,9 @@ boolean
 
 ## Remarks
 
-Tests for primitive boolean values (true or false). Useful when validating configuration options or parsing JSON where boolean flags need to be distinguished from truthy/falsy values.
+Tests for primitive boolean values (`true` or `false`<!-- -->). Useful when validating configuration options or parsing JSON where boolean flags need to be distinguished from truthy/falsy values.
 
-Only returns `true` for the primitive boolean values `true` and `false`<!-- -->, not for Boolean objects created with `new Boolean()`<!-- -->.
+Only returns `true` for the primitive boolean values `true` and `false`<!-- -->, not for boolean objects created with `new Boolean()`<!-- -->.
 
 Note: This does not check for truthy or falsy values - it only returns `true` for actual boolean primitives. Use standard JavaScript truthiness checks for conditional logic.
 

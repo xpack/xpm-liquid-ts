@@ -4,7 +4,7 @@
 
 ## XpmPackage.isXpmPackage() method
 
-Determines whether the package is an xpm package.
+Determines whether the package is an <b>xpm</b> package.
 
 **Signature:**
 

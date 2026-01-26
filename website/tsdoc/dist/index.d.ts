@@ -4,27 +4,28 @@
  *
  * @remarks
  * This library groups together various classes and functions used in common
- * by xpm and the Visual Studio Code extension.
+ * by <b>xpm</b> and the Visual Studio Code extension.
  *
  * The main functionality is to manage actions and build configurations,
  * especially those defined using Liquid templates.
  *
- * The Lazy Evaluation Mechanism
+ * <h3>The Lazy Evaluation Mechanism</h3>
  *
  * Actions ({@link XpmActions}) and build configurations
  * ({@link XpmBuildConfigurations}) implement a two-step lazy evaluation
  * process to avoid unnecessary operations:
  *
  * <ol>
- * <li>Name Expansion: During collection initialisation, only the matrix of
+ * <li><b>Name Expansion:</b> During collection initialisation, only
+ *    the matrix of
  *    options is evaluated for each template, expanding template names into
  *    concrete action or configuration names without processing their
  * content.</li>
- * <li>Content Evaluation: Later, when an action or build configuration is
- *    actually accessed and initialised (via
- * <code>XpmAction.initialise</code>
- *    or <code>XpmBuildConfiguration.initialise</code>), the template
- * is fully
+ * <li><b>Content Evaluation:</b> Later, when an action or build
+ *    configuration is  actually accessed and initialised (via
+ *    <code>XpmAction.initialise()</code>
+ *    or <code>XpmBuildConfiguration.initialise()</code>), the template
+ *    is fully
  *    evaluated and Liquid substitutions are performed.</li>
  * </ol>
  *

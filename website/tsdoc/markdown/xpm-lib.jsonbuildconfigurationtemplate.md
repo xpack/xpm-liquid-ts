@@ -16,7 +16,7 @@ export interface JsonBuildConfigurationTemplate
 
 Template build configurations use matrix parameters to generate multiple configuration variants from a single definition via Cartesian product expansion. Common for cross-compilation scenarios where multiple architecture or platform combinations are needed.
 
-Example usage in package.json:
+Example usage in `package.json`<!-- -->:
 
 ```json
 "buildConfigurations": {
@@ -33,7 +33,7 @@ Example usage in package.json:
   }
 }
 ```
-This generates four configurations: linux-x64, linux-arm64, darwin-x64, and darwin-arm64, each with matrix values available for property substitution.
+This generates four configurations: `linux-x64`<!-- -->, `linux-arm64`<!-- -->, `darwin-x64`<!-- -->, and `darwin-arm64`<!-- -->, each with matrix values available for property substitution.
 
 ## Properties
 

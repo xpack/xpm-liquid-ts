@@ -3,8 +3,8 @@
  *
  * @remarks
  * This class extends the standard JavaScript `Error` class and serves as
- * the foundation for all xpm-specific error types. Use this error for
- * general xpm operations that don't fit into more specific error
+ * the foundation for all <b>xpm</b>-specific error types. Use this error for
+ * general <b>xpm</b> operations that don't fit into more specific error
  * categories. More specialized errors ({@link XpmInputError},
  * {@link XpmSyntaxError}, {@link XpmOutputError},
  * {@link XpmPrerequisitesError}) should be preferred when applicable,
@@ -19,7 +19,7 @@ export declare class XpmError extends Error {
  * This error is thrown when dependencies, tools, or system requirements
  * necessary for an operation are missing or incompatible. Common scenarios
  * include missing npm packages, unavailable system tools, unsupported
- * platform versions, or insufficient xpm version requirements. Use this
+ * platform versions, or insufficient <b>xpm</b> version requirements. Use this
  * error when validation of the execution environment fails before
  * attempting an operation.
  */

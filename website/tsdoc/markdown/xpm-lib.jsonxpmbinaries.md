@@ -14,9 +14,9 @@ export interface JsonXpmBinaries
 
 ## Remarks
 
-Configures binary package distribution for tools, SDKs, or compiled applications. xpm downloads platform-specific archives, verifies their integrity, and extracts them to the specified destination.
+Configures binary package distribution for tools, SDKs, or compiled applications. <b>xpm</b> downloads platform-specific archives, verifies their integrity, and extracts them to the specified destination.
 
-Example usage in package.json:
+Example usage in `package.json`<!-- -->:
 
 ```json
 "binaries": {

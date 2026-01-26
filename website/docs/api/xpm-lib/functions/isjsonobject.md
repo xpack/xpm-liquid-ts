@@ -66,13 +66,13 @@ boolean
 
 ## Remarks
 
-Validates that a value represents a JSON object, which is stricter than JavaScript's general object type. This is essential when working with parsed JSON data or package.json structures.
+Validates that a value represents a JSON object, which is stricter than JavaScript's general object type. This is essential when working with parsed JSON data or `package.json` structures.
 
 Returns `true` for: plain objects and class instances (non-null, non-primitive, non-array values).
 
 Returns `false` for: undefined, null, primitives (string, number, boolean, etc.), and arrays.
 
-This is the primary validation function for JSON objects in the xpm codebase, used extensively when parsing package.json sections like xpack.properties, xpack.buildConfigurations, etc.
+This is the primary validation function for JSON objects in the <b>xpm</b> codebase, used extensively when parsing `package.json` sections like `xpack.properties`<!-- -->, `xpack.buildConfigurations`<!-- -->, etc.
 
 <hr/>
 

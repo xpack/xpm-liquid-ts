@@ -74,7 +74,7 @@ Returns `false` for: empty objects `{}`<!-- -->, undefined, null, primitives, ar
 
 The enumerable properties check uses `Object.keys()`<!-- -->, which only counts own enumerable string-keyed properties, not inherited properties or symbol-keyed properties.
 
-Common use cases include validating xpack.actions, xpack.dependencies, and other package.json sections where an empty object would be meaningless.
+Common use cases include validating `xpack.actions`<!-- -->, `xpack.dependencies`<!-- -->, and other `package.json` sections where an empty object would be meaningless.
 
 <hr/>
 

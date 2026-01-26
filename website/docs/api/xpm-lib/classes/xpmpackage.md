@@ -24,11 +24,11 @@ export declare class XpmPackage
 
 ## Remarks
 
-This class loads and validates package.json content, determines package capabilities, and provides helper methods used across xpm workflows.
+This class loads and validates `package.json` content, determines package capabilities, and provides helper methods used across <b>xpm</b> workflows.
 
-The package abstraction provides a layer over package.json processing with progressive validation:
+The package abstraction provides a layer over `package.json` processing with progressive validation:
 
-<ol> <li>Basic file I/O: Read and write package.json with error handling.</li> <li>npm validation: Check for valid npm package structure (name, version).</li> <li>xpm validation: Verify xpack section presence and structure.</li> <li>Binary package validation: Validate binary-specific metadata (executables, binaries, platforms).</li> <li>Capability detection: Determine package features (scripts, actions, build configurations).</li> <li>Version checking: Validate minimum xpm version requirements.</li> <li>Specifier parsing: Extract scope, name, and version from package identifiers.</li> </ol>
+<ol> <li><b>Basic file I/O:</b> Read and write <code>package.json</code> with error handling.</li> <li><b>npm validation:</b> Check for valid npm package structure (name, version).</li> <li><b>xpm validation:</b> Verify <code>xpack</code> section presence and structure.</li> <li><b>Binary package validation:</b> Validate binary-specific metadata (executables, binaries, platforms).</li> <li><b>Capability detection:</b> Determine package features (scripts, actions, build configurations).</li> <li><b>Version checking:</b> Validate minimum <b>xpm</b> version requirements.</li> <li><b>Specifier parsing:</b> Extract scope, name, and version from package identifiers.</li> </ol>
 
 This hierarchy allows validation to be performed incrementally as needed, avoiding unnecessary checks for packages that don't meet earlier criteria.
 
@@ -178,7 +178,7 @@ Description
 
 </td><td>
 
-Validates the minimum required xpm version against the installed CLI.
+Validates the minimum required <b>xpm</b> version against the installed CLI.
 
 
 </td></tr>
@@ -192,7 +192,7 @@ Validates the minimum required xpm version against the installed CLI.
 
 </td><td>
 
-Retrieves the minimum required xpm version specified by the package.
+Retrieves the minimum required <b>xpm</b> version specified by the package.
 
 
 </td></tr>
@@ -220,7 +220,7 @@ Determines whether the package defines any npm scripts.
 
 </td><td>
 
-Determines whether the package defines any xpm actions.
+Determines whether the package defines any <b>xpm</b> actions.
 
 
 </td></tr>
@@ -248,7 +248,7 @@ Determines whether the package is a Node module with a binary entry.
 
 </td><td>
 
-Determines whether the package is a binary xpm package.
+Determines whether the package is a binary <b>xpm</b> package.
 
 
 </td></tr>
@@ -262,7 +262,7 @@ Determines whether the package is a binary xpm package.
 
 </td><td>
 
-Determines whether the package is a Node module without xpm metadata.
+Determines whether the package is a Node module without <b>xpm</b> metadata.
 
 
 </td></tr>
@@ -290,7 +290,7 @@ Determines whether the package.json content represents a valid npm package.
 
 </td><td>
 
-Determines whether the package is an xpm package.
+Determines whether the package is an <b>xpm</b> package.
 
 
 </td></tr>

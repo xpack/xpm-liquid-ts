@@ -16,11 +16,11 @@ readonly jsonAction: JsonActionContent;
 
 This holds the raw command definition as it appears in package.json, before variable substitution. The format can be:
 
-<ol> <li>Simple string: Single command line.</li> <li>String array: Multiple commands for sequential execution.</li> </ol>
+<ol> <li><b>Simple string:</b> Single command line.</li> <li><b>String array:</b> Multiple commands for sequential execution.</li> </ol>
 
 The definition is preserved in its original form to enable:
 
-<ol> <li>Creating copies of inherited actions with identical definitions.</li> <li>Deferred template evaluation during <code>XpmAction.initialise</code>.</li> <li>Re-evaluation if needed with different variable contexts.</li> </ol>
+<ol> <li>Creating copies of inherited actions with identical definitions.</li> <li>Deferred template evaluation during <code>XpmAction.initialise()</code>.</li> <li>Re-evaluation if needed with different variable contexts.</li> </ol>
 
 This immutable storage ensures actions can be safely copied and initialised multiple times without side effects.
 

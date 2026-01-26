@@ -55,5 +55,5 @@ Description
 
 ## Remarks
 
-The constructor performs partial initialisation. Complete initialisation requires calling the [XpmActions.initialise()](./xpm-lib.xpmactions.initialise.md) method.
+The constructor performs partial initialisation. Complete initialisation requires calling the  method.
 

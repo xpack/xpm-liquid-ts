@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Indicates whether xpm init templates accept a single parameter.
+Indicates whether `xpm init` templates accept a single parameter.
 
 ## Signature
 

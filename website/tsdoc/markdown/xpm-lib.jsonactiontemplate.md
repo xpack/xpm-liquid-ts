@@ -16,7 +16,7 @@ export interface JsonActionTemplate
 
 Template actions use matrix parameters to generate multiple action variants from a single definition via Cartesian product expansion. This enables creating platform-specific or configuration-specific actions without duplication.
 
-Example usage in package.json:
+Example usage in `package.json`<!-- -->:
 
 ```json
 "actions": {
@@ -28,7 +28,7 @@ Example usage in package.json:
   }
 }
 ```
-This generates three actions: build-linux, build-darwin, and build-win32. Matrix values are accessible in both the action name and template content via `{{ matrix.key }}` Liquid syntax.
+This generates three actions: `build-linux`<!-- -->, `build-darwin`<!-- -->, and `build-win32`<!-- -->. Matrix values are accessible in both the action name and template content via `{{ matrix.key }}` Liquid syntax.
 
 ## Properties
 

@@ -4,7 +4,7 @@
 
 ## XpmInitTemplateBase.(constructor)
 
-Constructs an xpm initialisation template instance.
+Constructs an <b>xpm</b> initialisation template instance.
 
 **Signature:**
 

@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-The xpm context containing configuration and logging utilities.
+The <b>xpm</b> context containing configuration and logging utilities.
 
 ## Signature
 

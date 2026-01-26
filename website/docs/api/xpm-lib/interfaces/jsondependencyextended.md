@@ -26,7 +26,7 @@ export interface JsonDependencyExtended
 
 Extended dependency format introduced in xpm 0.16.0 to support richer dependency metadata beyond simple version strings. Allows specifying platform constraints and local installation modes.
 
-Example usage in package.json:
+Example usage in `package.json`<!-- -->:
 
 ```json
 "dependencies": {

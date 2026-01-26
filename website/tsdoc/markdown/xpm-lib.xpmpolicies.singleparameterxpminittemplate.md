@@ -4,7 +4,7 @@
 
 ## XpmPolicies.singleParameterXpmInitTemplate property
 
-Indicates whether xpm init templates accept a single parameter.
+Indicates whether `xpm init` templates accept a single parameter.
 
 **Signature:**
 

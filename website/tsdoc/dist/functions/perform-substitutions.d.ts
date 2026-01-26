@@ -15,9 +15,11 @@ import { XpmLiquidSubstitutionsVariables } from '../data/substitutions-variables
  * <ol>
  * <li>Skip processing for empty strings to avoid unnecessary overhead.</li>
  * <li>Prepare Liquid context with substitution variables.</li>
- * <li>If properties exist, wrap them in <code>XpmLiquidPropertiesDrop</code>
+ * <li>If <code>properties</code> exist, wrap them in
+ *    <code>XpmLiquidPropertiesDrop</code>
  *    for lazy evaluation and nested substitution support.</li>
- * <li>If matrix parameters exist, wrap them in <code>XpmLiquidMatrixDrop</code>
+ * <li>If <code>matrix</code> parameters exist, wrap them in
+ *    <code>XpmLiquidMatrixDrop</code>
  *    for template expansion variable access.</li>
  * <li>Iterate while Liquid syntax (<code>\{\{</code> or <code>\{%</code>)
  *   is present:
@@ -35,7 +37,9 @@ import { XpmLiquidSubstitutionsVariables } from '../data/substitutions-variables
  * the next iteration resolves `bar`, and so on until no Liquid syntax
  * remains.
  *
- * Error handling: Liquid rendering errors are caught, stripped of line
+ * Error handling:
+ *
+ * Liquid rendering errors are caught, stripped of line
  * number information (which can be misleading for nested templates), and
  * re-thrown as {@link XpmError}.
  *
