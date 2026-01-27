@@ -218,12 +218,12 @@
         },
         {
           "kind": "Function",
-          "canonicalReference": "@xpack/xpm-lib!chmodRecursive:function(1)",
+          "canonicalReference": "@xpack/xpm-lib!chmodRecursively:function(1)",
           "docComment": "/**\n * Recursively changes file permissions within a folder tree.\n *\n * @remarks\n *\n * This function modifies file system permissions recursively, handling both files and directories with special logic to avoid permission conflicts.\n *\n * Processing strategy:\n *\n * <ol> <li><b>Symbolic links:</b> Ignored because links permissions cannot be reliably changed across platforms.</li> <li><b>Read-only mode:</b> Process folder contents first (recursively), then set the folder itself to read-only. This prevents permission denied errors when trying to access a read-only folder's contents.</li> <li><b>Read-write mode:</b> Set folder to read-write first, then process contents recursively. This ensures the folder is writable before attempting to modify nested items.</li> </ol>\n *\n * Permission modes applied:\n *\n * <ul> <li><b>Read-only:</b> Removes all write bits (user, group, other) using bitwise AND with negated <code>S_IWUSR</code> | <code>S_IWGRP</code> | <code>S_IWOTH</code>.</li> <li><b>Read-write:</b> Adds only user write bit using bitwise OR with <code>S_IWUSR</code>, preserving existing group and other permissions.</li> </ul>\n *\n * The function validates the result after each chmod operation and logs warnings if the expected permission state is not achieved, which can occur on filesystems with non-standard permission handling.\n *\n * @param inputPath - The file or folder path to process.\n *\n * @param readOnly - Whether to set permissions to read-only.\n *\n * @param log - The logger instance for output and diagnostics.\n *\n * @returns A promise that resolves when all permissions have been updated.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "export declare function chmodRecursive({ inputPath, readOnly, log, }: "
+              "text": "export declare function chmodRecursively({ inputPath, readOnly, log, }: "
             },
             {
               "kind": "Content",
@@ -256,7 +256,7 @@
               "text": ";"
             }
           ],
-          "fileUrlPath": "../src/functions/chmod-recursive.ts",
+          "fileUrlPath": "../src/functions/chmod-recursively.ts",
           "returnTypeTokenRange": {
             "startIndex": 5,
             "endIndex": 7
@@ -273,7 +273,7 @@
               "isOptional": false
             }
           ],
-          "name": "chmodRecursive"
+          "name": "chmodRecursively"
         },
         {
           "kind": "Function",

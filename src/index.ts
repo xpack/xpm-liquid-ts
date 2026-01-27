@@ -54,7 +54,7 @@
 // ----------------------------------------------------------------------------
 
 // Public entry point for the xpm-lib TypeScript library.
-export * from './functions/chmod-recursive.js'
+export * from './functions/chmod-recursively.js'
 export * from './functions/filter-paths.js'
 export * from './functions/is-something.js'
 export * from './functions/perform-substitutions.js'

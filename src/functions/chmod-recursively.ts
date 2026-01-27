@@ -65,7 +65,7 @@ import { Logger } from '@xpack/logger'
  * @param log - The logger instance for output and diagnostics.
  * @returns A promise that resolves when all permissions have been updated.
  */
-export async function chmodRecursive({
+export async function chmodRecursively({
   inputPath,
   readOnly,
   log,
@@ -95,7 +95,7 @@ export async function chmodRecursive({
       withFileTypes: true,
     })
     for (const dirent of dirents) {
-      await chmodRecursive({
+      await chmodRecursively({
         inputPath: path.resolve(inputPath, dirent.name),
         readOnly,
         log,
@@ -134,7 +134,7 @@ export async function chmodRecursive({
       withFileTypes: true,
     })
     for (const dirent of dirents) {
-      await chmodRecursive({
+      await chmodRecursively({
         inputPath: path.resolve(inputPath, dirent.name),
         readOnly,
         log,

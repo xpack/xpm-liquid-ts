@@ -19,7 +19,7 @@ The following functions are defined:
 <tbody>
 <tr><td>
 
-[chmodRecursive()](/docs/api/xpm-lib/functions/chmodrecursive)
+[chmodRecursively()](/docs/api/xpm-lib/functions/chmodrecursively)
 
 </td><td>
 

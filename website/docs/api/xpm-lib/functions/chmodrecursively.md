@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/functions/chmodrecursive
-title: chmodRecursive() function
+slug: /api/xpm-lib/functions/chmodrecursively
+title: chmodRecursively() function
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ Recursively changes file permissions within a folder tree.
 ## Signature
 
 ```typescript
-export declare function chmodRecursive({ inputPath, readOnly, log, }: {
+export declare function chmodRecursively({ inputPath, readOnly, log, }: {
     inputPath: string;
     readOnly: boolean;
     log: Logger;

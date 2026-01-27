@@ -64,10 +64,10 @@
           "items": [
             {
               "type": "category",
-              "label": "chmodRecursive()",
+              "label": "chmodRecursively()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/chmodrecursive"
+                "id": "api/xpm-lib/functions/chmodrecursively"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,

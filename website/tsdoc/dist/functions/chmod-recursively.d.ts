@@ -42,9 +42,9 @@ import { Logger } from '@xpack/logger';
  * @param log - The logger instance for output and diagnostics.
  * @returns A promise that resolves when all permissions have been updated.
  */
-export declare function chmodRecursive({ inputPath, readOnly, log, }: {
+export declare function chmodRecursively({ inputPath, readOnly, log, }: {
     inputPath: string;
     readOnly: boolean;
     log: Logger;
 }): Promise<void>;
-//# sourceMappingURL=chmod-recursive.d.ts.map
+//# sourceMappingURL=chmod-recursively.d.ts.map

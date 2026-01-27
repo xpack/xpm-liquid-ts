@@ -241,7 +241,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[chmodRecursive({ inputPath, readOnly, log, })](./xpm-lib.chmodrecursive.md)
+[chmodRecursively({ inputPath, readOnly, log, })](./xpm-lib.chmodrecursively.md)
 
 
 </td><td>
