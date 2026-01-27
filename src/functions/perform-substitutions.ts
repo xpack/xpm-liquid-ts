@@ -153,9 +153,6 @@ export async function performSubstitutions({
       } else {
         throw new XpmError(String(error))
       }
-      // Return the current (unsubstituted) value.
-      substituted = current
-      break
     }
 
     log.trace(
