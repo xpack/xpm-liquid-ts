@@ -156,7 +156,7 @@ export class XpmActions {
    * Key characteristics:
    *
    * <ol>
-   * <li>Known only after <code>XpmActions.initialise()()()</code>
+   * <li>Known only after <code>XpmActions.initialise()</code>
    *   completes.</li>
    * <li>Possibly empty if there are no actions defined.</li>
    * <li>Values can be <code>undefined</code> to indicate an action
@@ -214,7 +214,7 @@ export class XpmActions {
    * <li><b>For template actions:</b> Maps each generated action name back to
    *    the original template name (e.g.,
    *    <code>test-x64</code> → <code>test-\{\{ matrix.arch \}\}</code>).</li>
-   * <li>Enables <code>XpmActions.get</code> to locate the correct JSON
+   * <li>Enables <code>XpmActions.get()</code> to locate the correct JSON
    *    definition when instantiating an action on demand.</li>
    * </ol>
    *
@@ -262,7 +262,7 @@ export class XpmActions {
    *
    * @remarks
    * This flag prevents redundant initialisation and ensures idempotent
-   * behavior when {@link XpmActions.initialise()} is called multiple
+   * behavior when {@link XpmActions.initialise} is called multiple
    * times.
    *
    * State transitions:
@@ -289,7 +289,7 @@ export class XpmActions {
    *
    * @remarks
    * The constructor performs partial initialisation. Complete initialisation
-   * requires calling the {@link XpmActions.initialise()} method.
+   * requires calling the {@link XpmActions.initialise} method.
    *
    * @param log - The logger instance for output and diagnostics.
    * @param engine - The Liquid templating engine for variable substitution.
@@ -499,7 +499,7 @@ export class XpmActions {
    *   only the matrix of options is evaluated for each template, expanding
    *   only the action names without processing their content.</li>
    * <li>Later, when an action is accessed via this method and subsequently
-   *   initialised (<code>XpmAction.initialise</code>), the template is
+   *   initialised (<code>XpmAction.initialise()</code>), the template is
    *   fully evaluated and Liquid substitutions are performed on the
    *   commands.</li>
    * </ol>

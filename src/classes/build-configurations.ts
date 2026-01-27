@@ -159,7 +159,7 @@ export class XpmBuildConfigurations {
    * Key characteristics:
    *
    * <ol>
-   * <li>Known only after <code>XpmBuildConfigurations.initialise</code>
+   * <li>Known only after <code>XpmBuildConfigurations.initialise()</code>
    *    completes.</li>
    * <li>Possibly empty if there are no build configurations defined.</li>
    * <li>Values can be <code>undefined</code> to indicate a configuration
@@ -194,9 +194,9 @@ export class XpmBuildConfigurations {
    *    name
    *    back to the original template name (e.g., <code>release-x64</code> →
    *    <code>release-\{\{ matrix.arch \}\}</code>).</li>
-   * <li>Known only after <code>XpmBuildConfigurations.initialise</code>
+   * <li>Known only after <code>XpmBuildConfigurations.initialise()</code>
    *    completes.</li>
-   * <li>Enables <code>XpmBuildConfigurations.get</code> to locate the
+   * <li>Enables <code>XpmBuildConfigurations.get()</code> to locate the
    *    correct JSON definition when instantiating a configuration on
    *    demand.</li>
    * </ol>
@@ -248,7 +248,7 @@ export class XpmBuildConfigurations {
    *    and configuration
    *    name registration.</li>
    * <li>Checked at the beginning of
-   *    <code>XpmBuildConfigurations.initialise</code> to return early if
+   *    <code>XpmBuildConfigurations.initialise()</code> to return early if
    *    already initialised.</li>
    * </ol>
    *
@@ -512,12 +512,12 @@ export class XpmBuildConfigurations {
    *
    * <ol>
    * <li>During collection initialisation
-   *    (<code>XpmBuildConfigurations.initialise</code>), only the
+   *    (<code>XpmBuildConfigurations.initialise()</code>), only the
    *    matrix of options is evaluated for each template, expanding
    *    configuration names without processing their content.</li>
    * <li>Later, when a configuration is accessed via this method and
    *    subsequently initialised
-   *    (<code>XpmBuildConfiguration.initialise</code>), the template
+   *    (<code>XpmBuildConfiguration.initialise()</code>), the template
    *    is fully evaluated and Liquid substitutions are performed on
    *    all properties.</li>
    * </ol>
@@ -1002,7 +1002,7 @@ export class XpmBuildConfiguration {
    *    updates this
    *    directly).</li>
    * <li>Support deferred template evaluation during
-   *    <code>XpmBuildConfiguration.initialise</code>.</li>
+   *    <code>XpmBuildConfiguration.initialise()</code>.</li>
    * <li>Provide the source for inheritance when other configurations
    *    reference this one.</li>
    * <li>Allow re-evaluation with different variable contexts if needed.</li>
@@ -1079,7 +1079,7 @@ export class XpmBuildConfiguration {
    * Action assembly workflow:
    *
    * <ol>
-   * <li>Undefined until <code>XpmBuildConfiguration.initialise</code> is
+   * <li>Undefined until <code>XpmBuildConfiguration.initialise()</code> is
    *    called.</li>
    * <li>Collect actions from all inherited configurations in the inheritance
    *    chain.</li>
@@ -1106,7 +1106,7 @@ export class XpmBuildConfiguration {
    * Computation workflow:
    *
    * <ol>
-   * <li>Undefined until <code>XpmBuildConfiguration.initialise</code> is
+   * <li>Undefined until <code>XpmBuildConfiguration.initialise()</code> is
    *    called.</li>
    * <li>Not computed for hidden configurations (optimization).</li>
    * <li>If <code>buildFolderRelativePath</code> property exists, perform Liquid
@@ -1163,7 +1163,7 @@ export class XpmBuildConfiguration {
    *    property
    *    merging, dependency substitution, and action preparation.</li>
    * <li>Checked at the start of
-   *    <code>XpmBuildConfiguration.initialise</code> to return early if
+   *    <code>XpmBuildConfiguration.initialise()</code> to return early if
    *    already initialised.</li>
    * </ol>
    *

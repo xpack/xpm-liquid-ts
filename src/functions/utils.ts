@@ -72,13 +72,13 @@ export function getErrorMessage(error: unknown): string {
  * <li><code>win32-x64</code> (Windows on 64-bit)</li>
  * </ul>
  *
- * 32-bit coercion rules (when doForce32bit is true):
+ * Architecture coercion rules (when doForce32bit is true):
  *
  * <ul>
- * <li><b>Windows x64 → ia32:</b> Forces 32-bit binaries on 64-bit Windows.</li>
- * <li><b>Linux x64 → ia32:</b> Forces 32-bit binaries on 64-bit Linux.</li>
- * <li><b>Linux arm64 → arm:</b> Forces 32-bit ARM binaries on 64-bit
- *    ARM Linux.</li>
+ * <li><b>x64 → ia32:</b> Coerces 64-bit Intel/AMD architecture to 32-bit
+ *    on all platforms.</li>
+ * <li><b>arm64 → arm:</b> Coerces 64-bit ARM architecture to 32-bit
+ *    on all platforms.</li>
  * </ul>
  *
  * This coercion is useful for backward compatibility scenarios where only
@@ -86,8 +86,8 @@ export function getErrorMessage(error: unknown): string {
  * platform key matches the naming conventions used in binary xPack
  * distributions.
  *
- * @param doForce32bit - Whether to coerce certain 64-bit platforms to their
- * 32-bit equivalents.
+ * @param doForce32bit - Whether to coerce 64-bit architectures to
+ * their 32-bit equivalents.
  * @returns The platform key in the form `platform-arch`.
  */
 export function getPlatformKey({

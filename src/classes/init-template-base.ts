@@ -54,7 +54,7 @@ import {
  * <li>Properties are validated against their definitions</li>
  * <li>Missing mandatory properties trigger interactive prompts (if TTY)</li>
  * <li>Substitution variables are prepared from properties</li>
- * <li>The <code>XpmInitTemplateBase.generate</code> method creates project
+ * <li>The <code>XpmInitTemplateBase.generate()</code> method creates project
  * files</li>
  * </ol>
  *

@@ -74,9 +74,10 @@ export function isString(value: unknown): value is string {
  * when processing JSON structures where both use the object type but require
  * different handling.
  *
- * Returns `true` for: plain objects, class instances, and other object types.
+ * Returns `true` for: plain objects, class instances, null and other
+ * object types.
  *
- * Returns `false` for: arrays, null, primitives, and functions.
+ * Returns `false` for: arrays, primitives, and functions.
  *
  * Note: Arrays in JavaScript are objects, so this function explicitly
  * excludes them using `Array.isArray()`. Use {@link isJsonObject} for
@@ -121,7 +122,7 @@ export function isBoolean(value: unknown): boolean {
  * JavaScript's general object type. This is essential when working with
  * parsed JSON data or `package.json` structures.
  *
- * Returns `true` for: plain objects and class instances (non-null,
+ * Returns `true` for: plain objects (non-null,
  * non-primitive, non-array values).
  *
  * Returns `false` for: undefined, null, primitives (string, number,
