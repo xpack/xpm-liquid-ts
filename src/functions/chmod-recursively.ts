@@ -81,6 +81,7 @@ export async function chmodRecursively({
   // log.trace(util.inspect(stat))
 
   if (stat.isSymbolicLink()) {
+    log.trace(inputPath, 'is a symbolic link, skipping')
     // Since it is not possible to change the modes of links (lchmod
     // was deprecated and worked on macOS anyway), don't bother
     // with them.
