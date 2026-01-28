@@ -131,7 +131,7 @@ export class XpmBuildConfigurations {
    *
    * @remarks
    * This object holds raw build configuration definitions from the
-   * package.json `xpack.buildConfigurations` section. Configurations can be:
+   * `package.json` `xpack.buildConfigurations` section. Configurations can be:
    *
    * <ol>
    * <li><b>Regular configurations:</b> Direct objects with properties,
@@ -218,7 +218,8 @@ export class XpmBuildConfigurations {
    * Duplicate scenarios detected:
    *
    * <ol>
-   * <li>Explicit duplicates in package.json with identical names.</li>
+   * <li>Explicit duplicates in <code>package.json</code> with identical
+   *    names.</li>
    * <li>Template expansion conflicts where different templates generate the
    *    same concrete configuration name.</li>
    * <li>Conflicts between template-generated names and explicitly defined
@@ -993,7 +994,7 @@ export class XpmBuildConfiguration {
    *
    * @remarks
    * This holds the raw configuration definition as it appears in
-   * package.json, before inheritance resolution and variable substitution.
+   * `package.json`, before inheritance resolution and variable substitution.
    *
    * The definition is preserved to:
    *

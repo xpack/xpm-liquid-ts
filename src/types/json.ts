@@ -229,7 +229,7 @@ export type JsonBuildConfigurations = Record<string, JsonBuildConfiguration>
 // ----------------------------------------------------------------------------
 
 /**
- * Represents a JSON xpm-specific section in package.json.
+ * Represents a JSON xpm-specific section in `package.json`.
  *
  * @remarks
  * The `xpack` section extends standard npm `package.json` with xpm-specific
@@ -301,7 +301,7 @@ export interface JsonXpack {
 export type JsonXpmBinariesPlatforms = Record<string, JsonXpmPlatformFile>
 
 /**
- * Represents a JSON binaries definition in package.json.
+ * Represents a JSON binaries definition in `package.json.`
  *
  * @remarks
  * Configures binary package distribution for tools, SDKs, or compiled
@@ -373,7 +373,7 @@ export interface JsonXpmPlatformFile {
 }
 
 /**
- * Represents a JSON npm package.json structure.
+ * Represents a JSON npm `package.json` structure.
  */
 export interface JsonNpmPackage {
   /**
@@ -402,14 +402,14 @@ export interface JsonNpmPackage {
   devDependencies?: JsonDependencies
 
   /**
-   * Allows additional package.json properties.
+   * Allows additional `package.json` properties.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any // Allow any additional property
 }
 
 /**
- * Represents a JSON <b>xpm</b> package.json structure.
+ * Represents a JSON <b>xpm</b> `package.json` structure.
  *
  * @remarks
  * Combines standard npm `package.json` properties with xpm-specific

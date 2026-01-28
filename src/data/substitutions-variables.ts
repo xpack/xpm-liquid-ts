@@ -250,7 +250,7 @@ export interface XpmLiquidSubstitutionsVariables {
    * The package metadata exposed to Liquid templates.
    *
    * @remarks
-   * Contains the entire package.json content, allowing templates to access
+   * Contains the entire `package.json` content, allowing templates to access
    * package name, version, description, dependencies, and xpack-specific
    * metadata.
    *
@@ -299,7 +299,8 @@ export interface XpmLiquidSubstitutionsVariables {
    * The properties map used for substitutions.
    *
    * @remarks
-   * User-defined configuration values from xpack.properties in package.json.
+   * User-defined configuration values from `xpack.properties`
+   * in `package.json`.
    * Provides a namespace for custom template variables without polluting
    * the global scope.
    *

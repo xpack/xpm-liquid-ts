@@ -129,7 +129,7 @@ export class XpmActions {
    *
    * @remarks
    * This object holds the raw action definitions as they appear in the
-   * package.json `xpack.actions` section or within a build configuration's
+   * `package.json` `xpack.actions` section or within a build configuration's
    * actions. Action definitions can be:
    *
    * <ol>
@@ -186,11 +186,12 @@ export class XpmActions {
    *
    * <ol>
    * <li>Known only after <code>XpmActions.initialise()</code>
-   *   completes.</li>
+   *    completes.</li>
    * <li>Contains all action names including those generated from
-   *   templates.</li>
+   *    templates.</li>
    * <li>Used to detect duplicate action names that might arise from template
-   *   expansion conflicts or explicit duplicates in package.json.</li>
+   *    expansion conflicts or explicit duplicates in
+   *    <code>package.json</code>.</li>
    * </ol>
    *
    * This redundant storage (alongside `_actionsMap`) is justified by the
@@ -250,9 +251,9 @@ export class XpmActions {
    *
    * <ol>
    * <li>Actions belong to the package root (<code>xpack.actions</code> in
-   *   package.json).</li>
+   *    <code>package.json</code>).</li>
    * <li>Only package-level and global variables are available for
-   *  substitution.</li>
+   *    substitution.</li>
    * </ol>
    */
   readonly buildConfiguration: XpmBuildConfiguration | undefined
@@ -289,7 +290,7 @@ export class XpmActions {
    *
    * @remarks
    * The constructor performs partial initialisation. Complete initialisation
-   * requires calling the {@link XpmActions.initialise} method.
+   * requires calling the `XpmActions.initialise()` method.
    *
    * @param log - The logger instance for output and diagnostics.
    * @param engine - The Liquid templating engine for variable substitution.
@@ -768,7 +769,7 @@ export class XpmAction {
    * The JSON definition of the action commands.
    *
    * @remarks
-   * This holds the raw command definition as it appears in package.json,
+   * This holds the raw command definition as it appears in `package.json`,
    * before variable substitution. The format can be:
    *
    * <ol>

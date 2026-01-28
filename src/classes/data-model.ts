@@ -53,8 +53,9 @@ export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath'
  * <ol>
  * <li>Initializes base substitution variables (platform detection, system
  *    information, etc.).</li>
- * <li>Adds package-specific variables from package.json metadata.</li>
- * <li>Merges user-defined properties from xpack.properties.</li>
+ * <li>Adds package-specific variables from <code>package.json</code>
+ *     metadata.</li>
+ * <li>Merges user-defined properties from <code>xpack.properties</code>.</li>
  * <li>Creates package-level actions accessible across all contexts.</li>
  * <li>Creates build configurations, each inheriting the base substitution
  *    context and adding configuration-specific variables.</li>
@@ -110,7 +111,7 @@ export class XpmDataModel {
    * The JSON package definition.
    *
    * @remarks
-   * This object contains the complete package.json content, including both
+   * This object contains the complete `package.json` content, including both
    * standard npm fields and xpm-specific extensions in the `xpack` section.
    *
    * Required structure:
@@ -152,7 +153,8 @@ export class XpmDataModel {
    * </li>
    * <li><b>Package metadata:</b>
    *   <ul>
-   *   <li><code>package</code>: Complete package.json content (name, version,
+   *   <li><code>package</code>: Complete <code>package.json</code> content
+   *      (name, version,
    *      dependencies, etc.)</li>
    *   </ul>
    * </li>
