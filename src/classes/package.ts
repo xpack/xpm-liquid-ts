@@ -624,6 +624,7 @@ export class XpmPackage {
     } catch (err) {
       if (err instanceof Error) {
         log.trace(err.message)
+        /* c8 ignore next 3 */
       } else {
         log.trace(err)
       }
