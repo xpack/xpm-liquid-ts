@@ -126,10 +126,19 @@ export async function performSubstitutions({
       engine,
       matrix: substitutionsVariables.matrix,
     })
-  } else {
-    context = new Context(substitutionsVariables)
   }
 
+  // Passing the engine options is important, otherwise unknown
+  // variables do not trigger exceptions.
+  const context = new Context(
+    {
+      ...substitutionsVariables,
+      properties,
+      matrix,
+    },
+    engine.options,
+    { sync: false }
+  )
 
   log.trace(`performSubstitutions('${input}')`)
 
