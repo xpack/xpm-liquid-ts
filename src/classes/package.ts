@@ -33,6 +33,7 @@ import {
 } from '../types/json.js'
 import { XpmInputError, XpmPrerequisitesError } from './errors.js'
 import { JsonPackageSpecifier } from '../types/json.js'
+import { isString } from '../index.js'
 
 // ============================================================================
 
@@ -267,7 +268,11 @@ export class XpmPackage {
    */
   isNpmPackage(): boolean {
     const jsonPackage = this.jsonPackage
-    if (jsonPackage?.name === undefined || jsonPackage.version === undefined) {
+    if (!jsonPackage) {
+      return false
+    }
+
+    if (jsonPackage.name === undefined || jsonPackage.version === undefined) {
       return false
     }
     const name = jsonPackage.name.trim()
@@ -278,6 +283,7 @@ export class XpmPackage {
     if (version.length === 0) {
       return false
     }
+
     return true
   }
 
@@ -289,9 +295,11 @@ export class XpmPackage {
    */
   isXpmPackage(): boolean {
     const jsonPackage = this.jsonPackage
+
     if (!this.isNpmPackage()) {
       return false
     }
+
     if (jsonPackage?.xpack === undefined) {
       return false
     }
@@ -331,9 +339,11 @@ export class XpmPackage {
    */
   isBinaryXpmPackage() {
     const jsonPackage = this.jsonPackage
+
     if (!this.isXpmPackage()) {
       return false
     }
+
     // Since Nov. 2024, `executables` is preferred to `bin`.
     if (jsonPackage?.xpack.executables ?? jsonPackage?.xpack.bin) {
       // If it has `executables` or `bin`, it must have `binaries` and
@@ -365,13 +375,13 @@ export class XpmPackage {
             'package.json has no "xpack.binaries.platforms"'
         )
       }
-      if (!(jsonPackage.xpack.executables ?? jsonPackage.xpack.bin)) {
-        throw new XpmInputError(
-          "doesn't look like a proper binary xpm package, " +
-            'package.json has no "xpack.executables"'
-        )
-      }
-      return true
+      // if (!(jsonPackage.xpack.executables ?? jsonPackage.xpack.bin)) {
+      throw new XpmInputError(
+        "doesn't look like a proper binary xpm package, " +
+          'package.json has no "xpack.executables"'
+      )
+      //}
+      //return true
     }
     return false
   }
@@ -385,7 +395,16 @@ export class XpmPackage {
    */
   isNodeModule() {
     const jsonPackage = this.jsonPackage
-    return !!jsonPackage && !jsonPackage.xpack
+
+    if (!this.isNpmPackage()) {
+      return false
+    }
+
+    if (jsonPackage?.xpack) {
+      return false
+    }
+
+    return true
   }
 
   /**
@@ -397,8 +416,15 @@ export class XpmPackage {
   isBinaryNodeModule() {
     const jsonPackage = this.jsonPackage
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return this.isNodeModule() && !!jsonPackage?.bin
+    if (!this.isNodeModule()) {
+      return false
+    }
+
+    if (jsonPackage?.bin === undefined) {
+      return false
+    }
+
+    return true
   }
 
   /**
@@ -408,6 +434,7 @@ export class XpmPackage {
    */
   hasNpmScripts(): boolean {
     const jsonPackage = this.jsonPackage
+
     if (
       jsonPackage?.scripts !== undefined &&
       Object.keys(jsonPackage.scripts).length > 0
@@ -450,9 +477,7 @@ export class XpmPackage {
    */
   hasXpmActions(): boolean {
     const json = this.jsonPackage
-    if (!this.isXpmPackage()) {
-      return false
-    }
+
     try {
       if (
         json?.xpack.actions !== undefined &&
@@ -460,6 +485,7 @@ export class XpmPackage {
       ) {
         return true
       }
+      
       if (
         json?.xpack.buildConfigurations !== undefined &&
         Object.keys(json.xpack.buildConfigurations).length > 0
@@ -519,6 +545,11 @@ export class XpmPackage {
     if (version === undefined) {
       return undefined
     }
+
+    if (!isString(version)) {
+      return undefined
+    }
+
     // Remove the pre-release part.
     return version.replace(/-.*$/, '')
   }
@@ -568,23 +599,16 @@ export class XpmPackage {
 
     log.trace(`${XpmPackage.name}.checkMinimumXpmRequired()`)
 
-    if (!jsonPackage) {
-      // Not in a package.
+    if (!this.isXpmPackage()) {
+      // Not in an xpm package.
       return undefined
     }
 
-    if (!this.isXpmPackage() || !jsonPackage.xpack.minimumXpmRequired) {
+    const minimumXpmRequired = this.getMinimumXpmRequired()
+    if (!minimumXpmRequired) {
       log.trace('minimumXpmRequired not used, no checks')
       return undefined
     }
-    // Remove the pre-release part.
-    const cleanedVersion = semver.clean(
-      jsonPackage.xpack.minimumXpmRequired.replace(/-.*$/, '')
-    )
-    if (!cleanedVersion) {
-      return undefined
-    }
-    const minimumXpmRequired: string = cleanedVersion
 
     log.trace(`minimumXpmRequired: ${minimumXpmRequired}`)
 
@@ -620,9 +644,9 @@ export class XpmPackage {
       return undefined
     }
     if (semver.lt(xpmVersion, minimumXpmRequired)) {
+      assert(jsonPackage?.name)
       throw new XpmPrerequisitesError(
-        'package ' +
-          (jsonPackage.name ? `'${jsonPackage.name}' ` : '') +
+        `package '${jsonPackage.name}' ` +
           `requires xpm v${minimumXpmRequired} or later, please upgrade`
       )
     }
