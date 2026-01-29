@@ -25,8 +25,11 @@ import {
   XpmLiquidMatrixDrop,
   XpmLiquidPropertiesDrop,
 } from '../classes/liquid-drop.js'
-// eslint-disable-next-line max-len
-import { XpmLiquidSubstitutionsVariables } from '../data/substitutions-variables.js'
+
+import {
+  XpmLiquidSubstitutionsStrings,
+  XpmLiquidSubstitutionsVariables,
+} from '../data/substitutions-variables.js'
 import { XpmError } from '../classes/errors.js'
 
 // ----------------------------------------------------------------------------
@@ -100,26 +103,33 @@ export async function performSubstitutions({
     return input
   }
 
-  let context
   // Wrap properties into a liquid drop (a mechanism to process
   // substitutions immediately).
+  let properties: XpmLiquidSubstitutionsStrings | XpmLiquidPropertiesDrop =
+    substitutionsVariables.properties
+  let matrix: XpmLiquidSubstitutionsStrings | XpmLiquidMatrixDrop | undefined =
+    substitutionsVariables.matrix
+
   if (Object.keys(substitutionsVariables.properties).length > 0) {
-    context = new Context({
-      ...substitutionsVariables,
-      properties: new XpmLiquidPropertiesDrop({
-        log,
-        engine,
-        properties: substitutionsVariables.properties,
-      }),
-      matrix: new XpmLiquidMatrixDrop({
-        log,
-        engine,
-        matrix: substitutionsVariables.matrix ?? {},
-      }),
+    properties = new XpmLiquidPropertiesDrop({
+      log,
+      engine,
+      properties: substitutionsVariables.properties,
+    })
+  }
+  if (
+    substitutionsVariables.matrix &&
+    Object.keys(substitutionsVariables.matrix).length > 0
+  ) {
+    matrix = new XpmLiquidMatrixDrop({
+      log,
+      engine,
+      matrix: substitutionsVariables.matrix,
     })
   } else {
     context = new Context(substitutionsVariables)
   }
+
 
   log.trace(`performSubstitutions('${input}')`)
 
@@ -150,6 +160,7 @@ export async function performSubstitutions({
       if (error instanceof Error) {
         log.trace(util.inspect(error))
         throw new XpmError(error.message.replace(/, line:.*/g, ''))
+        /* c8 ignore next 3 */
       } else {
         throw new XpmError(String(error))
       }
