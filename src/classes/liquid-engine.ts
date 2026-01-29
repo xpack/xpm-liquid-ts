@@ -204,7 +204,7 @@ export class XpmLiquidEngine extends Liquid {
       if (Array.isArray(input)) {
         return input.join(os.EOL)
       }
-      return input
+      return String(input)
     })
 
     // Convert a string with lines into an array.
@@ -223,11 +223,13 @@ export class XpmLiquidEngine extends Liquid {
         // console.log('input object', input)
         // console.log('input keys', keys)
         return keys
+      } else if (Array.isArray(input)) {
+        const keys = Object.keys(input)
+        return keys
+      } else {
+        return String(input)
       }
-      return String(input)
     })
-
-    // throw new Error()
   }
 }
 
