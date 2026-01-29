@@ -1,7 +1,7 @@
 # https://node-tap.org/cli/#configuration
 
 files:
-  - tests/tap/*.ts
+  - tests/tap/**/*.ts
 
 coverage-report:
   - text
@@ -20,5 +20,6 @@ timeout: 30
 
 snapshot-clean-cwd: true
 
+show-full-coverage: true
 allow-empty-coverage: true
 allow-incomplete-coverage: true

@@ -24,9 +24,11 @@ import { test } from 'tap'
 
 // ----------------------------------------------------------------------------
 
-import { JsonXpmPackage, XpmDataModel } from '../../src/index.js'
+import { JsonXpmPackage, XpmDataModel } from '../../../src/index.js'
 import { Logger } from '@xpack/logger'
 import { AssertionError } from 'node:assert'
+
+// ----------------------------------------------------------------------------
 
 // const __filename = fileURLToPath(import.meta.url)
 // const __dirname = path.dirname(__filename)
@@ -36,7 +38,7 @@ const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 
-await test('constructor', async (t): Promise<void> => {
+test('constructor', (t): void => {
   const jsonNoXpack = { name: 'test', version: '1.2.3', xpack: [] }
   try {
     new XpmDataModel({

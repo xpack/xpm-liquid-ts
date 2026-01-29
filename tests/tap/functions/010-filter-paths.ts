@@ -26,11 +26,11 @@ import {
   filterPath,
   filterPosixPath,
   filterWin32Path,
-} from '../../src/index.js'
+} from '../../../src/index.js'
 
 // ----------------------------------------------------------------------------
 
-await test('filterPath', async (t): Promise<void> => {
+test('filterPath', (t): void => {
   if (os.platform() === 'win32') {
     t.equal(filterPath('a\\b'), 'a\\b', 'preserves windows path separator \\')
   } else {
