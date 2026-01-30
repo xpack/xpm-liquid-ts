@@ -510,6 +510,9 @@ export class XpmActions {
    *
    * @param actionName - The name of the action to retrieve.
    * @returns The action instance.
+   * 
+   * @throws {@link XpmError}
+   * If an action with that name does not exist.
    */
   get(actionName: string): XpmAction {
     const log = this.log
@@ -517,6 +520,9 @@ export class XpmActions {
 
     let action = this._actionsMap.get(actionName)
     if (action === undefined) {
+      if (!this._jsonActionsNamesMap.has(actionName)) {
+        throw new XpmError(`action "${actionName}" does not exist`)
+      }
       const jsonActionName: string =
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._jsonActionsNamesMap.get(actionName)!
