@@ -284,6 +284,33 @@ export class XpmActions {
    */
   protected _isInitialised = false
 
+  /**
+   * Cached array of all action names in the collection.
+   *
+   * @remarks
+   * This array provides O(1) access to action names without repeatedly
+   * creating new arrays from the map keys, improving performance when the
+   * names are accessed multiple times.
+   *
+   * Key characteristics:
+   *
+   * <ol>
+   * <li>Empty initially after construction.</li>
+   * <li>Populated during <code>XpmActions.initialise()</code> after all
+   *    action names
+   *    are determined.</li>
+   * <li>Contains all action names including those generated from
+   *    templates.</li>
+   * <li>Returned by the <code>names</code> getter for efficient repeated
+   *    access.</li>
+   * </ol>
+   *
+   * This cached approach avoids the overhead of calling
+   * `Array.from(map.keys())` on every access whilst still
+   * providing a clean getter interface.
+   */
+  protected _actionsNames: string[] = []
+
   // --------------------------------------------------------------------------
   // Constructor and async initialiser.
 
@@ -442,6 +469,10 @@ export class XpmActions {
         }
       }
     }
+    const actionsNames = Array.from(this._actionsMap.keys())
+    this._actionsNames = actionsNames
+
+    this.log.trace(`${XpmActions.name}.initialise() =>`, actionsNames)
 
     this._isInitialised = true
     return true
@@ -451,30 +482,46 @@ export class XpmActions {
   // Public methods.
 
   /**
-   * Determines whether the actions collection is empty.
+   * The number of actions in the collection.
+   *
+   * @remarks
+   * This value is known only after `initialise()`.
+   *
+   * This getter provides direct access to the collection size, enabling
+   * callers to check for emptiness or iterate with knowledge of the
+   * collection's extent.
+   *
+   * @returns The number of actions in the collection.
+   */
+  get size(): number {
+    return this._actionsMap.size
+  }
+
+  /**
+   * Indicates whether the actions collection is empty.
    *
    * @remarks
    * This value is known only after `initialise()`.
    *
    * @returns `true` if there are no actions, `false` otherwise.
    */
-  empty(): boolean {
+  get isEmpty(): boolean {
     return this._actionsMap.size === 0
   }
 
   /**
-   * Retrieves the names of all actions in the collection.
+   * The names of all actions in the collection.
    *
    * @remarks
    * This value is known only after `initialise()`.
    *
+   * This getter returns the cached array of action names for efficient
+   * repeated access without recreating the array.
+   *
    * @returns An array of action names.
    */
-  names(): string[] {
-    const actionNames = Array.from(this._actionsMap.keys())
-
-    this.log.trace(`${XpmActions.name}.names() =>`, actionNames)
-    return actionNames
+  get names(): string[] {
+    return this._actionsNames
   }
 
   /**
@@ -514,7 +561,7 @@ export class XpmActions {
    *
    * @param actionName - The name of the action to retrieve.
    * @returns The action instance.
-   * 
+   *
    * @throws {@link XpmError}
    * If an action with that name does not exist.
    */

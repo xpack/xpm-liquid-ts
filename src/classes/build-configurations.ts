@@ -258,6 +258,33 @@ export class XpmBuildConfigurations {
    */
   protected _isInitialised = false
 
+  /**
+   * Cached array of all build configuration names in the collection.
+   *
+   * @remarks
+   * This array provides O(1) access to configuration names without
+   * repeatedly creating new arrays from the map keys, improving performance
+   * when the names are accessed multiple times.
+   *
+   * Key characteristics:
+   *
+   * <ol>
+   * <li>Empty initially after construction.</li>
+   * <li>Populated during
+   *    <code>XpmBuildConfigurations.initialise()</code> after all
+   *    configuration names are determined.</li>
+   * <li>Contains all configuration names including those generated from
+   *    templates.</li>
+   * <li>Returned by the <code>names</code> getter for efficient repeated
+   *    access.</li>
+   * </ol>
+   *
+   * This cached approach avoids the overhead of calling
+   * `Array.from(map.keys())` on every access whilst still
+   * providing a clean getter interface.
+   */
+  protected _buildConfigurationsNames: string[] = []
+
   // --------------------------------------------------------------------------
   // Constructor and async initialiser.
 
@@ -393,9 +420,14 @@ export class XpmBuildConfigurations {
       }
     }
 
+    const buildConfigurationsNames = Array.from(
+      this._buildConfigurationsMap.keys()
+    )
+    this._buildConfigurationsNames = buildConfigurationsNames
+
     log.trace(
       `${XpmBuildConfigurations.name}.initialise() =>`,
-      Array.from(this._buildConfigurationsMap.keys())
+      buildConfigurationsNames
     )
 
     this._isInitialised = true
@@ -406,29 +438,46 @@ export class XpmBuildConfigurations {
   // Public methods.
 
   /**
-   * Determines whether the collection is empty.
+   * The number of build configurations in the collection.
+   *
+   * @remarks
+   * This value is known only after `initialise()`.
+   *
+   * This getter provides direct access to the collection size, enabling
+   * callers to check for emptiness or iterate with knowledge of the
+   * collection's extent.
+   *
+   * @returns The number of build configurations in the collection.
+   */
+  get size(): number {
+    return this._buildConfigurationsMap.size
+  }
+
+  /**
+   * Indicates whether the collection is empty.
+   *
+   * @remarks
+   * This value is known only after `initialise()`.
    *
    * @returns `true` if there are no build configurations, `false` otherwise.
    */
-  empty(): boolean {
+  get isEmpty(): boolean {
     return this._buildConfigurationsMap.size === 0
   }
 
   /**
-   * Retrieves the names of all build configurations.
+   * The names of all build configurations.
+   *
+   * @remarks
+   * This value is known only after `initialise()`.
+   *
+   * This getter returns the cached array of configuration names for
+   * efficient repeated access without recreating the array.
    *
    * @returns An array of build configuration names.
    */
-  names(): string[] {
-    const buildConfigurationsNames = Array.from(
-      this._buildConfigurationsMap.keys()
-    )
-
-    this.log.trace(
-      `${XpmBuildConfigurations.name}.names() =>`,
-      buildConfigurationsNames
-    )
-    return buildConfigurationsNames
+  get names(): string[] {
+    return this._buildConfigurationsNames
   }
 
   /**
@@ -1476,7 +1525,7 @@ export class XpmBuildConfiguration {
         }
 
         await inheritedBuildConfiguration.actions.initialise()
-        for (const actionName of inheritedBuildConfiguration.actions.names()) {
+        for (const actionName of inheritedBuildConfiguration.actions.names) {
           const action = inheritedBuildConfiguration.actions.get(actionName)
           inheritedActionsMap.set(actionName, action)
         }
@@ -1593,7 +1642,7 @@ export class XpmBuildConfiguration {
       'devDependencies => ',
       this.devDependencies
     )
-    log.trace(this.buildConfigurationName, 'actions => ', this._actions.names())
+    log.trace(this.buildConfigurationName, 'actions => ', this._actions.names)
 
     this._isInitialised = true
     return true
