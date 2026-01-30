@@ -41,11 +41,11 @@ const log = new Logger({ level: 'info' })
 test('constructor', (t): void => {
   const jsonNoXpack = { name: 'test', version: '1.2.3', xpack: [] }
   try {
-    new XpmDataModel({
+    const dataModel = new XpmDataModel({
       log,
       jsonPackage: jsonNoXpack as JsonXpmPackage,
     })
-    t.fail('should throw')
+    t.fail('should have thrown an error')
   } catch (error) {
     // console.log(error)
     t.type(error, AssertionError, 'throws AssertionError')
@@ -94,19 +94,19 @@ test('constructor', (t): void => {
 
   const topActions = xpmDataModel.actions
   t.ok(topActions, 'has topActions')
-  t.equal(topActions.empty(), true, 'topActions is empty')
-  const actionsNames = topActions.names()
-  t.ok(Array.isArray(actionsNames), 'topActions.names() is array')
+  t.equal(topActions.isEmpty, true, 'topActions is empty')
+  const actionsNames = topActions.names
+  t.ok(Array.isArray(actionsNames), 'topActions.names is array')
   t.equal(actionsNames.length, 0, 'topActions has 0 names')
 
   const buildConfigurations = xpmDataModel.buildConfigurations
 
   t.ok(buildConfigurations, 'has buildConfigurations')
-  t.equal(buildConfigurations.empty(), true, 'buildConfigurations is empty')
-  const buildConfigurationsNames = buildConfigurations.names()
+  t.equal(buildConfigurations.isEmpty, true, 'buildConfigurations is empty')
+  const buildConfigurationsNames = buildConfigurations.names
   t.ok(
     Array.isArray(buildConfigurationsNames),
-    'buildConfigurations.names() is array'
+    'buildConfigurations.names is array'
   )
   t.equal(buildConfigurationsNames.length, 0, 'buildConfigurations has 0 names')
 

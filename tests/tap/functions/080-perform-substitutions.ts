@@ -23,7 +23,12 @@ import { test } from 'tap'
 
 // ----------------------------------------------------------------------------
 
-import { Context, Liquid, XpmLiquidMatrixDrop } from '../../../src/index.js'
+import {
+  Context,
+  Liquid,
+  XpmInputError,
+  XpmLiquidMatrixDrop,
+} from '../../../src/index.js'
 
 import { performSubstitutionsTest } from '../../common.js'
 
@@ -185,7 +190,12 @@ await test('performSubstitutions error', async (t) => {
     )
     t.fail('should have thrown an error, got ' + subs)
   } catch (error) {
-    t.pass(`threw '${(error as Error).message}'`)
+    t.throws(XpmInputError, 'throw XpmInputError')
+    t.match(
+      (error as Error).message,
+      'undefined variable',
+      `error message is "undefined variable"`
+    )
   }
 
   t.end()

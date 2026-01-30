@@ -23,9 +23,10 @@ import { test } from 'tap'
 
 // ----------------------------------------------------------------------------
 
-import { Context, Liquid } from '../../../src/index.js'
+// import { Context, Liquid } from '../../../src/index.js'
 
 import { performSubstitutionsTest } from '../../common.js'
+import { XpmError, XpmInputError } from '../../../src/index.js'
 
 // ----------------------------------------------------------------------------
 
@@ -158,8 +159,13 @@ await test('XpmLiquidPropertiesDrop context missing', async (t) => {
       substitutionsVariables
     )
     t.fail('should have thrown')
-  } catch (ex) {
-    t.ok(true, `throws '${(ex as Error).message}'`)
+  } catch (error) {
+    t.throws(XpmInputError, 'throw XpmInputError')
+    t.match(
+      (error as Error).message,
+      'not defined',
+      `error message is "not defined"`
+    )
   }
 
   try {
@@ -168,8 +174,13 @@ await test('XpmLiquidPropertiesDrop context missing', async (t) => {
       substitutionsVariables
     )
     t.fail('should have thrown')
-  } catch (ex) {
-    t.ok(true, `throws '${(ex as Error).message}'`)
+  } catch (error) {
+    t.throws(XpmInputError, 'throw XpmInputError')
+    t.match(
+      (error as Error).message,
+      'Cannot read properties',
+      `error message is "Cannot read properties"`
+    )
   }
   t.end()
 })
@@ -305,8 +316,13 @@ await test(' XpmLiquidMatrixDrop context missing', async (t) => {
       substitutionsVariables
     )
     t.fail('should have thrown')
-  } catch (ex) {
-    t.ok(true, `throws '${(ex as Error).message}'`)
+  } catch (error) {
+    t.throws(XpmInputError, 'throw XpmInputError')
+    t.match(
+      (error as Error).message,
+      'not defined',
+      `error message is "not defined"`
+    )
   }
 
   try {
@@ -315,8 +331,13 @@ await test(' XpmLiquidMatrixDrop context missing', async (t) => {
       substitutionsVariables
     )
     t.fail('should have thrown')
-  } catch (ex) {
-    t.ok(true, `throws '${(ex as Error).message}'`)
+  } catch (error) {
+    t.throws(XpmInputError, 'throw XpmInputError')
+    t.match(
+      (error as Error).message,
+      'Cannot read properties',
+      `error message is "Cannot read properties"`
+    )
   }
   t.end()
 })

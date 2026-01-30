@@ -31,6 +31,7 @@ import {
   JsonXpmPackage,
   XpmInputError,
   XpmPackage,
+  XpmPrerequisitesError,
 } from '../../../src/index.js'
 import { Logger } from '@xpack/logger'
 
@@ -71,9 +72,9 @@ await test('no package.json', async (t): Promise<void> => {
 
   try {
     await xpmPackage.readPackageDotJson({ withThrow: true })
-    t.fail('should throw')
+    t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, Error, 'throws Error')
+    t.type(error, XpmInputError, 'throws XpmInputError')
     t.match(
       (error as Error).message,
       'no package.json in folder',
@@ -96,9 +97,9 @@ await test('bad package.json', async (t): Promise<void> => {
 
   try {
     await xpmPackage.readPackageDotJson({ withThrow: true })
-    t.fail('should throw')
+    t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, Error, 'throws Error')
+    t.type(error, XpmInputError, 'throws XpmInputError')
     t.match(
       (error as Error).message,
       'invalid package.json in folder',
@@ -111,7 +112,7 @@ await test('bad package.json', async (t): Promise<void> => {
 
 await test('rewritePackageDotJson', async (t): Promise<void> => {
   const temporaryFolderPath = await fs.mkdtemp(path.join(os.tmpdir(), 'xpm-'))
-  console.log(`Temporary folder created at ${temporaryFolderPath}`)
+  // console.log(`Temporary folder created at ${temporaryFolderPath}`)
 
   const fixturePackageFilePath = path.join(
     fixturesFolderPath,
@@ -291,9 +292,9 @@ test('isBinaryXpmPackage', (t): void => {
       },
     } as JsonXpmPackage
     xpmPackage.isBinaryXpmPackage()
-    t.fail('should throw')
+    t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, Error, 'throws Error')
+    t.type(error, XpmInputError, 'throws XpmInputError')
     t.match(
       (error as Error).message,
       'has no "xpack.binaries"',
@@ -316,9 +317,9 @@ test('isBinaryXpmPackage', (t): void => {
       },
     } as JsonXpmPackage
     xpmPackage.isBinaryXpmPackage()
-    t.fail('should throw')
+    t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, Error, 'throws Error')
+    t.type(error, XpmInputError, 'throws XpmInputError')
     t.match(
       (error as Error).message,
       'has no "xpack.binaries.platforms"',
@@ -358,9 +359,9 @@ test('isBinaryXpmPackage', (t): void => {
       },
     } as JsonXpmPackage
     xpmPackage.isBinaryXpmPackage()
-    t.fail('should throw')
+    t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, Error, 'throws Error')
+    t.type(error, XpmInputError, 'throws XpmInputError')
     t.match(
       (error as Error).message,
       'has no "xpack.binaries.platforms"',
@@ -381,9 +382,9 @@ test('isBinaryXpmPackage', (t): void => {
       },
     } as JsonXpmPackage
     xpmPackage.isBinaryXpmPackage()
-    t.fail('should throw')
+    t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, Error, 'throws Error')
+    t.type(error, XpmInputError, 'throws XpmInputError')
     t.match(
       (error as Error).message,
       'has no "xpack.executables"',
@@ -786,9 +787,9 @@ await test('checkMinimumXpmRequired', async (t): Promise<void> => {
     await xpmPackage.checkMinimumXpmRequired({
       xpmRootFolderPath: packageFolderPath,
     })
-    t.fail('should throw')
+    t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, Error, 'throws Error')
+    t.type(error, XpmPrerequisitesError, 'throws XpmPrerequisitesError')
     t.match(
       (error as Error).message,
       'please upgrade',
@@ -807,7 +808,7 @@ test('parsePackageSpecifier', (t): void => {
 
   try {
     xpmPackage.parsePackageSpecifier({ npmPackageSpecifier: '@a/b/c' })
-    t.fail('should throw')
+    t.fail('should have thrown an error')
   } catch (error) {
     t.type(error, XpmInputError, 'throws XpmInputError')
     t.match(
