@@ -929,7 +929,7 @@ export class XpmAction {
     matrixParameters?: XpmLiquidSubstitutionsStrings
   }) {
     assert(actionName)
-    assert(jsonAction)
+    // assert(jsonAction) // Can be an empty string.
     assert(parentActions)
 
     const log = parentActions.log
