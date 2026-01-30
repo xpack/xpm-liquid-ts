@@ -485,7 +485,7 @@ export class XpmPackage {
       ) {
         return true
       }
-      
+
       if (
         json?.xpack.buildConfigurations !== undefined &&
         Object.keys(json.xpack.buildConfigurations).length > 0
