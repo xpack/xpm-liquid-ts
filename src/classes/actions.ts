@@ -992,21 +992,25 @@ export class XpmAction {
       : jsonAction
 
     let substitutedCommands
-    try {
-      substitutedCommands = await performSubstitutions({
-        input: inputCommands,
-        engine: this.parentActions.engine,
-        substitutionsVariables: {
-          ...this.parentActions.substitutionsVariables,
-          matrix: this._matrixParameters ?? {},
-        },
-        log,
-      })
-    } catch (error) {
-      const message =
-        getErrorMessage(error) +
-        ` in action "${this.actionName}" commands substitution`
-      throw new XpmError(message)
+    if (inputCommands.includes('{{') || inputCommands.includes('{%')) {
+      try {
+        substitutedCommands = await performSubstitutions({
+          input: inputCommands,
+          engine: this.parentActions.engine,
+          substitutionsVariables: {
+            ...this.parentActions.substitutionsVariables,
+            matrix: this._matrixParameters ?? {},
+          },
+          log,
+        })
+      } catch (error) {
+        const message =
+          getErrorMessage(error) +
+          ` in action "${this.actionName}" commands substitution`
+        throw new XpmError(message)
+      }
+    } else {
+      substitutedCommands = inputCommands
     }
 
     this._commands = substitutedCommands
