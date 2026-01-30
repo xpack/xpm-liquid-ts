@@ -574,11 +574,13 @@ export class XpmActions {
       if (!this._jsonActionsNamesMap.has(actionName)) {
         throw new XpmError(`action "${actionName}" does not exist`)
       }
+
       const jsonActionName: string =
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._jsonActionsNamesMap.get(actionName)!
       const jsonAction: JsonActionContent = (this.jsonActions[jsonActionName] ??
         '') as JsonActionContent
+
       action = new XpmAction({
         actionName,
         jsonAction,
@@ -697,6 +699,9 @@ export class XpmActions {
       }
     }
 
+    // ------------------------------------------------------------------------
+    // Expand template action for a specific combination.
+
     // Inner function.
     const createSubstitutedAction = async (
       combination: Record<string, string>
@@ -733,10 +738,8 @@ export class XpmActions {
       newActionsMap.set(substitutedActionName, newAction)
     }
 
-    // const matrixKeys: string[] = Object.keys(jsonAction.matrix)
-    // const matrixValues: string[][] = Object.values(jsonAction.matrix)
-
-    // Compute all combinations (cartesian product)
+    // ------------------------------------------------------------------------
+    // Compute all combinations (cartesian product).
 
     // Inner function
     const generateCombinationsRecursively = async (
@@ -766,6 +769,9 @@ export class XpmActions {
       }
     }
 
+    // ------------------------------------------------------------------------
+
+    // Start the recursive generation.
     await generateCombinationsRecursively(0, {})
 
     return newActionsMap
