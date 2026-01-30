@@ -50,6 +50,8 @@ import { XpmBuildConfiguration } from './build-configurations.js'
  * configuration and support template-based definitions with matrix expansion
  * to generate multiple actions from a single template.
  *
+ * The collection always exists, even as empty if no actions are defined.
+ *
  * Action lifecycle phases:
  *
  * <ol>
@@ -295,10 +297,10 @@ export class XpmActions {
    * @param log - The logger instance for output and diagnostics.
    * @param engine - The Liquid templating engine for variable substitution.
    * @param substitutionsVariables - The variables available for substitution.
-   * @param inheritedActionsMap - Optional map of actions inherited from a
-   * parent package.
    * @param jsonActions - The JSON object containing action definitions, or
    * undefined if no actions are defined.
+   * @param inheritedActionsMap - Optional map of actions inherited from a
+   * parent package.
    * @param buildConfiguration - Optional build configuration this actions
    * collection belongs to.
    */
@@ -306,15 +308,15 @@ export class XpmActions {
     log,
     engine,
     substitutionsVariables,
-    inheritedActionsMap,
     jsonActions,
+    inheritedActionsMap,
     buildConfiguration,
   }: {
     log: Logger
     engine: XpmLiquidEngine
     substitutionsVariables: XpmLiquidSubstitutionsVariables
-    inheritedActionsMap?: Map<string, XpmAction>
     jsonActions: JsonActions | undefined
+    inheritedActionsMap?: Map<string, XpmAction>
     buildConfiguration?: XpmBuildConfiguration
   }) {
     assert(log)
@@ -334,7 +336,9 @@ export class XpmActions {
     this.engine = engine
     this.substitutionsVariables = substitutionsVariables
     this.jsonActions = jsonActions ?? {}
-    this.buildConfiguration = buildConfiguration
+    if (buildConfiguration !== undefined) {
+      this.buildConfiguration = buildConfiguration
+    }
 
     if (inheritedActionsMap !== undefined) {
       for (const [
