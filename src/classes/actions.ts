@@ -346,9 +346,9 @@ export class XpmActions {
     inheritedActionsMap?: Map<string, XpmAction>
     buildConfiguration?: XpmBuildConfiguration
   }) {
-    assert(log)
-    assert(engine)
-    assert(substitutionsVariables)
+    assert(log, 'log is required')
+    assert(engine, 'engine is required')
+    assert(substitutionsVariables, 'substitutionsVariables is required')
 
     if (buildConfiguration !== undefined) {
       log.trace(
@@ -985,9 +985,9 @@ export class XpmAction {
     parentActions: XpmActions
     matrixParameters?: XpmLiquidSubstitutionsStrings
   }) {
-    assert(actionName)
+    assert(actionName, 'actionName is required')
     // assert(jsonAction) // Can be an empty string.
-    assert(parentActions)
+    assert(parentActions, 'parentActions is required')
 
     const log = parentActions.log
     log.trace(`${XpmAction.name}(${actionName})`)

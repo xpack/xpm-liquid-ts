@@ -74,8 +74,8 @@ export async function chmodRecursively({
   readOnly: boolean
   log: Logger
 }): Promise<void> {
-  assert(inputPath, 'mandatory inputPath')
-  assert(log, 'mandatory log')
+  assert(inputPath, 'inputPath is required')
+  assert(log, 'log is required')
 
   const stat = await fs.lstat(inputPath)
   // log.trace(util.inspect(stat))

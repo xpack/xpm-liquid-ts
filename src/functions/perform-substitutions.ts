@@ -96,7 +96,7 @@ export async function performSubstitutions({
   input: string
   substitutionsVariables: XpmLiquidSubstitutionsVariables
 }): Promise<string> {
-  assert(substitutionsVariables)
+  assert(substitutionsVariables, 'substitutionsVariables is required')
 
   if (input.trim() === '') {
     // Spare it the trouble for empty strings.

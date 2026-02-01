@@ -313,9 +313,9 @@ export class XpmBuildConfigurations {
     substitutionsVariables: XpmLiquidSubstitutionsVariables
     jsonBuildConfigurations: JsonBuildConfigurations | undefined
   }) {
-    assert(log)
-    assert(engine)
-    assert(substitutionsVariables)
+    assert(log, 'log is required')
+    assert(engine, 'engine is required')
+    assert(substitutionsVariables, 'substitutionsVariables is required')
 
     log.trace(`${XpmBuildConfigurations.name}()`)
 
@@ -1287,9 +1287,9 @@ export class XpmBuildConfiguration {
     parentBuildConfigurations: XpmBuildConfigurations
     matrixParameters?: XpmLiquidSubstitutionsStrings
   }) {
-    assert(buildConfigurationName)
-    assert(jsonBuildConfiguration)
-    assert(parentBuildConfigurations)
+    assert(buildConfigurationName, 'buildConfigurationName is required')
+    assert(jsonBuildConfiguration, 'jsonBuildConfiguration is required')
+    assert(parentBuildConfigurations, 'parentBuildConfigurations is required')
 
     const log = parentBuildConfigurations.log
     log.trace(`${XpmBuildConfiguration.name}(${buildConfigurationName})`)
@@ -1660,7 +1660,7 @@ export class XpmBuildConfiguration {
    * If the configuration has not been initialised.
    */
   get actions(): XpmActions {
-    assert(this._actions !== undefined)
+    assert(this._actions !== undefined, 'XpmActions not initialised')
     return this._actions
   }
 
@@ -1673,7 +1673,10 @@ export class XpmBuildConfiguration {
    * If the configuration has not been initialised.
    */
   get buildFolderRelativePath(): string {
-    assert(this._buildFolderRelativePath !== undefined)
+    assert(
+      this._buildFolderRelativePath !== undefined,
+      'XpmActions not initialised'
+    )
     return this._buildFolderRelativePath
   }
 

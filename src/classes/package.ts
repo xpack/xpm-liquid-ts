@@ -251,7 +251,7 @@ export class XpmPackage {
   async rewritePackageDotJson(jsonPackage: JsonXpmPackage): Promise<void> {
     const log = this._log
 
-    assert(jsonPackage)
+    assert(jsonPackage, 'jsonPackage is required')
     const jsonString = JSON.stringify(jsonPackage, null, 2) + '\n'
 
     const jsonFilePath = path.join(this.packageFolderPath, 'package.json')
@@ -630,7 +630,7 @@ export class XpmPackage {
       }
       return undefined
     }
-    assert(jsonXpmCliPackage)
+    assert(jsonXpmCliPackage, 'jsonXpmCliPackage is required')
     log.trace(jsonXpmCliPackage.version)
 
     if (!jsonXpmCliPackage.version) {
@@ -645,7 +645,7 @@ export class XpmPackage {
       return undefined
     }
     if (semver.lt(xpmVersion, minimumXpmRequired)) {
-      assert(jsonPackage?.name)
+      assert(jsonPackage?.name, 'jsonPackage.name is required')
       throw new XpmPrerequisitesError(
         `package '${jsonPackage.name}' ` +
           `requires xpm v${minimumXpmRequired} or later, please upgrade`
@@ -696,7 +696,7 @@ export class XpmPackage {
   }: {
     npmPackageSpecifier: string
   }): JsonPackageSpecifier {
-    assert(npmPackageSpecifier)
+    assert(npmPackageSpecifier, 'npmPackageSpecifier is required')
 
     const log = this._log
 

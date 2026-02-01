@@ -31,7 +31,7 @@ import { Liquid } from 'liquidjs'
 import { Logger } from '@xpack/logger'
 
 import { XpmContext } from '../types/xpm.js'
-import { XpmOutputError, XpmSyntaxError } from './errors.js'
+import { XpmError, XpmOutputError, XpmSyntaxError } from './errors.js'
 import {
   XpmInitTemplatePropertiesDefinitions,
   XpmInitTemplateSubstitutionsVariables,
@@ -123,12 +123,11 @@ export abstract class XpmInitTemplateBase {
     templatesPath: string
     propertiesDefinitions: XpmInitTemplatePropertiesDefinitions
   }) {
-    assert(context)
-    assert(context.log)
-    assert(__dirname)
-    assert(templatesPath)
-    assert(propertiesDefinitions)
-
+    assert(context, 'context is required')
+    assert(context.log, 'context.log is required')
+    assert(__dirname, '__dirname is required')
+    assert(templatesPath, 'templatesPath is required')
+    assert(propertiesDefinitions, 'propertiesDefinitions is required')
     this.context = context
     this.log = context.log
     this.propertiesDefinitions = propertiesDefinitions
@@ -177,7 +176,7 @@ export abstract class XpmInitTemplateBase {
     const context = this.context
     const config = context.config
 
-    assert(config.properties)
+    assert(config.properties, 'config.properties is required')
 
     let isError = false
     for (const [key, val] of Object.entries(config.properties)) {
@@ -221,7 +220,7 @@ export abstract class XpmInitTemplateBase {
     } else {
       // Properties without explicit values get their defaults.
       Object.entries(this.propertiesDefinitions).forEach(([key, val]) => {
-        assert(config.properties)
+        assert(config.properties, 'config.properties is required')
         if (!config.properties[key] && val.default) {
           config.properties[key] = val.default
         }
@@ -291,14 +290,14 @@ export abstract class XpmInitTemplateBase {
    * @returns The validated and potentially converted value (string,
    * boolean, or number).
    *
-   * @throws `Error`
+   * @throws {@link XpmError}
    * If the property is unsupported or the value is invalid.
    */
   validateValue(name: string, value: string): string | boolean | number {
     const propDef = this.propertiesDefinitions[name]
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (propDef === undefined) {
-      throw new Error(`Unsupported property '${name}'`)
+      throw new XpmError(`Unsupported property '${name}'`)
     }
     if (propDef.type === 'select') {
       if (propDef.items[value]) {
@@ -355,7 +354,7 @@ export abstract class XpmInitTemplateBase {
     const context = this.context
     const config = context.config
 
-    assert(config.properties)
+    assert(config.properties, 'config.properties is required')
 
     const rl = readline.createInterface({
       input: process.stdin,
