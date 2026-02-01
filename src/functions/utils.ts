@@ -99,7 +99,7 @@ export function getPlatformKey({
   let arch = process.arch
   if (doForce32bit) {
     // https://nodejs.org/docs/latest/api/process.html#processarch
-    /* c8 ignore next 5 - architecture specific code cannot be tested 
+    /* c8 ignore next 6 - architecture specific code cannot be tested 
     on all platforms */
     if (arch === 'x64') {
       arch = 'ia32'
