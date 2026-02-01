@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------------
 
-// import * as os from 'os'
+import * as os from 'os'
 import * as path from 'path'
 
 // ----------------------------------------------------------------------------
@@ -34,7 +34,7 @@ import { performSubstitutionsTest } from '../../common.js'
 
 // ----------------------------------------------------------------------------
 
-await test('performSubstitutions', async (t) => {
+await test('performSubstitutionsTest', async (t) => {
   const substitutionsVariables = {
     map: {
       one: '1',
@@ -69,7 +69,7 @@ await test('performSubstitutions', async (t) => {
   t.end()
 })
 
-await test('performSubstitutions filters cascade', async (t) => {
+await test('performSubstitutionsTest filters cascade', async (t) => {
   const substitutionsVariables = {
     configuration: {
       name: 'Debug',
@@ -89,7 +89,7 @@ await test('performSubstitutions filters cascade', async (t) => {
   t.end()
 })
 
-await test('performSubstitutions arrays original', async (t) => {
+await test('performSubstitutionsTest arrays original', async (t) => {
   const engine = new Liquid()
 
   const substitutionsVariables = {
@@ -128,7 +128,7 @@ await test('performSubstitutions arrays original', async (t) => {
   t.end()
 })
 
-await test('performSubstitutions arrays multi', async (t) => {
+await test('performSubstitutionsTest arrays multi', async (t) => {
   const substitutionsVariables = {
     map: {
       one: ['10', '11'],
@@ -156,7 +156,7 @@ await test('performSubstitutions arrays multi', async (t) => {
   t.end()
 })
 
-await test('performSubstitutions context', async (t) => {
+await test('performSubstitutionsTest context', async (t) => {
   const substitutionsVariables = {
     package: {
       properties2: {
@@ -175,7 +175,7 @@ await test('performSubstitutions context', async (t) => {
   t.end()
 })
 
-await test('performSubstitutions error', async (t) => {
+await test('performSubstitutionsTest error', async (t) => {
   const substitutionsVariables = {
     map: {
       one: '1',
@@ -197,6 +197,129 @@ await test('performSubstitutions error', async (t) => {
       `error message is "undefined variable"`
     )
   }
+
+  t.end()
+})
+
+await test('substitutions', async (t): Promise<void> => {
+  const substitutionsVariables = {
+    properties: {
+      p1: ['1', '2'],
+      p2: '{{ properties.p1 }}',
+      p3: ['{{ properties.p1 | join_lines }}'],
+      'native-gcc-releases': {
+        // Integer-like keys are enumerated in ascending order.
+        '15': {
+          specifier: '15.2.0-1.1',
+          platforms: 'linux-x64,linux-arm64,win32-x64',
+        },
+        '14': {
+          specifier: '14.3.0-1.1',
+          platforms: 'linux-x64,linux-arm64,win32-x64',
+        },
+      },
+      'native-gcc-versions': [
+        // Explicit descending order.
+        '{{ properties.native-gcc-releases | keys | reverse | join_lines }}',
+      ],
+      'native-gcc-versions0': [
+        '{{ "x" | concat: properties.native-gcc-versions | join_lines }}',
+      ],
+
+      'native-gcc-releases2': [
+        {
+          version: '15',
+          specifier: '15.2.0-1.1',
+          platforms: 'linux-x64,linux-arm64,win32-x64',
+        },
+        {
+          version: '14',
+          specifier: '14.3.0-1.1',
+          platforms: 'linux-x64,linux-arm64,win32-x64',
+        },
+      ],
+      'native-gcc-versions2': [
+        '{{ properties.native-gcc-releases2 | map: "version" | join_lines }}',
+      ],
+      v14: '14',
+    },
+  }
+
+  let substituted = await performSubstitutionsTest(
+    '{{ properties.p2 }}',
+    substitutionsVariables
+  )
+  // console.log(substituted)
+  t.equal(substituted, '12', 'properties.p2 is 12')
+
+  substituted = await performSubstitutionsTest(
+    '{{ properties.p3 }}',
+    substitutionsVariables
+  )
+  // console.log('p3', substituted)
+  t.equal(substituted, '1' + os.EOL + '2', 'properties.p3 is 1\\n2')
+
+  substituted = await performSubstitutionsTest(
+    '{% for item in properties.p3 %}({{ item }}){% endfor %}',
+    substitutionsVariables
+  )
+  // console.log('for', substituted)
+  t.equal(substituted, '(1' + os.EOL + '2)', 'for properties.p3 is (1\\n2)')
+
+  substituted = await performSubstitutionsTest(
+    // '{% for item in properties.p3 | split_lines %}({{ item }}){% endfor %}',
+    '{% assign x = properties.p3 | split_lines %}{% for item in x %}({{ item }}){% endfor %}',
+    substitutionsVariables
+  )
+  // console.log('assign for', substituted)
+  t.equal(substituted, '(1)(2)', 'assign for properties.p3 is (1)(2)')
+
+  substituted = await performSubstitutionsTest(
+    '{{ properties.p1 | join_lines }}',
+    substitutionsVariables
+  )
+  // console.log('p1 as array', substituted)
+  t.equal(substituted, '1' + os.EOL + '2', 'properties.p1 as array')
+
+  substituted = await performSubstitutionsTest(
+    '{{ properties.native-gcc-versions }}',
+    substitutionsVariables
+  )
+  // console.log('native-gcc-versions', substituted)
+  t.equal(
+    substituted,
+    '15' + os.EOL + '14',
+    'properties.native-gcc-versions is 15\\n14'
+  )
+
+  substituted = await performSubstitutionsTest(
+    '{{ properties.native-gcc-versions0 }}',
+    substitutionsVariables
+  )
+  // console.log('native-gcc-versions0', substituted)
+  t.equal(
+    substituted,
+    'x' + os.EOL + '15' + os.EOL + '14',
+    'properties.native-gcc-versions0 is x\\n15\\n14'
+  )
+
+  substituted = await performSubstitutionsTest(
+    '{{ properties.native-gcc-versions2 }}',
+    substitutionsVariables
+  )
+  // console.log('native-gcc-versions2', substituted)
+  t.equal(
+    substituted,
+    '15' + os.EOL + '14',
+    'properties.native-gcc-versions2 is 15\\n14'
+  )
+
+  substituted = await performSubstitutionsTest(
+    '{{ properties.native-gcc-releases2 | find: "version", properties.v14 | map: "specifier" }}',
+    substitutionsVariables
+  )
+  // console.log('specifier', substituted)
+  t.equal(substituted, '14.3.0-1.1', 'specifier is 14.3.0-1.1')
 
   t.end()
 })
