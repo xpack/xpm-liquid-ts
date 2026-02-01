@@ -444,7 +444,7 @@ export class XpmActions {
             if (this._actionsNamesSet.has(expandedActionName)) {
               throw new XpmError(
                 `duplicate action name "${expandedActionName}" ` +
-                  `generated from template.`
+                  `not generated from template.`
               )
             } else {
               this._actionsMap.set(expandedActionName, expandedAction)
@@ -458,10 +458,7 @@ export class XpmActions {
         }
       } else {
         if (this._actionsNamesSet.has(actionName)) {
-          throw new XpmError(
-            `duplicate action name "${actionName}" ` +
-              `possibly already generated from template.`
-          )
+          throw new XpmError(`action name "${actionName}" ` + `already exists.`)
         } else {
           this._actionsMap.set(actionName, undefined)
           this._jsonActionsNamesMap.set(actionName, actionName)
@@ -641,9 +638,19 @@ export class XpmActions {
 
     const newActionsMap = new Map<string, XpmAction>()
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (jsonActionTemplate.matrix == undefined) {
+      throw new XpmError(`action "${actionName}" has no matrix`)
+    }
+
     if (!isJsonObject(jsonActionTemplate.matrix)) {
       throw new XpmError(`action "${actionName}" matrix is not an object`)
     }
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (jsonActionTemplate.template == undefined) {
+      throw new XpmError(`action "${actionName}" has no template`)
+    }
+
     if (
       !isString(jsonActionTemplate.template) &&
       !isJsonArray(jsonActionTemplate.template)
