@@ -1093,9 +1093,6 @@ export class XpmAction {
    * uninitialised action will result in an assertion error.
    *
    * @returns The array of command strings after variable substitution.
-   *
-   * @throws `AssertionError`
-   * If the action has not been initialised.
    */
   get commands(): string[] {
     assert(this._commands, 'Action not initialised, commands are undefined')

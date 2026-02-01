@@ -1655,9 +1655,6 @@ export class XpmBuildConfiguration {
    * Retrieves the actions collection for this build configuration.
    *
    * @returns The actions collection.
-   *
-   * @throws `AssertionError`
-   * If the configuration has not been initialised.
    */
   get actions(): XpmActions {
     assert(this._actions !== undefined, 'XpmActions not initialised')
@@ -1668,9 +1665,6 @@ export class XpmBuildConfiguration {
    * Retrieves the build folder relative path for this configuration.
    *
    * @returns The build folder relative path.
-   *
-   * @throws `AssertionError`
-   * If the configuration has not been initialised.
    */
   get buildFolderRelativePath(): string {
     assert(
