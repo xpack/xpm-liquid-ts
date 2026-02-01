@@ -16,6 +16,9 @@
 
 - Follow the existing ESlint TypeScript conventions in this project (`typescript-eslint` rules)
 - Use consistent formatting and naming conventions based on prettier and ESLint configurations
+
+## Documentation
+
 - Add comprehensive TSDoc comments accepted by API Extractor
 - Document all classes, methods, properties, parameters, and return types
 - Document private and protected members as well
@@ -26,8 +29,12 @@
 - Use `@param` and `@returns` tags appropriately in TSDoc comments; place `@param` tags immediately after the summary and before `@returns`
 - Use `@throws {@link ExceptionName}` for exceptions and place the descriptions on the next line; place these tags after `@returns`
 - Precede `@throws` tags with an empty line, and place the description on the next line
-- At the very end of the TSDoc comment block, after an empty line, add `@public` tags for exported classes and public members; similarly add `@internal` tags for non-exported classes and private members.
-- When generating lists in TSDoc comments, separate items by empty lines, since api-extractor cannot read mardown lists yet.
+- Do not add `@public` or `@internal` tags 
+- When generating lists in TSDoc `@remarks` comments, use html `<ol>` and `<li>` tags for ordered lists, and `<ul>` and `<li>` tags for unordered lists. 
+- inside html lists, do not use markdown syntax for bold or italics, use `<b>`, `<i>` html tags instead
+- inside html lists, do not use markdown syntax for code, use `<code>` html tags  instead 
+- inside html lists, do not use `{@link name}` syntax for links, use `<code>` html tags  instead
+- outside of html lists, use markdown syntax for code (`code`) and links (`{@link name}`)
 
 ## Folder Structure
 
