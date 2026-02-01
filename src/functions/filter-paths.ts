@@ -47,7 +47,8 @@ import * as os from 'node:os'
  * @returns A validated path.
  */
 export function filterPath(input: string): string {
-  /* c8 ignore start */ /* istanbul ignore next */
+  /* c8 ignore start - windows specific code cannot be tested on 
+  other platforms */
   const fixed =
     os.platform() === 'win32'
       ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')

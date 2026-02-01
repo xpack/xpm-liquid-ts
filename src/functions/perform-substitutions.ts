@@ -153,7 +153,7 @@ export async function performSubstitutions({
     try {
       substituted = (await engine.parseAndRender(current, context)) as string
 
-      /* c8 ignore start */ /* istanbul ignore next */
+      /* c8 ignore start - safety net, normally errors throw. */
       if (substituted === current) {
         // If nothing changed, we're done.
         // This test is just a safety net, normally should not get there.
@@ -169,7 +169,7 @@ export async function performSubstitutions({
       if (error instanceof Error) {
         log.trace(util.inspect(error))
         throw new XpmError(error.message.replace(/, line:.*/g, ''))
-        /* c8 ignore next 3 */
+        /* c8 ignore next 3 - safety net, currently all are Errors */
       } else {
         throw new XpmError(String(error))
       }

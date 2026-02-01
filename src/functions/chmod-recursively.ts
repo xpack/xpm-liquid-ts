@@ -119,12 +119,12 @@ export async function chmodRecursively({
   // log.trace(`actual ${inputPath} is ${actualStat.mode.toString(8)}`)
 
   if (readOnly) {
-    /* c8 ignore next 3 */
+    /* c8 ignore next 3 - safety net, normally it is set. */
     if ((actualStat.mode & fs.constants.S_IWUSR) !== 0) {
       log.warn(`${inputPath} not set to RO`)
     }
   } else {
-    /* c8 ignore next 3 */
+    /* c8 ignore next 3 - safety net, normally it is not set. */
     if ((actualStat.mode & fs.constants.S_IWUSR) === 0) {
       log.warn(`${inputPath} not set to RW`)
     }
