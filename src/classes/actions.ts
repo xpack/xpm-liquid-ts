@@ -325,7 +325,7 @@ export class XpmActions {
    * @param engine - The Liquid templating engine for variable substitution.
    * @param substitutionsVariables - The variables available for substitution.
    * @param jsonActions - The JSON object containing action definitions, or
-   * undefined if no actions are defined.
+   * undefined if there are no actions.
    * @param inheritedActionsMap - Optional map of actions inherited from a
    * parent package.
    * @param buildConfiguration - Optional build configuration this actions
@@ -444,7 +444,7 @@ export class XpmActions {
             if (this._actionsNamesSet.has(expandedActionName)) {
               throw new XpmError(
                 `duplicate action name "${expandedActionName}" ` +
-                  `not generated from template.`
+                  `could not be generated from template.`
               )
             } else {
               this._actionsMap.set(expandedActionName, expandedAction)
@@ -458,7 +458,7 @@ export class XpmActions {
         }
       } else {
         if (this._actionsNamesSet.has(actionName)) {
-          throw new XpmError(`action name "${actionName}" ` + `already exists.`)
+          throw new XpmError(`action name "${actionName}" already defined.`)
         } else {
           this._actionsMap.set(actionName, undefined)
           this._jsonActionsNamesMap.set(actionName, actionName)
