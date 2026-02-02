@@ -1490,15 +1490,13 @@ export class XpmBuildConfiguration {
     >()
 
     // Add inherited configuration properties.
-    // TODO: detect circular references.
     for (const inheritedBuildConfigurationName of inheritsNames) {
+      if (inheritedBuildConfigurationName.trim() === '') {
+        continue
+      }
       if (
         this.parentBuildConfigurations.hasJson(inheritedBuildConfigurationName)
       ) {
-        if (inheritedBuildConfigurationName.trim() === '') {
-          continue
-        }
-
         if (this._inheritedNamesSet.has(inheritedBuildConfigurationName)) {
           throw new XpmInputError(
             'buildConfiguration' +
