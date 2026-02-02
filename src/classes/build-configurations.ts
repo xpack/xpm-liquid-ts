@@ -1730,7 +1730,10 @@ export class XpmBuildConfiguration {
           })
           return substitutedFolderPath
         } catch (error) {
-          log.trace(error)
+          const message =
+            getErrorMessage(error) +
+            ` in buildConfiguration "${this.buildConfigurationName}"`
+          throw new XpmError(message)
         }
       }
     }
