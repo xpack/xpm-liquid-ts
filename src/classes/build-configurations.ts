@@ -358,19 +358,18 @@ export class XpmBuildConfigurations {
 
     log.trace(`${XpmBuildConfigurations.name}.initialise()`)
 
-    for (const buildConfigurationName of Object.keys(
-      this.jsonBuildConfigurations
-    )) {
+    for (const [
+      buildConfigurationName,
+      jsonBuildConfiguration,
+    ] of Object.entries(this.jsonBuildConfigurations)) {
       if (buildConfigurationName.includes('{{')) {
         // Expand templates and generate multiple build configurations.
         try {
-          const jsonBuildConfigurationTemplate = this.jsonBuildConfigurations[
-            buildConfigurationName
-          ] as JsonBuildConfigurationTemplate
           const expandedBuildConfigurationsMap =
             await this._expandTemplateBuildConfigurations({
               buildConfigurationName,
-              jsonBuildConfigurationTemplate,
+              jsonBuildConfigurationTemplate:
+                jsonBuildConfiguration as JsonBuildConfigurationTemplate,
             })
           for (const [
             expandedBuildConfigurationName,
@@ -384,7 +383,7 @@ export class XpmBuildConfigurations {
               throw new XpmError(
                 `duplicate build configuration name ` +
                   `"${expandedBuildConfigurationName}" ` +
-                  `generated from template.`
+                  `could not be generated from template.`
               )
             } else {
               this._buildConfigurationsMap.set(
@@ -394,6 +393,9 @@ export class XpmBuildConfigurations {
               this._jsonBuildConfigurationsNamesMap.set(
                 expandedBuildConfigurationName,
                 buildConfigurationName
+              )
+              this._buildComfigurationsNamesSet.add(
+                expandedBuildConfigurationName
               )
             }
           }
@@ -406,9 +408,8 @@ export class XpmBuildConfigurations {
       } else {
         if (this._buildComfigurationsNamesSet.has(buildConfigurationName)) {
           throw new XpmError(
-            `duplicate build configuration name ` +
-              `"${buildConfigurationName}" ` +
-              `possibly already generated from template.`
+            `build configuration name ` +
+              `"${buildConfigurationName}" already defined.`
           )
         } else {
           this._buildConfigurationsMap.set(buildConfigurationName, undefined)
@@ -416,6 +417,7 @@ export class XpmBuildConfigurations {
             buildConfigurationName,
             buildConfigurationName
           )
+          this._buildComfigurationsNamesSet.add(buildConfigurationName)
         }
       }
     }
