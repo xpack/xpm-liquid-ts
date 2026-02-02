@@ -599,9 +599,10 @@ export class XpmBuildConfigurations {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._jsonBuildConfigurationsNamesMap.get(buildConfigurationName)!
 
-      const jsonBuildConfiguration: JsonBuildConfigurationContent = (this
-        .jsonBuildConfigurations[jsonBuildConfigurationName] ??
-        {}) as JsonBuildConfigurationContent
+      const jsonBuildConfiguration: JsonBuildConfigurationContent =
+        /* c8 ignore next - safety net, they are always defined */
+        (this.jsonBuildConfigurations[jsonBuildConfigurationName] ??
+          {}) as JsonBuildConfigurationContent
 
       buildConfiguration = new XpmBuildConfiguration({
         buildConfigurationName,
@@ -1400,6 +1401,7 @@ export class XpmBuildConfiguration {
             input: stringifiedJsonBuildConfiguration,
             substitutionsVariables: {
               ...this._substitutionsVariables,
+              /* c8 ignore next - safety net, they are always defined */
               matrix: this.matrixParameters ?? {},
               configuration: {
                 ...this.jsonBuildConfiguration,
@@ -1612,6 +1614,7 @@ export class XpmBuildConfiguration {
         substitutedDependencies
       ) as JsonBuildConfigurationContent
 
+      /* c8 ignore next 2 - safety net, they are always defined */
       this.dependencies = parsedDependencies.dependencies ?? {}
       this.devDependencies = parsedDependencies.devDependencies ?? {}
     }
