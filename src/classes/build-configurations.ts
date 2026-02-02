@@ -589,6 +589,12 @@ export class XpmBuildConfigurations {
       buildConfigurationName
     )
     if (buildConfiguration === undefined) {
+      if (!this._jsonBuildConfigurationsNamesMap.has(buildConfigurationName)) {
+        throw new XpmInputError(
+          `buildConfiguration "${buildConfigurationName}" ` + `does not exist`
+        )
+      }
+
       const jsonBuildConfigurationName: string =
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._jsonBuildConfigurationsNamesMap.get(buildConfigurationName)!
