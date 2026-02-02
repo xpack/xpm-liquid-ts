@@ -34,8 +34,6 @@ import {
   xpmLiquidSubstitutionsVariablesBase,
 } from '../../../src/index.js'
 import { AssertionError } from 'assert'
-import { threadName } from 'worker_threads'
-import { debug } from 'console'
 
 // ----------------------------------------------------------------------------
 
@@ -55,6 +53,12 @@ await test('XpmActions undefined', async (t) => {
   t.equal(actions.size, 0, 'size 0')
   t.equal(actions.isEmpty, true, 'empty')
   t.equal(actions.names.length, 0, 'names.length 0')
+
+  let isInitialised = await actions.initialise()
+  t.equal(isInitialised, true, 'initialise() => true')
+  isInitialised = await actions.initialise()
+  t.equal(isInitialised, false, 'initialise() again => false')
+
   try {
     const action = actions.get('nonexistent')
     t.fail('should have thrown an error, got ' + action.actionName)
@@ -390,8 +394,8 @@ await test('XpmActions template duplicate', async (t) => {
     t.throws(XpmError, 'throws XpmError')
     t.match(
       (error as Error).message,
-      'already exists',
-      'throws "already exists"'
+      'already defined',
+      'throws "already defined"'
     )
   }
 
