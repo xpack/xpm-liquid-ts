@@ -826,47 +826,6 @@ export class XpmBuildConfigurations {
       }
     }
 
-    // Inner function.
-    const createSubstitutedBuildConfiguration = async (
-      combination: Record<string, string>
-    ): Promise<void> => {
-      // console.log(combination)
-
-      let substitutedBuildConfigurationName
-      try {
-        substitutedBuildConfigurationName = await performSubstitutions({
-          input: buildConfigurationName,
-          engine: this.engine,
-          substitutionsVariables: {
-            ...this.substitutionsVariables,
-            matrix: combination,
-          },
-          log: this.log,
-        })
-      } catch (error) {
-        const message =
-          getErrorMessage(error) +
-          ` in buildConfiguration "${buildConfigurationName}" ` +
-          `name substitution`
-        throw new XpmError(message)
-      }
-
-      // console.log(substitutedActionName)
-
-      const newBuildConfiguration = new XpmBuildConfiguration({
-        buildConfigurationName: substitutedBuildConfigurationName,
-        templateBuildConfigurationName: buildConfigurationName,
-        jsonBuildConfiguration: jsonBuildConfigurationTemplate.template,
-        parentBuildConfigurations: this,
-        matrixParameters: { ...combination },
-      })
-
-      newBuildConfigurationsMap.set(
-        substitutedBuildConfigurationName,
-        newBuildConfiguration
-      )
-    }
-
     // Compute all combinations (cartesian product)
     const combinationsGenerator = new CombinationsGenerator({
       matrixKeys,
@@ -877,11 +836,99 @@ export class XpmBuildConfigurations {
     const combinations = combinationsGenerator.generate()
     log.trace('combinations =>', combinations)
 
+    // Expand each template build configuration for its combination.
     for (const combination of combinations) {
-      await createSubstitutedBuildConfiguration(combination)
+      await this.createSubstitutedBuildConfiguration({
+        buildConfigurationName,
+        jsonBuildConfiguration: jsonBuildConfigurationTemplate.template,
+        combination,
+        newBuildConfigurationsMap,
+      })
     }
 
     return newBuildConfigurationsMap
+  }
+
+  /**
+   * Creates a substituted build configuration from a template combination.
+   *
+   * @remarks
+   * This helper method is invoked during template expansion for each matrix
+   * combination to generate concrete build configuration instances from the
+   * template definition.
+   *
+   * Processing steps:
+   *
+   * <ol>
+   * <li>Perform Liquid substitutions on the template build configuration name
+   *    using the matrix combination values.</li>
+   * <li>Create a new <code>XpmBuildConfiguration</code> instance with the
+   *    substituted name and matrix parameters.</li>
+   * <li>Register the new configuration in the provided map for subsequent
+   *    collection integration.</li>
+   * </ol>
+   *
+   * @param buildConfigurationName - The template build configuration name
+   * containing Liquid variables (e.g.,
+   * <code>release-\{\{ matrix.arch \}\}</code>).
+   * @param jsonBuildConfiguration - The JSON configuration content from the
+   * template definition.
+   * @param combination - The matrix parameter values for this specific
+   * combination (e.g., <code>\{ arch: 'x64', optimize: 'speed' \}</code>).
+   * @param newBuildConfigurationsMap - The map to populate with the generated
+   * configuration instance.
+   * @returns A promise that resolves when the configuration has been created
+   * and registered.
+   *
+   * @throws {@link XpmError}
+   * If substitutions fail during build configuration name expansion.
+   */
+  protected async createSubstitutedBuildConfiguration({
+    buildConfigurationName,
+    jsonBuildConfiguration,
+    combination,
+    newBuildConfigurationsMap,
+  }: {
+    buildConfigurationName: string
+    jsonBuildConfiguration: JsonBuildConfigurationContent
+    combination: Record<string, string>
+    newBuildConfigurationsMap: Map<string, XpmBuildConfiguration>
+  }): Promise<void> {
+    // console.log(combination)
+
+    let substitutedBuildConfigurationName
+    try {
+      substitutedBuildConfigurationName = await performSubstitutions({
+        input: buildConfigurationName,
+        engine: this.engine,
+        substitutionsVariables: {
+          ...this.substitutionsVariables,
+          matrix: combination,
+        },
+        log: this.log,
+      })
+    } catch (error) {
+      const message =
+        getErrorMessage(error) +
+        ` in buildConfiguration "${buildConfigurationName}" ` +
+        `name substitution`
+      throw new XpmError(message)
+    }
+
+    // console.log(substitutedActionName)
+
+    const newBuildConfiguration = new XpmBuildConfiguration({
+      buildConfigurationName: substitutedBuildConfigurationName,
+      templateBuildConfigurationName: buildConfigurationName,
+      jsonBuildConfiguration,
+      parentBuildConfigurations: this,
+      matrixParameters: { ...combination },
+    })
+
+    newBuildConfigurationsMap.set(
+      substitutedBuildConfigurationName,
+      newBuildConfiguration
+    )
   }
 }
 

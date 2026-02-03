@@ -708,46 +708,6 @@ export class XpmActions {
       }
     }
 
-    // ------------------------------------------------------------------------
-    // Expand template action for a specific combination.
-
-    // Inner function.
-    const createSubstitutedAction = async (
-      combination: Record<string, string>
-    ): Promise<void> => {
-      // console.log(combination)
-
-      let substitutedActionName
-      try {
-        substitutedActionName = await performSubstitutions({
-          input: actionName,
-          engine: this.engine,
-          substitutionsVariables: {
-            ...this.substitutionsVariables,
-            matrix: combination,
-          },
-          log: this.log,
-        })
-      } catch (error) {
-        const message =
-          getErrorMessage(error) +
-          ` in action "${actionName}" name substitution`
-        throw new XpmError(message)
-      }
-
-      // console.log(substitutedActionName)
-
-      const newAction = new XpmAction({
-        actionName: substitutedActionName,
-        jsonAction: jsonActionTemplate.template,
-        parentActions: this,
-        matrixParameters: { ...combination },
-      })
-
-      newActionsMap.set(substitutedActionName, newAction)
-    }
-
-    // ------------------------------------------------------------------------
     // Compute all combinations (cartesian product)
     const combinationsGenerator = new CombinationsGenerator({
       matrixKeys,
@@ -758,11 +718,99 @@ export class XpmActions {
     const combinations = combinationsGenerator.generate()
     log.trace('combinations =>', combinations)
 
+    // Expand each template actions for its combination.
     for (const combination of combinations) {
-      await createSubstitutedAction(combination)
+      await this.createSubstitutedAction({
+        actionName,
+        jsonAction: jsonActionTemplate.template,
+        combination,
+        newActionsMap,
+      })
     }
 
     return newActionsMap
+  }
+
+  /**
+   * Creates a substituted action from a template and matrix combination.
+   *
+   * @remarks
+   * This helper method is called for each combination generated from a
+   * template action's matrix parameters. It performs the actual name
+   * substitution and creates the concrete action instance.
+   *
+   * Processing steps:
+   *
+   * <ol>
+   * <li>Performs Liquid substitution on the template action name using the
+   *    specific matrix combination values.</li>
+   * <li>Creates a new <code>XpmAction</code> instance with:
+   *   <ul>
+   *   <li>The substituted concrete action name.</li>
+   *   <li>The action's command template (not yet evaluated).</li>
+   *   <li>Reference to this parent actions collection.</li>
+   *   <li>The matrix parameter values for later command substitution.</li>
+   *   </ul>
+   * </li>
+   * <li>Stores the new action instance in the provided map.</li>
+   * </ol>
+   *
+   * The matrix parameters are preserved in the action instance and will be
+   * used later when the action is initialised to substitute matrix
+   * references in the command templates.
+   *
+   * @param combination - The matrix parameter combination for this action
+   * (e.g., <code>\{ arch: 'x64', platform: 'linux' \}</code>).
+   * @param actionName - The template action name containing Liquid variables
+   * (e.g., <code>test-\{\{ matrix.arch \}\}</code>).
+   * @param jsonAction - The action's command template definition.
+   * @param newActionsMap - The map to store the newly created action.
+   * @returns A promise that resolves when the action has been created and
+   * stored.
+   *
+   * @throws {@link XpmError}
+   * If the action name substitution fails.
+   */
+  protected async createSubstitutedAction({
+    actionName,
+    jsonAction,
+    combination,
+    newActionsMap,
+  }: {
+    combination: Record<string, string>
+    actionName: string
+    jsonAction: JsonActionContent
+    newActionsMap: Map<string, XpmAction>
+  }): Promise<void> {
+    // console.log(combination)
+
+    let substitutedActionName
+    try {
+      substitutedActionName = await performSubstitutions({
+        input: actionName,
+        engine: this.engine,
+        substitutionsVariables: {
+          ...this.substitutionsVariables,
+          matrix: combination,
+        },
+        log: this.log,
+      })
+    } catch (error) {
+      const message =
+        getErrorMessage(error) + ` in action "${actionName}" name substitution`
+      throw new XpmError(message)
+    }
+
+    // console.log(substitutedActionName)
+
+    const newAction = new XpmAction({
+      actionName: substitutedActionName,
+      jsonAction,
+      parentActions: this,
+      matrixParameters: { ...combination },
+    })
+
+    newActionsMap.set(substitutedActionName, newAction)
   }
 }
 
