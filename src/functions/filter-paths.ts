@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------------
 
-import * as os from 'node:os'
+// import * as os from 'node:os'
 
 /**
  * Replaces non-alphanumeric characters with dashes to make paths
@@ -50,7 +50,7 @@ export function filterPath(input: string): string {
   /* c8 ignore start - windows specific code cannot be tested on 
   other platforms */
   const fixed =
-    os.platform() === 'win32'
+    process.platform === 'win32'
       ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
       : input.replace(/[^a-zA-Z0-9/]+/g, '-')
   /* c8 ignore stop */

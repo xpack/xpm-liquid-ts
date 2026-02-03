@@ -191,7 +191,7 @@ export class XpmLiquidEngine extends Liquid {
         /* c8 ignore start - windows specific code cannot be tested 
         on other platforms */
         const fixed =
-          os.platform() === 'win32'
+          process.platform === 'win32'
             ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
             : input.replace(/[^a-zA-Z0-9/]+/g, '-')
         /* c8 ignore stop */
