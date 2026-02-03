@@ -1229,6 +1229,23 @@ export class XpmBuildConfiguration {
   // Protected Members.
 
   /**
+   * The logger instance for output and diagnostics.
+   *
+   * @remarks
+   * This logger provides trace-level diagnostics throughout the build
+   * configuration lifecycle, including template substitution, inheritance
+   * resolution, property merging, dependency substitution, and action
+   * preparation.
+   *
+   * It is initialised in the constructor from the parent collection's logger
+   * and used consistently across all helper methods to maintain coherent
+   * logging output. This enables detailed debugging of complex configuration
+   * hierarchies without impacting runtime performance when tracing is
+   * disabled.
+   */
+  protected _log: Logger
+
+  /**
    * The variables used for substitution in this configuration.
    *
    * @remarks
@@ -1424,6 +1441,8 @@ export class XpmBuildConfiguration {
     assert(parentBuildConfigurations, 'parentBuildConfigurations is required')
 
     const log = parentBuildConfigurations.log
+    this._log = log
+
     log.trace(`${XpmBuildConfiguration.name}(${buildConfigurationName})`)
 
     this.buildConfigurationName = buildConfigurationName
@@ -1457,16 +1476,25 @@ export class XpmBuildConfiguration {
    * Initialisation workflow:
    *
    * <ol>
-   * <li>For template configurations: Substitute matrix parameters throughout
-   *    the entire JSON structure.</li>
-   * <li>For non-template configurations: Substitute only the inherits
-   * field.</li>
-   * <li>Process inheritance chain recursively with circular reference
-   *    detection.</li>
-   * <li>Merge properties, dependencies, and devDependencies from inherited
-   *    configurations (later overrides earlier).</li>
+   * <li>Return early if already initialised (idempotent behaviour).</li>
+   * <li>For template configurations: Call
+   *    <code>_substituteTemplate()</code> to substitute
+   *    matrix parameters throughout the entire JSON structure.</li>
+   * <li>For non-template configurations: Call
+   *    <code>_substituteInherits()</code> to substitute
+   *    only the inherits field.</li>
+   * <li>Call <code>_processInherits()</code> to:
+   *   <ul>
+   *   <li>Process inheritance chain recursively with circular reference
+   *      detection.</li>
+   *   <li>Merge properties, dependencies, and devDependencies from inherited
+   *      configurations (later overrides earlier).</li>
+   *   <li>Collect inherited actions into a map.</li>
+   *   </ul>
+   * </li>
    * <li>Apply local properties and update substitution variables context.</li>
-   * <li>For visible configurations: Compute build folder relative path.</li>
+   * <li>For visible configurations: Compute build folder relative path via
+   *    <code>_getBuildFolderRelativePath()</code>.</li>
    * <li>Substitute Liquid templates in dependencies and devDependencies.</li>
    * <li>Create actions collection with inherited actions and local
    * actions.</li>
@@ -1486,7 +1514,7 @@ export class XpmBuildConfiguration {
    * If inheritance references are invalid or circular.
    */
   async initialise(): Promise<boolean> {
-    const log = this.parentBuildConfigurations.log
+    const log = this._log
     log.trace(
       `${XpmBuildConfiguration.name}.initialise()` +
         ` @${this.buildConfigurationName}`
@@ -1507,85 +1535,330 @@ export class XpmBuildConfiguration {
     let localJsonBuildConfiguration: JsonBuildConfigurationContent
 
     if (this.isTemplate) {
-      // For templates, perform substitutions on the entire build
-      // configuration JSON, since there can be matrix references everywhere.
-      const stringifiedJsonBuildConfiguration = JSON.stringify(
-        this.jsonBuildConfiguration
-      )
-      if (
-        stringifiedJsonBuildConfiguration.includes('{{') ||
-        stringifiedJsonBuildConfiguration.includes('{%')
-      ) {
-        let substitutedJsonBuildConfiguration
-        try {
-          substitutedJsonBuildConfiguration = await performSubstitutions({
-            log,
-            engine: this.parentBuildConfigurations.engine,
-            input: stringifiedJsonBuildConfiguration,
-            substitutionsVariables: {
-              ...this._substitutionsVariables,
-              /* c8 ignore next - safety net, they are always defined */
-              matrix: this.matrixParameters ?? {},
-              configuration: {
-                ...this.jsonBuildConfiguration,
-                name: this.buildConfigurationName,
-              },
-            },
-          })
-        } catch (error) {
-          const message =
-            getErrorMessage(error) +
-            ` in buildConfiguration "${this.buildConfigurationName}"`
-          throw new XpmError(message)
-        }
+      localJsonBuildConfiguration = await this._substituteTemplate()
+    } else {
+      localJsonBuildConfiguration = await this._substituteInherits()
+    }
 
-        localJsonBuildConfiguration = JSON.parse(
-          substitutedJsonBuildConfiguration
-        ) as JsonDependencies
-      } else {
-        localJsonBuildConfiguration = this.jsonBuildConfiguration
+    // Add inherited properties, dependencies, devDependencies, and actions.
+    const inheritedActionsMap = await this._processInherits(
+      localJsonBuildConfiguration
+    )
+
+    this.properties = {
+      ...this.properties,
+      ...localJsonBuildConfiguration.properties,
+    }
+
+    assert(this.buildConfigurationName, 'buildConfigurationName missing')
+    this._substitutionsVariables = {
+      ...this.parentBuildConfigurations.substitutionsVariables,
+      properties: {
+        ...this._substitutionsVariables.properties,
+        ...this.properties,
+      },
+      matrix: this.matrixParameters ?? {},
+      configuration: {
+        ...localJsonBuildConfiguration,
+        name: this.buildConfigurationName,
+      },
+    }
+
+    if (!this.isHidden) {
+      this._buildFolderRelativePath = await this._getBuildFolderRelativePath()
+
+      // Add the buildFolderRelativePath property.
+      // Note: the async initialiser was needed due to this async operation.
+      const properties = this._substitutionsVariables.properties
+      properties.buildFolderRelativePath = this._buildFolderRelativePath
+    }
+
+    this.dependencies = {
+      ...this.dependencies,
+      ...localJsonBuildConfiguration.dependencies,
+    }
+
+    this.devDependencies = {
+      ...this.devDependencies,
+      ...localJsonBuildConfiguration.devDependencies,
+    }
+
+    const unsubstitutedDependencies = {
+      dependencies: this.dependencies,
+      devDependencies: this.devDependencies,
+    }
+
+    const stringifiedDependencies = JSON.stringify(unsubstitutedDependencies)
+
+    if (
+      stringifiedDependencies.includes('{{') ||
+      stringifiedDependencies.includes('{%')
+    ) {
+      let substitutedDependencies
+      try {
+        substitutedDependencies = await performSubstitutions({
+          log,
+          engine: this.parentBuildConfigurations.engine,
+          input: stringifiedDependencies,
+          substitutionsVariables: this._substitutionsVariables,
+        })
+      } catch (error) {
+        const message =
+          getErrorMessage(error) +
+          ` in buildConfiguration "${this.buildConfigurationName}" dependencies`
+        throw new XpmError(message)
+      }
+      const parsedDependencies = JSON.parse(
+        substitutedDependencies
+      ) as JsonBuildConfigurationContent
+
+      /* c8 ignore next 2 - safety net, they are always defined */
+      this.dependencies = parsedDependencies.dependencies ?? {}
+      this.devDependencies = parsedDependencies.devDependencies ?? {}
+    }
+
+    this._actions = new XpmActions({
+      log: this._log,
+      engine: this.parentBuildConfigurations.engine,
+      substitutionsVariables: this._substitutionsVariables,
+      inheritedActionsMap,
+      jsonActions: localJsonBuildConfiguration.actions,
+      buildConfiguration: this,
+    })
+
+    log.trace(
+      `${XpmBuildConfiguration.name}.initialise() `,
+      `@{this.buildConfigurationName}`
+    )
+
+    if (!this.isHidden) {
+      log.trace(
+        this.buildConfigurationName,
+        'buildFolderRelativePath =>',
+        this._buildFolderRelativePath
+      )
+    }
+    log.trace(this.buildConfigurationName, 'properties => ', this.properties)
+    log.trace(
+      this.buildConfigurationName,
+      'dependencies => ',
+      this.dependencies
+    )
+    log.trace(
+      this.buildConfigurationName,
+      'devDependencies => ',
+      this.devDependencies
+    )
+    log.trace(this.buildConfigurationName, 'actions => ', this._actions.names)
+
+    this._isInitialised = true
+    return true
+  }
+
+  // --------------------------------------------------------------------------
+  // Public Methods.
+
+  /**
+   * Retrieves the actions collection for this build configuration.
+   *
+   * @returns The actions collection.
+   */
+  get actions(): XpmActions {
+    assert(this._actions !== undefined, 'XpmActions not initialised')
+    return this._actions
+  }
+
+  /**
+   * Retrieves the build folder relative path for this configuration.
+   *
+   * @returns The build folder relative path.
+   */
+  get buildFolderRelativePath(): string {
+    assert(
+      this._buildFolderRelativePath !== undefined,
+      'XpmActions not initialised'
+    )
+    return this._buildFolderRelativePath
+  }
+
+  // --------------------------------------------------------------------------
+  // Private Methods.
+
+  /**
+   * Performs template substitution on the entire build configuration JSON.
+   *
+   * @remarks
+   * This method is invoked during initialisation for template-generated
+   * configurations to substitute matrix parameters throughout the entire
+   * configuration definition.
+   *
+   * Processing steps:
+   *
+   * <ol>
+   * <li>Stringify the entire JSON build configuration object.</li>
+   * <li>Check if the stringified JSON contains template syntax
+   *    (<code>\{\{</code> or <code>\{%</code>).</li>
+   * <li>If templates are found:
+   *   <ul>
+   *   <li>Perform Liquid substitutions with complete variable context
+   *      including matrix parameters.</li>
+   *   <li>Parse the substituted JSON string back into an object.</li>
+   *   </ul>
+   * </li>
+   * <li>If no templates are found, return the original configuration
+   *    as-is.</li>
+   * </ol>
+   *
+   * This comprehensive substitution approach ensures matrix parameters can
+   * be referenced anywhere within the configuration (properties, dependencies,
+   * actions, etc.), which is necessary for template-generated configurations
+   * but would be unnecessarily expensive for regular configurations.
+   *
+   * @returns A promise that resolves to the build configuration content with
+   * all template variables substituted.
+   *
+   * @throws {@link XpmError}
+   * If Liquid template substitution fails.
+   */
+  // eslint-disable-next-line max-len
+  protected async _substituteTemplate(): Promise<JsonBuildConfigurationContent> {
+    const log = this._log
+
+    // For templates, perform substitutions on the entire build
+    // configuration JSON, since there can be matrix references everywhere.
+
+    let localJsonBuildConfiguration: JsonBuildConfigurationContent
+
+    const stringifiedJsonBuildConfiguration = JSON.stringify(
+      this.jsonBuildConfiguration
+    )
+    if (
+      stringifiedJsonBuildConfiguration.includes('{{') ||
+      stringifiedJsonBuildConfiguration.includes('{%')
+    ) {
+      let substitutedJsonBuildConfiguration
+      try {
+        substitutedJsonBuildConfiguration = await performSubstitutions({
+          log,
+          engine: this.parentBuildConfigurations.engine,
+          input: stringifiedJsonBuildConfiguration,
+          substitutionsVariables: {
+            ...this._substitutionsVariables,
+            /* c8 ignore next - safety net, they are always defined */
+            matrix: this.matrixParameters ?? {},
+            configuration: {
+              ...this.jsonBuildConfiguration,
+              name: this.buildConfigurationName,
+            },
+          },
+        })
+      } catch (error) {
+        const message =
+          getErrorMessage(error) +
+          ` in buildConfiguration "${this.buildConfigurationName}"`
+        throw new XpmError(message)
+      }
+
+      localJsonBuildConfiguration = JSON.parse(
+        substitutedJsonBuildConfiguration
+      ) as JsonBuildConfigurationContent
+    } else {
+      localJsonBuildConfiguration = this.jsonBuildConfiguration
+    }
+    return localJsonBuildConfiguration
+  }
+
+  /**
+   * Performs selective substitution on the inherits field only.
+   *
+   * @remarks
+   * This method is invoked during initialisation for regular (non-template)
+   * configurations to substitute template variables in the inheritance
+   * specification whilst leaving other fields untouched until later processing.
+   *
+   * Processing steps:
+   *
+   * <ol>
+   * <li>Extract the <code>inherits</code> (or deprecated
+   *    <code>inherit</code>) field from the
+   *    configuration.</li>
+   * <li>Stringify the inherits field and check for template syntax
+   *    (<code>\{\{</code> or <code>\{%</code>).</li>
+   * <li>If templates are found:
+   *   <ul>
+   *   <li>Perform Liquid substitutions with current variable context.</li>
+   *   <li>Parse the substituted JSON string back into an object.</li>
+   *   <li>Return a new configuration object with the substituted inherits
+   *      field and all other fields unchanged.</li>
+   *   </ul>
+   * </li>
+   * <li>If no templates are found, return the original configuration
+   *    as-is.</li>
+   * </ol>
+   *
+   * This selective approach is more efficient than full JSON substitution
+   * for regular configurations that do not have matrix parameters. The
+   * remaining fields (properties, dependencies, actions) are processed
+   * during inheritance resolution and dependency substitution phases.
+   *
+   * @returns A promise that resolves to the build configuration content with
+   * the inherits field substituted.
+   *
+   * @throws {@link XpmError}
+   * If Liquid template substitution fails on the inherits field.
+   */
+  // eslint-disable-next-line max-len
+  protected async _substituteInherits(): Promise<JsonBuildConfigurationContent> {
+    const log = this._log
+
+    let localJsonBuildConfiguration: JsonBuildConfigurationContent
+
+    // For non-templates, first perform substitutions on 'inherits' only.
+    // The rest of the entries are collected as-is and processed later.
+    const stringifiedJsonInherits = JSON.stringify(
+      this.jsonBuildConfiguration.inherits ?? {}
+    )
+    if (
+      stringifiedJsonInherits.includes('{{') ||
+      stringifiedJsonInherits.includes('{%')
+    ) {
+      let substitutedJsonInherits
+      try {
+        substitutedJsonInherits = await performSubstitutions({
+          log,
+          engine: this.parentBuildConfigurations.engine,
+          input: stringifiedJsonInherits,
+          substitutionsVariables: {
+            ...this._substitutionsVariables,
+            configuration: {
+              ...this.jsonBuildConfiguration,
+              name: this.buildConfigurationName,
+            },
+          },
+        })
+      } catch (error) {
+        const message =
+          getErrorMessage(error) +
+          ` in buildConfiguration "${this.buildConfigurationName}" inherits`
+        throw new XpmError(message)
+      }
+
+      localJsonBuildConfiguration = {
+        ...this.jsonBuildConfiguration,
+        inherits: JSON.parse(
+          substitutedJsonInherits
+        ) as JsonBuildConfigurationInherits,
       }
     } else {
-      // For non-templates, first perform substitutions on 'inherits' only.
-      // The rest of the entries are collected as-is and processed later.
-      const stringifiedJsonInherits = JSON.stringify(
-        this.jsonBuildConfiguration.inherits ?? {}
-      )
-      if (
-        stringifiedJsonInherits.includes('{{') ||
-        stringifiedJsonInherits.includes('{%')
-      ) {
-        let substitutedJsonInherits
-        try {
-          substitutedJsonInherits = await performSubstitutions({
-            log,
-            engine: this.parentBuildConfigurations.engine,
-            input: stringifiedJsonInherits,
-            substitutionsVariables: {
-              ...this._substitutionsVariables,
-              configuration: {
-                ...this.jsonBuildConfiguration,
-                name: this.buildConfigurationName,
-              },
-            },
-          })
-        } catch (error) {
-          const message =
-            getErrorMessage(error) +
-            ` in buildConfiguration "${this.buildConfigurationName}" inherits`
-          throw new XpmError(message)
-        }
-
-        localJsonBuildConfiguration = {
-          ...this.jsonBuildConfiguration,
-          inherits: JSON.parse(
-            substitutedJsonInherits
-          ) as JsonBuildConfigurationInherits,
-        }
-      } else {
-        localJsonBuildConfiguration = this.jsonBuildConfiguration
-      }
+      localJsonBuildConfiguration = this.jsonBuildConfiguration
     }
+    return localJsonBuildConfiguration
+  }
+
+  protected async _processInherits(
+    localJsonBuildConfiguration: JsonBuildConfigurationContent
+  ): Promise<Map<string, XpmAction>> {
+    const log = this._log
 
     // Process both the new 'inherits' and the deprecated 'inherit'.
     let jsonInherits: string[] = []
@@ -1669,145 +1942,8 @@ export class XpmBuildConfiguration {
         )
       }
     }
-
-    this.properties = {
-      ...this.properties,
-      ...localJsonBuildConfiguration.properties,
-    }
-
-    assert(this.buildConfigurationName, 'buildConfigurationName missing')
-    this._substitutionsVariables = {
-      ...this.parentBuildConfigurations.substitutionsVariables,
-      properties: {
-        ...this._substitutionsVariables.properties,
-        ...this.properties,
-      },
-      matrix: this.matrixParameters ?? {},
-      configuration: {
-        ...localJsonBuildConfiguration,
-        name: this.buildConfigurationName,
-      },
-    }
-
-    if (!this.isHidden) {
-      this._buildFolderRelativePath = await this._getBuildFolderRelativePath()
-
-      // Add the buildFolderRelativePath property.
-      // Note: the async initialiser was needed due to this async operation.
-      const properties = this._substitutionsVariables.properties
-      properties.buildFolderRelativePath = this._buildFolderRelativePath
-    }
-
-    this.dependencies = {
-      ...this.dependencies,
-      ...localJsonBuildConfiguration.dependencies,
-    }
-
-    this.devDependencies = {
-      ...this.devDependencies,
-      ...localJsonBuildConfiguration.devDependencies,
-    }
-
-    const unsubstitutedDependencies = {
-      dependencies: this.dependencies,
-      devDependencies: this.devDependencies,
-    }
-
-    const stringifiedDependencies = JSON.stringify(unsubstitutedDependencies)
-
-    if (
-      stringifiedDependencies.includes('{{') ||
-      stringifiedDependencies.includes('{%')
-    ) {
-      let substitutedDependencies
-      try {
-        substitutedDependencies = await performSubstitutions({
-          log,
-          engine: this.parentBuildConfigurations.engine,
-          input: stringifiedDependencies,
-          substitutionsVariables: this._substitutionsVariables,
-        })
-      } catch (error) {
-        const message =
-          getErrorMessage(error) +
-          ` in buildConfiguration "${this.buildConfigurationName}" dependencies`
-        throw new XpmError(message)
-      }
-      const parsedDependencies = JSON.parse(
-        substitutedDependencies
-      ) as JsonBuildConfigurationContent
-
-      /* c8 ignore next 2 - safety net, they are always defined */
-      this.dependencies = parsedDependencies.dependencies ?? {}
-      this.devDependencies = parsedDependencies.devDependencies ?? {}
-    }
-
-    this._actions = new XpmActions({
-      log: this.parentBuildConfigurations.log,
-      engine: this.parentBuildConfigurations.engine,
-      substitutionsVariables: this._substitutionsVariables,
-      inheritedActionsMap,
-      jsonActions: localJsonBuildConfiguration.actions,
-      buildConfiguration: this,
-    })
-
-    log.trace(
-      `${XpmBuildConfiguration.name}.initialise() `,
-      `@{this.buildConfigurationName}`
-    )
-
-    if (!this.isHidden) {
-      log.trace(
-        this.buildConfigurationName,
-        'buildFolderRelativePath =>',
-        this._buildFolderRelativePath
-      )
-    }
-    log.trace(this.buildConfigurationName, 'properties => ', this.properties)
-    log.trace(
-      this.buildConfigurationName,
-      'dependencies => ',
-      this.dependencies
-    )
-    log.trace(
-      this.buildConfigurationName,
-      'devDependencies => ',
-      this.devDependencies
-    )
-    log.trace(this.buildConfigurationName, 'actions => ', this._actions.names)
-
-    this._isInitialised = true
-    return true
+    return inheritedActionsMap
   }
-
-  // --------------------------------------------------------------------------
-  // Public Methods.
-
-  /**
-   * Retrieves the actions collection for this build configuration.
-   *
-   * @returns The actions collection.
-   */
-  get actions(): XpmActions {
-    assert(this._actions !== undefined, 'XpmActions not initialised')
-    return this._actions
-  }
-
-  /**
-   * Retrieves the build folder relative path for this configuration.
-   *
-   * @returns The build folder relative path.
-   */
-  get buildFolderRelativePath(): string {
-    assert(
-      this._buildFolderRelativePath !== undefined,
-      'XpmActions not initialised'
-    )
-    return this._buildFolderRelativePath
-  }
-
-  // --------------------------------------------------------------------------
-  // Private Methods.
 
   /**
    * Computes the build folder relative path for this configuration.
@@ -1835,7 +1971,7 @@ export class XpmBuildConfiguration {
    * @returns A promise that resolves to the build folder relative path.
    */
   protected async _getBuildFolderRelativePath(): Promise<string> {
-    const log = this.parentBuildConfigurations.log
+    const log = this._log
 
     let folderPath: string
     if (
