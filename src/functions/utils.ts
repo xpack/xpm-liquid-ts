@@ -54,6 +54,8 @@ export function getErrorMessage(error: unknown): string {
   return String(error)
 }
 
+// ----------------------------------------------------------------------------
+
 /**
  * Builds a unique key using the current platform and architecture.
  *
