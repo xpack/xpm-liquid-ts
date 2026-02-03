@@ -24,7 +24,13 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import { XpmPolicies } from '../../../src/index.js'
+import {
+  XpmError,
+  XpmInputError,
+  XpmOutputError,
+  XpmPrerequisitesError,
+  XpmSyntaxError,
+} from '../../../src/index.js'
 
 // ----------------------------------------------------------------------------
 
@@ -33,6 +39,25 @@ const log = new Logger({ level: 'info' })
 // ----------------------------------------------------------------------------
 
 test('XpmErrors', (t): void => {
+  let error = new XpmError('Test error')
+  t.equal(error.message, 'Test error', 'XpmError error message')
+
+  error = new XpmPrerequisitesError('Test prerequisites error')
+  t.equal(
+    error.message,
+    'Test prerequisites error',
+    'XpmPrerequisitesError error message'
+  )
+
+  error = new XpmInputError('Test input error')
+  t.equal(error.message, 'Test input error', 'XpmInputError error message')
+
+  error = new XpmSyntaxError('Test syntax error')
+  t.equal(error.message, 'Test syntax error', 'XpmSyntaxError error message')
+
+  error = new XpmOutputError('Test output error')
+  t.equal(error.message, 'Test output error', 'XpmOutputError error message')
+
   t.end()
 })
 
