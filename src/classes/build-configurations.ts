@@ -43,6 +43,7 @@ import {
 } from '../functions/is-something.js'
 import { filterPath } from '../functions/filter-paths.js'
 import { XpmError, XpmInputError } from './errors.js'
+import { CombinationsGenerator } from './combinations-generator.js'
 
 // ============================================================================
 
@@ -338,9 +339,30 @@ export class XpmBuildConfigurations {
    * and variable substitution occur later when individual configurations are
    * initialised via {@link XpmBuildConfiguration.initialise}, and only
    * for configurations that are actually used. This approach avoids unnecessary
-   * operations on unused configurations. The method also validates that all
-   * expanded configuration names are unique and prepares the internal lookup
-   * maps.
+   * operations on unused configurations.
+   *
+   * Processing steps:
+   *
+   * <ol>
+   * <li>Return early if already initialised (idempotent behaviour).</li>
+   * <li>Iterate through all build configuration definitions from the JSON
+   *    object.</li>
+   * <li>For template configurations (names containing <code>\{\{</code>):
+   *   <ul>
+   *   <li>Call <code>_processTemplate()</code> to expand and register all
+   *      generated configurations.</li>
+   *   </ul>
+   * </li>
+   * <li>For regular configurations:
+   *   <ul>
+   *   <li>Validate uniqueness of the configuration name.</li>
+   *   <li>Register the configuration in internal maps with
+   *      <code>undefined</code> value (lazy loading).</li>
+   *   </ul>
+   * </li>
+   * <li>Cache the array of all configuration names for efficient repeated
+   *    access.</li>
+   * </ol>
    *
    * @returns A promise that resolves to `true` if initialisation was performed,
    * or `false` if already initialised.
@@ -363,48 +385,11 @@ export class XpmBuildConfigurations {
       jsonBuildConfiguration,
     ] of Object.entries(this.jsonBuildConfigurations)) {
       if (buildConfigurationName.includes('{{')) {
-        // Expand templates and generate multiple build configurations.
-        try {
-          const expandedBuildConfigurationsMap =
-            await this._expandTemplateBuildConfigurations({
-              buildConfigurationName,
-              jsonBuildConfigurationTemplate:
-                jsonBuildConfiguration as JsonBuildConfigurationTemplate,
-            })
-          for (const [
-            expandedBuildConfigurationName,
-            expandedBuildConfiguration,
-          ] of expandedBuildConfigurationsMap) {
-            if (
-              this._buildComfigurationsNamesSet.has(
-                expandedBuildConfigurationName
-              )
-            ) {
-              throw new XpmError(
-                `duplicate build configuration name ` +
-                  `"${expandedBuildConfigurationName}" ` +
-                  `could not be generated from template.`
-              )
-            } else {
-              this._buildConfigurationsMap.set(
-                expandedBuildConfigurationName,
-                expandedBuildConfiguration
-              )
-              this._jsonBuildConfigurationsNamesMap.set(
-                expandedBuildConfigurationName,
-                buildConfigurationName
-              )
-              this._buildComfigurationsNamesSet.add(
-                expandedBuildConfigurationName
-              )
-            }
-          }
-        } catch (error) {
-          const message =
-            getErrorMessage(error) +
-            ` in buildConfiguration "${buildConfigurationName}"`
-          throw new XpmError(message)
-        }
+        await this._processTemplate({
+          buildConfigurationName,
+          jsonBuildConfiguration:
+            jsonBuildConfiguration as JsonBuildConfigurationTemplate,
+        })
       } else {
         if (this._buildComfigurationsNamesSet.has(buildConfigurationName)) {
           throw new XpmError(
@@ -434,6 +419,90 @@ export class XpmBuildConfigurations {
 
     this._isInitialised = true
     return true
+  }
+
+  /**
+   * Processes a template build configuration by expanding it and registering
+   * the generated configurations.
+   *
+   * @remarks
+   * This helper method is called during collection initialisation for each
+   * build configuration whose name contains template syntax
+   * (<code>\{\{</code> markers).
+   *
+   * Processing steps:
+   *
+   * <ol>
+   * <li>Calls <code>_expandTemplateBuildConfigurations()</code> to generate
+   *    all configuration instances from the template's matrix parameters.</li>
+   * <li>Validates that each expanded configuration name is unique and does
+   *    not conflict with existing configurations.</li>
+   * <li>Registers each expanded configuration in the internal maps:
+   *   <ul>
+   *   <li><code>_buildConfigurationsMap</code>: Maps name to configuration
+   *      instance.</li>
+   *   <li><code>_jsonBuildConfigurationsNamesMap</code>: Maps expanded name
+   *      back to original template name.</li>
+   *   <li><code>_buildComfigurationsNamesSet</code>: Tracks all registered
+   *      names for duplicate detection.</li>
+   *   </ul>
+   * </li>
+   * </ol>
+   *
+   * @param buildConfigurationName - The template configuration name
+   * containing Liquid variables.
+   * @param jsonBuildConfiguration - The JSON template definition containing
+   * matrix parameters and a configuration template.
+   * @returns A promise that resolves when processing is complete.
+   *
+   * @throws {@link XpmError}
+   * If duplicate configuration names are detected during expansion or if
+   * template expansion fails.
+   */
+  protected async _processTemplate({
+    buildConfigurationName,
+    jsonBuildConfiguration,
+  }: {
+    buildConfigurationName: string
+    jsonBuildConfiguration: JsonBuildConfigurationTemplate
+  }): Promise<void> {
+    // Expand templates and generate multiple build configurations.
+    try {
+      const expandedBuildConfigurationsMap =
+        await this._expandTemplateBuildConfigurations({
+          buildConfigurationName,
+          jsonBuildConfigurationTemplate: jsonBuildConfiguration,
+        })
+      for (const [
+        expandedBuildConfigurationName,
+        expandedBuildConfiguration,
+      ] of expandedBuildConfigurationsMap) {
+        if (
+          this._buildComfigurationsNamesSet.has(expandedBuildConfigurationName)
+        ) {
+          throw new XpmError(
+            `duplicate build configuration name ` +
+              `"${expandedBuildConfigurationName}" ` +
+              `could not be generated from template.`
+          )
+        } else {
+          this._buildConfigurationsMap.set(
+            expandedBuildConfigurationName,
+            expandedBuildConfiguration
+          )
+          this._jsonBuildConfigurationsNamesMap.set(
+            expandedBuildConfigurationName,
+            buildConfigurationName
+          )
+          this._buildComfigurationsNamesSet.add(expandedBuildConfigurationName)
+        }
+      }
+    } catch (error) {
+      const message =
+        getErrorMessage(error) +
+        ` in buildConfiguration "${buildConfigurationName}"`
+      throw new XpmError(message)
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -559,8 +628,28 @@ export class XpmBuildConfigurations {
    * @remarks
    * This method implements lazy evaluation to avoid unnecessary
    * operations. Build configurations are instantiated on demand but
-   * remain uninitialised until actually used. The two-step process
-   * works as follows:
+   * remain uninitialised until actually used.
+   *
+   * Retrieval process:
+   *
+   * <ol>
+   * <li>Check if the configuration already exists in the internal map.</li>
+   * <li>If found and already instantiated, return the existing instance.</li>
+   * <li>If the configuration name is unknown (not in JSON name mapping),
+   *    throw <code>XpmInputError</code>.</li>
+   * <li>For known but not yet instantiated configurations:
+   *   <ul>
+   *   <li>Resolve the original JSON configuration name (handles both
+   *      regular and template-generated configurations).</li>
+   *   <li>Retrieve the JSON configuration definition.</li>
+   *   <li>Create a new <code>XpmBuildConfiguration</code> instance.</li>
+   *   <li>Store the instance in the map for future access.</li>
+   *   </ul>
+   * </li>
+   * <li>Return the configuration instance (still uninitialised).</li>
+   * </ol>
+   *
+   * The two-step lazy evaluation process:
    *
    * <ol>
    * <li>During collection initialisation
@@ -580,6 +669,9 @@ export class XpmBuildConfigurations {
    *
    * @param buildConfigurationName - The build configuration name to retrieve.
    * @returns The build configuration instance.
+   *
+   * @throws {@link XpmInputError}
+   * If a configuration with the specified name does not exist.
    */
   get(buildConfigurationName: string): XpmBuildConfiguration {
     const log = this.log
@@ -775,41 +867,19 @@ export class XpmBuildConfigurations {
       )
     }
 
-    // const matrixKeys: string[] = Object.keys(jsonAction.matrix)
-    // const matrixValues: string[][] = Object.values(jsonAction.matrix)
-
     // Compute all combinations (cartesian product)
+    const combinationsGenerator = new CombinationsGenerator({
+      matrixKeys,
+      matrixValues,
+      log: this.log,
+    })
 
-    // Inner function.
-    const generateCombinationsRecursively = async (
-      index: number,
-      combination: Record<string, string>
-    ): Promise<void> => {
-      const log = this.log
-      log.trace(
-        `${XpmBuildConfigurations.name}.` +
-          `#expandTemplateBuildConfigurations().` +
-          `generateCombinationsRecursively(${String(index)}, ${JSON.stringify(
-            combination
-          )})`
-      )
+    const combinations = combinationsGenerator.generate()
+    log.trace('combinations =>', combinations)
 
-      if (index === matrixKeys.length) {
-        await createSubstitutedBuildConfiguration(combination)
-
-        return
-      }
-
-      const key = matrixKeys[index]
-      const values = matrixValues[index]
-
-      for (const value of values) {
-        combination[key] = value
-        await generateCombinationsRecursively(index + 1, combination)
-      }
+    for (const combination of combinations) {
+      await createSubstitutedBuildConfiguration(combination)
     }
-
-    await generateCombinationsRecursively(0, {})
 
     return newBuildConfigurationsMap
   }

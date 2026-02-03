@@ -37,6 +37,7 @@ import {
 } from '../functions/is-something.js'
 import { XpmError } from './errors.js'
 import { XpmBuildConfiguration } from './build-configurations.js'
+import { CombinationsGenerator } from './combinations-generator.js'
 
 // ============================================================================
 
@@ -747,40 +748,19 @@ export class XpmActions {
     }
 
     // ------------------------------------------------------------------------
-    // Compute all combinations (cartesian product).
+    // Compute all combinations (cartesian product)
+    const combinationsGenerator = new CombinationsGenerator({
+      matrixKeys,
+      matrixValues,
+      log: this.log,
+    })
 
-    // Inner function
-    const generateCombinationsRecursively = async (
-      index: number,
-      combination: Record<string, string>
-    ): Promise<void> => {
-      const log = this.log
-      log.trace(
-        `${XpmActions.name}.#expandTemplateActions().` +
-          `generateCombinationsRecursively(${String(index)}, ${JSON.stringify(
-            combination
-          )})`
-      )
+    const combinations = combinationsGenerator.generate()
+    log.trace('combinations =>', combinations)
 
-      if (index === matrixKeys.length) {
-        await createSubstitutedAction(combination)
-
-        return
-      }
-
-      const key = matrixKeys[index]
-      const values = matrixValues[index]
-
-      for (const value of values) {
-        combination[key] = value
-        await generateCombinationsRecursively(index + 1, combination)
-      }
+    for (const combination of combinations) {
+      await createSubstitutedAction(combination)
     }
-
-    // ------------------------------------------------------------------------
-
-    // Start the recursive generation.
-    await generateCombinationsRecursively(0, {})
 
     return newActionsMap
   }
