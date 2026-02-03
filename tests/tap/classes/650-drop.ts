@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------------
 
 // import * as os from 'os'
-import * as path from 'path'
+// import * as path from 'path'
 
 // ----------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ import { test } from 'tap'
 // import { Context, Liquid } from '../../../src/index.js'
 
 import { performSubstitutionsTest } from '../../common.js'
-import { XpmError, XpmInputError } from '../../../src/index.js'
+import { XpmInputError } from '../../../src/index.js'
 
 // ----------------------------------------------------------------------------
 

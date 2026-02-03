@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------------
 
-import * as os from 'os'
+// import * as os from 'os'
 import * as path from 'path'
 
 // ----------------------------------------------------------------------------
@@ -25,10 +25,7 @@ import { test } from 'tap'
 
 import { Logger } from '@xpack/logger'
 import {
-  buildFolderRelativePathPropertyName,
   JsonBuildConfigurations,
-  XpmAction,
-  XpmActions,
   XpmBuildConfigurations,
   XpmDataModel,
   XpmError,
@@ -36,7 +33,6 @@ import {
   xpmLiquidSubstitutionsVariablesBase,
 } from '../../../src/index.js'
 import { AssertionError } from 'assert'
-import { inherits } from 'util'
 
 // ----------------------------------------------------------------------------
 
