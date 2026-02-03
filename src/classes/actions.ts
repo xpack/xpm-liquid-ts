@@ -71,7 +71,7 @@ import { CombinationsGenerator } from './combinations-generator.js'
  */
 export class XpmActions {
   // --------------------------------------------------------------------------
-  // Members.
+  // Public Members.
 
   /**
    * The logger instance for output and diagnostics.
@@ -148,6 +148,39 @@ export class XpmActions {
    * product of matrix parameter values.
    */
   readonly jsonActions: JsonActions
+
+  /**
+   * The build configuration this actions collection belongs to, if any.
+   *
+   * @remarks
+   * This optional reference establishes the hierarchical relationship between
+   * actions and build configurations, affecting variable substitution scope
+   * and action inheritance.
+   *
+   * When defined:
+   *
+   * <ol>
+   * <li>Actions inherit configuration-specific variables (build folder paths,
+   *   compiler settings, toolchain properties).</li>
+   * <li>Actions belong to a specific configuration namespace rather than the
+   *   package root.</li>
+   * <li>Logging and diagnostics include the configuration name for
+   *   context.</li>
+   * </ol>
+   *
+   * When `undefined`:
+   *
+   * <ol>
+   * <li>Actions belong to the package root (<code>xpack.actions</code> in
+   *    <code>package.json</code>).</li>
+   * <li>Only package-level and global variables are available for
+   *    substitution.</li>
+   * </ol>
+   */
+  readonly buildConfiguration: XpmBuildConfiguration | undefined
+
+  // --------------------------------------------------------------------------
+  // Protected Members.
 
   /**
    * Map of action names to their corresponding action instances.
@@ -230,36 +263,6 @@ export class XpmActions {
     string,
     string
   >()
-
-  /**
-   * The build configuration this actions collection belongs to, if any.
-   *
-   * @remarks
-   * This optional reference establishes the hierarchical relationship between
-   * actions and build configurations, affecting variable substitution scope
-   * and action inheritance.
-   *
-   * When defined:
-   *
-   * <ol>
-   * <li>Actions inherit configuration-specific variables (build folder paths,
-   *   compiler settings, toolchain properties).</li>
-   * <li>Actions belong to a specific configuration namespace rather than the
-   *   package root.</li>
-   * <li>Logging and diagnostics include the configuration name for
-   *   context.</li>
-   * </ol>
-   *
-   * When `undefined`:
-   *
-   * <ol>
-   * <li>Actions belong to the package root (<code>xpack.actions</code> in
-   *    <code>package.json</code>).</li>
-   * <li>Only package-level and global variables are available for
-   *    substitution.</li>
-   * </ol>
-   */
-  readonly buildConfiguration: XpmBuildConfiguration | undefined
 
   /**
    * Flag indicating whether the actions collection has been initialised.
@@ -368,6 +371,8 @@ export class XpmActions {
       this.buildConfiguration = buildConfiguration
     }
 
+    // If there are inherited actions, add them to the map.
+    // They might be overridden by the current definitions.
     if (inheritedActionsMap !== undefined) {
       for (const [
         inheritedActionName,
@@ -432,31 +437,10 @@ export class XpmActions {
 
     for (const [actionName, jsonAction] of Object.entries(this.jsonActions)) {
       if (actionName.includes('{{')) {
-        // Expand template and return multiple actions.
-        try {
-          const expandedActionsMap = await this._expandTemplateActions({
-            actionName,
-            jsonActionTemplate: jsonAction as JsonActionTemplate,
-          })
-          for (const [
-            expandedActionName,
-            expandedAction,
-          ] of expandedActionsMap) {
-            if (this._actionsNamesSet.has(expandedActionName)) {
-              throw new XpmError(
-                `duplicate action name "${expandedActionName}" ` +
-                  `could not be generated from template.`
-              )
-            } else {
-              this._actionsMap.set(expandedActionName, expandedAction)
-              this._jsonActionsNamesMap.set(expandedActionName, actionName)
-              this._actionsNamesSet.add(expandedActionName)
-            }
-          }
-        } catch (error) {
-          const message = getErrorMessage(error) + ` in action "${actionName}"`
-          throw new XpmError(message)
-        }
+        await this._processTemplate({
+          actionName,
+          jsonActionTemplate: jsonAction as JsonActionTemplate,
+        })
       } else {
         if (this._actionsNamesSet.has(actionName)) {
           throw new XpmError(`action name "${actionName}" already defined.`)
@@ -477,7 +461,7 @@ export class XpmActions {
   }
 
   // --------------------------------------------------------------------------
-  // Public methods.
+  // Public Methods.
 
   /**
    * The number of actions in the collection.
@@ -592,7 +576,73 @@ export class XpmActions {
   }
 
   // --------------------------------------------------------------------------
-  // Private methods.
+  // Private Methods.
+
+  /**
+   * Processes a template action by expanding it and registering the generated
+   * actions.
+   *
+   * @remarks
+   * This helper method is called during collection initialisation for each
+   * action whose name contains template syntax (<code>\{\{</code> markers).
+   *
+   * Processing steps:
+   *
+   * <ol>
+   * <li>Calls <code>_expandTemplateActions()</code> to generate all action
+   *    instances from the template's matrix parameters.</li>
+   * <li>Validates that each expanded action name is unique and does not
+   *    conflict with existing actions.</li>
+   * <li>Registers each expanded action in the internal maps:
+   *   <ul>
+   *   <li><code>_actionsMap</code>: Maps name to action instance.</li>
+   *   <li><code>_jsonActionsNamesMap</code>: Maps expanded name back to
+   *      original template name.</li>
+   *   <li><code>_actionsNamesSet</code>: Tracks all registered names for
+   *      duplicate detection.</li>
+   *   </ul>
+   * </li>
+   * </ol>
+   *
+   * @param actionName - The template action name containing Liquid variables.
+   * @param jsonActionTemplate - The JSON template definition containing matrix
+   * parameters and an action template.
+   * @returns A promise that resolves when processing is complete.
+   *
+   * @throws {@link XpmError}
+   * If duplicate action names are detected during expansion or if template
+   * expansion fails.
+   */
+  protected async _processTemplate({
+    actionName,
+    jsonActionTemplate,
+  }: {
+    actionName: string
+    jsonActionTemplate: JsonActionTemplate
+  }): Promise<void> {
+    // Expand template and generate multiple actions.
+    try {
+      const expandedActionsMap = await this._expandTemplateActions({
+        actionName,
+        jsonActionTemplate,
+      })
+      for (const [expandedActionName, expandedAction] of expandedActionsMap) {
+        if (this._actionsNamesSet.has(expandedActionName)) {
+          throw new XpmError(
+            `duplicate action name "${expandedActionName}" ` +
+              `could not be generated from template.`
+          )
+        } else {
+          this._actionsMap.set(expandedActionName, expandedAction)
+          this._jsonActionsNamesMap.set(expandedActionName, actionName)
+          this._actionsNamesSet.add(expandedActionName)
+        }
+      }
+    } catch (error) {
+      const message = getErrorMessage(error) + ` in action "${actionName}"`
+      throw new XpmError(message)
+    }
+  }
 
   /**
    * Expands a template action into multiple concrete actions.
@@ -720,7 +770,7 @@ export class XpmActions {
 
     // Expand each template actions for its combination.
     for (const combination of combinations) {
-      await this.createSubstitutedAction({
+      await this._createSubstitutedAction({
         actionName,
         jsonAction: jsonActionTemplate.template,
         combination,
@@ -771,7 +821,7 @@ export class XpmActions {
    * @throws {@link XpmError}
    * If the action name substitution fails.
    */
-  protected async createSubstitutedAction({
+  protected async _createSubstitutedAction({
     actionName,
     jsonAction,
     combination,
@@ -840,7 +890,7 @@ export class XpmActions {
  */
 export class XpmAction {
   // --------------------------------------------------------------------------
-  // Members.
+  // Public Members.
 
   /**
    * The name of the action.
@@ -1118,7 +1168,7 @@ export class XpmAction {
   }
 
   // --------------------------------------------------------------------------
-  // Public methods.
+  // Public Methods.
 
   /**
    * Retrieves the array of command strings for this action.

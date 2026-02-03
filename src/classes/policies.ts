@@ -57,6 +57,9 @@ import semver from 'semver'
  * duration of the operation.
  */
 export class XpmPolicies {
+  // --------------------------------------------------------------------------
+  // Public Members.
+
   /**
    * The minimum <b>xpm</b> version used to derive policy flags.
    */
@@ -120,6 +123,9 @@ export class XpmPolicies {
    * Set to `true` for packages with minimumXpmRequired \< 0.22.0.
    */
   singleParameterXpmInitTemplate = false
+
+  // --------------------------------------------------------------------------
+  // Constructor.
 
   /**
    * Constructs policy flags based on a minimum <b>xpm</b> version.

@@ -54,7 +54,10 @@ import { XpmInputError } from '../classes/errors.js'
  */
 export class XpmLiquidPropertiesDrop extends Drop {
   // --------------------------------------------------------------------------
-  // Members.
+  // Public Members.
+
+  // --------------------------------------------------------------------------
+  // Protected Members.
 
   /**
    * The logger instance for output and diagnostics.
@@ -100,7 +103,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
   }
 
   // --------------------------------------------------------------------------
-  // Methods.
+  // Public Methods.
 
   /**
    * Resolves a missing property and performs nested substitutions.
@@ -202,7 +205,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
  */
 export class XpmLiquidMatrixDrop extends Drop {
   // --------------------------------------------------------------------------
-  // Members.
+  // Protected Members.
 
   /**
    * The logger instance for output and diagnostics.
@@ -248,7 +251,7 @@ export class XpmLiquidMatrixDrop extends Drop {
   }
 
   // --------------------------------------------------------------------------
-  // Methods.
+  // Public Methods.
 
   /**
    * Resolves a missing matrix parameter and performs nested substitutions.

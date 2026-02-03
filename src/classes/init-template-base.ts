@@ -63,7 +63,7 @@ import {
  */
 export abstract class XpmInitTemplateBase {
   // --------------------------------------------------------------------------
-  // Members.
+  // Public Members.
 
   /**
    * The <b>xpm</b> context containing configuration and logging utilities.
@@ -145,6 +145,9 @@ export abstract class XpmInitTemplateBase {
       greedy: false,
     })
   }
+
+  // --------------------------------------------------------------------------
+  // Public Methods.
 
   /**
    * Executes the template initialisation process.

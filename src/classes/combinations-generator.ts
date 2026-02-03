@@ -67,6 +67,9 @@ export type XpmMatrixCombination = Record<string, string>
  * ```
  */
 export class CombinationsGenerator {
+  // --------------------------------------------------------------------------
+  // Protected Members.
+
   /**
    * The logger instance for output and diagnostics.
    *
@@ -115,6 +118,9 @@ export class CombinationsGenerator {
    */
   protected readonly combinations: XpmMatrixCombination[] = []
 
+  // --------------------------------------------------------------------------
+  // Constructor.
+
   /**
    * Constructs a combinations generator instance.
    *
@@ -147,6 +153,9 @@ export class CombinationsGenerator {
     )
   }
 
+  // --------------------------------------------------------------------------
+  // Public Methods.
+
   /**
    * Generates all possible combinations from the matrix parameters.
    *
@@ -173,6 +182,9 @@ export class CombinationsGenerator {
 
     return this.combinations
   }
+
+  // --------------------------------------------------------------------------
+  // Private Methods.
 
   /**
    * Recursively generates combinations by exploring the parameter space.

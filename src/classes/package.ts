@@ -70,7 +70,7 @@ import { isString } from '../index.js'
  */
 export class XpmPackage {
   // --------------------------------------------------------------------------
-  // Members.
+  // Public Members.
 
   /**
    * The absolute path to the package folder.
@@ -125,6 +125,9 @@ export class XpmPackage {
    */
   jsonPackage?: JsonXpmPackage
 
+  // --------------------------------------------------------------------------
+  // Protected Members.
+
   /**
    * The logger instance for output and diagnostics.
    *
@@ -174,7 +177,7 @@ export class XpmPackage {
   }
 
   // --------------------------------------------------------------------------
-  // Methods.
+  // Public Methods.
 
   /**
    * Reads and parses `package.json` from the package folder.

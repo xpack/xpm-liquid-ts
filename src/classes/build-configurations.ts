@@ -74,7 +74,7 @@ import { CombinationsGenerator } from './combinations-generator.js'
  */
 export class XpmBuildConfigurations {
   // --------------------------------------------------------------------------
-  // Members.
+  // Public Members.
 
   /**
    * The logger instance for output and diagnostics.
@@ -149,6 +149,9 @@ export class XpmBuildConfigurations {
    * can inherit from others, creating complex dependency hierarchies.
    */
   readonly jsonBuildConfigurations: JsonBuildConfigurations
+
+  // --------------------------------------------------------------------------
+  // Protected Members.
 
   /**
    * Map of build configuration names to their corresponding instances.
@@ -387,7 +390,7 @@ export class XpmBuildConfigurations {
       if (buildConfigurationName.includes('{{')) {
         await this._processTemplate({
           buildConfigurationName,
-          jsonBuildConfiguration:
+          jsonBuildConfigurationTemplate:
             jsonBuildConfiguration as JsonBuildConfigurationTemplate,
         })
       } else {
@@ -421,92 +424,8 @@ export class XpmBuildConfigurations {
     return true
   }
 
-  /**
-   * Processes a template build configuration by expanding it and registering
-   * the generated configurations.
-   *
-   * @remarks
-   * This helper method is called during collection initialisation for each
-   * build configuration whose name contains template syntax
-   * (<code>\{\{</code> markers).
-   *
-   * Processing steps:
-   *
-   * <ol>
-   * <li>Calls <code>_expandTemplateBuildConfigurations()</code> to generate
-   *    all configuration instances from the template's matrix parameters.</li>
-   * <li>Validates that each expanded configuration name is unique and does
-   *    not conflict with existing configurations.</li>
-   * <li>Registers each expanded configuration in the internal maps:
-   *   <ul>
-   *   <li><code>_buildConfigurationsMap</code>: Maps name to configuration
-   *      instance.</li>
-   *   <li><code>_jsonBuildConfigurationsNamesMap</code>: Maps expanded name
-   *      back to original template name.</li>
-   *   <li><code>_buildComfigurationsNamesSet</code>: Tracks all registered
-   *      names for duplicate detection.</li>
-   *   </ul>
-   * </li>
-   * </ol>
-   *
-   * @param buildConfigurationName - The template configuration name
-   * containing Liquid variables.
-   * @param jsonBuildConfiguration - The JSON template definition containing
-   * matrix parameters and a configuration template.
-   * @returns A promise that resolves when processing is complete.
-   *
-   * @throws {@link XpmError}
-   * If duplicate configuration names are detected during expansion or if
-   * template expansion fails.
-   */
-  protected async _processTemplate({
-    buildConfigurationName,
-    jsonBuildConfiguration,
-  }: {
-    buildConfigurationName: string
-    jsonBuildConfiguration: JsonBuildConfigurationTemplate
-  }): Promise<void> {
-    // Expand templates and generate multiple build configurations.
-    try {
-      const expandedBuildConfigurationsMap =
-        await this._expandTemplateBuildConfigurations({
-          buildConfigurationName,
-          jsonBuildConfigurationTemplate: jsonBuildConfiguration,
-        })
-      for (const [
-        expandedBuildConfigurationName,
-        expandedBuildConfiguration,
-      ] of expandedBuildConfigurationsMap) {
-        if (
-          this._buildComfigurationsNamesSet.has(expandedBuildConfigurationName)
-        ) {
-          throw new XpmError(
-            `duplicate build configuration name ` +
-              `"${expandedBuildConfigurationName}" ` +
-              `could not be generated from template.`
-          )
-        } else {
-          this._buildConfigurationsMap.set(
-            expandedBuildConfigurationName,
-            expandedBuildConfiguration
-          )
-          this._jsonBuildConfigurationsNamesMap.set(
-            expandedBuildConfigurationName,
-            buildConfigurationName
-          )
-          this._buildComfigurationsNamesSet.add(expandedBuildConfigurationName)
-        }
-      }
-    } catch (error) {
-      const message =
-        getErrorMessage(error) +
-        ` in buildConfiguration "${buildConfigurationName}"`
-      throw new XpmError(message)
-    }
-  }
-
   // --------------------------------------------------------------------------
-  // Public methods.
+  // Public Methods.
 
   /**
    * The number of build configurations in the collection.
@@ -712,7 +631,91 @@ export class XpmBuildConfigurations {
   }
 
   // --------------------------------------------------------------------------
-  // Private methods.
+  // Private Methods.
+
+  /**
+   * Processes a template build configuration by expanding it and registering
+   * the generated configurations.
+   *
+   * @remarks
+   * This helper method is called during collection initialisation for each
+   * build configuration whose name contains template syntax
+   * (<code>\{\{</code> markers).
+   *
+   * Processing steps:
+   *
+   * <ol>
+   * <li>Calls <code>_expandTemplateBuildConfigurations()</code> to generate
+   *    all configuration instances from the template's matrix parameters.</li>
+   * <li>Validates that each expanded configuration name is unique and does
+   *    not conflict with existing configurations.</li>
+   * <li>Registers each expanded configuration in the internal maps:
+   *   <ul>
+   *   <li><code>_buildConfigurationsMap</code>: Maps name to configuration
+   *      instance.</li>
+   *   <li><code>_jsonBuildConfigurationsNamesMap</code>: Maps expanded name
+   *      back to original template name.</li>
+   *   <li><code>_buildComfigurationsNamesSet</code>: Tracks all registered
+   *      names for duplicate detection.</li>
+   *   </ul>
+   * </li>
+   * </ol>
+   *
+   * @param buildConfigurationName - The template configuration name
+   * containing Liquid variables.
+   * @param jsonBuildConfiguration - The JSON template definition containing
+   * matrix parameters and a configuration template.
+   * @returns A promise that resolves when processing is complete.
+   *
+   * @throws {@link XpmError}
+   * If duplicate configuration names are detected during expansion or if
+   * template expansion fails.
+   */
+  protected async _processTemplate({
+    buildConfigurationName,
+    jsonBuildConfigurationTemplate,
+  }: {
+    buildConfigurationName: string
+    jsonBuildConfigurationTemplate: JsonBuildConfigurationTemplate
+  }): Promise<void> {
+    // Expand templates and generate multiple build configurations.
+    try {
+      const expandedBuildConfigurationsMap =
+        await this._expandTemplateBuildConfigurations({
+          buildConfigurationName,
+          jsonBuildConfigurationTemplate,
+        })
+      for (const [
+        expandedBuildConfigurationName,
+        expandedBuildConfiguration,
+      ] of expandedBuildConfigurationsMap) {
+        if (
+          this._buildComfigurationsNamesSet.has(expandedBuildConfigurationName)
+        ) {
+          throw new XpmError(
+            `duplicate build configuration name ` +
+              `"${expandedBuildConfigurationName}" ` +
+              `could not be generated from template.`
+          )
+        } else {
+          this._buildConfigurationsMap.set(
+            expandedBuildConfigurationName,
+            expandedBuildConfiguration
+          )
+          this._jsonBuildConfigurationsNamesMap.set(
+            expandedBuildConfigurationName,
+            buildConfigurationName
+          )
+          this._buildComfigurationsNamesSet.add(expandedBuildConfigurationName)
+        }
+      }
+    } catch (error) {
+      const message =
+        getErrorMessage(error) +
+        ` in buildConfiguration "${buildConfigurationName}"`
+      throw new XpmError(message)
+    }
+  }
 
   /**
    * Expands a template build configuration into multiple configurations.
@@ -838,7 +841,7 @@ export class XpmBuildConfigurations {
 
     // Expand each template build configuration for its combination.
     for (const combination of combinations) {
-      await this.createSubstitutedBuildConfiguration({
+      await this._createSubstitutedBuildConfiguration({
         buildConfigurationName,
         jsonBuildConfiguration: jsonBuildConfigurationTemplate.template,
         combination,
@@ -883,7 +886,7 @@ export class XpmBuildConfigurations {
    * @throws {@link XpmError}
    * If substitutions fail during build configuration name expansion.
    */
-  protected async createSubstitutedBuildConfiguration({
+  protected async _createSubstitutedBuildConfiguration({
     buildConfigurationName,
     jsonBuildConfiguration,
     combination,
@@ -957,7 +960,7 @@ export class XpmBuildConfigurations {
  */
 export class XpmBuildConfiguration {
   // --------------------------------------------------------------------------
-  // Members.
+  // Public Members.
 
   /**
    * The build configuration name after substitution.
@@ -1190,6 +1193,42 @@ export class XpmBuildConfiguration {
   jsonBuildConfiguration: JsonBuildConfigurationContent
 
   /**
+   * Indicates whether this configuration originates from a template.
+   *
+   * @remarks
+   * This flag determines the substitution strategy during configuration
+   * initialisation, with template configurations requiring more extensive
+   * processing.
+   *
+   * Template vs regular configuration processing:
+   *
+   * <ol>
+   * <li>Template configurations (<code>isTemplate === true</code>):
+   *   <ul>
+   *   <li>Entire JSON configuration is stringified and substituted.</li>
+   *   <li>Matrix parameters available throughout all fields.</li>
+   *   <li>More expensive but supports matrix references anywhere.</li>
+   *   </ul>
+   * </li>
+   * <li>Regular configurations (<code>isTemplate === false</code>):
+   *   <ul>
+   *   <li>Only <code>inherits</code> field is substituted initially.</li>
+   *   <li>Other fields processed selectively during inheritance
+   *     resolution.</li>
+   *   <li>More efficient for configurations without matrix parameters.</li>
+   *   </ul>
+   * </li>
+   * </ol>
+   *
+   * Set to `true` when `templateBuildConfigurationName` is defined,
+   * indicating the configuration was generated from a template expansion.
+   */
+  isTemplate: boolean
+
+  // --------------------------------------------------------------------------
+  // Protected Members.
+
+  /**
    * The variables used for substitution in this configuration.
    *
    * @remarks
@@ -1348,39 +1387,6 @@ export class XpmBuildConfiguration {
    * but should only process their inheritance chain once.
    */
   protected _isInitialised = false
-
-  /**
-   * Indicates whether this configuration originates from a template.
-   *
-   * @remarks
-   * This flag determines the substitution strategy during configuration
-   * initialisation, with template configurations requiring more extensive
-   * processing.
-   *
-   * Template vs regular configuration processing:
-   *
-   * <ol>
-   * <li>Template configurations (<code>isTemplate === true</code>):
-   *   <ul>
-   *   <li>Entire JSON configuration is stringified and substituted.</li>
-   *   <li>Matrix parameters available throughout all fields.</li>
-   *   <li>More expensive but supports matrix references anywhere.</li>
-   *   </ul>
-   * </li>
-   * <li>Regular configurations (<code>isTemplate === false</code>):
-   *   <ul>
-   *   <li>Only <code>inherits</code> field is substituted initially.</li>
-   *   <li>Other fields processed selectively during inheritance
-   *     resolution.</li>
-   *   <li>More efficient for configurations without matrix parameters.</li>
-   *   </ul>
-   * </li>
-   * </ol>
-   *
-   * Set to `true` when `templateBuildConfigurationName` is defined,
-   * indicating the configuration was generated from a template expansion.
-   */
-  isTemplate: boolean
 
   // --------------------------------------------------------------------------
   // Constructor and async initialiser.
@@ -1775,7 +1781,7 @@ export class XpmBuildConfiguration {
   }
 
   // --------------------------------------------------------------------------
-  // Public methods.
+  // Public Methods.
 
   /**
    * Retrieves the actions collection for this build configuration.

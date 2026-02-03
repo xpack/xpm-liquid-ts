@@ -55,7 +55,7 @@ import { isJsonObject } from '../functions/is-something.js'
  */
 export class XpmLiquidEngine extends Liquid {
   // --------------------------------------------------------------------------
-  // Members.
+  // Public Members.
 
   // --------------------------------------------------------------------------
   // Constructor.
