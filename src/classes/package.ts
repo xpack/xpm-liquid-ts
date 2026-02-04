@@ -210,10 +210,10 @@ export class XpmPackage {
     let fileContent: string | Buffer
     try {
       fileContent = await fs.readFile(jsonFilePath)
-    } catch (err) {
+    } catch (error) {
       if (withThrow) {
-        if (err instanceof Error) {
-          this._log.trace(err.message)
+        if (error instanceof Error) {
+          this._log.trace(error.message)
         }
         throw new XpmInputError(
           `no package.json in folder ‘${this.packageFolderPath}’`
@@ -225,11 +225,11 @@ export class XpmPackage {
 
     try {
       this.jsonPackage = JSON.parse(fileContent.toString()) as JsonXpmPackage
-    } catch (err) {
+    } catch (error) {
       if (withThrow) {
         this.jsonPackage = undefined
-        if (err instanceof Error) {
-          this._log.trace(err.message)
+        if (error instanceof Error) {
+          this._log.trace(error.message)
         }
         throw new XpmInputError(
           `invalid package.json in folder ‘${this.packageFolderPath}’`
@@ -524,7 +524,7 @@ export class XpmPackage {
         }
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
+    } catch (error) {
       // In case xpack is not an option to get its properties.
     }
 
@@ -624,12 +624,12 @@ export class XpmPackage {
       jsonXpmCliPackage = await cliXpmPackage.readPackageDotJson({
         withThrow: true,
       })
-    } catch (err) {
-      if (err instanceof Error) {
-        log.trace(err.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        log.trace(error.message)
         /* c8 ignore next 3 - safety net, currently all are Errors */
       } else {
-        log.trace(err)
+        log.trace(error)
       }
       return undefined
     }
