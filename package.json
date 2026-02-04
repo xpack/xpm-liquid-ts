@@ -62,7 +62,7 @@
     "typescript-eslint": "^8.53.1"
   },
   "scripts": {
-    "compile-watch": "tsc --build --verbose --watch src",
+    "compile-watch": "tsc --build --verbose --watch",
     "prettier": "prettier src tests/tap --write",
     "fix": "eslint --fix src",
     "compile": "tsc --project tsconfig.json",
