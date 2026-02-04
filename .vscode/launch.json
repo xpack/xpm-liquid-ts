@@ -51,7 +51,7 @@
         "--reporter=tap",
         "--disable-coverage",
         "--timeout=0",
-        "tests/tap/020-package.ts"
+        "tests/tap/classes/020-package.ts"
       ],
       "outFiles": [
         "${workspaceFolder}/dist/*.js"
@@ -141,6 +141,70 @@
         "${workspaceFolder}/dist/*.js"
       ],
       "stopOnEntry": true
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "tap 150-actions.ts",
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/async-hook-domain/**"
+      ],
+      "program": "node_modules/.bin/tap",
+      "args": [
+        "run",
+        "--reporter=tap",
+        "--disable-coverage",
+        "--timeout=0",
+        "tests/tap/classes/150-actions.ts"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/dist/*.js"
+      ],
+      "stopOnEntry": true
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "tap 160-build-configurations.ts",
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/async-hook-domain/**"
+      ],
+      "program": "node_modules/.bin/tap",
+      "args": [
+        "run",
+        "--reporter=tap",
+        "--disable-coverage",
+        "--timeout=0",
+        "tests/tap/classes/160-build-configurations.ts"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/dist/*.js"
+      ],
+      "stopOnEntry": true
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "tap 640-init-template-base.ts",
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/async-hook-domain/**"
+      ],
+      "program": "node_modules/.bin/tap",
+      "args": [
+        "run",
+        "--reporter=tap",
+        "--disable-coverage",
+        "--timeout=0",
+        "tests/tap/classes/640-init-template-base.ts"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/dist/*.js"
+      ],
+      "stopOnEntry": true
     }
+
   ]
 }
