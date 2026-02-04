@@ -88,20 +88,78 @@ export interface XpmInitTemplatePropertiesDefinition {
   /**
    * The property value type.
    */
-  type: 'select' | 'string' | 'number' | 'boolean'
+  type: XpmInitTemplateType
   /**
    * The selectable items for a `select` property.
    */
-  items: Record<string, string | XpmInitTemplateItemValue>
+  items?: XpmInitTemplateItems
   /**
-   * Indicates whether the property is mandatory.
+   * Indicates whether the property is mandatory; defaults to `false`.
    */
   isMandatory?: boolean
   /**
-   * The default value for the property.
+   * The default value for the property. Must match the property type.
    */
   default?: string | number | boolean
 }
+
+/**
+ * Represents the supported property types for `xpm init` template
+ * properties.
+ *
+ * @remarks
+ * Property types control how the `xpm init` command prompts users for
+ * configuration values during template initialisation:
+ *
+ * <ul>
+ * <li><b><code>select</code>:</b> Presents a list of predefined options
+ *    for the user to choose from. Requires the <code>items</code> field to
+ *    be populated.</li>
+ * <li><b><code>string</code>:</b> Accepts free-form text input from the
+ *    user.</li>
+ * <li><b><code>number</code>:</b> Accepts numeric input with
+ *    validation.</li>
+ * <li><b><code>boolean</code>:</b> Accepts yes/no input, converted to
+ *    <code>true</code> or <code>false</code>.</li>
+ * </ul>
+ */
+export type XpmInitTemplateType = 'select' | 'string' | 'number' | 'boolean'
+
+/**
+ * Represents the available items for a `select` type property in `xpm init`
+ * templates.
+ *
+ * @remarks
+ * Items define the options users can choose from when a property uses the
+ * <code>select</code> type. Each key represents the value stored when that
+ * option is selected, whilst the value provides the description shown to
+ * the user.
+ *
+ * Item values can be either:
+ *
+ * <ul>
+ * <li><b>Simple string:</b> A description shown to all users regardless
+ *    of platform.</li>
+ * <li><b><code>XpmInitTemplateItemValue</code>:</b> A platform-specific
+ *    item that only appears when the current platform matches the
+ *    <code>platforms</code> constraint.</li>
+ * </ul>
+ *
+ * Example:
+ * ```js
+ * {
+ *   gcc: 'The GCC compiler',
+ *   clang: {
+ *     platforms: ['darwin'],
+ *     message: 'The Clang compiler (macOS only)'
+ *   }
+ * }
+ * ```
+ */
+export type XpmInitTemplateItems = Record<
+  string,
+  string | XpmInitTemplateItemValue
+>
 
 /**
  * Represents the supported platform identifiers for `xpm init` template items.
