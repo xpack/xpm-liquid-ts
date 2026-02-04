@@ -62,8 +62,61 @@ export function isPrimitive(value: unknown): boolean {
  * @param value - The value to test.
  * @returns `true` if the value is a string, `false` otherwise.
  */
-export function isString(value: unknown): value is string {
+export function isString(value: unknown): boolean {
   return typeof value === 'string'
+}
+
+/**
+ * Determines whether a value is a finite number.
+ *
+ * @remarks
+ * This function validates that a value is both a number type and
+ * mathematically finite, excluding `NaN`, `Infinity`, and `-Infinity`.
+ * This is essential when validating numeric configuration values or
+ * processing JSON data where numeric fields must contain valid,
+ * computable values.
+ *
+ * Returns `true` for: all finite numeric values, including `0`, negative
+ * numbers, and floating-point numbers.
+ *
+ * Returns `false` for: `NaN`, `Infinity`, `-Infinity`, strings, objects,
+ * arrays, and any non-number types.
+ *
+ * Only returns `true` for primitive number values, not Number objects
+ * created with `new Number()`.
+ *
+ * The finiteness check is crucial for mathematical operations and ensures
+ * that numeric properties in `package.json` or configuration files contain
+ * usable values rather than special numeric constants that could cause
+ * unexpected behaviour in calculations.
+ *
+ * @param value - The value to test.
+ * @returns `true` if the value is a finite number, `false` otherwise.
+ */
+export function isNumber(value: unknown): boolean {
+  return typeof value === 'number' && isFinite(value)
+}
+
+/**
+ * Determines whether a value is a boolean.
+ *
+ * @remarks
+ * Tests for primitive boolean values (`true` or `false`). Useful when
+ * validating configuration options or parsing JSON where boolean flags
+ * need to be distinguished from truthy/falsy values.
+ *
+ * Only returns `true` for the primitive boolean values `true` and `false`,
+ * not for boolean objects created with `new Boolean()`.
+ *
+ * Note: This does not check for truthy or falsy values - it only returns
+ * `true` for actual boolean primitives. Use standard JavaScript truthiness
+ * checks for conditional logic.
+ *
+ * @param value - The value to test.
+ * @returns `true` if the value is a boolean, `false` otherwise.
+ */
+export function isBoolean(value: unknown): boolean {
+  return typeof value === 'boolean'
 }
 
 /**
@@ -88,28 +141,6 @@ export function isString(value: unknown): value is string {
  */
 export function isObject(value: unknown): boolean {
   return typeof value === 'object' && !Array.isArray(value)
-}
-
-/**
- * Determines whether a value is a boolean.
- *
- * @remarks
- * Tests for primitive boolean values (`true` or `false`). Useful when
- * validating configuration options or parsing JSON where boolean flags
- * need to be distinguished from truthy/falsy values.
- *
- * Only returns `true` for the primitive boolean values `true` and `false`,
- * not for boolean objects created with `new Boolean()`.
- *
- * Note: This does not check for truthy or falsy values - it only returns
- * `true` for actual boolean primitives. Use standard JavaScript truthiness
- * checks for conditional logic.
- *
- * @param value - The value to test.
- * @returns `true` if the value is a boolean, `false` otherwise.
- */
-export function isBoolean(value: unknown): boolean {
-  return typeof value === 'boolean'
 }
 
 // ----------------------------------------------------------------------------
