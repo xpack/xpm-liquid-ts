@@ -59,7 +59,7 @@ Represents a JSON extended dependency definition.
 
 </td><td>
 
-Represents a JSON npm package.json structure.
+Represents a JSON npm `package.json` structure.
 
 </td></tr>
 <tr><td>
@@ -77,7 +77,7 @@ Represents a JSON npm package specifier.
 
 </td><td>
 
-Represents a JSON xpm-specific section in package.json.
+Represents a JSON xpm-specific section in `package.json`.
 
 </td></tr>
 <tr><td>
@@ -86,7 +86,7 @@ Represents a JSON xpm-specific section in package.json.
 
 </td><td>
 
-Represents a JSON binaries definition in package.json.
+Represents a JSON binaries definition in `package.json.`
 
 </td></tr>
 <tr><td>
@@ -95,7 +95,7 @@ Represents a JSON binaries definition in package.json.
 
 </td><td>
 
-Represents a JSON <b>xpm</b> package.json structure.
+Represents a JSON <b>xpm</b> `package.json` structure.
 
 </td></tr>
 <tr><td>
@@ -124,6 +124,12 @@ Defines the <b>xpm</b> configuration options.
 
 Provides the execution context for <b>xpm</b> operations.
 
+</td></tr>
+<tr><td>
+
+[XpmInitTemplateConstructorParameters](/docs/api/xpm-lib/interfaces/xpminittemplateconstructorparameters)
+
+</td><td>
 </td></tr>
 <tr><td>
 

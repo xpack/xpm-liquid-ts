@@ -136,6 +136,15 @@ Represents a list of action command strings.
 </td></tr>
 <tr><td>
 
+[XpmInitTemplateItems](/docs/api/xpm-lib/typealiases/xpminittemplateitems)
+
+</td><td>
+
+Represents the available items for a `select` type property in `xpm init` templates.
+
+</td></tr>
+<tr><td>
+
 [XpmInitTemplatePlatform](/docs/api/xpm-lib/typealiases/xpminittemplateplatform)
 
 </td><td>
@@ -150,6 +159,15 @@ Represents the supported platform identifiers for `xpm init` template items.
 </td><td>
 
 Represents a map of `xpm init` template property definitions.
+
+</td></tr>
+<tr><td>
+
+[XpmInitTemplateType](/docs/api/xpm-lib/typealiases/xpminittemplatetype)
+
+</td><td>
+
+Represents the supported property types for `xpm init` template properties.
 
 </td></tr>
 <tr><td>

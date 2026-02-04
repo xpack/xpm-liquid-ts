@@ -14,7 +14,7 @@ properties: XpmLiquidSubstitutionsStrings;
 
 ## Remarks
 
-User-defined configuration values from xpack.properties in package.json. Provides a namespace for custom template variables without polluting the global scope.
+User-defined configuration values from `xpack.properties` in `package.json`<!-- -->. Provides a namespace for custom template variables without polluting the global scope.
 
 Properties support nested substitutions: a property value can reference other properties, package metadata, or system variables using Liquid syntax. The Liquid Drop pattern ensures recursive evaluation.
 

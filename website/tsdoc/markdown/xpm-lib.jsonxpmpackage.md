@@ -4,7 +4,7 @@
 
 ## JsonXpmPackage interface
 
-Represents a JSON <b>xpm</b> package.json structure.
+Represents a JSON <b>xpm</b> `package.json` structure.
 
 **Signature:**
 

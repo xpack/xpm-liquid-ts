@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Represents a JSON <b>xpm</b> package.json structure.
+Represents a JSON <b>xpm</b> `package.json` structure.
 
 ## Signature
 

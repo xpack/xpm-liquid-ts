@@ -19,45 +19,8 @@ Generates the project files from the template.
 ## Signature
 
 ```typescript
-abstract generate(isInteractive: boolean): Promise<void>;
+abstract generate(): Promise<void>;
 ```
-
-## Parameters
-
-<table><thead><tr><th>
-
-Parameter
-
-
-</th><th>
-
-Type
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-isInteractive
-
-
-</td><td>
-
-boolean
-
-
-</td><td>
-
-Whether the template was run in interactive mode.
-
-
-</td></tr>
-</tbody></table>
-
 ## Returns
 
 Promise&lt;void&gt;
@@ -66,7 +29,9 @@ A promise that resolves when generation is complete.
 
 ## Remarks
 
-This abstract method must be implemented by derived classes to define the specific files and folder structure to create for the project. Implementations should use [XpmInitTemplateBase.copyFile()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/copyfile)<!-- -->, [XpmInitTemplateBase.copyFolder()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/copyfolder)<!-- -->, and [XpmInitTemplateBase.render()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/render) to create the project structure. The substitution variables are available via the [XpmInitTemplateBase.substitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/substitutionsvariables) property.
+This abstract method must be implemented by derived classes to define the specific files and folder structure to create for the project. Implementations should use [XpmInitTemplateBase.copyFile()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/copyfile)<!-- -->, [XpmInitTemplateBase.copyFolder()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/copyfolder)<!-- -->, and [XpmInitTemplateBase.render()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/render) to create the project structure. The substitution variables are available via the [XpmInitTemplateBase.\_substitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_substitutionsvariables) property.
+
+The implementation must be <b>asynchronous</b> to allow for file system operations.
 
 <hr/>
 

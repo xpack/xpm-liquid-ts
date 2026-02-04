@@ -2,6 +2,13 @@ import { Liquid } from 'liquidjs';
 import { Logger } from '@xpack/logger';
 import { XpmContext } from '../types/xpm.js';
 import { XpmInitTemplatePropertiesDefinitions, XpmInitTemplateSubstitutionsVariables } from '../types/xpm-init-template.js';
+export interface XpmInitTemplateConstructorParameters {
+    context: XpmContext;
+    __dirname: string;
+    templatesPath: string;
+    propertiesDefinitions: XpmInitTemplatePropertiesDefinitions;
+    process?: NodeJS.Process;
+}
 /**
  * Base class for <b>xpm</b> initialisation templates.
  *
@@ -17,7 +24,7 @@ import { XpmInitTemplatePropertiesDefinitions, XpmInitTemplateSubstitutionsVaria
  * <li>Properties are validated against their definitions</li>
  * <li>Missing mandatory properties trigger interactive prompts (if TTY)</li>
  * <li>Substitution variables are prepared from properties</li>
- * <li>The <code>XpmInitTemplateBase.generate</code> method creates project
+ * <li>The <code>XpmInitTemplateBase.generate()</code> method creates project
  * files</li>
  * </ol>
  *
@@ -28,31 +35,33 @@ export declare abstract class XpmInitTemplateBase {
     /**
      * The <b>xpm</b> context containing configuration and logging utilities.
      */
-    context: XpmContext;
+    protected _context: XpmContext;
     /**
      * The logger instance for output and diagnostics.
      */
-    log: Logger;
+    protected _log: Logger;
     /**
      * Definitions of all properties supported by this template.
      */
-    propertiesDefinitions: XpmInitTemplatePropertiesDefinitions;
+    protected _propertiesDefinitions: XpmInitTemplatePropertiesDefinitions;
     /**
      * The absolute path to the module folder.
      */
-    __dirname: string;
+    protected __dirname: string;
     /**
      * The absolute path to the templates folder.
      */
-    templatesPath: string;
+    protected _templatesPath: string;
     /**
      * The Liquid templating engine instance.
      */
-    engine: Liquid;
+    protected _engine: Liquid;
     /**
      * The variables to be used for template substitutions.
      */
-    substitutionsVariables?: XpmInitTemplateSubstitutionsVariables;
+    protected _substitutionsVariables?: XpmInitTemplateSubstitutionsVariables;
+    protected _isInteractive: boolean;
+    protected _process: NodeJS.Process;
     /**
      * Constructs an <b>xpm</b> initialisation template instance.
      *
@@ -62,12 +71,7 @@ export declare abstract class XpmInitTemplateBase {
      * @param templatesPath - The absolute path to the templates folder.
      * @param propertiesDefinitions - The definitions of all supported properties.
      */
-    constructor({ context, __dirname, templatesPath, propertiesDefinitions, }: {
-        context: XpmContext;
-        __dirname: string;
-        templatesPath: string;
-        propertiesDefinitions: XpmInitTemplatePropertiesDefinitions;
-    });
+    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, }: XpmInitTemplateConstructorParameters);
     /**
      * Executes the template initialisation process.
      *
@@ -100,12 +104,14 @@ export declare abstract class XpmInitTemplateBase {
      * {@link XpmInitTemplateBase.copyFolder}, and
      * {@link XpmInitTemplateBase.render} to create the project structure.
      * The substitution variables are available via the
-     * {@link XpmInitTemplateBase.substitutionsVariables} property.
+     * {@link XpmInitTemplateBase._substitutionsVariables} property.
      *
-     * @param isInteractive - Whether the template was run in interactive mode.
+     * The implementation must be <b>asynchronous</b> to allow for file system
+     * operations.
+     *
      * @returns A promise that resolves when generation is complete.
      */
-    abstract generate(isInteractive: boolean): Promise<void>;
+    abstract generate(): Promise<void>;
     /**
      * Validates a property value against its definition.
      *
@@ -133,10 +139,10 @@ export declare abstract class XpmInitTemplateBase {
      * @returns The validated and potentially converted value (string,
      * boolean, or number).
      *
-     * @throws `Error`
+     * @throws {@link XpmError}
      * If the property is unsupported or the value is invalid.
      */
-    validateValue(name: string, value: string): string | boolean | number;
+    protected _validatePropertyValue(name: string, value: string): string | boolean | number;
     /**
      * Prompts the user interactively for missing property values.
      *
@@ -256,5 +262,6 @@ export declare abstract class XpmInitTemplateBase {
      * If template rendering fails.
      */
     render(inputFileRelativePath: string, outputFileRelativePath: string, substitutionsVariables?: XpmInitTemplateSubstitutionsVariables): Promise<void>;
+    protected _validatePropertiesDefinitions(): void;
 }
 //# sourceMappingURL=init-template-base.d.ts.map

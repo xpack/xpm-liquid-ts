@@ -4,7 +4,7 @@
 
 ## JsonNpmPackage interface
 
-Represents a JSON npm package.json structure.
+Represents a JSON npm `package.json` structure.
 
 **Signature:**
 

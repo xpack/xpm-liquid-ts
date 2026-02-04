@@ -14,7 +14,7 @@ package?: any;
 
 ## Remarks
 
-Contains the entire package.json content, allowing templates to access package name, version, description, dependencies, and xpack-specific metadata.
+Contains the entire `package.json` content, allowing templates to access package name, version, description, dependencies, and xpack-specific metadata.
 
 Common template patterns:
 

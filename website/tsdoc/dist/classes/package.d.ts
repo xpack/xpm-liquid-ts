@@ -38,13 +38,14 @@ export declare class XpmPackage {
      *
      * @remarks
      * This path serves as the base folder for all package operations,
-     * including reading/writing package.json and resolving relative paths.
+     * including reading/writing `package.json` and resolving relative paths.
      *
      * Path requirements:
      *
      * <ol>
      * <li>Must be an absolute path to a folder.</li>
-     * <li>Folder should contain (or will contain) a package.json file.</li>
+     * <li>Folder should contain (or will contain) a <code>package.json</code>
+     *    file.</li>
      * <li>Used to construct the path to <code>package.json</code> as
      *    <code>\{packageFolderPath\}/package.json</code>.</li>
      * <li>Remains constant throughout the lifecycle of the
@@ -56,10 +57,10 @@ export declare class XpmPackage {
      */
     packageFolderPath: string;
     /**
-     * The parsed package.json content, when available.
+     * The parsed `package.json` content, when available.
      *
      * @remarks
-     * This property caches the parsed package.json content after successful
+     * This property caches the parsed `package.json` content after successful
      * reading, avoiding repeated file I/O and parsing operations.
      *
      * Lifecycle states:
@@ -119,11 +120,11 @@ export declare class XpmPackage {
         packageFolderPath: string;
     });
     /**
-     * Reads and parses package.json from the package folder.
+     * Reads and parses `package.json` from the package folder.
      *
      * @remarks
      * This method provides flexible error handling for scenarios where a
-     * missing or invalid package.json may be expected (e.g., checking whether
+     * missing or invalid `package.json` may be expected (e.g., checking whether
      * a folder is a package) versus scenarios where it indicates a critical
      * error (e.g., operating on a known package).
      *
@@ -132,29 +133,30 @@ export declare class XpmPackage {
      * `withThrow` is true, errors are thrown as {@link XpmInputError} for
      * consistent error handling across the application.
      *
-     * @param withThrow - Whether to throw on missing or invalid package.json.
-     * @returns The parsed package.json content, or undefined when missing or
+     * @param withThrow - Whether to throw on missing or invalid `package.json`.
+     * @returns The parsed `package.json` content, or undefined when missing or
      * invalid and `withThrow` is false.
      *
      * @throws {@link XpmInputError}
-     * If package.json is missing or invalid and `withThrow` is true.
+     * If `package.json` is missing or invalid and `withThrow` is true.
      */
     readPackageDotJson({ withThrow, }?: {
         withThrow?: boolean;
     }): Promise<JsonXpmPackage | undefined>;
     /**
-     * Writes the provided package.json content to disk.
+     * Writes the provided `package.json` content to disk.
      *
      * @remarks
      * The JSON content is passed explicitly rather than using the cached
      * value.
      *
-     * @param jsonPackage - The package.json content to write.
+     * @param jsonPackage - The `package.json` content to write.
      * @returns A promise that resolves when the file has been written.
      */
     rewritePackageDotJson(jsonPackage: JsonXpmPackage): Promise<void>;
     /**
-     * Determines whether the package.json content represents a valid npm package.
+     * Determines whether the `package.json` content represents a valid
+     * npm package.
      *
      * @returns `true` if the package has a valid name and version, `false`
      * otherwise.
@@ -206,14 +208,14 @@ export declare class XpmPackage {
      * @returns `true` if the package is a Node module without <b>xpm</b>
      * metadata, `false` otherwise.
      */
-    isNodeModule(): false;
+    isNodeModule(): boolean;
     /**
      * Determines whether the package is a Node module with a binary entry.
      *
      * @returns `true` if the package is a Node module with a bin entry,
      * `false` otherwise.
      */
-    isBinaryNodeModule(): false;
+    isBinaryNodeModule(): boolean;
     /**
      * Determines whether the package defines any npm scripts.
      *
@@ -275,8 +277,8 @@ export declare class XpmPackage {
      * <li>Check if package is an <b>xpm</b> package with
      *    <code>minimumXpmRequired</code> set.</li>
      * <li>Clean the required version by removing pre-release suffixes.</li>
-     * <li>Load the <b>xpm</b> CLI's package.json from the provided root
-     *    folder.</li>
+     * <li>Load the <b>xpm</b> CLI's <code>package.json</code> from the
+     *     provided root folder.</li>
      * <li>Extract and clean the installed <b>xpm</b> version.</li>
      * <li>Compare versions using semver to determine if upgrade is needed.</li>
      * <li>Throw <code>XpmPrerequisitesError</code> if installed version is

@@ -115,7 +115,7 @@ The logger instance for output and diagnostics.
 
 </td><td>
 
-_(Optional)_ The parsed package.json content, when available.
+_(Optional)_ The parsed `package.json` content, when available.
 
 
 </td></tr>
@@ -266,7 +266,7 @@ Determines whether the package is a Node module without <b>xpm</b> metadata.
 
 </td><td>
 
-Determines whether the package.json content represents a valid npm package.
+Determines whether the `package.json` content represents a valid npm package.
 
 
 </td></tr>
@@ -308,7 +308,7 @@ Parses an npm package specifier into its components.
 
 </td><td>
 
-Reads and parses package.json from the package folder.
+Reads and parses `package.json` from the package folder.
 
 
 </td></tr>
@@ -322,7 +322,7 @@ Reads and parses package.json from the package folder.
 
 </td><td>
 
-Writes the provided package.json content to disk.
+Writes the provided `package.json` content to disk.
 
 
 </td></tr>

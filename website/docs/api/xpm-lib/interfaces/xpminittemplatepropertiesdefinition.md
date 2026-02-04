@@ -72,7 +72,7 @@ string \| number \| boolean
 
 </td><td>
 
-_(Optional)_ The default value for the property.
+_(Optional)_ The default value for the property. Must match the property type.
 
 
 </td></tr>
@@ -110,13 +110,13 @@ boolean
 
 </td><td>
 
-_(Optional)_ Indicates whether the property is mandatory.
+_(Optional)_ Indicates whether the property is mandatory; defaults to `false`<!-- -->.
 
 
 </td></tr>
 <tr><td>
 
-[items](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpminittemplatepropertiesdefinition/items)
+[items?](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpminittemplatepropertiesdefinition/items)
 
 
 </td><td>
@@ -124,12 +124,12 @@ _(Optional)_ Indicates whether the property is mandatory.
 
 </td><td>
 
-Record&lt;string, string \| [XpmInitTemplateItemValue](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpminittemplateitemvalue)<!-- -->&gt;
+[XpmInitTemplateItems](/xpm-lib-ts/docs/api/xpm-lib/typealiases/xpminittemplateitems)
 
 
 </td><td>
 
-The selectable items for a `select` property.
+_(Optional)_ The selectable items for a `select` property.
 
 
 </td></tr>
@@ -162,7 +162,7 @@ The human-readable label used in prompts.
 
 </td><td>
 
-'select' \| 'string' \| 'number' \| 'boolean'
+[XpmInitTemplateType](/xpm-lib-ts/docs/api/xpm-lib/typealiases/xpminittemplatetype)
 
 
 </td><td>

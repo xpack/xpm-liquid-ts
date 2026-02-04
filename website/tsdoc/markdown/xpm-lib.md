@@ -351,6 +351,17 @@ Determines whether a value is a non-empty JSON object.
 </td></tr>
 <tr><td>
 
+[isNumber(value)](./xpm-lib.isnumber.md)
+
+
+</td><td>
+
+Determines whether a value is a finite number.
+
+
+</td></tr>
+<tr><td>
+
 [isObject(value)](./xpm-lib.isobject.md)
 
 
@@ -459,7 +470,7 @@ Represents a JSON extended dependency definition.
 
 </td><td>
 
-Represents a JSON npm package.json structure.
+Represents a JSON npm `package.json` structure.
 
 
 </td></tr>
@@ -481,7 +492,7 @@ Represents a JSON npm package specifier.
 
 </td><td>
 
-Represents a JSON xpm-specific section in package.json.
+Represents a JSON xpm-specific section in `package.json`<!-- -->.
 
 
 </td></tr>
@@ -492,7 +503,7 @@ Represents a JSON xpm-specific section in package.json.
 
 </td><td>
 
-Represents a JSON binaries definition in package.json.
+Represents a JSON binaries definition in `package.json.`
 
 
 </td></tr>
@@ -503,7 +514,7 @@ Represents a JSON binaries definition in package.json.
 
 </td><td>
 
-Represents a JSON <b>xpm</b> package.json structure.
+Represents a JSON <b>xpm</b> `package.json` structure.
 
 
 </td></tr>
@@ -537,6 +548,15 @@ Defines the <b>xpm</b> configuration options.
 </td><td>
 
 Provides the execution context for <b>xpm</b> operations.
+
+
+</td></tr>
+<tr><td>
+
+[XpmInitTemplateConstructorParameters](./xpm-lib.xpminittemplateconstructorparameters.md)
+
+
+</td><td>
 
 
 </td></tr>
@@ -781,6 +801,17 @@ Represents a list of action command strings.
 </td></tr>
 <tr><td>
 
+[XpmInitTemplateItems](./xpm-lib.xpminittemplateitems.md)
+
+
+</td><td>
+
+Represents the available items for a `select` type property in `xpm init` templates.
+
+
+</td></tr>
+<tr><td>
+
 [XpmInitTemplatePlatform](./xpm-lib.xpminittemplateplatform.md)
 
 
@@ -798,6 +829,17 @@ Represents the supported platform identifiers for `xpm init` template items.
 </td><td>
 
 Represents a map of `xpm init` template property definitions.
+
+
+</td></tr>
+<tr><td>
+
+[XpmInitTemplateType](./xpm-lib.xpminittemplatetype.md)
+
+
+</td><td>
+
+Represents the supported property types for `xpm init` template properties.
 
 
 </td></tr>

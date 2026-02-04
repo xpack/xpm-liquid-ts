@@ -9,5 +9,5 @@ The absolute path to the module folder.
 **Signature:**
 
 ```typescript
-__dirname: string;
+protected __dirname: string;
 ```

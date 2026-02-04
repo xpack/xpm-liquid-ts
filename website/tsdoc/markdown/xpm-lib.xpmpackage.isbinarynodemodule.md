@@ -9,11 +9,11 @@ Determines whether the package is a Node module with a binary entry.
 **Signature:**
 
 ```typescript
-isBinaryNodeModule(): false;
+isBinaryNodeModule(): boolean;
 ```
 **Returns:**
 
-false
+boolean
 
 `true` if the package is a Node module with a bin entry, `false` otherwise.
 

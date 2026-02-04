@@ -6,28 +6,36 @@ import * as fs from 'node:fs/promises';
 import { makeDirectory } from 'make-dir';
 import { copyFile } from 'cp-file';
 import { Liquid } from 'liquidjs';
-import { XpmOutputError, XpmSyntaxError } from './errors.js';
+import { XpmError, XpmOutputError, XpmSyntaxError } from './errors.js';
+import { isBoolean, isNumber, isObject, isString, } from '../functions/is-something.js';
 export class XpmInitTemplateBase {
-    context;
-    log;
-    propertiesDefinitions = {};
+    _context;
+    _log;
+    _propertiesDefinitions = {};
     __dirname;
-    templatesPath;
-    engine;
-    substitutionsVariables;
-    constructor({ context, __dirname, templatesPath, propertiesDefinitions, }) {
-        assert(context);
-        assert(context.log);
-        assert(__dirname);
-        assert(templatesPath);
-        assert(propertiesDefinitions);
-        this.context = context;
-        this.log = context.log;
-        this.propertiesDefinitions = propertiesDefinitions;
+    _templatesPath;
+    _engine;
+    _substitutionsVariables;
+    _isInteractive = false;
+    _process;
+    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process = process, }) {
+        assert(context, 'context is required');
+        assert(context.log, 'context.log is required');
+        assert(context.config, 'context.context is required');
+        assert(context.config.projectName, 'context.config.projectName is required');
+        assert(context.config.properties, 'context.config.properties is required');
+        assert(__dirname, '__dirname is required');
+        assert(templatesPath, 'templatesPath is required');
+        assert(propertiesDefinitions, 'propertiesDefinitions is required');
+        this._context = context;
+        this._log = context.log;
+        this._propertiesDefinitions = propertiesDefinitions;
         this.__dirname = __dirname;
-        this.templatesPath = templatesPath;
-        this.engine = new Liquid({
-            root: this.templatesPath,
+        this._templatesPath = templatesPath;
+        this._process = _process;
+        this._validatePropertiesDefinitions();
+        this._engine = new Liquid({
+            root: this._templatesPath,
             cache: false,
             strictFilters: true,
             strictVariables: true,
@@ -37,20 +45,20 @@ export class XpmInitTemplateBase {
         });
     }
     async run() {
-        const log = this.log;
+        const log = this._log;
         log.trace(`${this.constructor.name}.run()`);
         log.info();
-        const context = this.context;
+        const context = this._context;
         const config = context.config;
-        assert(config.properties);
+        assert(config.properties, 'config.properties is required');
         let isError = false;
         for (const [key, val] of Object.entries(config.properties)) {
             try {
-                config.properties[key] = this.validateValue(key, val);
+                config.properties[key] = this._validatePropertyValue(key, val);
             }
-            catch (err) {
-                if (err instanceof Error) {
-                    log.error(err.message);
+            catch (error) {
+                if (error instanceof Error) {
+                    log.error(error.message);
                 }
                 isError = true;
             }
@@ -58,12 +66,13 @@ export class XpmInitTemplateBase {
         if (isError) {
             throw new XpmSyntaxError();
         }
-        const mustAsk = Object.keys(this.propertiesDefinitions).some((key) => {
-            return (this.propertiesDefinitions[key].isMandatory && !config.properties?.[key]);
+        const mustAsk = Object.keys(this._propertiesDefinitions).some((key) => {
+            return (this._propertiesDefinitions[key].isMandatory &&
+                !config.properties?.[key]);
         });
         let isInteractive;
         if (mustAsk) {
-            if (!(process.stdin.isTTY && process.stdout.isTTY)) {
+            if (!(this._process.stdin.isTTY && this._process.stdout.isTTY)) {
                 throw new XpmSyntaxError('Interactive mode not possible without a TTY.');
             }
             await this.askForMoreValues();
@@ -72,14 +81,15 @@ export class XpmInitTemplateBase {
             isInteractive = true;
         }
         else {
-            Object.entries(this.propertiesDefinitions).forEach(([key, val]) => {
-                assert(config.properties);
-                if (!config.properties[key] && val.default) {
+            Object.entries(this._propertiesDefinitions).forEach(([key, val]) => {
+                assert(config.properties, 'config.properties is required');
+                if (!config.properties[key] && val.default !== undefined) {
                     config.properties[key] = val.default;
                 }
             });
             isInteractive = false;
         }
+        this._isInteractive = isInteractive;
         const currentTime = new Date();
         const substitutionsVariables = {
             ...config.properties,
@@ -88,59 +98,75 @@ export class XpmInitTemplateBase {
             projectName: config.projectName,
             year: currentTime.getFullYear().toString(),
         };
-        this.substitutionsVariables = substitutionsVariables;
-        await this.generate(isInteractive);
+        this._substitutionsVariables = substitutionsVariables;
+        await this.generate();
         return 0;
     }
-    validateValue(name, value) {
-        const propDef = this.propertiesDefinitions[name];
+    _validatePropertyValue(name, value) {
+        const propDef = this._propertiesDefinitions[name];
         if (propDef === undefined) {
-            throw new Error(`Unsupported property '${name}'`);
+            throw new XpmError(`Unsupported property '${name}'`);
         }
-        if (propDef.type === 'select') {
-            if (propDef.items[value]) {
-                if (typeof propDef.items[value] === 'string') {
+        const trimmedValue = value.trim();
+        switch (propDef.type) {
+            case 'select':
+                assert(propDef.items, `Property '${name}' of type 'select' has no items.`);
+                if (propDef.items[value]) {
+                    if (typeof propDef.items[value] === 'string') {
+                        return value;
+                    }
+                    else if (typeof propDef.items[value] === 'object' &&
+                        this.isPlatformSupported(propDef.items[value].platforms)) {
+                        return value;
+                    }
+                }
+                break;
+            case 'boolean':
+                if (trimmedValue === 'true') {
+                    return true;
+                }
+                else if (trimmedValue === 'false') {
+                    return false;
+                }
+                break;
+            case 'number': {
+                const num = Number(trimmedValue);
+                if (trimmedValue !== '' && isFinite(num)) {
+                    return num;
+                }
+                break;
+            }
+            case 'string':
+                if (trimmedValue !== '') {
                     return value;
                 }
-                else if (typeof propDef.items[value] === 'object' &&
-                    this.isPlatformSupported(propDef.items[value].platforms)) {
-                    return value;
+                if (propDef.default !== undefined) {
+                    return propDef.default;
                 }
-            }
+                break;
+            default:
+                throw new XpmError(`Unsupported property type '${String(propDef.type)}' for '${name}'`);
         }
-        else if (propDef.type === 'boolean') {
-            if (value === 'true') {
-                return true;
-            }
-            else if (value === 'false') {
-                return false;
-            }
-        }
-        else if (propDef.type === 'number') {
-            return Number(value);
-        }
-        if (value === '' && propDef.default !== undefined) {
-            return propDef.default;
-        }
-        throw new Error(`Unsupported value '${value}' for property '${name}'`);
+        throw new XpmError(`Unsupported value '${value}' for property '${name}'`);
     }
     async askForMoreValues() {
-        const context = this.context;
+        const context = this._context;
         const config = context.config;
-        assert(config.properties);
+        assert(config.properties, 'config.properties is required');
         const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
+            input: this._process.stdin,
+            output: this._process.stdout,
         });
-        for (const name of Object.keys(this.propertiesDefinitions)) {
+        for (const name of Object.keys(this._propertiesDefinitions)) {
             if (config.properties[name]) {
                 continue;
             }
-            const definition = this.propertiesDefinitions[name];
+            const definition = this._propertiesDefinitions[name];
             let prompt = `${definition.label}?`;
             if (definition.type === 'select') {
                 prompt += ' (';
                 const validItems = [];
+                assert(definition.items, 'definition.items is required');
                 for (const [ikey, ival] of Object.entries(definition.items)) {
                     if (typeof ival === 'string') {
                         validItems.push(ikey);
@@ -163,16 +189,17 @@ export class XpmInitTemplateBase {
             while (true) {
                 const answer = (await rl.question(prompt)).trim();
                 try {
-                    const value = this.validateValue(name, answer);
+                    const value = this._validatePropertyValue(name, answer);
                     config.properties[name] = value;
                     break;
                 }
-                catch (err) {
-                    if (err instanceof Error) {
-                        this.log.trace(err.message);
+                catch (error) {
+                    if (error instanceof Error) {
+                        this._log.trace(error.message);
                     }
                     console.log(definition.description);
                     if (definition.type === 'select') {
+                        assert(definition.items, 'definition.items is required');
                         for (const [ikey, ival] of Object.entries(definition.items)) {
                             if (typeof ival === 'string') {
                                 console.log(`- ${ikey}: ${ival}`);
@@ -188,27 +215,25 @@ export class XpmInitTemplateBase {
         }
     }
     isPlatformSupported(platforms) {
-        if (!platforms || platforms.length === 0) {
-            return false;
-        }
-        if (platforms.includes(`${process.platform}-${process.arch}`)) {
+        assert(platforms && platforms.length !== 0, 'platforms array is required');
+        if (platforms.includes(`${this._process.platform}-${this._process.arch}`)) {
             return true;
         }
-        if (platforms.includes(process.platform)) {
+        if (platforms.includes(this._process.platform)) {
             return true;
         }
         return false;
     }
     async copyFile(sourceFileRelativePath, destinationFilePath = sourceFileRelativePath) {
-        const log = this.log;
+        const log = this._log;
         await makeDirectory(path.dirname(destinationFilePath));
-        const sourceFileAbsolutePath = path.resolve(this.templatesPath, sourceFileRelativePath);
+        const sourceFileAbsolutePath = path.resolve(this._templatesPath, sourceFileRelativePath);
         await copyFile(sourceFileAbsolutePath, destinationFilePath);
         log.info(`File '${destinationFilePath}' copied.`);
     }
     async copyFolder(source, destination = source) {
-        const log = this.log;
-        await this._copyFolderRecursively(path.resolve(this.templatesPath, source), path.resolve(destination));
+        const log = this._log;
+        await this._copyFolderRecursively(path.resolve(this._templatesPath, source), path.resolve(destination));
         log.info(`Folder '${destination}' copied.`);
     }
     async _copyFolderRecursively(sourceFolderPath, destinationFolderPath) {
@@ -225,20 +250,77 @@ export class XpmInitTemplateBase {
             }
         }
     }
-    async render(inputFileRelativePath, outputFileRelativePath, substitutionsVariables = this.substitutionsVariables) {
-        const log = this.log;
+    async render(inputFileRelativePath, outputFileRelativePath, substitutionsVariables = this._substitutionsVariables) {
+        const log = this._log;
         log.trace(`render(${inputFileRelativePath}, ${outputFileRelativePath})`);
         await makeDirectory(path.dirname(outputFileRelativePath));
         try {
-            const fileContent = (await this.engine.renderFile(inputFileRelativePath, substitutionsVariables));
+            const fileContent = (await this._engine.renderFile(inputFileRelativePath, substitutionsVariables));
             await fs.writeFile(outputFileRelativePath, fileContent, 'utf8');
         }
-        catch (err) {
-            if (err instanceof Error) {
-                throw new XpmOutputError(err.message);
+        catch (error) {
+            if (error instanceof Error) {
+                throw new XpmOutputError(error.message);
             }
         }
         log.info(`File '${outputFileRelativePath}' generated.`);
+    }
+    _validatePropertiesDefinitions() {
+        assert(isObject(this._propertiesDefinitions), 'propertiesDefinitions is not an object.');
+        assert(Object.keys(this._propertiesDefinitions).length > 0, 'propertiesDefinitions is an empty object.');
+        for (const [key, val] of Object.entries(this._propertiesDefinitions)) {
+            assert(isString(val.label), `Property '${key}' must have a string label`);
+            assert(val.label.trim() !== '', `Property '${key}' has an empty label`);
+            assert(isString(val.description), `Property '${key}' must have a string description`);
+            assert(val.description.trim() !== '', `Property '${key}' has an empty description`);
+            if (val.isMandatory !== undefined) {
+                assert(isBoolean(val.isMandatory), `Property '${key}' has a non boolean isMandatory value.`);
+            }
+            assert(val.type !== undefined, `Property '${key}' has no type defined.`);
+            switch (val.type) {
+                case 'select':
+                    assert(val.items !== undefined, `Property '${key}' of type 'select' has no items.`);
+                    assert(isObject(val.items), `Property '${key}' of type 'select' has invalid items.`);
+                    assert(Object.keys(val.items).length !== 0, `Property '${key}' of type 'select' has no items.`);
+                    for (const [ikey, ival] of Object.entries(val.items)) {
+                        assert(isString(ival) ||
+                            (isObject(ival) &&
+                                Array.isArray(ival.platforms) &&
+                                isString(ival.message)), `Property '${key}' has invalid item '${ikey}'.`);
+                    }
+                    if (!val.isMandatory) {
+                        assert(val.default !== undefined, `Property '${key}' of type 'select' ` +
+                            `must have a default value if not mandatory.`);
+                    }
+                    if (val.default !== undefined) {
+                        assert(isString(val.default), `Property '${key}' has a non string default value.`);
+                        assert(val.default.trim() !== '', `Property '${key}' has an empty default value.`);
+                    }
+                    if (val.default !== undefined) {
+                        assert(Object.keys(val.items).includes(String(val.default)), `Property '${key}' has a default value not in items list.`);
+                    }
+                    break;
+                case 'string':
+                    if (val.default !== undefined) {
+                        assert(isString(val.default), `Property '${key}' has a non string default value.`);
+                        assert(val.default.trim() !== '', `Property '${key}' has an empty default value.`);
+                    }
+                    break;
+                case 'number':
+                    if (val.default !== undefined) {
+                        assert(isNumber(val.default), `Property '${key}' has a non number default value.`);
+                    }
+                    break;
+                case 'boolean':
+                    if (val.default !== undefined) {
+                        assert(isBoolean(val.default), `Property '${key}' has a non boolean default value.`);
+                    }
+                    break;
+                default:
+                    assert(false, `Property '${key}' has unsupported type '${String(val.type)}'.`);
+                    break;
+            }
+        }
     }
 }
 //# sourceMappingURL=init-template-base.js.map

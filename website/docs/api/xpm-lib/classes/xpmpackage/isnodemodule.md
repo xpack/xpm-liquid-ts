@@ -19,11 +19,11 @@ Determines whether the package is a Node module without <b>xpm</b> metadata.
 ## Signature
 
 ```typescript
-isNodeModule(): false;
+isNodeModule(): boolean;
 ```
 ## Returns
 
-false
+boolean
 
 `true` if the package is a Node module without <b>xpm</b> metadata, `false` otherwise.
 

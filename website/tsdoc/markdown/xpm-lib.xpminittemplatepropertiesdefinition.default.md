@@ -4,7 +4,7 @@
 
 ## XpmInitTemplatePropertiesDefinition.default property
 
-The default value for the property.
+The default value for the property. Must match the property type.
 
 **Signature:**
 

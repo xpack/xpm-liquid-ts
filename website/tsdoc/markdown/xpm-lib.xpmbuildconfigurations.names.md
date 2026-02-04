@@ -2,18 +2,19 @@
 
 [Home](./index.md) &gt; [@xpack/xpm-lib](./xpm-lib.md) &gt; [XpmBuildConfigurations](./xpm-lib.xpmbuildconfigurations.md) &gt; [names](./xpm-lib.xpmbuildconfigurations.names.md)
 
-## XpmBuildConfigurations.names() method
+## XpmBuildConfigurations.names property
 
-Retrieves the names of all build configurations.
+The names of all build configurations.
 
 **Signature:**
 
 ```typescript
-names(): string[];
+get names(): string[];
 ```
-**Returns:**
 
-string\[\]
+## Remarks
 
-An array of build configuration names.
+This value is known only after `initialise()`<!-- -->.
+
+This getter returns the cached array of configuration names for efficient repeated access without recreating the array.
 

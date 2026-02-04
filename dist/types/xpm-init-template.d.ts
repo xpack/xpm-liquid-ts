@@ -2,11 +2,13 @@ export type XpmInitTemplatePropertiesDefinitions = Record<string, XpmInitTemplat
 export interface XpmInitTemplatePropertiesDefinition {
     label: string;
     description: string;
-    type: 'select' | 'string' | 'number' | 'boolean';
-    items: Record<string, string | XpmInitTemplateItemValue>;
+    type: XpmInitTemplateType;
+    items?: XpmInitTemplateItems;
     isMandatory?: boolean;
     default?: string | number | boolean;
 }
+export type XpmInitTemplateType = 'select' | 'string' | 'number' | 'boolean';
+export type XpmInitTemplateItems = Record<string, string | XpmInitTemplateItemValue>;
 export type XpmInitTemplatePlatform = 'linux' | 'linux-x64' | 'linux-arm64' | 'win32' | 'darwin' | 'darwin-x64' | 'darwin-arm64';
 export interface XpmInitTemplateItemValue {
     platforms: XpmInitTemplatePlatform[];

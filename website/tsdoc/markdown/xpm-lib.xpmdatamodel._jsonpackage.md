@@ -14,7 +14,7 @@ protected _jsonPackage: JsonXpmPackage;
 
 ## Remarks
 
-This object contains the complete package.json content, including both standard npm fields and xpm-specific extensions in the `xpack` section.
+This object contains the complete `package.json` content, including both standard npm fields and xpm-specific extensions in the `xpack` section.
 
 Required structure:
 

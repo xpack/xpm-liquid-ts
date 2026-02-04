@@ -2,10 +2,11 @@ import assert from 'node:assert';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 export async function chmodRecursively({ inputPath, readOnly, log, }) {
-    assert(inputPath, 'mandatory inputPath');
-    assert(log, 'mandatory log');
+    assert(inputPath, 'inputPath is required');
+    assert(log, 'log is required');
     const stat = await fs.lstat(inputPath);
     if (stat.isSymbolicLink()) {
+        log.trace(inputPath, 'is a symbolic link, skipping');
         return;
     }
     if (readOnly && stat.isDirectory()) {

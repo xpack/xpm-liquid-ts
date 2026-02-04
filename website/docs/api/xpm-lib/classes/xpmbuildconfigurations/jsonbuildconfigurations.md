@@ -24,7 +24,7 @@ readonly jsonBuildConfigurations: JsonBuildConfigurations;
 
 ## Remarks
 
-This object holds raw build configuration definitions from the package.json `xpack.buildConfigurations` section. Configurations can be:
+This object holds raw build configuration definitions from the `package.json` `xpack.buildConfigurations` section. Configurations can be:
 
 <ol> <li><b>Regular configurations:</b> Direct objects with properties, dependencies, actions, and inheritance.</li> <li><b>Template configurations:</b> Objects with <code>matrix</code> and <code>template</code> properties for generating multiple configurations from a single definition.</li> </ol>
 

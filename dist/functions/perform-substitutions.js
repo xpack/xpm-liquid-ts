@@ -4,29 +4,32 @@ import { Context } from 'liquidjs';
 import { XpmLiquidMatrixDrop, XpmLiquidPropertiesDrop, } from '../classes/liquid-drop.js';
 import { XpmError } from '../classes/errors.js';
 export async function performSubstitutions({ log, engine, input, substitutionsVariables, }) {
-    assert(substitutionsVariables);
+    assert(substitutionsVariables, 'substitutionsVariables is required');
     if (input.trim() === '') {
         return input;
     }
-    let context;
+    let properties = substitutionsVariables.properties;
+    let matrix = substitutionsVariables.matrix;
     if (Object.keys(substitutionsVariables.properties).length > 0) {
-        context = new Context({
-            ...substitutionsVariables,
-            properties: new XpmLiquidPropertiesDrop({
-                log,
-                engine,
-                properties: substitutionsVariables.properties,
-            }),
-            matrix: new XpmLiquidMatrixDrop({
-                log,
-                engine,
-                matrix: substitutionsVariables.matrix ?? {},
-            }),
+        properties = new XpmLiquidPropertiesDrop({
+            log,
+            engine,
+            properties: substitutionsVariables.properties,
         });
     }
-    else {
-        context = new Context(substitutionsVariables);
+    if (substitutionsVariables.matrix &&
+        Object.keys(substitutionsVariables.matrix).length > 0) {
+        matrix = new XpmLiquidMatrixDrop({
+            log,
+            engine,
+            matrix: substitutionsVariables.matrix,
+        });
     }
+    const context = new Context({
+        ...substitutionsVariables,
+        properties,
+        matrix,
+    }, engine.options, { sync: false });
     log.trace(`performSubstitutions('${input}')`);
     let current = input;
     let substituted = current;
@@ -48,8 +51,6 @@ export async function performSubstitutions({ log, engine, input, substitutionsVa
             else {
                 throw new XpmError(String(error));
             }
-            substituted = current;
-            break;
         }
         log.trace(`performSubstitutions() step ${String(count)} => (`, substituted, ')');
         current = substituted;

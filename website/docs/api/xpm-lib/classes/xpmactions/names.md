@@ -4,7 +4,7 @@
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
 slug: /api/xpm-lib/classes/xpmactions/names
-title: XpmActions.names() method
+title: XpmActions.names property
 custom_edit_url: null
 ---
 
@@ -14,22 +14,19 @@ custom_edit_url: null
 
 
 
-Retrieves the names of all actions in the collection.
+The names of all actions in the collection.
 
 ## Signature
 
 ```typescript
-names(): string[];
+get names(): string[];
 ```
-## Returns
-
-string\[\]
-
-An array of action names.
 
 ## Remarks
 
 This value is known only after `initialise()`<!-- -->.
+
+This getter returns the cached array of action names for efficient repeated access without recreating the array.
 
 <hr/>
 

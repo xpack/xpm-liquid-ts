@@ -32,7 +32,7 @@ When defined:
 
 When `undefined`<!-- -->:
 
-<ol> <li>Actions belong to the package root (<code>xpack.actions</code> in package.json).</li> <li>Only package-level and global variables are available for substitution.</li> </ol>
+<ol> <li>Actions belong to the package root (<code>xpack.actions</code> in <code>package.json</code>).</li> <li>Only package-level and global variables are available for substitution.</li> </ol>
 
 <hr/>
 

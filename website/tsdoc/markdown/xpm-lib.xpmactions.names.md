@@ -2,22 +2,19 @@
 
 [Home](./index.md) &gt; [@xpack/xpm-lib](./xpm-lib.md) &gt; [XpmActions](./xpm-lib.xpmactions.md) &gt; [names](./xpm-lib.xpmactions.names.md)
 
-## XpmActions.names() method
+## XpmActions.names property
 
-Retrieves the names of all actions in the collection.
+The names of all actions in the collection.
 
 **Signature:**
 
 ```typescript
-names(): string[];
+get names(): string[];
 ```
-**Returns:**
-
-string\[\]
-
-An array of action names.
 
 ## Remarks
 
 This value is known only after `initialise()`<!-- -->.
+
+This getter returns the cached array of action names for efficient repeated access without recreating the array.
 

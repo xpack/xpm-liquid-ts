@@ -7,12 +7,12 @@ import { XpmActions } from './actions.js';
 import { XpmBuildConfigurations } from './build-configurations.js';
 export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath';
 export class XpmDataModel {
-    _log;
-    _engine;
-    _jsonPackage;
     substitutionsVariables;
     actions;
     buildConfigurations;
+    _log;
+    _engine;
+    _jsonPackage;
     constructor({ log, jsonPackage, }) {
         log.trace(`${XpmDataModel.name}()`);
         this._log = log;

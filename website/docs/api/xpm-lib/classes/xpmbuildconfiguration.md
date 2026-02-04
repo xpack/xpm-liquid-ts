@@ -175,6 +175,27 @@ Flag indicating whether the configuration has been initialised.
 </td></tr>
 <tr><td>
 
+[\_log](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/_log)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Logger
+
+
+</td><td>
+
+The logger instance for output and diagnostics.
+
+
+</td></tr>
+<tr><td>
+
 [\_substitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/_substitutionsvariables)
 
 
@@ -490,6 +511,52 @@ Description
 </td><td>
 
 Computes the build folder relative path for this configuration.
+
+
+</td></tr>
+<tr><td>
+
+[\_processInherits(localJsonBuildConfiguration)](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/_processinherits)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[\_substituteInherits()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/_substituteinherits)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Performs selective substitution on the inherits field only.
+
+
+</td></tr>
+<tr><td>
+
+[\_substituteTemplate()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration/_substitutetemplate)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Performs template substitution on the entire build configuration JSON.
 
 
 </td></tr>

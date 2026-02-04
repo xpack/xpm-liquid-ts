@@ -16,8 +16,8 @@ export declare class XpmPackage {
     isNpmPackage(): boolean;
     isXpmPackage(): boolean;
     isBinaryXpmPackage(): boolean;
-    isNodeModule(): false;
-    isBinaryNodeModule(): false;
+    isNodeModule(): boolean;
+    isBinaryNodeModule(): boolean;
     hasNpmScripts(): boolean;
     hasXpmActions(): boolean;
     getMinimumXpmRequired(): string | undefined;

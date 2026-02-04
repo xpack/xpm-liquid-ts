@@ -137,6 +137,27 @@ Map of build configuration names to their corresponding instances.
 </td></tr>
 <tr><td>
 
+[\_buildConfigurationsNames](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/_buildconfigurationsnames)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+Cached array of all build configuration names in the collection.
+
+
+</td></tr>
+<tr><td>
+
 [\_isInitialised](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/_isinitialised)
 
 
@@ -202,6 +223,27 @@ The Liquid templating engine for variable substitution.
 </td></tr>
 <tr><td>
 
+[isEmpty](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/isempty)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Indicates whether the collection is empty.
+
+
+</td></tr>
+<tr><td>
+
 [jsonBuildConfigurations](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/jsonbuildconfigurations)
 
 
@@ -239,6 +281,48 @@ Logger
 </td><td>
 
 The logger instance for output and diagnostics.
+
+
+</td></tr>
+<tr><td>
+
+[names](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/names)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+The names of all build configurations.
+
+
+</td></tr>
+<tr><td>
+
+[size](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/size)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+The number of build configurations in the collection.
 
 
 </td></tr>
@@ -285,6 +369,22 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[\_createSubstitutedBuildConfiguration({ buildConfigurationName, jsonBuildConfiguration, combination, newBuildConfigurationsMap, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/_createsubstitutedbuildconfiguration)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Creates a substituted build configuration from a template combination.
+
+
+</td></tr>
+<tr><td>
+
 [\_expandTemplateBuildConfigurations({ buildConfigurationName, jsonBuildConfigurationTemplate, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/_expandtemplatebuildconfigurations)
 
 
@@ -301,15 +401,17 @@ Expands a template build configuration into multiple configurations.
 </td></tr>
 <tr><td>
 
-[empty()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/empty)
+[\_processTemplate({ buildConfigurationName, jsonBuildConfigurationTemplate, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/_processtemplate)
 
 
 </td><td>
 
+`protected`
+
 
 </td><td>
 
-Determines whether the collection is empty.
+Processes a template build configuration by expanding it and registering the generated configurations.
 
 
 </td></tr>
@@ -408,20 +510,6 @@ Completes the async initialisation of the build configurations collection.
 </td><td>
 
 Determines whether a build configuration is hidden.
-
-
-</td></tr>
-<tr><td>
-
-[names()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfigurations/names)
-
-
-</td><td>
-
-
-</td><td>
-
-Retrieves the names of all build configurations.
 
 
 </td></tr>

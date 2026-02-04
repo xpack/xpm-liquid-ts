@@ -14,7 +14,7 @@ export type XpmActionCommands = string[];
 
 ## Remarks
 
-Action commands are always stored as an array of strings after Liquid template evaluation, even if the original definition in package.json was a single string.
+Action commands are always stored as an array of strings after Liquid template evaluation, even if the original definition in `package.json` was a single string.
 
 Each string represents a complete command to be executed in sequence. Commands are typically shell commands but can be any executable that can be invoked from the command line.
 

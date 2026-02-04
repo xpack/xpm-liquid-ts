@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Represents a JSON xpm-specific section in package.json.
+Represents a JSON xpm-specific section in `package.json`<!-- -->.
 
 ## Signature
 

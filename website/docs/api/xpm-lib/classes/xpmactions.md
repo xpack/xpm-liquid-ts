@@ -26,6 +26,8 @@ export declare class XpmActions
 
 This class manages a collection of named actions, each containing one or more commands to be executed. Actions can belong to a package or a build configuration and support template-based definitions with matrix expansion to generate multiple actions from a single template.
 
+The collection always exists, even as empty if no actions are defined.
+
 Action lifecycle phases:
 
 <ol> <li><b>Construction:</b> Basic setup with optional inheritance from parent package.</li> <li><b>Initialisation:</b> Template name expansion without content evaluation.</li> <li><b>Retrieval:</b> On-demand instantiation when accessed via <code>get()</code>.</li> <li><b>Action Initialisation:</b> Liquid template evaluation and substitution.</li> </ol>
@@ -52,7 +54,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)({ log, engine, substitutionsVariables, inheritedActionsMap, jsonActions, buildConfiguration, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/constructor)
+[(constructor)({ log, engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/constructor)
 
 
 </td><td>
@@ -109,6 +111,27 @@ Map&lt;string, [XpmAction](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmaction) \| un
 </td><td>
 
 Map of action names to their corresponding action instances.
+
+
+</td></tr>
+<tr><td>
+
+[\_actionsNames](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/_actionsnames)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+Cached array of all action names in the collection.
 
 
 </td></tr>
@@ -223,6 +246,27 @@ The Liquid templating engine for variable substitution.
 </td></tr>
 <tr><td>
 
+[isEmpty](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/isempty)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Indicates whether the actions collection is empty.
+
+
+</td></tr>
+<tr><td>
+
 [jsonActions](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/jsonactions)
 
 
@@ -260,6 +304,48 @@ Logger
 </td><td>
 
 The logger instance for output and diagnostics.
+
+
+</td></tr>
+<tr><td>
+
+[names](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/names)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+The names of all actions in the collection.
+
+
+</td></tr>
+<tr><td>
+
+[size](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/size)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+The number of actions in the collection.
 
 
 </td></tr>
@@ -306,6 +392,22 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[\_createSubstitutedAction({ actionName, jsonAction, combination, newActionsMap, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/_createsubstitutedaction)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Creates a substituted action from a template and matrix combination.
+
+
+</td></tr>
+<tr><td>
+
 [\_expandTemplateActions({ actionName, jsonActionTemplate, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/_expandtemplateactions)
 
 
@@ -322,15 +424,17 @@ Expands a template action into multiple concrete actions.
 </td></tr>
 <tr><td>
 
-[empty()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/empty)
+[\_processTemplate({ actionName, jsonActionTemplate, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/_processtemplate)
 
 
 </td><td>
 
+`protected`
+
 
 </td><td>
 
-Determines whether the actions collection is empty.
+Processes a template action by expanding it and registering the generated actions.
 
 
 </td></tr>
@@ -373,20 +477,6 @@ Checks whether an action with the specified name exists.
 </td><td>
 
 Completes the async initialisation of the actions collection.
-
-
-</td></tr>
-<tr><td>
-
-[names()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/names)
-
-
-</td><td>
-
-
-</td><td>
-
-Retrieves the names of all actions in the collection.
 
 
 </td></tr>

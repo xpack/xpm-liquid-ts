@@ -4,11 +4,14 @@ export function isPrimitive(value) {
 export function isString(value) {
     return typeof value === 'string';
 }
-export function isObject(value) {
-    return typeof value === 'object' && !Array.isArray(value);
+export function isNumber(value) {
+    return typeof value === 'number' && isFinite(value);
 }
 export function isBoolean(value) {
     return typeof value === 'boolean';
+}
+export function isObject(value) {
+    return typeof value === 'object' && !Array.isArray(value);
 }
 export function isJsonObject(value) {
     return value !== undefined && !isPrimitive(value) && !Array.isArray(value);

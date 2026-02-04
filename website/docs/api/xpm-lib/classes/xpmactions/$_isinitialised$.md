@@ -24,7 +24,7 @@ protected _isInitialised: boolean;
 
 ## Remarks
 
-This flag prevents redundant initialisation and ensures idempotent behavior when  is called multiple times.
+This flag prevents redundant initialisation and ensures idempotent behavior when [XpmActions.initialise()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmactions/initialise) is called multiple times.
 
 State transitions:
 

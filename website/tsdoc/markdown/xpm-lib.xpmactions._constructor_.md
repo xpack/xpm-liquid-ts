@@ -9,12 +9,12 @@ Constructs an actions collection instance.
 **Signature:**
 
 ```typescript
-constructor({ log, engine, substitutionsVariables, inheritedActionsMap, jsonActions, buildConfiguration, }: {
+constructor({ log, engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, }: {
         log: Logger;
         engine: XpmLiquidEngine;
         substitutionsVariables: XpmLiquidSubstitutionsVariables;
-        inheritedActionsMap?: Map<string, XpmAction>;
         jsonActions: JsonActions | undefined;
+        inheritedActionsMap?: Map<string, XpmAction>;
         buildConfiguration?: XpmBuildConfiguration;
     });
 ```
@@ -39,12 +39,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-{ log, engine, substitutionsVariables, inheritedActionsMap, jsonActions, buildConfiguration, }
+{ log, engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, }
 
 
 </td><td>
 
-{ log: Logger; engine: [XpmLiquidEngine](./xpm-lib.xpmliquidengine.md)<!-- -->; substitutionsVariables: [XpmLiquidSubstitutionsVariables](./xpm-lib.xpmliquidsubstitutionsvariables.md)<!-- -->; inheritedActionsMap?: Map&lt;string, [XpmAction](./xpm-lib.xpmaction.md)<!-- -->&gt;; jsonActions: [JsonActions](./xpm-lib.jsonactions.md) \| undefined; buildConfiguration?: [XpmBuildConfiguration](./xpm-lib.xpmbuildconfiguration.md)<!-- -->; }
+{ log: Logger; engine: [XpmLiquidEngine](./xpm-lib.xpmliquidengine.md)<!-- -->; substitutionsVariables: [XpmLiquidSubstitutionsVariables](./xpm-lib.xpmliquidsubstitutionsvariables.md)<!-- -->; jsonActions: [JsonActions](./xpm-lib.jsonactions.md) \| undefined; inheritedActionsMap?: Map&lt;string, [XpmAction](./xpm-lib.xpmaction.md)<!-- -->&gt;; buildConfiguration?: [XpmBuildConfiguration](./xpm-lib.xpmbuildconfiguration.md)<!-- -->; }
 
 
 </td><td>
@@ -55,5 +55,5 @@ Description
 
 ## Remarks
 
-The constructor performs partial initialisation. Complete initialisation requires calling the  method.
+The constructor performs partial initialisation. Complete initialisation requires calling the `XpmActions.initialise()` method.
 

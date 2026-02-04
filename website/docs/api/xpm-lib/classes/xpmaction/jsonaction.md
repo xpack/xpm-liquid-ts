@@ -24,7 +24,7 @@ readonly jsonAction: JsonActionContent;
 
 ## Remarks
 
-This holds the raw command definition as it appears in package.json, before variable substitution. The format can be:
+This holds the raw command definition as it appears in `package.json`<!-- -->, before variable substitution. The format can be:
 
 <ol> <li><b>Simple string:</b> Single command line.</li> <li><b>String array:</b> Multiple commands for sequential execution.</li> </ol>
 

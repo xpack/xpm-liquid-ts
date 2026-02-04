@@ -19,7 +19,7 @@ Determines whether a value is a string.
 ## Signature
 
 ```typescript
-export declare function isString(value: unknown): value is string;
+export declare function isString(value: unknown): boolean;
 ```
 
 ## Parameters
@@ -60,7 +60,7 @@ The value to test.
 
 ## Returns
 
-value is string
+boolean
 
 `true` if the value is a string, `false` otherwise.
 

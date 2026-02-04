@@ -22,8 +22,9 @@ export declare const buildFolderRelativePathPropertyName = "buildFolderRelativeP
  * <ol>
  * <li>Initializes base substitution variables (platform detection, system
  *    information, etc.).</li>
- * <li>Adds package-specific variables from package.json metadata.</li>
- * <li>Merges user-defined properties from xpack.properties.</li>
+ * <li>Adds package-specific variables from <code>package.json</code>
+ *     metadata.</li>
+ * <li>Merges user-defined properties from <code>xpack.properties</code>.</li>
  * <li>Creates package-level actions accessible across all contexts.</li>
  * <li>Creates build configurations, each inheriting the base substitution
  *    context and adding configuration-specific variables.</li>
@@ -35,66 +36,6 @@ export declare const buildFolderRelativePathPropertyName = "buildFolderRelativeP
  * actions are scoped to their respective configurations.
  */
 export declare class XpmDataModel {
-    /**
-     * The logger instance for output and diagnostics.
-     *
-     * @remarks
-     * This logger provides trace-level diagnostics for the entire package
-     * processing hierarchy, including Liquid engine creation, variable
-     * initialization, action collection setup, and build configuration
-     * preparation. It's passed down to child components (actions and build
-     * configurations) to maintain consistent logging throughout the package
-     * lifecycle.
-     */
-    protected _log: Logger;
-    /**
-     * The Liquid engine used for substitutions.
-     *
-     * @remarks
-     * This XpmLiquidEngine instance is configured with strict mode and custom
-     * filters for xpm-specific operations. It's shared across all actions and
-     * build configurations within the package, ensuring consistent template
-     * processing behavior.
-     *
-     * Engine characteristics:
-     *
-     * <ol>
-     * <li>Strict mode enabled to catch undefined variable references.</li>
-     * <li>Custom filters for platform detection (<code>isPlatform</code>,
-     *    <code>isArch</code>).</li>
-     * <li>Custom filters for path sanitization (<code>filterPath</code>,
-     *    <code>filterPosixPath</code>,
-     *    <code>filterWin32Path</code>).</li>
-     * <li>Shared instance reduces memory overhead and ensures consistent
-     *    template evaluation across all package components.</li>
-     * </ol>
-     */
-    protected _engine: Liquid;
-    /**
-     * The JSON package definition.
-     *
-     * @remarks
-     * This object contains the complete package.json content, including both
-     * standard npm fields and xpm-specific extensions in the `xpack` section.
-     *
-     * Required structure:
-     *
-     * <ol>
-     * <li>Standard npm fields: name, version, dependencies, devDependencies.</li>
-     * <li>Required <code>xpack</code> section containing xpm-specific
-     *    configuration.</li>
-     * <li>Optional <code>xpack.properties</code> for user-defined
-     *    substitution variables.</li>
-     * <li>Optional <code>xpack.actions</code> for package-level executable
-     *    actions.</li>
-     * <li>Optional <code>xpack.buildConfigurations</code> for build configuration
-     *    definitions.</li>
-     * </ol>
-     *
-     * The package definition is validated during construction, requiring the
-     * `xpack` section to be present and be a valid JSON object.
-     */
-    protected _jsonPackage: JsonXpmPackage;
     /**
      * The variables available for Liquid substitutions.
      *
@@ -115,7 +56,8 @@ export declare class XpmDataModel {
      * </li>
      * <li><b>Package metadata:</b>
      *   <ul>
-     *   <li><code>package</code>: Complete package.json content (name, version,
+     *   <li><code>package</code>: Complete <code>package.json</code> content
+     *      (name, version,
      *      dependencies, etc.)</li>
      *   </ul>
      * </li>
@@ -181,6 +123,66 @@ export declare class XpmDataModel {
      * </ol>
      */
     readonly buildConfigurations: XpmBuildConfigurations;
+    /**
+     * The logger instance for output and diagnostics.
+     *
+     * @remarks
+     * This logger provides trace-level diagnostics for the entire package
+     * processing hierarchy, including Liquid engine creation, variable
+     * initialization, action collection setup, and build configuration
+     * preparation. It's passed down to child components (actions and build
+     * configurations) to maintain consistent logging throughout the package
+     * lifecycle.
+     */
+    protected _log: Logger;
+    /**
+     * The Liquid engine used for substitutions.
+     *
+     * @remarks
+     * This XpmLiquidEngine instance is configured with strict mode and custom
+     * filters for xpm-specific operations. It's shared across all actions and
+     * build configurations within the package, ensuring consistent template
+     * processing behavior.
+     *
+     * Engine characteristics:
+     *
+     * <ol>
+     * <li>Strict mode enabled to catch undefined variable references.</li>
+     * <li>Custom filters for platform detection (<code>isPlatform</code>,
+     *    <code>isArch</code>).</li>
+     * <li>Custom filters for path sanitization (<code>filterPath</code>,
+     *    <code>filterPosixPath</code>,
+     *    <code>filterWin32Path</code>).</li>
+     * <li>Shared instance reduces memory overhead and ensures consistent
+     *    template evaluation across all package components.</li>
+     * </ol>
+     */
+    protected _engine: Liquid;
+    /**
+     * The JSON package definition.
+     *
+     * @remarks
+     * This object contains the complete `package.json` content, including both
+     * standard npm fields and xpm-specific extensions in the `xpack` section.
+     *
+     * Required structure:
+     *
+     * <ol>
+     * <li>Standard npm fields: name, version, dependencies, devDependencies.</li>
+     * <li>Required <code>xpack</code> section containing xpm-specific
+     *    configuration.</li>
+     * <li>Optional <code>xpack.properties</code> for user-defined
+     *    substitution variables.</li>
+     * <li>Optional <code>xpack.actions</code> for package-level executable
+     *    actions.</li>
+     * <li>Optional <code>xpack.buildConfigurations</code> for build configuration
+     *    definitions.</li>
+     * </ol>
+     *
+     * The package definition is validated during construction, requiring the
+     * `xpack` section to be present and be a valid JSON object.
+     */
+    protected _jsonPackage: JsonXpmPackage;
     /**
      * Constructs a Liquid package processor.
      *

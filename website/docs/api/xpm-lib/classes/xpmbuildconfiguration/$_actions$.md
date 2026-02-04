@@ -28,7 +28,7 @@ This actions collection is created during configuration initialisation and combi
 
 Action assembly workflow:
 
-<ol> <li>Undefined until <code>XpmBuildConfiguration.initialise</code> is called.</li> <li>Collect actions from all inherited configurations in the inheritance chain.</li> <li>Create new <code>XpmActions</code> collection with inherited actions map and local action definitions.</li> <li>Actions inherit the configuration's substitution variables context, including properties and matrix parameters.</li> </ol>
+<ol> <li>Undefined until <code>XpmBuildConfiguration.initialise()</code> is called.</li> <li>Collect actions from all inherited configurations in the inheritance chain.</li> <li>Create new <code>XpmActions</code> collection with inherited actions map and local action definitions.</li> <li>Actions inherit the configuration's substitution variables context, including properties and matrix parameters.</li> </ol>
 
 Actions are accessible after configuration initialisation but remain themselves uninitialised until retrieved and initialised individually, maintaining the lazy evaluation pattern.
 

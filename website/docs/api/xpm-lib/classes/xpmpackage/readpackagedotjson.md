@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Reads and parses package.json from the package folder.
+Reads and parses `package.json` from the package folder.
 
 ## Signature
 
@@ -64,15 +64,15 @@ _(Optional)_
 
 Promise&lt;[JsonXpmPackage](/xpm-lib-ts/docs/api/xpm-lib/interfaces/jsonxpmpackage) \| undefined&gt;
 
-The parsed package.json content, or undefined when missing or invalid and `withThrow` is false.
+The parsed `package.json` content, or undefined when missing or invalid and `withThrow` is false.
 
 ## Exceptions
 
-[XpmInputError](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminputerror) If package.json is missing or invalid and `withThrow` is true.
+[XpmInputError](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminputerror) If `package.json` is missing or invalid and `withThrow` is true.
 
 ## Remarks
 
-This method provides flexible error handling for scenarios where a missing or invalid package.json may be expected (e.g., checking whether a folder is a package) versus scenarios where it indicates a critical error (e.g., operating on a known package).
+This method provides flexible error handling for scenarios where a missing or invalid `package.json` may be expected (e.g., checking whether a folder is a package) versus scenarios where it indicates a critical error (e.g., operating on a known package).
 
 When `withThrow` is false, the method returns undefined for missing or invalid files, allowing callers to handle the absence gracefully. When `withThrow` is true, errors are thrown as [XpmInputError](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminputerror) for consistent error handling across the application.
 

@@ -23,5 +23,9 @@ A promise that resolves to `true` if initialisation was performed, or `false` if
 
 ## Remarks
 
-This method implements the first step of lazy evaluation. It processes all build configuration definitions by expanding template configuration names based on matrix parameters, but does not evaluate the configuration content or perform Liquid substitutions. The actual template evaluation and variable substitution occur later when individual configurations are initialised via [XpmBuildConfiguration.initialise()](./xpm-lib.xpmbuildconfiguration.initialise.md)<!-- -->, and only for configurations that are actually used. This approach avoids unnecessary operations on unused configurations. The method also validates that all expanded configuration names are unique and prepares the internal lookup maps.
+This method implements the first step of lazy evaluation. It processes all build configuration definitions by expanding template configuration names based on matrix parameters, but does not evaluate the configuration content or perform Liquid substitutions. The actual template evaluation and variable substitution occur later when individual configurations are initialised via [XpmBuildConfiguration.initialise()](./xpm-lib.xpmbuildconfiguration.initialise.md)<!-- -->, and only for configurations that are actually used. This approach avoids unnecessary operations on unused configurations.
+
+Processing steps:
+
+<ol> <li>Return early if already initialised (idempotent behaviour).</li> <li>Iterate through all build configuration definitions from the JSON object.</li> <li>For template configurations (names containing <code>{<!-- -->{</code>): <ul> <li>Call <code>\_processTemplate()</code> to expand and register all generated configurations.</li> </ul> </li> <li>For regular configurations: <ul> <li>Validate uniqueness of the configuration name.</li> <li>Register the configuration in internal maps with <code>undefined</code> value (lazy loading).</li> </ul> </li> <li>Cache the array of all configuration names for efficient repeated access.</li> </ol>
 

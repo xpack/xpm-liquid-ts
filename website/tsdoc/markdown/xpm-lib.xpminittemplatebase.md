@@ -18,7 +18,7 @@ This abstract class provides the foundation for template-based project initialis
 
 Template workflow:
 
-<ol> <li>Properties are validated against their definitions</li> <li>Missing mandatory properties trigger interactive prompts (if TTY)</li> <li>Substitution variables are prepared from properties</li> <li>The <code>XpmInitTemplateBase.generate</code> method creates project files</li> </ol>
+<ol> <li>Properties are validated against their definitions</li> <li>Missing mandatory properties trigger interactive prompts (if TTY)</li> <li>Substitution variables are prepared from properties</li> <li>The <code>XpmInitTemplateBase.generate()</code> method creates project files</li> </ol>
 
 Derived classes must implement [XpmInitTemplateBase.generate()](./xpm-lib.xpminittemplatebase.generate.md) to define the specific files and folder structure to create.
 
@@ -42,7 +42,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)({ context, \_\_dirname, templatesPath, propertiesDefinitions, })](./xpm-lib.xpminittemplatebase._constructor_.md)
+[(constructor)({ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, })](./xpm-lib.xpminittemplatebase._constructor_.md)
 
 
 </td><td>
@@ -86,6 +86,8 @@ Description
 
 </td><td>
 
+`protected`
+
 
 </td><td>
 
@@ -100,10 +102,12 @@ The absolute path to the module folder.
 </td></tr>
 <tr><td>
 
-[context](./xpm-lib.xpminittemplatebase.context.md)
+[\_context](./xpm-lib.xpminittemplatebase._context.md)
 
 
 </td><td>
+
+`protected`
 
 
 </td><td>
@@ -119,10 +123,12 @@ The <b>xpm</b> context containing configuration and logging utilities.
 </td></tr>
 <tr><td>
 
-[engine](./xpm-lib.xpminittemplatebase.engine.md)
+[\_engine](./xpm-lib.xpminittemplatebase._engine.md)
 
 
 </td><td>
+
+`protected`
 
 
 </td><td>
@@ -138,10 +144,31 @@ The Liquid templating engine instance.
 </td></tr>
 <tr><td>
 
-[log](./xpm-lib.xpminittemplatebase.log.md)
+[\_isInteractive](./xpm-lib.xpminittemplatebase._isinteractive.md)
 
 
 </td><td>
+
+`protected`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[\_log](./xpm-lib.xpminittemplatebase._log.md)
+
+
+</td><td>
+
+`protected`
 
 
 </td><td>
@@ -157,10 +184,31 @@ The logger instance for output and diagnostics.
 </td></tr>
 <tr><td>
 
-[propertiesDefinitions](./xpm-lib.xpminittemplatebase.propertiesdefinitions.md)
+[\_process](./xpm-lib.xpminittemplatebase._process.md)
 
 
 </td><td>
+
+`protected`
+
+
+</td><td>
+
+NodeJS.Process
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[\_propertiesDefinitions](./xpm-lib.xpminittemplatebase._propertiesdefinitions.md)
+
+
+</td><td>
+
+`protected`
 
 
 </td><td>
@@ -176,10 +224,12 @@ Definitions of all properties supported by this template.
 </td></tr>
 <tr><td>
 
-[substitutionsVariables?](./xpm-lib.xpminittemplatebase.substitutionsvariables.md)
+[\_substitutionsVariables?](./xpm-lib.xpminittemplatebase._substitutionsvariables.md)
 
 
 </td><td>
+
+`protected`
 
 
 </td><td>
@@ -195,10 +245,12 @@ _(Optional)_ The variables to be used for template substitutions.
 </td></tr>
 <tr><td>
 
-[templatesPath](./xpm-lib.xpminittemplatebase.templatespath.md)
+[\_templatesPath](./xpm-lib.xpminittemplatebase._templatespath.md)
 
 
 </td><td>
+
+`protected`
 
 
 </td><td>
@@ -250,6 +302,36 @@ Recursively copies all contents of a source folder to a destination folder.
 </td></tr>
 <tr><td>
 
+[\_validatePropertiesDefinitions()](./xpm-lib.xpminittemplatebase._validatepropertiesdefinitions.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[\_validatePropertyValue(name, value)](./xpm-lib.xpminittemplatebase._validatepropertyvalue.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Validates a property value against its definition.
+
+
+</td></tr>
+<tr><td>
+
 [askForMoreValues()](./xpm-lib.xpminittemplatebase.askformorevalues.md)
 
 
@@ -292,7 +374,7 @@ Copies an entire folder from the templates folder to the destination.
 </td></tr>
 <tr><td>
 
-[generate(isInteractive)](./xpm-lib.xpminittemplatebase.generate.md)
+[generate()](./xpm-lib.xpminittemplatebase.generate.md)
 
 
 </td><td>
@@ -345,20 +427,6 @@ Renders a template file using Liquid and writes the output.
 </td><td>
 
 Executes the template initialisation process.
-
-
-</td></tr>
-<tr><td>
-
-[validateValue(name, value)](./xpm-lib.xpminittemplatebase.validatevalue.md)
-
-
-</td><td>
-
-
-</td><td>
-
-Validates a property value against its definition.
 
 
 </td></tr>

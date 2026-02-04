@@ -68,9 +68,9 @@ boolean
 
 This function distinguishes between objects and arrays, which is crucial when processing JSON structures where both use the object type but require different handling.
 
-Returns `true` for: plain objects, class instances, and other object types.
+Returns `true` for: plain objects, class instances, null and other object types.
 
-Returns `false` for: arrays, null, primitives, and functions.
+Returns `false` for: arrays, primitives, and functions.
 
 Note: Arrays in JavaScript are objects, so this function explicitly excludes them using `Array.isArray()`<!-- -->. Use [isJsonObject()](/xpm-lib-ts/docs/api/xpm-lib/functions/isjsonobject) for stricter JSON object validation that also excludes `undefined` and `null`<!-- -->.
 

@@ -109,6 +109,15 @@ Determines whether a value is a non-empty JSON object.
 </td></tr>
 <tr><td>
 
+[isNumber()](/docs/api/xpm-lib/functions/isnumber)
+
+</td><td>
+
+Determines whether a value is a finite number.
+
+</td></tr>
+<tr><td>
+
 [isObject()](/docs/api/xpm-lib/functions/isobject)
 
 </td><td>

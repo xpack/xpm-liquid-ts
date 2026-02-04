@@ -77,8 +77,8 @@ Common usage pattern:
 ```typescript
 try {
   // code that might throw
-} catch (err) {
-  const message = getErrorMessage(err);
+} catch (error) {
+  const message = getErrorMessage(error);
   log.error(message);
 }
 ```

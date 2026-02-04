@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Writes the provided package.json content to disk.
+Writes the provided `package.json` content to disk.
 
 ## Signature
 
@@ -52,7 +52,7 @@ jsonPackage
 
 </td><td>
 
-The package.json content to write.
+The `package.json` content to write.
 
 
 </td></tr>

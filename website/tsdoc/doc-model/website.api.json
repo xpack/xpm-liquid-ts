@@ -413,7 +413,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@xpack/xpm-lib!getErrorMessage:function(1)",
-          "docComment": "/**\n * Extracts an error message string from an unknown error value.\n *\n * @remarks\n *\n * This utility handles error values of any type, extracting the message property from `Error` instances or converting other types to strings. Useful for consistent error reporting when the error type is unknown.\n *\n * TypeScript's catch clause types errors as `unknown` for safety, since JavaScript allows throwing any value (not just `Error` instances). This function provides a type-safe way to extract a message string:\n *\n * <ul> <li><b>For Error instances:</b> Returns the <code>message</code> property.</li> <li><b>For other types:</b> Converts to string using <code>String()</code>, which handles primitives, objects with <code>toString()</code>, <code>null</code>, and <code>undefined</code> gracefully.</li> </ul>\n *\n * Common usage pattern:\n * ```typescript\n * try {\n *   // code that might throw\n * } catch (err) {\n *   const message = getErrorMessage(err);\n *   log.error(message);\n * }\n * ```\n *\n * @param error - The error value to convert.\n *\n * @returns The error message string.\n */\n",
+          "docComment": "/**\n * Extracts an error message string from an unknown error value.\n *\n * @remarks\n *\n * This utility handles error values of any type, extracting the message property from `Error` instances or converting other types to strings. Useful for consistent error reporting when the error type is unknown.\n *\n * TypeScript's catch clause types errors as `unknown` for safety, since JavaScript allows throwing any value (not just `Error` instances). This function provides a type-safe way to extract a message string:\n *\n * <ul> <li><b>For Error instances:</b> Returns the <code>message</code> property.</li> <li><b>For other types:</b> Converts to string using <code>String()</code>, which handles primitives, objects with <code>toString()</code>, <code>null</code>, and <code>undefined</code> gracefully.</li> </ul>\n *\n * Common usage pattern:\n * ```typescript\n * try {\n *   // code that might throw\n * } catch (error) {\n *   const message = getErrorMessage(error);\n *   log.error(message);\n * }\n * ```\n *\n * @param error - The error value to convert.\n *\n * @returns The error message string.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -458,7 +458,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@xpack/xpm-lib!getPlatformKey:function(1)",
-          "docComment": "/**\n * Builds a unique key using the current platform and architecture.\n *\n * @remarks\n *\n * Generates a platform identifier string used for matching binary packages to the current system or for platform-specific configuration.\n *\n * Platform key format: `<platform>-<arch>`\n *\n * Examples:\n *\n * <ul> <li><code>darwin-x64</code> (macOS on Intel)</li> <li><code>darwin-arm64</code> (macOS on Apple Silicon)</li> <li><code>linux-x64</code> (Linux on 64-bit Intel/AMD)</li> <li><code>win32-x64</code> (Windows on 64-bit)</li> </ul>\n *\n * 32-bit coercion rules (when doForce32bit is true):\n *\n * <ul> <li><b>Windows x64 → ia32:</b> Forces 32-bit binaries on 64-bit Windows.</li> <li><b>Linux x64 → ia32:</b> Forces 32-bit binaries on 64-bit Linux.</li> <li><b>Linux arm64 → arm:</b> Forces 32-bit ARM binaries on 64-bit ARM Linux.</li> </ul>\n *\n * This coercion is useful for backward compatibility scenarios where only 32-bit binaries are available but can run on 64-bit systems. The platform key matches the naming conventions used in binary xPack distributions.\n *\n * @param doForce32bit - Whether to coerce certain 64-bit platforms to their 32-bit equivalents.\n *\n * @returns The platform key in the form `platform-arch`.\n */\n",
+          "docComment": "/**\n * Builds a unique key using the current platform and architecture.\n *\n * @remarks\n *\n * Generates a platform identifier string used for matching binary packages to the current system or for platform-specific configuration.\n *\n * Platform key format: `<platform>-<arch>`\n *\n * Examples:\n *\n * <ul> <li><code>darwin-x64</code> (macOS on Intel)</li> <li><code>darwin-arm64</code> (macOS on Apple Silicon)</li> <li><code>linux-x64</code> (Linux on 64-bit Intel/AMD)</li> <li><code>win32-x64</code> (Windows on 64-bit)</li> </ul>\n *\n * Architecture coercion rules (when doForce32bit is true):\n *\n * <ul> <li><b>x64 → ia32:</b> Coerces 64-bit Intel/AMD architecture to 32-bit on all platforms.</li> <li><b>arm64 → arm:</b> Coerces 64-bit ARM architecture to 32-bit on all platforms.</li> </ul>\n *\n * This coercion is useful for backward compatibility scenarios where only 32-bit binaries are available but can run on 64-bit systems. The platform key matches the naming conventions used in binary xPack distributions.\n *\n * @param doForce32bit - Whether to coerce 64-bit architectures to their 32-bit equivalents.\n *\n * @returns The platform key in the form `platform-arch`.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -593,7 +593,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@xpack/xpm-lib!isJsonObject:function(1)",
-          "docComment": "/**\n * Determines whether a value is a JSON object.\n *\n * @remarks\n *\n * Validates that a value represents a JSON object, which is stricter than JavaScript's general object type. This is essential when working with parsed JSON data or `package.json` structures.\n *\n * Returns `true` for: plain objects and class instances (non-null, non-primitive, non-array values).\n *\n * Returns `false` for: undefined, null, primitives (string, number, boolean, etc.), and arrays.\n *\n * This is the primary validation function for JSON objects in the <b>xpm</b> codebase, used extensively when parsing `package.json` sections like `xpack.properties`, `xpack.buildConfigurations`, etc.\n *\n * @param value - The value to test.\n *\n * @returns `true` if the value is a JSON object, `false` otherwise.\n */\n",
+          "docComment": "/**\n * Determines whether a value is a JSON object.\n *\n * @remarks\n *\n * Validates that a value represents a JSON object, which is stricter than JavaScript's general object type. This is essential when working with parsed JSON data or `package.json` structures.\n *\n * Returns `true` for: plain objects (non-null, non-primitive, non-array values).\n *\n * Returns `false` for: undefined, null, primitives (string, number, boolean, etc.), and arrays.\n *\n * This is the primary validation function for JSON objects in the <b>xpm</b> codebase, used extensively when parsing `package.json` sections like `xpack.properties`, `xpack.buildConfigurations`, etc.\n *\n * @param value - The value to test.\n *\n * @returns `true` if the value is a JSON object, `false` otherwise.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -682,8 +682,53 @@
         },
         {
           "kind": "Function",
+          "canonicalReference": "@xpack/xpm-lib!isNumber:function(1)",
+          "docComment": "/**\n * Determines whether a value is a finite number.\n *\n * @remarks\n *\n * This function validates that a value is both a number type and mathematically finite, excluding `NaN`, `Infinity`, and `-Infinity`. This is essential when validating numeric configuration values or processing JSON data where numeric fields must contain valid, computable values.\n *\n * Returns `true` for: all finite numeric values, including `0`, negative numbers, and floating-point numbers.\n *\n * Returns `false` for: `NaN`, `Infinity`, `-Infinity`, strings, objects, arrays, and any non-number types.\n *\n * Only returns `true` for primitive number values, not Number objects created with `new Number()`.\n *\n * The finiteness check is crucial for mathematical operations and ensures that numeric properties in `package.json` or configuration files contain usable values rather than special numeric constants that could cause unexpected behaviour in calculations.\n *\n * @param value - The value to test.\n *\n * @returns `true` if the value is a finite number, `false` otherwise.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare function isNumber(value: "
+            },
+            {
+              "kind": "Content",
+              "text": "unknown"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Content",
+              "text": "boolean"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "../src/functions/is-something.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 3,
+            "endIndex": 4
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "value",
+              "parameterTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isOptional": false
+            }
+          ],
+          "name": "isNumber"
+        },
+        {
+          "kind": "Function",
           "canonicalReference": "@xpack/xpm-lib!isObject:function(1)",
-          "docComment": "/**\n * Determines whether a value is a non-array object.\n *\n * @remarks\n *\n * This function distinguishes between objects and arrays, which is crucial when processing JSON structures where both use the object type but require different handling.\n *\n * Returns `true` for: plain objects, class instances, and other object types.\n *\n * Returns `false` for: arrays, null, primitives, and functions.\n *\n * Note: Arrays in JavaScript are objects, so this function explicitly excludes them using `Array.isArray()`. Use {@link isJsonObject} for stricter JSON object validation that also excludes `undefined` and `null`.\n *\n * @param value - The value to test.\n *\n * @returns `true` if the value is a non-array object, `false` otherwise.\n */\n",
+          "docComment": "/**\n * Determines whether a value is a non-array object.\n *\n * @remarks\n *\n * This function distinguishes between objects and arrays, which is crucial when processing JSON structures where both use the object type but require different handling.\n *\n * Returns `true` for: plain objects, class instances, null and other object types.\n *\n * Returns `false` for: arrays, primitives, and functions.\n *\n * Note: Arrays in JavaScript are objects, so this function explicitly excludes them using `Array.isArray()`. Use {@link isJsonObject} for stricter JSON object validation that also excludes `undefined` and `null`.\n *\n * @param value - The value to test.\n *\n * @returns `true` if the value is a non-array object, `false` otherwise.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -788,13 +833,8 @@
               "text": "): "
             },
             {
-              "kind": "Reference",
-              "text": "value",
-              "canonicalReference": "@xpack/xpm-lib!~value"
-            },
-            {
               "kind": "Content",
-              "text": " is string"
+              "text": "boolean"
             },
             {
               "kind": "Content",
@@ -804,7 +844,7 @@
           "fileUrlPath": "../src/functions/is-something.ts",
           "returnTypeTokenRange": {
             "startIndex": 3,
-            "endIndex": 5
+            "endIndex": 4
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
@@ -1574,7 +1614,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@xpack/xpm-lib!JsonNpmPackage:interface",
-          "docComment": "/**\n * Represents a JSON npm package.json structure.\n */\n",
+          "docComment": "/**\n * Represents a JSON npm `package.json` structure.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -1589,7 +1629,7 @@
             {
               "kind": "IndexSignature",
               "canonicalReference": "@xpack/xpm-lib!JsonNpmPackage:index(1)",
-              "docComment": "/**\n * Allows additional package.json properties.\n */\n",
+              "docComment": "/**\n * Allows additional `package.json` properties.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -2002,7 +2042,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@xpack/xpm-lib!JsonXpack:interface",
-          "docComment": "/**\n * Represents a JSON xpm-specific section in package.json.\n *\n * @remarks\n *\n * The `xpack` section extends standard npm `package.json` with xpm-specific metadata for binary package management, build automation, and cross-platform development workflows.\n *\n * Key capabilities:\n *\n * <ul> <li><b>Binary packages:</b> Define platform-specific binary distributions with download URLs, checksums, and installation configuration.</li> <li><b>Build configurations:</b> Organize multiple build targets (debug, release, platform variants) with inherited properties and dependencies.</li> <li><b>Actions:</b> Define build automation commands that can reference properties and build configuration context via Liquid templates.</li> <li><b>Properties:</b> User-defined configuration values accessible throughout the package via template substitution.</li> <li><b>Version requirements:</b> Specify minimum <b>xpm</b> version for feature compatibility and policy enforcement.</li> </ul>\n *\n * The `xpack` section is optional in npm packages but required for packages using xpm-specific features like build configurations or binary distributions.\n */\n",
+          "docComment": "/**\n * Represents a JSON xpm-specific section in `package.json`.\n *\n * @remarks\n *\n * The `xpack` section extends standard npm `package.json` with xpm-specific metadata for binary package management, build automation, and cross-platform development workflows.\n *\n * Key capabilities:\n *\n * <ul> <li><b>Binary packages:</b> Define platform-specific binary distributions with download URLs, checksums, and installation configuration.</li> <li><b>Build configurations:</b> Organize multiple build targets (debug, release, platform variants) with inherited properties and dependencies.</li> <li><b>Actions:</b> Define build automation commands that can reference properties and build configuration context via Liquid templates.</li> <li><b>Properties:</b> User-defined configuration values accessible throughout the package via template substitution.</li> <li><b>Version requirements:</b> Specify minimum <b>xpm</b> version for feature compatibility and policy enforcement.</li> </ul>\n *\n * The `xpack` section is optional in npm packages but required for packages using xpm-specific features like build configurations or binary distributions.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2279,7 +2319,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@xpack/xpm-lib!JsonXpmBinaries:interface",
-          "docComment": "/**\n * Represents a JSON binaries definition in package.json.\n *\n * @remarks\n *\n * Configures binary package distribution for tools, SDKs, or compiled applications. <b>xpm</b> downloads platform-specific archives, verifies their integrity, and extracts them to the specified destination.\n *\n * Example usage in `package.json`:\n * ```json\n * \"binaries\": {\n *   \"destination\": \".content\",\n *   \"baseUrl\": \"https://github.com/org/repo/releases/download/v1.0.0\",\n *   \"skip\": 1,\n *   \"platforms\": {\n *     \"linux-x64\": {\n *       \"fileName\": \"tool-linux-x64.tar.gz\",\n *       \"sha256\": \"abc123...\"\n *     }\n *   }\n * }\n * ```\n *\n * The skip parameter removes leading path segments from archive entries during extraction, useful for archives with wrapper folders. Checksums ensure downloaded files haven't been corrupted or tampered with.\n */\n",
+          "docComment": "/**\n * Represents a JSON binaries definition in `package.json.`\n *\n * @remarks\n *\n * Configures binary package distribution for tools, SDKs, or compiled applications. <b>xpm</b> downloads platform-specific archives, verifies their integrity, and extracts them to the specified destination.\n *\n * Example usage in `package.json`:\n * ```json\n * \"binaries\": {\n *   \"destination\": \".content\",\n *   \"baseUrl\": \"https://github.com/org/repo/releases/download/v1.0.0\",\n *   \"skip\": 1,\n *   \"platforms\": {\n *     \"linux-x64\": {\n *       \"fileName\": \"tool-linux-x64.tar.gz\",\n *       \"sha256\": \"abc123...\"\n *     }\n *   }\n * }\n * ```\n *\n * The skip parameter removes leading path segments from archive entries during extraction, useful for archives with wrapper folders. Checksums ensure downloaded files haven't been corrupted or tampered with.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2446,7 +2486,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@xpack/xpm-lib!JsonXpmPackage:interface",
-          "docComment": "/**\n * Represents a JSON <b>xpm</b> package.json structure.\n *\n * @remarks\n *\n * Combines standard npm `package.json` properties with xpm-specific extensions via the required `xpack` section. All <b>xpm</b> packages are valid npm packages, but not all npm packages are <b>xpm</b> packages.\n *\n * An <b>xpm</b> package can be:\n *\n * <ul> <li><b>A source package:</b> Provides reusable code or resources for other packages. It contains code, build configurations, and actions.</li> <li><b>A binary package:</b> Distributes pre-built binaries for multiple platforms with automated installation.</li> </ul>\n *\n * The presence of the `xpack` section enables <b>xpm</b>-specific features like template-based build configurations, matrix expansion, property substitution, and platform-specific binary distribution. Standard npm fields (name, version, etc.) are used for package identification.\n */\n",
+          "docComment": "/**\n * Represents a JSON <b>xpm</b> `package.json` structure.\n *\n * @remarks\n *\n * Combines standard npm `package.json` properties with xpm-specific extensions via the required `xpack` section. All <b>xpm</b> packages are valid npm packages, but not all npm packages are <b>xpm</b> packages.\n *\n * An <b>xpm</b> package can be:\n *\n * <ul> <li><b>A source package:</b> Provides reusable code or resources for other packages. It contains code, build configurations, and actions.</li> <li><b>A binary package:</b> Distributes pre-built binaries for multiple platforms with automated installation.</li> </ul>\n *\n * The presence of the `xpack` section enables <b>xpm</b>-specific features like template-based build configurations, matrix expansion, property substitution, and platform-specific binary distribution. Standard npm fields (name, version, etc.) are used for package identification.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2932,7 +2972,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmAction#commands:member",
-              "docComment": "/**\n * Retrieves the array of command strings for this action.\n *\n * @remarks\n *\n * The action must be initialised via {@link XpmAction.initialise} before accessing this property. Attempting to access commands from an uninitialised action will result in an assertion error.\n *\n * @returns The array of command strings after variable substitution.\n *\n * @throws\n *\n * `AssertionError` If the action has not been initialised.\n */\n",
+              "docComment": "/**\n * Retrieves the array of command strings for this action.\n *\n * @remarks\n *\n * The action must be initialised via {@link XpmAction.initialise} before accessing this property. Attempting to access commands from an uninitialised action will result in an assertion error.\n *\n * @returns The array of command strings after variable substitution.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -2998,7 +3038,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmAction#jsonAction:member",
-              "docComment": "/**\n * The JSON definition of the action commands.\n *\n * @remarks\n *\n * This holds the raw command definition as it appears in package.json, before variable substitution. The format can be:\n *\n * <ol> <li><b>Simple string:</b> Single command line.</li> <li><b>String array:</b> Multiple commands for sequential execution.</li> </ol>\n *\n * The definition is preserved in its original form to enable:\n *\n * <ol> <li>Creating copies of inherited actions with identical definitions.</li> <li>Deferred template evaluation during <code>XpmAction.initialise()</code>.</li> <li>Re-evaluation if needed with different variable contexts.</li> </ol>\n *\n * This immutable storage ensures actions can be safely copied and initialised multiple times without side effects.\n */\n",
+              "docComment": "/**\n * The JSON definition of the action commands.\n *\n * @remarks\n *\n * This holds the raw command definition as it appears in `package.json`, before variable substitution. The format can be:\n *\n * <ol> <li><b>Simple string:</b> Single command line.</li> <li><b>String array:</b> Multiple commands for sequential execution.</li> </ol>\n *\n * The definition is preserved in its original form to enable:\n *\n * <ol> <li>Creating copies of inherited actions with identical definitions.</li> <li>Deferred template evaluation during <code>XpmAction.initialise()</code>.</li> <li>Re-evaluation if needed with different variable contexts.</li> </ol>\n *\n * This immutable storage ensures actions can be safely copied and initialised multiple times without side effects.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3063,7 +3103,7 @@
         {
           "kind": "TypeAlias",
           "canonicalReference": "@xpack/xpm-lib!XpmActionCommands:type",
-          "docComment": "/**\n * Represents a list of action command strings.\n *\n * @remarks\n *\n * Action commands are always stored as an array of strings after Liquid template evaluation, even if the original definition in package.json was a single string.\n *\n * Each string represents a complete command to be executed in sequence. Commands are typically shell commands but can be any executable that can be invoked from the command line.\n *\n * The array structure enables:\n *\n * <ul> <li><b>Multi-step actions:</b> Execute multiple commands in order.</li> <li><b>Error handling:</b> Stop execution on first command failure (default behavior).</li> <li><b>Logging:</b> Report progress as each command completes.</li> </ul>\n *\n * Commands have access to the full shell environment and can reference environment variables, pipe outputs, or chain operations using standard shell syntax (`&&`, `||`, `|`, etc.).\n */\n",
+          "docComment": "/**\n * Represents a list of action command strings.\n *\n * @remarks\n *\n * Action commands are always stored as an array of strings after Liquid template evaluation, even if the original definition in `package.json` was a single string.\n *\n * Each string represents a complete command to be executed in sequence. Commands are typically shell commands but can be any executable that can be invoked from the command line.\n *\n * The array structure enables:\n *\n * <ul> <li><b>Multi-step actions:</b> Execute multiple commands in order.</li> <li><b>Error handling:</b> Stop execution on first command failure (default behavior).</li> <li><b>Logging:</b> Report progress as each command completes.</li> </ul>\n *\n * Commands have access to the full shell environment and can reference environment variables, pipe outputs, or chain operations using standard shell syntax (`&&`, `||`, `|`, etc.).\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3089,7 +3129,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@xpack/xpm-lib!XpmActions:class",
-          "docComment": "/**\n * A collection of <b>xpm</b> actions for a build configuration or the entire package.\n *\n * @remarks\n *\n * This class manages a collection of named actions, each containing one or more commands to be executed. Actions can belong to a package or a build configuration and support template-based definitions with matrix expansion to generate multiple actions from a single template.\n *\n * Action lifecycle phases:\n *\n * <ol> <li><b>Construction:</b> Basic setup with optional inheritance from parent package.</li> <li><b>Initialisation:</b> Template name expansion without content evaluation.</li> <li><b>Retrieval:</b> On-demand instantiation when accessed via <code>get()</code>.</li> <li><b>Action Initialisation:</b> Liquid template evaluation and substitution.</li> </ol>\n *\n * This multi-phase approach ensures efficient resource usage by deferring expensive operations until actions are actually needed.\n */\n",
+          "docComment": "/**\n * A collection of <b>xpm</b> actions for a build configuration or the entire package.\n *\n * @remarks\n *\n * This class manages a collection of named actions, each containing one or more commands to be executed. Actions can belong to a package or a build configuration and support template-based definitions with matrix expansion to generate multiple actions from a single template.\n *\n * The collection always exists, even as empty if no actions are defined.\n *\n * Action lifecycle phases:\n *\n * <ol> <li><b>Construction:</b> Basic setup with optional inheritance from parent package.</li> <li><b>Initialisation:</b> Template name expansion without content evaluation.</li> <li><b>Retrieval:</b> On-demand instantiation when accessed via <code>get()</code>.</li> <li><b>Action Initialisation:</b> Liquid template evaluation and substitution.</li> </ol>\n *\n * This multi-phase approach ensures efficient resource usage by deferring expensive operations until actions are actually needed.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3105,7 +3145,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmActions#_actionsMap:member",
-              "docComment": "/**\n * Map of action names to their corresponding action instances.\n *\n * @remarks\n *\n * This map serves as the primary action registry, populated during collection initialisation with entries for all discovered actions.\n *\n * Key characteristics:\n *\n * <ol> <li>Known only after <code>XpmActions.initialise()()()</code> completes.</li> <li>Possibly empty if there are no actions defined.</li> <li>Values can be <code>undefined</code> to indicate an action exists but hasn't been instantiated yet (lazy loading).</li> <li>For template actions, contains one entry per expanded combination, not the original template definition.</li> </ol>\n *\n * Actions transition from `undefined` to instantiated when first accessed via {@link XpmActions.get}, implementing the lazy evaluation pattern.\n */\n",
+              "docComment": "/**\n * Map of action names to their corresponding action instances.\n *\n * @remarks\n *\n * This map serves as the primary action registry, populated during collection initialisation with entries for all discovered actions.\n *\n * Key characteristics:\n *\n * <ol> <li>Known only after <code>XpmActions.initialise()</code> completes.</li> <li>Possibly empty if there are no actions defined.</li> <li>Values can be <code>undefined</code> to indicate an action exists but hasn't been instantiated yet (lazy loading).</li> <li>For template actions, contains one entry per expanded combination, not the original template definition.</li> </ol>\n *\n * Actions transition from `undefined` to instantiated when first accessed via {@link XpmActions.get}, implementing the lazy evaluation pattern.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3148,8 +3188,38 @@
             },
             {
               "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmActions#_actionsNames:member",
+              "docComment": "/**\n * Cached array of all action names in the collection.\n *\n * @remarks\n *\n * This array provides O(1) access to action names without repeatedly creating new arrays from the map keys, improving performance when the names are accessed multiple times.\n *\n * Key characteristics:\n *\n * <ol> <li>Empty initially after construction.</li> <li>Populated during <code>XpmActions.initialise()</code> after all action names are determined.</li> <li>Contains all action names including those generated from templates.</li> <li>Returned by the <code>names</code> getter for efficient repeated access.</li> </ol>\n *\n * This cached approach avoids the overhead of calling `Array.from(map.keys())` on every access whilst still providing a clean getter interface.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _actionsNames: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_actionsNames",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmActions#_actionsNamesSet:member",
-              "docComment": "/**\n * Set of all action names for quick lookup.\n *\n * @remarks\n *\n * This set provides O(1) existence checks for action names, enabling efficient validation during template expansion and duplicate detection.\n *\n * Key characteristics:\n *\n * <ol> <li>Known only after <code>XpmActions.initialise()</code> completes.</li> <li>Contains all action names including those generated from templates.</li> <li>Used to detect duplicate action names that might arise from template expansion conflicts or explicit duplicates in package.json.</li> </ol>\n *\n * This redundant storage (alongside `_actionsMap`) is justified by the performance benefit for name existence checks, especially in packages with many actions.\n */\n",
+              "docComment": "/**\n * Set of all action names for quick lookup.\n *\n * @remarks\n *\n * This set provides O(1) existence checks for action names, enabling efficient validation during template expansion and duplicate detection.\n *\n * Key characteristics:\n *\n * <ol> <li>Known only after <code>XpmActions.initialise()</code> completes.</li> <li>Contains all action names including those generated from templates.</li> <li>Used to detect duplicate action names that might arise from template expansion conflicts or explicit duplicates in <code>package.json</code>.</li> </ol>\n *\n * This redundant storage (alongside `_actionsMap`) is justified by the performance benefit for name existence checks, especially in packages with many actions.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3180,6 +3250,95 @@
               "isStatic": false,
               "isProtected": true,
               "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!XpmActions#_createSubstitutedAction:member(1)",
+              "docComment": "/**\n * Creates a substituted action from a template and matrix combination.\n *\n * @remarks\n *\n * This helper method is called for each combination generated from a template action's matrix parameters. It performs the actual name substitution and creates the concrete action instance.\n *\n * Processing steps:\n *\n * <ol> <li>Performs Liquid substitution on the template action name using the specific matrix combination values.</li> <li>Creates a new <code>XpmAction</code> instance with: <ul> <li>The substituted concrete action name.</li> <li>The action's command template (not yet evaluated).</li> <li>Reference to this parent actions collection.</li> <li>The matrix parameter values for later command substitution.</li> </ul> </li> <li>Stores the new action instance in the provided map.</li> </ol>\n *\n * The matrix parameters are preserved in the action instance and will be used later when the action is initialised to substitute matrix references in the command templates.\n *\n * @param combination - The matrix parameter combination for this action (e.g., <code>\\{ arch: 'x64', platform: 'linux' \\}</code>).\n *\n * @param actionName - The template action name containing Liquid variables (e.g., <code>test-\\{\\{ matrix.arch \\}\\}</code>).\n *\n * @param jsonAction - The action's command template definition.\n *\n * @param newActionsMap - The map to store the newly created action.\n *\n * @returns A promise that resolves when the action has been created and stored.\n *\n * @throws\n *\n * {@link XpmError} If the action name substitution fails.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _createSubstitutedAction({ actionName, jsonAction, combination, newActionsMap, }: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "{\n        combination: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Record",
+                  "canonicalReference": "!Record:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string, string>;\n        actionName: string;\n        jsonAction: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "JsonActionContent",
+                  "canonicalReference": "@xpack/xpm-lib!JsonActionContent:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";\n        newActionsMap: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Map",
+                  "canonicalReference": "!Map:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string, "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "XpmAction",
+                  "canonicalReference": "@xpack/xpm-lib!XpmAction:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">;\n    }"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<void>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 11,
+                "endIndex": 13
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "{ actionName, jsonAction, combination, newActionsMap, }",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 10
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_createSubstitutedAction"
             },
             {
               "kind": "Method",
@@ -3264,7 +3423,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmActions#_isInitialised:member",
-              "docComment": "/**\n * Flag indicating whether the actions collection has been initialised.\n *\n * @remarks\n *\n * This flag prevents redundant initialisation and ensures idempotent behavior when {@link XpmActions.initialise()} is called multiple times.\n *\n * State transitions:\n *\n * <ol> <li>Initially <code>false</code> after construction.</li> <li>Set to <code>true</code> after successful template expansion and action name registration.</li> <li>Checked at the beginning of <code>XpmActions.initialise()</code> to return early if already initialised.</li> </ol>\n *\n * This pattern supports safe repeated calls during complex initialisation sequences without duplicating work or corrupting internal state.\n */\n",
+              "docComment": "/**\n * Flag indicating whether the actions collection has been initialised.\n *\n * @remarks\n *\n * This flag prevents redundant initialisation and ensures idempotent behavior when {@link XpmActions.initialise} is called multiple times.\n *\n * State transitions:\n *\n * <ol> <li>Initially <code>false</code> after construction.</li> <li>Set to <code>true</code> after successful template expansion and action name registration.</li> <li>Checked at the beginning of <code>XpmActions.initialise()</code> to return early if already initialised.</li> </ol>\n *\n * This pattern supports safe repeated calls during complex initialisation sequences without duplicating work or corrupting internal state.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3294,7 +3453,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmActions#_jsonActionsNamesMap:member",
-              "docComment": "/**\n * Map of expanded action names to their original JSON action names.\n *\n * @remarks\n *\n * This reverse mapping enables retrieving the original action definition from `jsonActions` when lazy-loading action instances.\n *\n * Mapping behavior:\n *\n * <ol> <li><b>For regular actions:</b> Maps action name to itself (identity mapping).</li> <li><b>For template actions:</b> Maps each generated action name back to the original template name (e.g., <code>test-x64</code> → <code>test-\\{\\{ matrix.arch \\}\\}</code>).</li> <li>Enables <code>XpmActions.get</code> to locate the correct JSON definition when instantiating an action on demand.</li> </ol>\n *\n * This indirection is essential for the lazy evaluation pattern, allowing deferred instantiation while maintaining the connection to original definitions.\n */\n",
+              "docComment": "/**\n * Map of expanded action names to their original JSON action names.\n *\n * @remarks\n *\n * This reverse mapping enables retrieving the original action definition from `jsonActions` when lazy-loading action instances.\n *\n * Mapping behavior:\n *\n * <ol> <li><b>For regular actions:</b> Maps action name to itself (identity mapping).</li> <li><b>For template actions:</b> Maps each generated action name back to the original template name (e.g., <code>test-x64</code> → <code>test-\\{\\{ matrix.arch \\}\\}</code>).</li> <li>Enables <code>XpmActions.get()</code> to locate the correct JSON definition when instantiating an action on demand.</li> </ol>\n *\n * This indirection is essential for the lazy evaluation pattern, allowing deferred instantiation while maintaining the connection to original definitions.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3327,13 +3486,75 @@
               "isAbstract": false
             },
             {
-              "kind": "Constructor",
-              "canonicalReference": "@xpack/xpm-lib!XpmActions:constructor(1)",
-              "docComment": "/**\n * Constructs an actions collection instance.\n *\n * @remarks\n *\n * The constructor performs partial initialisation. Complete initialisation requires calling the {@link XpmActions.initialise()} method.\n *\n * @param log - The logger instance for output and diagnostics.\n *\n * @param engine - The Liquid templating engine for variable substitution.\n *\n * @param substitutionsVariables - The variables available for substitution.\n *\n * @param inheritedActionsMap - Optional map of actions inherited from a parent package.\n *\n * @param jsonActions - The JSON object containing action definitions, or undefined if no actions are defined.\n *\n * @param buildConfiguration - Optional build configuration this actions collection belongs to.\n */\n",
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!XpmActions#_processTemplate:member(1)",
+              "docComment": "/**\n * Processes a template action by expanding it and registering the generated actions.\n *\n * @remarks\n *\n * This helper method is called during collection initialisation for each action whose name contains template syntax (<code>\\{\\{</code> markers).\n *\n * Processing steps:\n *\n * <ol> <li>Calls <code>_expandTemplateActions()</code> to generate all action instances from the template's matrix parameters.</li> <li>Validates that each expanded action name is unique and does not conflict with existing actions.</li> <li>Registers each expanded action in the internal maps: <ul> <li><code>_actionsMap</code>: Maps name to action instance.</li> <li><code>_jsonActionsNamesMap</code>: Maps expanded name back to original template name.</li> <li><code>_actionsNamesSet</code>: Tracks all registered names for duplicate detection.</li> </ul> </li> </ol>\n *\n * @param actionName - The template action name containing Liquid variables.\n *\n * @param jsonActionTemplate - The JSON template definition containing matrix parameters and an action template.\n *\n * @returns A promise that resolves when processing is complete.\n *\n * @throws\n *\n * {@link XpmError} If duplicate action names are detected during expansion or if template expansion fails.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor({ log, engine, substitutionsVariables, inheritedActionsMap, jsonActions, buildConfiguration, }: "
+                  "text": "protected _processTemplate({ actionName, jsonActionTemplate, }: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "{\n        actionName: string;\n        jsonActionTemplate: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "JsonActionTemplate",
+                  "canonicalReference": "@xpack/xpm-lib!JsonActionTemplate:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";\n    }"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<void>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 7
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "{ actionName, jsonActionTemplate, }",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_processTemplate"
+            },
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@xpack/xpm-lib!XpmActions:constructor(1)",
+              "docComment": "/**\n * Constructs an actions collection instance.\n *\n * @remarks\n *\n * The constructor performs partial initialisation. Complete initialisation requires calling the `XpmActions.initialise()` method.\n *\n * @param log - The logger instance for output and diagnostics.\n *\n * @param engine - The Liquid templating engine for variable substitution.\n *\n * @param substitutionsVariables - The variables available for substitution.\n *\n * @param jsonActions - The JSON object containing action definitions, or undefined if there are no actions.\n *\n * @param inheritedActionsMap - Optional map of actions inherited from a parent package.\n *\n * @param buildConfiguration - Optional build configuration this actions collection belongs to.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor({ log, engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, }: "
                 },
                 {
                   "kind": "Content",
@@ -3364,7 +3585,16 @@
                 },
                 {
                   "kind": "Content",
-                  "text": ";\n        inheritedActionsMap?: "
+                  "text": ";\n        jsonActions: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "JsonActions",
+                  "canonicalReference": "@xpack/xpm-lib!JsonActions:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | undefined;\n        inheritedActionsMap?: "
                 },
                 {
                   "kind": "Reference",
@@ -3382,16 +3612,7 @@
                 },
                 {
                   "kind": "Content",
-                  "text": ">;\n        jsonActions: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "JsonActions",
-                  "canonicalReference": "@xpack/xpm-lib!JsonActions:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": " | undefined;\n        buildConfiguration?: "
+                  "text": ">;\n        buildConfiguration?: "
                 },
                 {
                   "kind": "Reference",
@@ -3412,7 +3633,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "{ log, engine, substitutionsVariables, inheritedActionsMap, jsonActions, buildConfiguration, }",
+                  "parameterName": "{ log, engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, }",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 16
@@ -3424,7 +3645,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmActions#buildConfiguration:member",
-              "docComment": "/**\n * The build configuration this actions collection belongs to, if any.\n *\n * @remarks\n *\n * This optional reference establishes the hierarchical relationship between actions and build configurations, affecting variable substitution scope and action inheritance.\n *\n * When defined:\n *\n * <ol> <li>Actions inherit configuration-specific variables (build folder paths, compiler settings, toolchain properties).</li> <li>Actions belong to a specific configuration namespace rather than the package root.</li> <li>Logging and diagnostics include the configuration name for context.</li> </ol>\n *\n * When `undefined`:\n *\n * <ol> <li>Actions belong to the package root (<code>xpack.actions</code> in package.json).</li> <li>Only package-level and global variables are available for substitution.</li> </ol>\n */\n",
+              "docComment": "/**\n * The build configuration this actions collection belongs to, if any.\n *\n * @remarks\n *\n * This optional reference establishes the hierarchical relationship between actions and build configurations, affecting variable substitution scope and action inheritance.\n *\n * When defined:\n *\n * <ol> <li>Actions inherit configuration-specific variables (build folder paths, compiler settings, toolchain properties).</li> <li>Actions belong to a specific configuration namespace rather than the package root.</li> <li>Logging and diagnostics include the configuration name for context.</li> </ol>\n *\n * When `undefined`:\n *\n * <ol> <li>Actions belong to the package root (<code>xpack.actions</code> in <code>package.json</code>).</li> <li>Only package-level and global variables are available for substitution.</li> </ol>\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3455,37 +3676,6 @@
               "isStatic": false,
               "isProtected": false,
               "isAbstract": false
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@xpack/xpm-lib!XpmActions#empty:member(1)",
-              "docComment": "/**\n * Determines whether the actions collection is empty.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * @returns `true` if there are no actions, `false` otherwise.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "empty(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "isProtected": false,
-              "overloadIndex": 1,
-              "parameters": [],
-              "isOptional": false,
-              "isAbstract": false,
-              "name": "empty"
             },
             {
               "kind": "Property",
@@ -3521,7 +3711,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmActions#get:member(1)",
-              "docComment": "/**\n * Retrieves an action by name, creating it if not yet instantiated.\n *\n * @remarks\n *\n * This method implements lazy evaluation to avoid unnecessary operations. Actions are instantiated on demand but remain uninitialised until actually used. The two-step process works as follows:\n *\n * <ol> <li>During collection initialisation (<code>XpmActions.initialise()</code>), only the matrix of options is evaluated for each template, expanding only the action names without processing their content.</li> <li>Later, when an action is accessed via this method and subsequently initialised (<code>XpmAction.initialise</code>), the template is fully evaluated and Liquid substitutions are performed on the commands.</li> </ol>\n *\n * This approach ensures that only actions that are actually used incur the cost of template evaluation and variable substitution.\n *\n * @param actionName - The name of the action to retrieve.\n *\n * @returns The action instance.\n */\n",
+              "docComment": "/**\n * Retrieves an action by name, creating it if not yet instantiated.\n *\n * @remarks\n *\n * This method implements lazy evaluation to avoid unnecessary operations. Actions are instantiated on demand but remain uninitialised until actually used. The two-step process works as follows:\n *\n * <ol> <li>During collection initialisation (<code>XpmActions.initialise()</code>), only the matrix of options is evaluated for each template, expanding only the action names without processing their content.</li> <li>Later, when an action is accessed via this method and subsequently initialised (<code>XpmAction.initialise()</code>), the template is fully evaluated and Liquid substitutions are performed on the commands.</li> </ol>\n *\n * This approach ensures that only actions that are actually used incur the cost of template evaluation and variable substitution.\n *\n * @param actionName - The name of the action to retrieve.\n *\n * @returns The action instance.\n *\n * @throws\n *\n * {@link XpmError} If an action with that name does not exist.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3653,8 +3843,38 @@
             },
             {
               "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmActions#isEmpty:member",
+              "docComment": "/**\n * Indicates whether the actions collection is empty.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * @returns `true` if there are no actions, `false` otherwise.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get isEmpty(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "isEmpty",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmActions#jsonActions:member",
-              "docComment": "/**\n * The JSON object containing action definitions from the package manifest.\n *\n * @remarks\n *\n * This object holds the raw action definitions as they appear in the package.json `xpack.actions` section or within a build configuration's actions. Action definitions can be:\n *\n * <ol> <li><b>Simple strings:</b> Single command to execute.</li> <li><b>String arrays:</b> Multiple commands executed sequentially.</li> <li><b>Template objects:</b> With <code>matrix</code> and <code>template</code> properties for generating multiple actions from a single definition.</li> </ol>\n *\n * Template action names (containing `{{` markers) trigger matrix expansion during initialisation, creating concrete actions from the Cartesian product of matrix parameter values.\n */\n",
+              "docComment": "/**\n * The JSON object containing action definitions from the package manifest.\n *\n * @remarks\n *\n * This object holds the raw action definitions as they appear in the `package.json` `xpack.actions` section or within a build configuration's actions. Action definitions can be:\n *\n * <ol> <li><b>Simple strings:</b> Single command to execute.</li> <li><b>String arrays:</b> Multiple commands executed sequentially.</li> <li><b>Template objects:</b> With <code>matrix</code> and <code>template</code> properties for generating multiple actions from a single definition.</li> </ol>\n *\n * Template action names (containing `{{` markers) trigger matrix expansion during initialisation, creating concrete actions from the Cartesian product of matrix parameter values.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3714,13 +3934,13 @@
               "isAbstract": false
             },
             {
-              "kind": "Method",
-              "canonicalReference": "@xpack/xpm-lib!XpmActions#names:member(1)",
-              "docComment": "/**\n * Retrieves the names of all actions in the collection.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * @returns An array of action names.\n */\n",
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmActions#names:member",
+              "docComment": "/**\n * The names of all actions in the collection.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * This getter returns the cached array of action names for efficient repeated access without recreating the array.\n *\n * @returns An array of action names.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "names(): "
+                  "text": "get names(): "
                 },
                 {
                   "kind": "Content",
@@ -3731,18 +3951,47 @@
                   "text": ";"
                 }
               ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "names",
+              "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
               },
-              "releaseTag": "Public",
+              "isStatic": false,
               "isProtected": false,
-              "overloadIndex": 1,
-              "parameters": [],
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmActions#size:member",
+              "docComment": "/**\n * The number of actions in the collection.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * This getter provides direct access to the collection size, enabling callers to check for emptiness or iterate with knowledge of the collection's extent.\n *\n * @returns The number of actions in the collection.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get size(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
               "isOptional": false,
-              "isAbstract": false,
-              "name": "names"
+              "releaseTag": "Public",
+              "name": "size",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
             },
             {
               "kind": "Property",
@@ -3797,7 +4046,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#_actions:member",
-              "docComment": "/**\n * The actions associated with this build configuration.\n *\n * @remarks\n *\n * This actions collection is created during configuration initialisation and combines inherited actions with local action definitions.\n *\n * Action assembly workflow:\n *\n * <ol> <li>Undefined until <code>XpmBuildConfiguration.initialise</code> is called.</li> <li>Collect actions from all inherited configurations in the inheritance chain.</li> <li>Create new <code>XpmActions</code> collection with inherited actions map and local action definitions.</li> <li>Actions inherit the configuration's substitution variables context, including properties and matrix parameters.</li> </ol>\n *\n * Actions are accessible after configuration initialisation but remain themselves uninitialised until retrieved and initialised individually, maintaining the lazy evaluation pattern.\n */\n",
+              "docComment": "/**\n * The actions associated with this build configuration.\n *\n * @remarks\n *\n * This actions collection is created during configuration initialisation and combines inherited actions with local action definitions.\n *\n * Action assembly workflow:\n *\n * <ol> <li>Undefined until <code>XpmBuildConfiguration.initialise()</code> is called.</li> <li>Collect actions from all inherited configurations in the inheritance chain.</li> <li>Create new <code>XpmActions</code> collection with inherited actions map and local action definitions.</li> <li>Actions inherit the configuration's substitution variables context, including properties and matrix parameters.</li> </ol>\n *\n * Actions are accessible after configuration initialisation but remain themselves uninitialised until retrieved and initialised individually, maintaining the lazy evaluation pattern.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3832,7 +4081,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#_buildFolderRelativePath:member",
-              "docComment": "/**\n * The resolved build folder relative path.\n *\n * @remarks\n *\n * This path specifies where build outputs for this configuration should be placed, computed during initialisation and added back to properties for use in subsequent substitutions.\n *\n * Computation workflow:\n *\n * <ol> <li>Undefined until <code>XpmBuildConfiguration.initialise</code> is called.</li> <li>Not computed for hidden configurations (optimization).</li> <li>If <code>buildFolderRelativePath</code> property exists, perform Liquid substitution with full configuration context.</li> <li>Otherwise, generate default path: <code>build/\\{sanitized-config-name\\}</code>.</li> <li>Added to <code>properties.buildFolderRelativePath</code> for use in action commands and dependency references.</li> </ol>\n *\n * The path is relative to the package root and used by build tools to organize outputs from different configurations.\n */\n",
+              "docComment": "/**\n * The resolved build folder relative path.\n *\n * @remarks\n *\n * This path specifies where build outputs for this configuration should be placed, computed during initialisation and added back to properties for use in subsequent substitutions.\n *\n * Computation workflow:\n *\n * <ol> <li>Undefined until <code>XpmBuildConfiguration.initialise()</code> is called.</li> <li>Not computed for hidden configurations (optimization).</li> <li>If <code>buildFolderRelativePath</code> property exists, perform Liquid substitution with full configuration context.</li> <li>Otherwise, generate default path: <code>build/\\{sanitized-config-name\\}</code>.</li> <li>Added to <code>properties.buildFolderRelativePath</code> for use in action commands and dependency references.</li> </ol>\n *\n * The path is relative to the package root and used by build tools to organize outputs from different configurations.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3933,7 +4182,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#_isInitialised:member",
-              "docComment": "/**\n * Flag indicating whether the configuration has been initialised.\n *\n * @remarks\n *\n * This flag ensures idempotent initialization and prevents redundant processing when {@link XpmBuildConfiguration.initialise} is called multiple times.\n *\n * State transitions:\n *\n * <ol> <li>Initially <code>false</code> after construction.</li> <li>Set to <code>true</code> after successful inheritance resolution, property merging, dependency substitution, and action preparation.</li> <li>Checked at the start of <code>XpmBuildConfiguration.initialise</code> to return early if already initialised.</li> </ol>\n *\n * This pattern is critical for inheritance processing, as configurations may be initialised multiple times when referenced by multiple children, but should only process their inheritance chain once.\n */\n",
+              "docComment": "/**\n * Flag indicating whether the configuration has been initialised.\n *\n * @remarks\n *\n * This flag ensures idempotent initialization and prevents redundant processing when {@link XpmBuildConfiguration.initialise} is called multiple times.\n *\n * State transitions:\n *\n * <ol> <li>Initially <code>false</code> after construction.</li> <li>Set to <code>true</code> after successful inheritance resolution, property merging, dependency substitution, and action preparation.</li> <li>Checked at the start of <code>XpmBuildConfiguration.initialise()</code> to return early if already initialised.</li> </ol>\n *\n * This pattern is critical for inheritance processing, as configurations may be initialised multiple times when referenced by multiple children, but should only process their inheritance chain once.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3959,6 +4208,199 @@
               "isStatic": false,
               "isProtected": true,
               "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#_log:member",
+              "docComment": "/**\n * The logger instance for output and diagnostics.\n *\n * @remarks\n *\n * This logger provides trace-level diagnostics throughout the build configuration lifecycle, including template substitution, inheritance resolution, property merging, dependency substitution, and action preparation.\n *\n * It is initialised in the constructor from the parent collection's logger and used consistently across all helper methods to maintain coherent logging output. This enables detailed debugging of complex configuration hierarchies without impacting runtime performance when tracing is disabled.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _log: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Logger",
+                  "canonicalReference": "@xpack/logger!Logger:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_log",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#_processInherits:member(1)",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _processInherits(localJsonBuildConfiguration: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "JsonBuildConfigurationContent",
+                  "canonicalReference": "@xpack/xpm-lib!JsonBuildConfigurationContent:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Map",
+                  "canonicalReference": "!Map:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string, "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "XpmAction",
+                  "canonicalReference": "@xpack/xpm-lib!XpmAction:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 9
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "localJsonBuildConfiguration",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_processInherits"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#_substituteInherits:member(1)",
+              "docComment": "/**\n * Performs selective substitution on the inherits field only.\n *\n * @remarks\n *\n * This method is invoked during initialisation for regular (non-template) configurations to substitute template variables in the inheritance specification whilst leaving other fields untouched until later processing.\n *\n * Processing steps:\n *\n * <ol> <li>Extract the <code>inherits</code> (or deprecated <code>inherit</code>) field from the configuration.</li> <li>Stringify the inherits field and check for template syntax (<code>\\{\\{</code> or <code>\\{%</code>).</li> <li>If templates are found: <ul> <li>Perform Liquid substitutions with current variable context.</li> <li>Parse the substituted JSON string back into an object.</li> <li>Return a new configuration object with the substituted inherits field and all other fields unchanged.</li> </ul> </li> <li>If no templates are found, return the original configuration as-is.</li> </ol>\n *\n * This selective approach is more efficient than full JSON substitution for regular configurations that do not have matrix parameters. The remaining fields (properties, dependencies, actions) are processed during inheritance resolution and dependency substitution phases.\n *\n * @returns A promise that resolves to the build configuration content with the inherits field substituted.\n *\n * @throws\n *\n * {@link XpmError} If Liquid template substitution fails on the inherits field.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _substituteInherits(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "JsonBuildConfigurationContent",
+                  "canonicalReference": "@xpack/xpm-lib!JsonBuildConfigurationContent:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_substituteInherits"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#_substituteTemplate:member(1)",
+              "docComment": "/**\n * Performs template substitution on the entire build configuration JSON.\n *\n * @remarks\n *\n * This method is invoked during initialisation for template-generated configurations to substitute matrix parameters throughout the entire configuration definition.\n *\n * Processing steps:\n *\n * <ol> <li>Stringify the entire JSON build configuration object.</li> <li>Check if the stringified JSON contains template syntax (<code>\\{\\{</code> or <code>\\{%</code>).</li> <li>If templates are found: <ul> <li>Perform Liquid substitutions with complete variable context including matrix parameters.</li> <li>Parse the substituted JSON string back into an object.</li> </ul> </li> <li>If no templates are found, return the original configuration as-is.</li> </ol>\n *\n * This comprehensive substitution approach ensures matrix parameters can be referenced anywhere within the configuration (properties, dependencies, actions, etc.), which is necessary for template-generated configurations but would be unnecessarily expensive for regular configurations.\n *\n * @returns A promise that resolves to the build configuration content with all template variables substituted.\n *\n * @throws\n *\n * {@link XpmError} If Liquid template substitution fails.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _substituteTemplate(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "JsonBuildConfigurationContent",
+                  "canonicalReference": "@xpack/xpm-lib!JsonBuildConfigurationContent:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_substituteTemplate"
             },
             {
               "kind": "Property",
@@ -4053,7 +4495,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#actions:member",
-              "docComment": "/**\n * Retrieves the actions collection for this build configuration.\n *\n * @returns The actions collection.\n *\n * @throws\n *\n * `AssertionError` If the configuration has not been initialised.\n */\n",
+              "docComment": "/**\n * Retrieves the actions collection for this build configuration.\n *\n * @returns The actions collection.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4114,7 +4556,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#buildFolderRelativePath:member",
-              "docComment": "/**\n * Retrieves the build folder relative path for this configuration.\n *\n * @returns The build folder relative path.\n *\n * @throws\n *\n * `AssertionError` If the configuration has not been initialised.\n */\n",
+              "docComment": "/**\n * Retrieves the build folder relative path for this configuration.\n *\n * @returns The build folder relative path.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4236,7 +4678,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#initialise:member(1)",
-              "docComment": "/**\n * Completes the async initialisation of the build configuration.\n *\n * @remarks\n *\n * This method resolves inheritance, applies variable substitutions, computes dependencies, and prepares actions.\n *\n * Initialisation workflow:\n *\n * <ol> <li>For template configurations: Substitute matrix parameters throughout the entire JSON structure.</li> <li>For non-template configurations: Substitute only the inherits field.</li> <li>Process inheritance chain recursively with circular reference detection.</li> <li>Merge properties, dependencies, and devDependencies from inherited configurations (later overrides earlier).</li> <li>Apply local properties and update substitution variables context.</li> <li>For visible configurations: Compute build folder relative path.</li> <li>Substitute Liquid templates in dependencies and devDependencies.</li> <li>Create actions collection with inherited actions and local actions.</li> </ol>\n *\n * The substitution context includes package variables, configuration properties, matrix parameters (for templates), and the configuration object itself accessible via `configuration.name`, etc.\n *\n * @returns A promise that resolves to `true` if initialisation was performed, or `false` if already initialised.\n *\n * @throws\n *\n * {@link XpmError} If substitutions fail.\n *\n * @throws\n *\n * {@link XpmInputError} If inheritance references are invalid or circular.\n */\n",
+              "docComment": "/**\n * Completes the async initialisation of the build configuration.\n *\n * @remarks\n *\n * This method resolves inheritance, applies variable substitutions, computes dependencies, and prepares actions.\n *\n * Initialisation workflow:\n *\n * <ol> <li>Return early if already initialised (idempotent behaviour).</li> <li>For template configurations: Call <code>_substituteTemplate()</code> to substitute matrix parameters throughout the entire JSON structure.</li> <li>For non-template configurations: Call <code>_substituteInherits()</code> to substitute only the inherits field.</li> <li>Call <code>_processInherits()</code> to: <ul> <li>Process inheritance chain recursively with circular reference detection.</li> <li>Merge properties, dependencies, and devDependencies from inherited configurations (later overrides earlier).</li> <li>Collect inherited actions into a map.</li> </ul> </li> <li>Apply local properties and update substitution variables context.</li> <li>For visible configurations: Compute build folder relative path via <code>_getBuildFolderRelativePath()</code>.</li> <li>Substitute Liquid templates in dependencies and devDependencies.</li> <li>Create actions collection with inherited actions and local actions.</li> </ol>\n *\n * The substitution context includes package variables, configuration properties, matrix parameters (for templates), and the configuration object itself accessible via `configuration.name`, etc.\n *\n * @returns A promise that resolves to `true` if initialisation was performed, or `false` if already initialised.\n *\n * @throws\n *\n * {@link XpmError} If substitutions fail.\n *\n * @throws\n *\n * {@link XpmInputError} If inheritance references are invalid or circular.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4332,7 +4774,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration#jsonBuildConfiguration:member",
-              "docComment": "/**\n * The JSON build configuration content from package metadata.\n *\n * @remarks\n *\n * This holds the raw configuration definition as it appears in package.json, before inheritance resolution and variable substitution.\n *\n * The definition is preserved to:\n *\n * <ol> <li>Enable external modification (e.g., <code>xpm uninstall</code> updates this directly).</li> <li>Support deferred template evaluation during <code>XpmBuildConfiguration.initialise</code>.</li> <li>Provide the source for inheritance when other configurations reference this one.</li> <li>Allow re-evaluation with different variable contexts if needed.</li> </ol>\n *\n * This immutable storage ensures configurations can be safely referenced during inheritance resolution without side effects.\n */\n",
+              "docComment": "/**\n * The JSON build configuration content from package metadata.\n *\n * @remarks\n *\n * This holds the raw configuration definition as it appears in `package.json`, before inheritance resolution and variable substitution.\n *\n * The definition is preserved to:\n *\n * <ol> <li>Enable external modification (e.g., <code>xpm uninstall</code> updates this directly).</li> <li>Support deferred template evaluation during <code>XpmBuildConfiguration.initialise()</code>.</li> <li>Provide the source for inheritance when other configurations reference this one.</li> <li>Allow re-evaluation with different variable contexts if needed.</li> </ol>\n *\n * This immutable storage ensures configurations can be safely referenced during inheritance resolution without side effects.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4505,7 +4947,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#_buildComfigurationsNamesSet:member",
-              "docComment": "/**\n * Set of all build configuration names for duplicate detection.\n *\n * @remarks\n *\n * This set provides O(1) existence checks for configuration names, enabling efficient validation during template expansion to prevent duplicate configurations.\n *\n * Duplicate scenarios detected:\n *\n * <ol> <li>Explicit duplicates in package.json with identical names.</li> <li>Template expansion conflicts where different templates generate the same concrete configuration name.</li> <li>Conflicts between template-generated names and explicitly defined configuration names.</li> </ol>\n *\n * Detection occurs during {@link XpmBuildConfigurations.initialise}, throwing {@link XpmError} when duplicates are found to ensure configuration name uniqueness.\n */\n",
+              "docComment": "/**\n * Set of all build configuration names for duplicate detection.\n *\n * @remarks\n *\n * This set provides O(1) existence checks for configuration names, enabling efficient validation during template expansion to prevent duplicate configurations.\n *\n * Duplicate scenarios detected:\n *\n * <ol> <li>Explicit duplicates in <code>package.json</code> with identical names.</li> <li>Template expansion conflicts where different templates generate the same concrete configuration name.</li> <li>Conflicts between template-generated names and explicitly defined configuration names.</li> </ol>\n *\n * Detection occurs during {@link XpmBuildConfigurations.initialise}, throwing {@link XpmError} when duplicates are found to ensure configuration name uniqueness.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4540,7 +4982,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#_buildConfigurationsMap:member",
-              "docComment": "/**\n * Map of build configuration names to their corresponding instances.\n *\n * @remarks\n *\n * This map serves as the primary configuration registry, populated during collection initialisation with entries for all discovered configurations.\n *\n * Key characteristics:\n *\n * <ol> <li>Known only after <code>XpmBuildConfigurations.initialise</code> completes.</li> <li>Possibly empty if there are no build configurations defined.</li> <li>Values can be <code>undefined</code> to indicate a configuration exists but hasn't been instantiated yet (lazy loading).</li> <li>For template configurations, contains one entry per expanded combination, not the original template definition.</li> </ol>\n *\n * Configurations transition from `undefined` to instantiated when first accessed via {@link XpmBuildConfigurations.get}, implementing the lazy evaluation pattern to avoid unnecessary processing.\n */\n",
+              "docComment": "/**\n * Map of build configuration names to their corresponding instances.\n *\n * @remarks\n *\n * This map serves as the primary configuration registry, populated during collection initialisation with entries for all discovered configurations.\n *\n * Key characteristics:\n *\n * <ol> <li>Known only after <code>XpmBuildConfigurations.initialise()</code> completes.</li> <li>Possibly empty if there are no build configurations defined.</li> <li>Values can be <code>undefined</code> to indicate a configuration exists but hasn't been instantiated yet (lazy loading).</li> <li>For template configurations, contains one entry per expanded combination, not the original template definition.</li> </ol>\n *\n * Configurations transition from `undefined` to instantiated when first accessed via {@link XpmBuildConfigurations.get}, implementing the lazy evaluation pattern to avoid unnecessary processing.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4580,6 +5022,125 @@
               "isStatic": false,
               "isProtected": true,
               "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#_buildConfigurationsNames:member",
+              "docComment": "/**\n * Cached array of all build configuration names in the collection.\n *\n * @remarks\n *\n * This array provides O(1) access to configuration names without repeatedly creating new arrays from the map keys, improving performance when the names are accessed multiple times.\n *\n * Key characteristics:\n *\n * <ol> <li>Empty initially after construction.</li> <li>Populated during <code>XpmBuildConfigurations.initialise()</code> after all configuration names are determined.</li> <li>Contains all configuration names including those generated from templates.</li> <li>Returned by the <code>names</code> getter for efficient repeated access.</li> </ol>\n *\n * This cached approach avoids the overhead of calling `Array.from(map.keys())` on every access whilst still providing a clean getter interface.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _buildConfigurationsNames: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_buildConfigurationsNames",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#_createSubstitutedBuildConfiguration:member(1)",
+              "docComment": "/**\n * Creates a substituted build configuration from a template combination.\n *\n * @remarks\n *\n * This helper method is invoked during template expansion for each matrix combination to generate concrete build configuration instances from the template definition.\n *\n * Processing steps:\n *\n * <ol> <li>Perform Liquid substitutions on the template build configuration name using the matrix combination values.</li> <li>Create a new <code>XpmBuildConfiguration</code> instance with the substituted name and matrix parameters.</li> <li>Register the new configuration in the provided map for subsequent collection integration.</li> </ol>\n *\n * @param buildConfigurationName - The template build configuration name containing Liquid variables (e.g., <code>release-\\{\\{ matrix.arch \\}\\}</code>).\n *\n * @param jsonBuildConfiguration - The JSON configuration content from the template definition.\n *\n * @param combination - The matrix parameter values for this specific combination (e.g., <code>\\{ arch: 'x64', optimize: 'speed' \\}</code>).\n *\n * @param newBuildConfigurationsMap - The map to populate with the generated configuration instance.\n *\n * @returns A promise that resolves when the configuration has been created and registered.\n *\n * @throws\n *\n * {@link XpmError} If substitutions fail during build configuration name expansion.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _createSubstitutedBuildConfiguration({ buildConfigurationName, jsonBuildConfiguration, combination, newBuildConfigurationsMap, }: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "{\n        buildConfigurationName: string;\n        jsonBuildConfiguration: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "JsonBuildConfigurationContent",
+                  "canonicalReference": "@xpack/xpm-lib!JsonBuildConfigurationContent:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";\n        combination: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Record",
+                  "canonicalReference": "!Record:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string, string>;\n        newBuildConfigurationsMap: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Map",
+                  "canonicalReference": "!Map:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string, "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "XpmBuildConfiguration",
+                  "canonicalReference": "@xpack/xpm-lib!XpmBuildConfiguration:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">;\n    }"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<void>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 11,
+                "endIndex": 13
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "{ buildConfigurationName, jsonBuildConfiguration, combination, newBuildConfigurationsMap, }",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 10
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_createSubstitutedBuildConfiguration"
             },
             {
               "kind": "Method",
@@ -4664,7 +5225,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#_isInitialised:member",
-              "docComment": "/**\n * Flag indicating whether the collection has been initialised.\n *\n * @remarks\n *\n * This flag prevents redundant initialisation and ensures idempotent behavior when {@link XpmBuildConfigurations.initialise} is called multiple times.\n *\n * State transitions:\n *\n * <ol> <li>Initially <code>false</code> after construction.</li> <li>Set to <code>true</code> after successful template expansion and configuration name registration.</li> <li>Checked at the beginning of <code>XpmBuildConfigurations.initialise</code> to return early if already initialised.</li> </ol>\n *\n * This pattern supports safe repeated calls during complex initialisation sequences without duplicating work or corrupting internal state.\n */\n",
+              "docComment": "/**\n * Flag indicating whether the collection has been initialised.\n *\n * @remarks\n *\n * This flag prevents redundant initialisation and ensures idempotent behavior when {@link XpmBuildConfigurations.initialise} is called multiple times.\n *\n * State transitions:\n *\n * <ol> <li>Initially <code>false</code> after construction.</li> <li>Set to <code>true</code> after successful template expansion and configuration name registration.</li> <li>Checked at the beginning of <code>XpmBuildConfigurations.initialise()</code> to return early if already initialised.</li> </ol>\n *\n * This pattern supports safe repeated calls during complex initialisation sequences without duplicating work or corrupting internal state.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4694,7 +5255,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#_jsonBuildConfigurationsNamesMap:member",
-              "docComment": "/**\n * Map of expanded build configuration names to their JSON source names.\n *\n * @remarks\n *\n * This reverse mapping enables retrieving the original configuration definition from `jsonBuildConfigurations` when lazy-loading configuration instances.\n *\n * Mapping behavior:\n *\n * <ol> <li><b>For regular configurations:</b> Maps configuration name to itself (identity mapping).</li> <li><b>For template configurations:</b> Maps each generated configuration name back to the original template name (e.g., <code>release-x64</code> → <code>release-\\{\\{ matrix.arch \\}\\}</code>).</li> <li>Known only after <code>XpmBuildConfigurations.initialise</code> completes.</li> <li>Enables <code>XpmBuildConfigurations.get</code> to locate the correct JSON definition when instantiating a configuration on demand.</li> </ol>\n *\n * This indirection is essential for lazy evaluation, allowing deferred instantiation while maintaining the connection to original definitions.\n */\n",
+              "docComment": "/**\n * Map of expanded build configuration names to their JSON source names.\n *\n * @remarks\n *\n * This reverse mapping enables retrieving the original configuration definition from `jsonBuildConfigurations` when lazy-loading configuration instances.\n *\n * Mapping behavior:\n *\n * <ol> <li><b>For regular configurations:</b> Maps configuration name to itself (identity mapping).</li> <li><b>For template configurations:</b> Maps each generated configuration name back to the original template name (e.g., <code>release-x64</code> → <code>release-\\{\\{ matrix.arch \\}\\}</code>).</li> <li>Known only after <code>XpmBuildConfigurations.initialise()</code> completes.</li> <li>Enables <code>XpmBuildConfigurations.get()</code> to locate the correct JSON definition when instantiating a configuration on demand.</li> </ol>\n *\n * This indirection is essential for lazy evaluation, allowing deferred instantiation while maintaining the connection to original definitions.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4725,6 +5286,68 @@
               "isStatic": false,
               "isProtected": true,
               "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#_processTemplate:member(1)",
+              "docComment": "/**\n * Processes a template build configuration by expanding it and registering the generated configurations.\n *\n * @remarks\n *\n * This helper method is called during collection initialisation for each build configuration whose name contains template syntax (<code>\\{\\{</code> markers).\n *\n * Processing steps:\n *\n * <ol> <li>Calls <code>_expandTemplateBuildConfigurations()</code> to generate all configuration instances from the template's matrix parameters.</li> <li>Validates that each expanded configuration name is unique and does not conflict with existing configurations.</li> <li>Registers each expanded configuration in the internal maps: <ul> <li><code>_buildConfigurationsMap</code>: Maps name to configuration instance.</li> <li><code>_jsonBuildConfigurationsNamesMap</code>: Maps expanded name back to original template name.</li> <li><code>_buildComfigurationsNamesSet</code>: Tracks all registered names for duplicate detection.</li> </ul> </li> </ol>\n *\n * @param buildConfigurationName - The template configuration name containing Liquid variables.\n *\n * @param jsonBuildConfiguration - The JSON template definition containing matrix parameters and a configuration template.\n *\n * @returns A promise that resolves when processing is complete.\n *\n * @throws\n *\n * {@link XpmError} If duplicate configuration names are detected during expansion or if template expansion fails.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _processTemplate({ buildConfigurationName, jsonBuildConfigurationTemplate, }: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "{\n        buildConfigurationName: string;\n        jsonBuildConfigurationTemplate: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "JsonBuildConfigurationTemplate",
+                  "canonicalReference": "@xpack/xpm-lib!JsonBuildConfigurationTemplate:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";\n    }"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<void>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 7
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "{ buildConfigurationName, jsonBuildConfigurationTemplate, }",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_processTemplate"
             },
             {
               "kind": "Constructor",
@@ -4795,37 +5418,6 @@
               ]
             },
             {
-              "kind": "Method",
-              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#empty:member(1)",
-              "docComment": "/**\n * Determines whether the collection is empty.\n *\n * @returns `true` if there are no build configurations, `false` otherwise.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "empty(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "isProtected": false,
-              "overloadIndex": 1,
-              "parameters": [],
-              "isOptional": false,
-              "isAbstract": false,
-              "name": "empty"
-            },
-            {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#engine:member",
               "docComment": "/**\n * The Liquid templating engine for variable substitution.\n *\n * @remarks\n *\n * This engine instance is shared across all build configurations and configured with custom filters for platform detection, path manipulation, and xpm-specific operations. It processes templates in configuration names, matrix parameters, properties, dependencies, and actions, ensuring consistent template evaluation throughout the configuration lifecycle.\n */\n",
@@ -4859,7 +5451,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#get:member(1)",
-              "docComment": "/**\n * Retrieves a build configuration by name, creating it if required.\n *\n * @remarks\n *\n * This method implements lazy evaluation to avoid unnecessary operations. Build configurations are instantiated on demand but remain uninitialised until actually used. The two-step process works as follows:\n *\n * <ol> <li>During collection initialisation (<code>XpmBuildConfigurations.initialise</code>), only the matrix of options is evaluated for each template, expanding configuration names without processing their content.</li> <li>Later, when a configuration is accessed via this method and subsequently initialised (<code>XpmBuildConfiguration.initialise</code>), the template is fully evaluated and Liquid substitutions are performed on all properties.</li> </ol>\n *\n * This approach ensures that only build configurations that are actually used incur the cost of template evaluation and variable substitution.\n *\n * @param buildConfigurationName - The build configuration name to retrieve.\n *\n * @returns The build configuration instance.\n */\n",
+              "docComment": "/**\n * Retrieves a build configuration by name, creating it if required.\n *\n * @remarks\n *\n * This method implements lazy evaluation to avoid unnecessary operations. Build configurations are instantiated on demand but remain uninitialised until actually used.\n *\n * Retrieval process:\n *\n * <ol> <li>Check if the configuration already exists in the internal map.</li> <li>If found and already instantiated, return the existing instance.</li> <li>If the configuration name is unknown (not in JSON name mapping), throw <code>XpmInputError</code>.</li> <li>For known but not yet instantiated configurations: <ul> <li>Resolve the original JSON configuration name (handles both regular and template-generated configurations).</li> <li>Retrieve the JSON configuration definition.</li> <li>Create a new <code>XpmBuildConfiguration</code> instance.</li> <li>Store the instance in the map for future access.</li> </ul> </li> <li>Return the configuration instance (still uninitialised).</li> </ol>\n *\n * The two-step lazy evaluation process:\n *\n * <ol> <li>During collection initialisation (<code>XpmBuildConfigurations.initialise()</code>), only the matrix of options is evaluated for each template, expanding configuration names without processing their content.</li> <li>Later, when a configuration is accessed via this method and subsequently initialised (<code>XpmBuildConfiguration.initialise()</code>), the template is fully evaluated and Liquid substitutions are performed on all properties.</li> </ol>\n *\n * This approach ensures that only build configurations that are actually used incur the cost of template evaluation and variable substitution.\n *\n * @param buildConfigurationName - The build configuration name to retrieve.\n *\n * @returns The build configuration instance.\n *\n * @throws\n *\n * {@link XpmInputError} If a configuration with the specified name does not exist.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -5101,7 +5693,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#initialise:member(1)",
-              "docComment": "/**\n * Completes the async initialisation of the build configurations collection.\n *\n * @remarks\n *\n * This method implements the first step of lazy evaluation. It processes all build configuration definitions by expanding template configuration names based on matrix parameters, but does not evaluate the configuration content or perform Liquid substitutions. The actual template evaluation and variable substitution occur later when individual configurations are initialised via {@link XpmBuildConfiguration.initialise}, and only for configurations that are actually used. This approach avoids unnecessary operations on unused configurations. The method also validates that all expanded configuration names are unique and prepares the internal lookup maps.\n *\n * @returns A promise that resolves to `true` if initialisation was performed, or `false` if already initialised.\n *\n * @throws\n *\n * {@link XpmError} If duplicate names are detected or template expansion fails.\n */\n",
+              "docComment": "/**\n * Completes the async initialisation of the build configurations collection.\n *\n * @remarks\n *\n * This method implements the first step of lazy evaluation. It processes all build configuration definitions by expanding template configuration names based on matrix parameters, but does not evaluate the configuration content or perform Liquid substitutions. The actual template evaluation and variable substitution occur later when individual configurations are initialised via {@link XpmBuildConfiguration.initialise}, and only for configurations that are actually used. This approach avoids unnecessary operations on unused configurations.\n *\n * Processing steps:\n *\n * <ol> <li>Return early if already initialised (idempotent behaviour).</li> <li>Iterate through all build configuration definitions from the JSON object.</li> <li>For template configurations (names containing <code>\\{\\{</code>): <ul> <li>Call <code>_processTemplate()</code> to expand and register all generated configurations.</li> </ul> </li> <li>For regular configurations: <ul> <li>Validate uniqueness of the configuration name.</li> <li>Register the configuration in internal maps with <code>undefined</code> value (lazy loading).</li> </ul> </li> <li>Cache the array of all configuration names for efficient repeated access.</li> </ol>\n *\n * @returns A promise that resolves to `true` if initialisation was performed, or `false` if already initialised.\n *\n * @throws\n *\n * {@link XpmError} If duplicate names are detected or template expansion fails.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -5133,6 +5725,36 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "initialise"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#isEmpty:member",
+              "docComment": "/**\n * Indicates whether the collection is empty.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * @returns `true` if there are no build configurations, `false` otherwise.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get isEmpty(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "isEmpty",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
             },
             {
               "kind": "Method",
@@ -5185,7 +5807,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#jsonBuildConfigurations:member",
-              "docComment": "/**\n * The JSON object containing build configuration definitions.\n *\n * @remarks\n *\n * This object holds raw build configuration definitions from the package.json `xpack.buildConfigurations` section. Configurations can be:\n *\n * <ol> <li><b>Regular configurations:</b> Direct objects with properties, dependencies, actions, and inheritance.</li> <li><b>Template configurations:</b> Objects with <code>matrix</code> and <code>template</code> properties for generating multiple configurations from a single definition.</li> </ol>\n *\n * Template configuration names (containing `{{` markers) trigger matrix expansion during initialisation, creating concrete configurations from the Cartesian product of matrix parameter values. Each configuration can inherit from others, creating complex dependency hierarchies.\n */\n",
+              "docComment": "/**\n * The JSON object containing build configuration definitions.\n *\n * @remarks\n *\n * This object holds raw build configuration definitions from the `package.json` `xpack.buildConfigurations` section. Configurations can be:\n *\n * <ol> <li><b>Regular configurations:</b> Direct objects with properties, dependencies, actions, and inheritance.</li> <li><b>Template configurations:</b> Objects with <code>matrix</code> and <code>template</code> properties for generating multiple configurations from a single definition.</li> </ol>\n *\n * Template configuration names (containing `{{` markers) trigger matrix expansion during initialisation, creating concrete configurations from the Cartesian product of matrix parameter values. Each configuration can inherit from others, creating complex dependency hierarchies.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -5245,13 +5867,13 @@
               "isAbstract": false
             },
             {
-              "kind": "Method",
-              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#names:member(1)",
-              "docComment": "/**\n * Retrieves the names of all build configurations.\n *\n * @returns An array of build configuration names.\n */\n",
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#names:member",
+              "docComment": "/**\n * The names of all build configurations.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * This getter returns the cached array of configuration names for efficient repeated access without recreating the array.\n *\n * @returns An array of build configuration names.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "names(): "
+                  "text": "get names(): "
                 },
                 {
                   "kind": "Content",
@@ -5262,18 +5884,47 @@
                   "text": ";"
                 }
               ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "names",
+              "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
               },
-              "releaseTag": "Public",
+              "isStatic": false,
               "isProtected": false,
-              "overloadIndex": 1,
-              "parameters": [],
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmBuildConfigurations#size:member",
+              "docComment": "/**\n * The number of build configurations in the collection.\n *\n * @remarks\n *\n * This value is known only after `initialise()`.\n *\n * This getter provides direct access to the collection size, enabling callers to check for emptiness or iterate with knowledge of the collection's extent.\n *\n * @returns The number of build configurations in the collection.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get size(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
               "isOptional": false,
-              "isAbstract": false,
-              "name": "names"
+              "releaseTag": "Public",
+              "name": "size",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
             },
             {
               "kind": "Property",
@@ -5605,7 +6256,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@xpack/xpm-lib!XpmDataModel:class",
-          "docComment": "/**\n * Represents a lazy-loading data model for an <b>xpm</b> package.\n *\n * @remarks\n *\n * This class prepares substitution variables, creates the Liquid engine, and exposes actions and build configurations defined in the package.\n *\n * The package processor serves as the top-level coordinator for all Liquid-based template processing in an <b>xpm</b> package. It establishes the foundation for variable substitution throughout the package hierarchy:\n *\n * <ol> <li>Initializes base substitution variables (platform detection, system information, etc.).</li> <li>Adds package-specific variables from package.json metadata.</li> <li>Merges user-defined properties from xpack.properties.</li> <li>Creates package-level actions accessible across all contexts.</li> <li>Creates build configurations, each inheriting the base substitution context and adding configuration-specific variables.</li> </ol>\n *\n * This hierarchical structure ensures that templates at any level have access to appropriate variables while maintaining clear scoping rules. Package-level actions are available globally, while configuration-level actions are scoped to their respective configurations.\n */\n",
+          "docComment": "/**\n * Represents a lazy-loading data model for an <b>xpm</b> package.\n *\n * @remarks\n *\n * This class prepares substitution variables, creates the Liquid engine, and exposes actions and build configurations defined in the package.\n *\n * The package processor serves as the top-level coordinator for all Liquid-based template processing in an <b>xpm</b> package. It establishes the foundation for variable substitution throughout the package hierarchy:\n *\n * <ol> <li>Initializes base substitution variables (platform detection, system information, etc.).</li> <li>Adds package-specific variables from <code>package.json</code> metadata.</li> <li>Merges user-defined properties from <code>xpack.properties</code>.</li> <li>Creates package-level actions accessible across all contexts.</li> <li>Creates build configurations, each inheriting the base substitution context and adding configuration-specific variables.</li> </ol>\n *\n * This hierarchical structure ensures that templates at any level have access to appropriate variables while maintaining clear scoping rules. Package-level actions are available globally, while configuration-level actions are scoped to their respective configurations.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -5652,7 +6303,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmDataModel#_jsonPackage:member",
-              "docComment": "/**\n * The JSON package definition.\n *\n * @remarks\n *\n * This object contains the complete package.json content, including both standard npm fields and xpm-specific extensions in the `xpack` section.\n *\n * Required structure:\n *\n * <ol> <li>Standard npm fields: name, version, dependencies, devDependencies.</li> <li>Required <code>xpack</code> section containing xpm-specific configuration.</li> <li>Optional <code>xpack.properties</code> for user-defined substitution variables.</li> <li>Optional <code>xpack.actions</code> for package-level executable actions.</li> <li>Optional <code>xpack.buildConfigurations</code> for build configuration definitions.</li> </ol>\n *\n * The package definition is validated during construction, requiring the `xpack` section to be present and be a valid JSON object.\n */\n",
+              "docComment": "/**\n * The JSON package definition.\n *\n * @remarks\n *\n * This object contains the complete `package.json` content, including both standard npm fields and xpm-specific extensions in the `xpack` section.\n *\n * Required structure:\n *\n * <ol> <li>Standard npm fields: name, version, dependencies, devDependencies.</li> <li>Required <code>xpack</code> section containing xpm-specific configuration.</li> <li>Optional <code>xpack.properties</code> for user-defined substitution variables.</li> <li>Optional <code>xpack.actions</code> for package-level executable actions.</li> <li>Optional <code>xpack.buildConfigurations</code> for build configuration definitions.</li> </ol>\n *\n * The package definition is validated during construction, requiring the `xpack` section to be present and be a valid JSON object.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -5826,7 +6477,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmDataModel#substitutionsVariables:member",
-              "docComment": "/**\n * The variables available for Liquid substitutions.\n *\n * @remarks\n *\n * This sealed object provides the base substitution context inherited by all actions and build configurations within the package.\n *\n * Variable hierarchy:\n *\n * <ol> <li><b>Base variables (xpmLiquidSubstitutionsVariablesBase):</b> <ul> <li><code>env</code>: Environment variables from process.env</li> <li><code>os</code>: Platform detection (platform, arch, endianness, version)</li> <li><code>path</code>: Path utilities (sep, delimiter, cwd)</li> </ul> </li> <li><b>Package metadata:</b> <ul> <li><code>package</code>: Complete package.json content (name, version, dependencies, etc.)</li> </ul> </li> <li><b>User-defined properties:</b> <ul> <li><code>properties</code>: Merged from <code>xpack.properties</code> if present</li> </ul> </li> </ol>\n *\n * The object is sealed after initialization to prevent accidental modification. Child components (actions and configurations) extend this context with their own scoped variables (configuration, matrix) without modifying the original sealed object.\n */\n",
+              "docComment": "/**\n * The variables available for Liquid substitutions.\n *\n * @remarks\n *\n * This sealed object provides the base substitution context inherited by all actions and build configurations within the package.\n *\n * Variable hierarchy:\n *\n * <ol> <li><b>Base variables (xpmLiquidSubstitutionsVariablesBase):</b> <ul> <li><code>env</code>: Environment variables from process.env</li> <li><code>os</code>: Platform detection (platform, arch, endianness, version)</li> <li><code>path</code>: Path utilities (sep, delimiter, cwd)</li> </ul> </li> <li><b>Package metadata:</b> <ul> <li><code>package</code>: Complete <code>package.json</code> content (name, version, dependencies, etc.)</li> </ul> </li> <li><b>User-defined properties:</b> <ul> <li><code>properties</code>: Merged from <code>xpack.properties</code> if present</li> </ul> </li> </ol>\n *\n * The object is sealed after initialization to prevent accidental modification. Child components (actions and configurations) extend this context with their own scoped variables (configuration, matrix) without modifying the original sealed object.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -5891,7 +6542,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase:class",
-          "docComment": "/**\n * Base class for <b>xpm</b> initialisation templates.\n *\n * @remarks\n *\n * This abstract class provides the foundation for template-based project initialisation. It handles the complete workflow: property validation, interactive user prompts for missing mandatory values, variable substitution, and file generation using the Liquid templating engine.\n *\n * Template workflow:\n *\n * <ol> <li>Properties are validated against their definitions</li> <li>Missing mandatory properties trigger interactive prompts (if TTY)</li> <li>Substitution variables are prepared from properties</li> <li>The <code>XpmInitTemplateBase.generate</code> method creates project files</li> </ol>\n *\n * Derived classes must implement {@link XpmInitTemplateBase.generate} to define the specific files and folder structure to create.\n */\n",
+          "docComment": "/**\n * Base class for <b>xpm</b> initialisation templates.\n *\n * @remarks\n *\n * This abstract class provides the foundation for template-based project initialisation. It handles the complete workflow: property validation, interactive user prompts for missing mandatory values, variable substitution, and file generation using the Liquid templating engine.\n *\n * Template workflow:\n *\n * <ol> <li>Properties are validated against their definitions</li> <li>Missing mandatory properties trigger interactive prompts (if TTY)</li> <li>Substitution variables are prepared from properties</li> <li>The <code>XpmInitTemplateBase.generate()</code> method creates project files</li> </ol>\n *\n * Derived classes must implement {@link XpmInitTemplateBase.generate} to define the specific files and folder structure to create.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -5911,7 +6562,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "__dirname: "
+                  "text": "protected __dirname: "
                 },
                 {
                   "kind": "Content",
@@ -5931,7 +6582,38 @@
                 "endIndex": 2
               },
               "isStatic": false,
-              "isProtected": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#_context:member",
+              "docComment": "/**\n * The <b>xpm</b> context containing configuration and logging utilities.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _context: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "XpmContext",
+                  "canonicalReference": "@xpack/xpm-lib!XpmContext:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_context",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
               "isAbstract": false
             },
             {
@@ -6004,26 +6686,136 @@
               "name": "_copyFolderRecursively"
             },
             {
-              "kind": "Constructor",
-              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase:constructor(1)",
-              "docComment": "/**\n * Constructs an <b>xpm</b> initialisation template instance.\n *\n * @param context - The <b>xpm</b> context containing configuration and logging.\n *\n * @param __dirname - The absolute path to the module folder.\n *\n * @param templatesPath - The absolute path to the templates folder.\n *\n * @param propertiesDefinitions - The definitions of all supported properties.\n */\n",
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#_engine:member",
+              "docComment": "/**\n * The Liquid templating engine instance.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor({ context, __dirname, templatesPath, propertiesDefinitions, }: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "{\n        context: "
+                  "text": "protected _engine: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "XpmContext",
-                  "canonicalReference": "@xpack/xpm-lib!XpmContext:interface"
+                  "text": "Liquid",
+                  "canonicalReference": "liquidjs!Liquid:class"
                 },
                 {
                   "kind": "Content",
-                  "text": ";\n        __dirname: string;\n        templatesPath: string;\n        propertiesDefinitions: "
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_engine",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#_isInteractive:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _isInteractive: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_isInteractive",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#_log:member",
+              "docComment": "/**\n * The logger instance for output and diagnostics.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _log: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Logger",
+                  "canonicalReference": "@xpack/logger!Logger:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_log",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#_process:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _process: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "NodeJS.Process",
+                  "canonicalReference": "!\"\\\"node:process\\\"\".__global.NodeJS.Process:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_process",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#_propertiesDefinitions:member",
+              "docComment": "/**\n * Definitions of all properties supported by this template.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _propertiesDefinitions: "
                 },
                 {
                   "kind": "Reference",
@@ -6032,7 +6824,199 @@
                 },
                 {
                   "kind": "Content",
-                  "text": ";\n    }"
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_propertiesDefinitions",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#_substitutionsVariables:member",
+              "docComment": "/**\n * The variables to be used for template substitutions.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _substitutionsVariables?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "XpmInitTemplateSubstitutionsVariables",
+                  "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateSubstitutionsVariables:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "_substitutionsVariables",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#_templatesPath:member",
+              "docComment": "/**\n * The absolute path to the templates folder.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _templatesPath: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_templatesPath",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#_validatePropertiesDefinitions:member(1)",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _validatePropertiesDefinitions(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_validatePropertiesDefinitions"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#_validatePropertyValue:member(1)",
+              "docComment": "/**\n * Validates a property value against its definition.\n *\n * @remarks\n *\n * This method checks whether the provided value is valid for the specified property according to its type definition. It performs type-specific validation and conversion:\n *\n * <ul> <li><b>For <code>select</code> properties:</b> validates against allowed items andchecks platform compatibility if specified</li> <li><b>For <code>boolean</code> properties:</b> converts <code>'true'</code>/<code>'false'</code> strings to booleans</li> <li><b>For <code>number</code> properties:</b> converts strings to numbers</li> </ul>\n *\n * If the value is empty and a default is defined, the default value is returned. For select properties with platform restrictions, only platform-compatible items are considered valid.\n *\n * @param name - The property name to validate.\n *\n * @param value - The property value to validate.\n *\n * @returns The validated and potentially converted value (string, boolean, or number).\n *\n * @throws\n *\n * {@link XpmError} If the property is unsupported or the value is invalid.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _validatePropertyValue(name: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", value: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string | boolean | number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "name",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "value",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_validatePropertyValue"
+            },
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase:constructor(1)",
+              "docComment": "/**\n * Constructs an <b>xpm</b> initialisation template instance.\n *\n * @param context - The <b>xpm</b> context containing configuration and logging.\n *\n * @param __dirname - The absolute path to the module folder.\n *\n * @param templatesPath - The absolute path to the templates folder.\n *\n * @param propertiesDefinitions - The definitions of all supported properties.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor({ context, __dirname, templatesPath, propertiesDefinitions, "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "process",
+                  "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateConstructorParameters#process"
+                },
+                {
+                  "kind": "Content",
+                  "text": ": _process, }: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "XpmInitTemplateConstructorParameters",
+                  "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateConstructorParameters:interface"
                 },
                 {
                   "kind": "Content",
@@ -6044,10 +7028,10 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "{ context, __dirname, templatesPath, propertiesDefinitions, }",
+                  "parameterName": "{ context, __dirname, templatesPath, propertiesDefinitions, process: _process, }",
                   "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 6
+                    "startIndex": 3,
+                    "endIndex": 4
                   },
                   "isOptional": false
                 }
@@ -6088,37 +7072,6 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "askForMoreValues"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#context:member",
-              "docComment": "/**\n * The <b>xpm</b> context containing configuration and logging utilities.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "context: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "XpmContext",
-                  "canonicalReference": "@xpack/xpm-lib!XpmContext:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "context",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
             },
             {
               "kind": "Method",
@@ -6259,52 +7212,13 @@
               "name": "copyFolder"
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#engine:member",
-              "docComment": "/**\n * The Liquid templating engine instance.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "engine: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Liquid",
-                  "canonicalReference": "liquidjs!Liquid:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "engine",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#generate:member(1)",
-              "docComment": "/**\n * Generates the project files from the template.\n *\n * @remarks\n *\n * This abstract method must be implemented by derived classes to define the specific files and folder structure to create for the project. Implementations should use {@link XpmInitTemplateBase.copyFile}, {@link XpmInitTemplateBase.copyFolder}, and {@link XpmInitTemplateBase.render} to create the project structure. The substitution variables are available via the {@link XpmInitTemplateBase.substitutionsVariables} property.\n *\n * @param isInteractive - Whether the template was run in interactive mode.\n *\n * @returns A promise that resolves when generation is complete.\n */\n",
+              "docComment": "/**\n * Generates the project files from the template.\n *\n * @remarks\n *\n * This abstract method must be implemented by derived classes to define the specific files and folder structure to create for the project. Implementations should use {@link XpmInitTemplateBase.copyFile}, {@link XpmInitTemplateBase.copyFolder}, and {@link XpmInitTemplateBase.render} to create the project structure. The substitution variables are available via the {@link XpmInitTemplateBase._substitutionsVariables} property.\n *\n * The implementation must be <b>asynchronous</b> to allow for file system operations.\n *\n * @returns A promise that resolves when generation is complete.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "abstract generate(isInteractive: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
+                  "text": "abstract generate(): "
                 },
                 {
                   "kind": "Reference",
@@ -6322,22 +7236,13 @@
               ],
               "isStatic": false,
               "returnTypeTokenRange": {
-                "startIndex": 3,
-                "endIndex": 5
+                "startIndex": 1,
+                "endIndex": 3
               },
               "releaseTag": "Public",
               "isProtected": false,
               "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "isInteractive",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  },
-                  "isOptional": false
-                }
-              ],
+              "parameters": [],
               "isOptional": false,
               "isAbstract": true,
               "name": "generate"
@@ -6389,68 +7294,6 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "isPlatformSupported"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#log:member",
-              "docComment": "/**\n * The logger instance for output and diagnostics.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "log: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Logger",
-                  "canonicalReference": "@xpack/logger!Logger:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "log",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#propertiesDefinitions:member",
-              "docComment": "/**\n * Definitions of all properties supported by this template.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "propertiesDefinitions: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "XpmInitTemplatePropertiesDefinitions",
-                  "canonicalReference": "@xpack/xpm-lib!XpmInitTemplatePropertiesDefinitions:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "propertiesDefinitions",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
             },
             {
               "kind": "Method",
@@ -6573,20 +7416,93 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "run"
-            },
+            }
+          ],
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateConstructorParameters:interface",
+          "docComment": "",
+          "excerptTokens": [
             {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#substitutionsVariables:member",
-              "docComment": "/**\n * The variables to be used for template substitutions.\n */\n",
+              "kind": "Content",
+              "text": "export interface XpmInitTemplateConstructorParameters "
+            }
+          ],
+          "fileUrlPath": "../src/classes/init-template-base.ts",
+          "releaseTag": "Public",
+          "name": "XpmInitTemplateConstructorParameters",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateConstructorParameters#__dirname:member",
+              "docComment": "",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "substitutionsVariables?: "
+                  "text": "__dirname: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "__dirname",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateConstructorParameters#context:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "context: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "XpmInitTemplateSubstitutionsVariables",
-                  "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateSubstitutionsVariables:interface"
+                  "text": "XpmContext",
+                  "canonicalReference": "@xpack/xpm-lib!XpmContext:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "context",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateConstructorParameters#process:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "process?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "NodeJS.Process",
+                  "canonicalReference": "!\"\\\"node:process\\\"\".__global.NodeJS.Process:interface"
                 },
                 {
                   "kind": "Content",
@@ -6596,19 +7512,44 @@
               "isReadonly": false,
               "isOptional": true,
               "releaseTag": "Public",
-              "name": "substitutionsVariables",
+              "name": "process",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
+              }
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#templatesPath:member",
-              "docComment": "/**\n * The absolute path to the templates folder.\n */\n",
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateConstructorParameters#propertiesDefinitions:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "propertiesDefinitions: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "XpmInitTemplatePropertiesDefinitions",
+                  "canonicalReference": "@xpack/xpm-lib!XpmInitTemplatePropertiesDefinitions:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "propertiesDefinitions",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateConstructorParameters#templatesPath:member",
+              "docComment": "",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -6630,77 +7571,50 @@
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateBase#validateValue:member(1)",
-              "docComment": "/**\n * Validates a property value against its definition.\n *\n * @remarks\n *\n * This method checks whether the provided value is valid for the specified property according to its type definition. It performs type-specific validation and conversion:\n *\n * <ul> <li><b>For <code>select</code> properties:</b> validates against allowed items andchecks platform compatibility if specified</li> <li><b>For <code>boolean</code> properties:</b> converts <code>'true'</code>/<code>'false'</code> strings to booleans</li> <li><b>For <code>number</code> properties:</b> converts strings to numbers</li> </ul>\n *\n * If the value is empty and a default is defined, the default value is returned. For select properties with platform restrictions, only platform-compatible items are considered valid.\n *\n * @param name - The property name to validate.\n *\n * @param value - The property value to validate.\n *\n * @returns The validated and potentially converted value (string, boolean, or number).\n *\n * @throws\n *\n * `Error` If the property is unsupported or the value is invalid.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "validateValue(name: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", value: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string | boolean | number"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 5,
-                "endIndex": 6
-              },
-              "releaseTag": "Public",
-              "isProtected": false,
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "name",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  },
-                  "isOptional": false
-                },
-                {
-                  "parameterName": "value",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 4
-                  },
-                  "isOptional": false
-                }
-              ],
-              "isOptional": false,
-              "isAbstract": false,
-              "name": "validateValue"
+              }
             }
           ],
-          "implementsTokenRanges": []
+          "extendsTokenRanges": []
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateItems:type",
+          "docComment": "/**\n * Represents the available items for a `select` type property in `xpm init` templates.\n *\n * @remarks\n *\n * Items define the options users can choose from when a property uses the <code>select</code> type. Each key represents the value stored when that option is selected, whilst the value provides the description shown to the user.\n *\n * Item values can be either:\n *\n * <ul> <li><b>Simple string:</b> A description shown to all users regardless of platform.</li> <li><b><code>XpmInitTemplateItemValue</code>:</b> A platform-specific item that only appears when the current platform matches the <code>platforms</code> constraint.</li> </ul>\n *\n * Example:\n * ```js\n * {\n *   gcc: 'The GCC compiler',\n *   clang: {\n *     platforms: ['darwin'],\n *     message: 'The Clang compiler (macOS only)'\n *   }\n * }\n * ```\n *\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type XpmInitTemplateItems = "
+            },
+            {
+              "kind": "Reference",
+              "text": "Record",
+              "canonicalReference": "!Record:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<string, string | "
+            },
+            {
+              "kind": "Reference",
+              "text": "XpmInitTemplateItemValue",
+              "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateItemValue:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ">"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "../src/types/xpm-init-template.ts",
+          "releaseTag": "Public",
+          "name": "XpmInitTemplateItems",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 5
+          }
         },
         {
           "kind": "Interface",
@@ -6823,7 +7737,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@xpack/xpm-lib!XpmInitTemplatePropertiesDefinition#default:member",
-              "docComment": "/**\n * The default value for the property.\n */\n",
+              "docComment": "/**\n * The default value for the property. Must match the property type.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -6877,7 +7791,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@xpack/xpm-lib!XpmInitTemplatePropertiesDefinition#isMandatory:member",
-              "docComment": "/**\n * Indicates whether the property is mandatory.\n */\n",
+              "docComment": "/**\n * Indicates whether the property is mandatory; defaults to `false`.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -6908,25 +7822,12 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "items: "
+                  "text": "items?: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Record",
-                  "canonicalReference": "!Record:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": "<string, string | "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "XpmInitTemplateItemValue",
-                  "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateItemValue:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ">"
+                  "text": "XpmInitTemplateItems",
+                  "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateItems:type"
                 },
                 {
                   "kind": "Content",
@@ -6934,12 +7835,12 @@
                 }
               ],
               "isReadonly": false,
-              "isOptional": false,
+              "isOptional": true,
               "releaseTag": "Public",
               "name": "items",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 5
+                "endIndex": 2
               }
             },
             {
@@ -6979,8 +7880,9 @@
                   "text": "type: "
                 },
                 {
-                  "kind": "Content",
-                  "text": "'select' | 'string' | 'number' | 'boolean'"
+                  "kind": "Reference",
+                  "text": "XpmInitTemplateType",
+                  "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateType:type"
                 },
                 {
                   "kind": "Content",
@@ -7132,6 +8034,32 @@
             }
           ],
           "extendsTokenRanges": []
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@xpack/xpm-lib!XpmInitTemplateType:type",
+          "docComment": "/**\n * Represents the supported property types for `xpm init` template properties.\n *\n * @remarks\n *\n * Property types control how the `xpm init` command prompts users for configuration values during template initialisation:\n *\n * <ul> <li><b><code>select</code>:</b> Presents a list of predefined options for the user to choose from. Requires the <code>items</code> field to be populated.</li> <li><b><code>string</code>:</b> Accepts free-form text input from the user.</li> <li><b><code>number</code>:</b> Accepts numeric input with validation.</li> <li><b><code>boolean</code>:</b> Accepts yes/no input, converted to <code>true</code> or <code>false</code>.</li> </ul>\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type XpmInitTemplateType = "
+            },
+            {
+              "kind": "Content",
+              "text": "'select' | 'string' | 'number' | 'boolean'"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "../src/types/xpm-init-template.ts",
+          "releaseTag": "Public",
+          "name": "XpmInitTemplateType",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
         },
         {
           "kind": "Class",
@@ -7914,7 +8842,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@xpack/xpm-lib!XpmLiquidSubstitutionsVariables#package:member",
-              "docComment": "/**\n * The package metadata exposed to Liquid templates.\n *\n * @remarks\n *\n * Contains the entire package.json content, allowing templates to access package name, version, description, dependencies, and xpack-specific metadata.\n *\n * Common template patterns:\n *\n * <ul> <li><code>\\{\\{ package.name \\}\\}</code>: Package name for generated files.</li> <li><code>\\{\\{ package.version \\}\\}</code>: Version string for documentation.</li> <li><code>\\{\\{ package.xpack.properties.key \\}\\}</code>: Access xpack properties.</li> </ul>\n *\n * Undefined when processing templates outside of a package context.\n */\n",
+              "docComment": "/**\n * The package metadata exposed to Liquid templates.\n *\n * @remarks\n *\n * Contains the entire `package.json` content, allowing templates to access package name, version, description, dependencies, and xpack-specific metadata.\n *\n * Common template patterns:\n *\n * <ul> <li><code>\\{\\{ package.name \\}\\}</code>: Package name for generated files.</li> <li><code>\\{\\{ package.version \\}\\}</code>: Version string for documentation.</li> <li><code>\\{\\{ package.xpack.properties.key \\}\\}</code>: Access xpack properties.</li> </ul>\n *\n * Undefined when processing templates outside of a package context.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -7968,7 +8896,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@xpack/xpm-lib!XpmLiquidSubstitutionsVariables#properties:member",
-              "docComment": "/**\n * The properties map used for substitutions.\n *\n * @remarks\n *\n * User-defined configuration values from xpack.properties in package.json. Provides a namespace for custom template variables without polluting the global scope.\n *\n * Properties support nested substitutions: a property value can reference other properties, package metadata, or system variables using Liquid syntax. The Liquid Drop pattern ensures recursive evaluation.\n *\n * Access via `{{ properties.key }}` in templates.\n */\n",
+              "docComment": "/**\n * The properties map used for substitutions.\n *\n * @remarks\n *\n * User-defined configuration values from `xpack.properties` in `package.json`. Provides a namespace for custom template variables without polluting the global scope.\n *\n * Properties support nested substitutions: a property value can reference other properties, package metadata, or system variables using Liquid syntax. The Liquid Drop pattern ensures recursive evaluation.\n *\n * Access via `{{ properties.key }}` in templates.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -8142,7 +9070,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmPackage#checkMinimumXpmRequired:member(1)",
-              "docComment": "/**\n * Validates the minimum required <b>xpm</b> version against the installed CLI.\n *\n * @remarks\n *\n * This method ensures that packages requiring specific <b>xpm</b> features or bug fixes can enforce a minimum version requirement, preventing runtime errors or unexpected behavior with older <b>xpm</b> versions.\n *\n * Validation workflow:\n *\n * <ol> <li>Check if package is an <b>xpm</b> package with <code>minimumXpmRequired</code> set.</li> <li>Clean the required version by removing pre-release suffixes.</li> <li>Load the <b>xpm</b> CLI's package.json from the provided root folder.</li> <li>Extract and clean the installed <b>xpm</b> version.</li> <li>Compare versions using semver to determine if upgrade is needed.</li> <li>Throw <code>XpmPrerequisitesError</code> if installed version is too old.</li> </ol>\n *\n * Pre-release suffixes are stripped from both versions to ensure that pre-release builds satisfy version requirements (e.g., 1.0.0-beta satisfies minimumXpmRequired: 1.0.0).\n *\n * @param xpmRootFolderPath - The folder path to the <b>xpm</b> CLI package.\n *\n * @returns The cleaned minimum required version, or undefined if no check is required.\n *\n * @throws\n *\n * {@link XpmPrerequisitesError} If the installed <b>xpm</b> version is lower than the required minimum.\n */\n",
+              "docComment": "/**\n * Validates the minimum required <b>xpm</b> version against the installed CLI.\n *\n * @remarks\n *\n * This method ensures that packages requiring specific <b>xpm</b> features or bug fixes can enforce a minimum version requirement, preventing runtime errors or unexpected behavior with older <b>xpm</b> versions.\n *\n * Validation workflow:\n *\n * <ol> <li>Check if package is an <b>xpm</b> package with <code>minimumXpmRequired</code> set.</li> <li>Clean the required version by removing pre-release suffixes.</li> <li>Load the <b>xpm</b> CLI's <code>package.json</code> from the provided root folder.</li> <li>Extract and clean the installed <b>xpm</b> version.</li> <li>Compare versions using semver to determine if upgrade is needed.</li> <li>Throw <code>XpmPrerequisitesError</code> if installed version is too old.</li> </ol>\n *\n * Pre-release suffixes are stripped from both versions to ensure that pre-release builds satisfy version requirements (e.g., 1.0.0-beta satisfies minimumXpmRequired: 1.0.0).\n *\n * @param xpmRootFolderPath - The folder path to the <b>xpm</b> CLI package.\n *\n * @returns The cleaned minimum required version, or undefined if no check is required.\n *\n * @throws\n *\n * {@link XpmPrerequisitesError} If the installed <b>xpm</b> version is lower than the required minimum.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -8296,7 +9224,7 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "false"
+                  "text": "boolean"
                 },
                 {
                   "kind": "Content",
@@ -8358,7 +9286,7 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "false"
+                  "text": "boolean"
                 },
                 {
                   "kind": "Content",
@@ -8381,7 +9309,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmPackage#isNpmPackage:member(1)",
-              "docComment": "/**\n * Determines whether the package.json content represents a valid npm package.\n *\n * @returns `true` if the package has a valid name and version, `false` otherwise.\n */\n",
+              "docComment": "/**\n * Determines whether the `package.json` content represents a valid npm package.\n *\n * @returns `true` if the package has a valid name and version, `false` otherwise.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -8443,7 +9371,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmPackage#jsonPackage:member",
-              "docComment": "/**\n * The parsed package.json content, when available.\n *\n * @remarks\n *\n * This property caches the parsed package.json content after successful reading, avoiding repeated file I/O and parsing operations.\n *\n * Lifecycle states:\n *\n * <ol> <li>Initially undefined when the <code>XpmPackage</code> instance is created.</li> <li>Populated by <code>XpmPackage.readPackageDotJson()</code> upon successful read and parse.</li> <li>Cleared to undefined if parsing fails with <code>withThrow</code> enabled.</li> <li>Used by validation methods (<code>isNpmPackage</code>, <code>isXpmPackage</code>, <code>isBinaryXpmPackage</code>) to check package capabilities.</li> <li>Not automatically updated when <code>package.json</code> is modified externally; call <code>XpmPackage.readPackageDotJson()</code> again to refresh.</li> </ol>\n *\n * The cached content improves performance for packages that perform multiple validation checks without file system access overhead.\n */\n",
+              "docComment": "/**\n * The parsed `package.json` content, when available.\n *\n * @remarks\n *\n * This property caches the parsed `package.json` content after successful reading, avoiding repeated file I/O and parsing operations.\n *\n * Lifecycle states:\n *\n * <ol> <li>Initially undefined when the <code>XpmPackage</code> instance is created.</li> <li>Populated by <code>XpmPackage.readPackageDotJson()</code> upon successful read and parse.</li> <li>Cleared to undefined if parsing fails with <code>withThrow</code> enabled.</li> <li>Used by validation methods (<code>isNpmPackage</code>, <code>isXpmPackage</code>, <code>isBinaryXpmPackage</code>) to check package capabilities.</li> <li>Not automatically updated when <code>package.json</code> is modified externally; call <code>XpmPackage.readPackageDotJson()</code> again to refresh.</li> </ol>\n *\n * The cached content improves performance for packages that perform multiple validation checks without file system access overhead.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -8474,7 +9402,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!XpmPackage#packageFolderPath:member",
-              "docComment": "/**\n * The absolute path to the package folder.\n *\n * @remarks\n *\n * This path serves as the base folder for all package operations, including reading/writing package.json and resolving relative paths.\n *\n * Path requirements:\n *\n * <ol> <li>Must be an absolute path to a folder.</li> <li>Folder should contain (or will contain) a package.json file.</li> <li>Used to construct the path to <code>package.json</code> as <code>\\{packageFolderPath\\}/package.json</code>.</li> <li>Remains constant throughout the lifecycle of the <code>XpmPackage</code> instance.</li> </ol>\n *\n * The path is set during construction and used by all methods that access or modify `package.json`.\n */\n",
+              "docComment": "/**\n * The absolute path to the package folder.\n *\n * @remarks\n *\n * This path serves as the base folder for all package operations, including reading/writing `package.json` and resolving relative paths.\n *\n * Path requirements:\n *\n * <ol> <li>Must be an absolute path to a folder.</li> <li>Folder should contain (or will contain) a <code>package.json</code> file.</li> <li>Used to construct the path to <code>package.json</code> as <code>\\{packageFolderPath\\}/package.json</code>.</li> <li>Remains constant throughout the lifecycle of the <code>XpmPackage</code> instance.</li> </ol>\n *\n * The path is set during construction and used by all methods that access or modify `package.json`.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -8553,7 +9481,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmPackage#readPackageDotJson:member(1)",
-              "docComment": "/**\n * Reads and parses package.json from the package folder.\n *\n * @remarks\n *\n * This method provides flexible error handling for scenarios where a missing or invalid package.json may be expected (e.g., checking whether a folder is a package) versus scenarios where it indicates a critical error (e.g., operating on a known package).\n *\n * When `withThrow` is false, the method returns undefined for missing or invalid files, allowing callers to handle the absence gracefully. When `withThrow` is true, errors are thrown as {@link XpmInputError} for consistent error handling across the application.\n *\n * @param withThrow - Whether to throw on missing or invalid package.json.\n *\n * @returns The parsed package.json content, or undefined when missing or invalid and `withThrow` is false.\n *\n * @throws\n *\n * {@link XpmInputError} If package.json is missing or invalid and `withThrow` is true.\n */\n",
+              "docComment": "/**\n * Reads and parses `package.json` from the package folder.\n *\n * @remarks\n *\n * This method provides flexible error handling for scenarios where a missing or invalid `package.json` may be expected (e.g., checking whether a folder is a package) versus scenarios where it indicates a critical error (e.g., operating on a known package).\n *\n * When `withThrow` is false, the method returns undefined for missing or invalid files, allowing callers to handle the absence gracefully. When `withThrow` is true, errors are thrown as {@link XpmInputError} for consistent error handling across the application.\n *\n * @param withThrow - Whether to throw on missing or invalid `package.json`.\n *\n * @returns The parsed `package.json` content, or undefined when missing or invalid and `withThrow` is false.\n *\n * @throws\n *\n * {@link XpmInputError} If `package.json` is missing or invalid and `withThrow` is true.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -8615,7 +9543,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!XpmPackage#rewritePackageDotJson:member(1)",
-              "docComment": "/**\n * Writes the provided package.json content to disk.\n *\n * @remarks\n *\n * The JSON content is passed explicitly rather than using the cached value.\n *\n * @param jsonPackage - The package.json content to write.\n *\n * @returns A promise that resolves when the file has been written.\n */\n",
+              "docComment": "/**\n * Writes the provided `package.json` content to disk.\n *\n * @remarks\n *\n * The JSON content is passed explicitly rather than using the cached value.\n *\n * @param jsonPackage - The `package.json` content to write.\n *\n * @returns A promise that resolves when the file has been written.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",

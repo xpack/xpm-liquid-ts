@@ -28,7 +28,7 @@ This abstract class provides the foundation for template-based project initialis
 
 Template workflow:
 
-<ol> <li>Properties are validated against their definitions</li> <li>Missing mandatory properties trigger interactive prompts (if TTY)</li> <li>Substitution variables are prepared from properties</li> <li>The <code>XpmInitTemplateBase.generate</code> method creates project files</li> </ol>
+<ol> <li>Properties are validated against their definitions</li> <li>Missing mandatory properties trigger interactive prompts (if TTY)</li> <li>Substitution variables are prepared from properties</li> <li>The <code>XpmInitTemplateBase.generate()</code> method creates project files</li> </ol>
 
 Derived classes must implement [XpmInitTemplateBase.generate()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/generate) to define the specific files and folder structure to create.
 
@@ -52,7 +52,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)({ context, \_\_dirname, templatesPath, propertiesDefinitions, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/constructor)
+[(constructor)({ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/constructor)
 
 
 </td><td>
@@ -96,6 +96,8 @@ Description
 
 </td><td>
 
+`protected`
+
 
 </td><td>
 
@@ -110,10 +112,12 @@ The absolute path to the module folder.
 </td></tr>
 <tr><td>
 
-[context](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/context)
+[\_context](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_context)
 
 
 </td><td>
+
+`protected`
 
 
 </td><td>
@@ -129,10 +133,12 @@ The <b>xpm</b> context containing configuration and logging utilities.
 </td></tr>
 <tr><td>
 
-[engine](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/engine)
+[\_engine](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_engine)
 
 
 </td><td>
+
+`protected`
 
 
 </td><td>
@@ -148,10 +154,31 @@ The Liquid templating engine instance.
 </td></tr>
 <tr><td>
 
-[log](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/log)
+[\_isInteractive](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_isinteractive)
 
 
 </td><td>
+
+`protected`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[\_log](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_log)
+
+
+</td><td>
+
+`protected`
 
 
 </td><td>
@@ -167,10 +194,31 @@ The logger instance for output and diagnostics.
 </td></tr>
 <tr><td>
 
-[propertiesDefinitions](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/propertiesdefinitions)
+[\_process](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_process)
 
 
 </td><td>
+
+`protected`
+
+
+</td><td>
+
+NodeJS.Process
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[\_propertiesDefinitions](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_propertiesdefinitions)
+
+
+</td><td>
+
+`protected`
 
 
 </td><td>
@@ -186,10 +234,12 @@ Definitions of all properties supported by this template.
 </td></tr>
 <tr><td>
 
-[substitutionsVariables?](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/substitutionsvariables)
+[\_substitutionsVariables?](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_substitutionsvariables)
 
 
 </td><td>
+
+`protected`
 
 
 </td><td>
@@ -205,10 +255,12 @@ _(Optional)_ The variables to be used for template substitutions.
 </td></tr>
 <tr><td>
 
-[templatesPath](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/templatespath)
+[\_templatesPath](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_templatespath)
 
 
 </td><td>
+
+`protected`
 
 
 </td><td>
@@ -260,6 +312,36 @@ Recursively copies all contents of a source folder to a destination folder.
 </td></tr>
 <tr><td>
 
+[\_validatePropertiesDefinitions()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_validatepropertiesdefinitions)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[\_validatePropertyValue(name, value)](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_validatepropertyvalue)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Validates a property value against its definition.
+
+
+</td></tr>
+<tr><td>
+
 [askForMoreValues()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/askformorevalues)
 
 
@@ -302,7 +384,7 @@ Copies an entire folder from the templates folder to the destination.
 </td></tr>
 <tr><td>
 
-[generate(isInteractive)](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/generate)
+[generate()](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/generate)
 
 
 </td><td>
@@ -355,20 +437,6 @@ Renders a template file using Liquid and writes the output.
 </td><td>
 
 Executes the template initialisation process.
-
-
-</td></tr>
-<tr><td>
-
-[validateValue(name, value)](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/validatevalue)
-
-
-</td><td>
-
-
-</td><td>
-
-Validates a property value against its definition.
 
 
 </td></tr>

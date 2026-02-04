@@ -4,7 +4,7 @@
 
 ## XpmInitTemplatePropertiesDefinition.isMandatory property
 
-Indicates whether the property is mandatory.
+Indicates whether the property is mandatory; defaults to `false`<!-- -->.
 
 **Signature:**
 

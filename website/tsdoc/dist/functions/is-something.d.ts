@@ -42,27 +42,35 @@ export declare function isPrimitive(value: unknown): boolean;
  * @param value - The value to test.
  * @returns `true` if the value is a string, `false` otherwise.
  */
-export declare function isString(value: unknown): value is string;
+export declare function isString(value: unknown): boolean;
 /**
- * Determines whether a value is a non-array object.
+ * Determines whether a value is a finite number.
  *
  * @remarks
- * This function distinguishes between objects and arrays, which is crucial
- * when processing JSON structures where both use the object type but require
- * different handling.
+ * This function validates that a value is both a number type and
+ * mathematically finite, excluding `NaN`, `Infinity`, and `-Infinity`.
+ * This is essential when validating numeric configuration values or
+ * processing JSON data where numeric fields must contain valid,
+ * computable values.
  *
- * Returns `true` for: plain objects, class instances, and other object types.
+ * Returns `true` for: all finite numeric values, including `0`, negative
+ * numbers, and floating-point numbers.
  *
- * Returns `false` for: arrays, null, primitives, and functions.
+ * Returns `false` for: `NaN`, `Infinity`, `-Infinity`, strings, objects,
+ * arrays, and any non-number types.
  *
- * Note: Arrays in JavaScript are objects, so this function explicitly
- * excludes them using `Array.isArray()`. Use {@link isJsonObject} for
- * stricter JSON object validation that also excludes `undefined` and `null`.
+ * Only returns `true` for primitive number values, not Number objects
+ * created with `new Number()`.
+ *
+ * The finiteness check is crucial for mathematical operations and ensures
+ * that numeric properties in `package.json` or configuration files contain
+ * usable values rather than special numeric constants that could cause
+ * unexpected behaviour in calculations.
  *
  * @param value - The value to test.
- * @returns `true` if the value is a non-array object, `false` otherwise.
+ * @returns `true` if the value is a finite number, `false` otherwise.
  */
-export declare function isObject(value: unknown): boolean;
+export declare function isNumber(value: unknown): boolean;
 /**
  * Determines whether a value is a boolean.
  *
@@ -83,6 +91,27 @@ export declare function isObject(value: unknown): boolean;
  */
 export declare function isBoolean(value: unknown): boolean;
 /**
+ * Determines whether a value is a non-array object.
+ *
+ * @remarks
+ * This function distinguishes between objects and arrays, which is crucial
+ * when processing JSON structures where both use the object type but require
+ * different handling.
+ *
+ * Returns `true` for: plain objects, class instances, null and other
+ * object types.
+ *
+ * Returns `false` for: arrays, primitives, and functions.
+ *
+ * Note: Arrays in JavaScript are objects, so this function explicitly
+ * excludes them using `Array.isArray()`. Use {@link isJsonObject} for
+ * stricter JSON object validation that also excludes `undefined` and `null`.
+ *
+ * @param value - The value to test.
+ * @returns `true` if the value is a non-array object, `false` otherwise.
+ */
+export declare function isObject(value: unknown): boolean;
+/**
  * Determines whether a value is a JSON object.
  *
  * @remarks
@@ -90,7 +119,7 @@ export declare function isBoolean(value: unknown): boolean;
  * JavaScript's general object type. This is essential when working with
  * parsed JSON data or `package.json` structures.
  *
- * Returns `true` for: plain objects and class instances (non-null,
+ * Returns `true` for: plain objects (non-null,
  * non-primitive, non-array values).
  *
  * Returns `false` for: undefined, null, primitives (string, number,

@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Determines whether the package.json content represents a valid npm package.
+Determines whether the `package.json` content represents a valid npm package.
 
 ## Signature
 

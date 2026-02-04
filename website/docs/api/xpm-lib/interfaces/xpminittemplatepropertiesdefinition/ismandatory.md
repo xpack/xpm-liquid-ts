@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Indicates whether the property is mandatory.
+Indicates whether the property is mandatory; defaults to `false`<!-- -->.
 
 ## Signature
 

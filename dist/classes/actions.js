@@ -4,20 +4,22 @@ import { performSubstitutions } from '../functions/perform-substitutions.js';
 import { getErrorMessage } from '../functions/utils.js';
 import { isJsonArray, isJsonObject, isString, } from '../functions/is-something.js';
 import { XpmError } from './errors.js';
+import { CombinationsGenerator } from './combinations-generator.js';
 export class XpmActions {
     log;
     engine;
     substitutionsVariables;
     jsonActions;
+    buildConfiguration;
     _actionsMap = new Map();
     _actionsNamesSet = new Set();
     _jsonActionsNamesMap = new Map();
-    buildConfiguration;
     _isInitialised = false;
-    constructor({ log, engine, substitutionsVariables, inheritedActionsMap, jsonActions, buildConfiguration, }) {
-        assert(log);
-        assert(engine);
-        assert(substitutionsVariables);
+    _actionsNames = [];
+    constructor({ log, engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, }) {
+        assert(log, 'log is required');
+        assert(engine, 'engine is required');
+        assert(substitutionsVariables, 'substitutionsVariables is required');
         if (buildConfiguration !== undefined) {
             log.trace(`${XpmActions.name}()` +
                 ` @${buildConfiguration.buildConfigurationName}`);
@@ -29,7 +31,9 @@ export class XpmActions {
         this.engine = engine;
         this.substitutionsVariables = substitutionsVariables;
         this.jsonActions = jsonActions ?? {};
-        this.buildConfiguration = buildConfiguration;
+        if (buildConfiguration !== undefined) {
+            this.buildConfiguration = buildConfiguration;
+        }
         if (inheritedActionsMap !== undefined) {
             for (const [inheritedActionName, inheritedAction,] of inheritedActionsMap) {
                 const action = new XpmAction({
@@ -62,32 +66,14 @@ export class XpmActions {
         }
         for (const [actionName, jsonAction] of Object.entries(this.jsonActions)) {
             if (actionName.includes('{{')) {
-                try {
-                    const expandedActionsMap = await this._expandTemplateActions({
-                        actionName,
-                        jsonActionTemplate: jsonAction,
-                    });
-                    for (const [expandedActionName, expandedAction,] of expandedActionsMap) {
-                        if (this._actionsNamesSet.has(expandedActionName)) {
-                            throw new XpmError(`duplicate action name "${expandedActionName}" ` +
-                                `generated from template.`);
-                        }
-                        else {
-                            this._actionsMap.set(expandedActionName, expandedAction);
-                            this._jsonActionsNamesMap.set(expandedActionName, actionName);
-                            this._actionsNamesSet.add(expandedActionName);
-                        }
-                    }
-                }
-                catch (error) {
-                    const message = getErrorMessage(error) + ` in action "${actionName}"`;
-                    throw new XpmError(message);
-                }
+                await this._processTemplate({
+                    actionName,
+                    jsonActionTemplate: jsonAction,
+                });
             }
             else {
                 if (this._actionsNamesSet.has(actionName)) {
-                    throw new XpmError(`duplicate action name "${actionName}" ` +
-                        `possibly already generated from template.`);
+                    throw new XpmError(`action name "${actionName}" already defined.`);
                 }
                 else {
                     this._actionsMap.set(actionName, undefined);
@@ -96,16 +82,20 @@ export class XpmActions {
                 }
             }
         }
+        const actionsNames = Array.from(this._actionsMap.keys());
+        this._actionsNames = actionsNames;
+        this.log.trace(`${XpmActions.name}.initialise() =>`, actionsNames);
         this._isInitialised = true;
         return true;
     }
-    empty() {
+    get size() {
+        return this._actionsMap.size;
+    }
+    get isEmpty() {
         return this._actionsMap.size === 0;
     }
-    names() {
-        const actionNames = Array.from(this._actionsMap.keys());
-        this.log.trace(`${XpmActions.name}.names() =>`, actionNames);
-        return actionNames;
+    get names() {
+        return this._actionsNames;
     }
     has(actionName) {
         return this._actionsMap.has(actionName);
@@ -115,6 +105,9 @@ export class XpmActions {
         log.trace(`${XpmActions.name}.get(${actionName})`);
         let action = this._actionsMap.get(actionName);
         if (action === undefined) {
+            if (!this._jsonActionsNamesMap.has(actionName)) {
+                throw new XpmError(`action "${actionName}" does not exist`);
+            }
             const jsonActionName = this._jsonActionsNamesMap.get(actionName);
             const jsonAction = (this.jsonActions[jsonActionName] ??
                 '');
@@ -127,12 +120,41 @@ export class XpmActions {
         }
         return action;
     }
+    async _processTemplate({ actionName, jsonActionTemplate, }) {
+        try {
+            const expandedActionsMap = await this._expandTemplateActions({
+                actionName,
+                jsonActionTemplate,
+            });
+            for (const [expandedActionName, expandedAction] of expandedActionsMap) {
+                if (this._actionsNamesSet.has(expandedActionName)) {
+                    throw new XpmError(`duplicate action name "${expandedActionName}" ` +
+                        `could not be generated from template.`);
+                }
+                else {
+                    this._actionsMap.set(expandedActionName, expandedAction);
+                    this._jsonActionsNamesMap.set(expandedActionName, actionName);
+                    this._actionsNamesSet.add(expandedActionName);
+                }
+            }
+        }
+        catch (error) {
+            const message = getErrorMessage(error) + ` in action "${actionName}"`;
+            throw new XpmError(message);
+        }
+    }
     async _expandTemplateActions({ actionName, jsonActionTemplate, }) {
         const log = this.log;
         log.trace(`${XpmActions.name}.#expandTemplateActions(${actionName})`);
         const newActionsMap = new Map();
+        if (jsonActionTemplate.matrix == undefined) {
+            throw new XpmError(`action "${actionName}" has no matrix`);
+        }
         if (!isJsonObject(jsonActionTemplate.matrix)) {
             throw new XpmError(`action "${actionName}" matrix is not an object`);
+        }
+        if (jsonActionTemplate.template == undefined) {
+            throw new XpmError(`action "${actionName}" has no template`);
         }
         if (!isString(jsonActionTemplate.template) &&
             !isJsonArray(jsonActionTemplate.template)) {
@@ -174,49 +196,47 @@ export class XpmActions {
                 matrixValues.push(matrixValueArray);
             }
         }
-        const createSubstitutedAction = async (combination) => {
-            let substitutedActionName;
-            try {
-                substitutedActionName = await performSubstitutions({
-                    input: actionName,
-                    engine: this.engine,
-                    substitutionsVariables: {
-                        ...this.substitutionsVariables,
-                        matrix: combination,
-                    },
-                    log: this.log,
-                });
-            }
-            catch (error) {
-                const message = getErrorMessage(error) +
-                    ` in action "${actionName}" name substitution`;
-                throw new XpmError(message);
-            }
-            const newAction = new XpmAction({
-                actionName: substitutedActionName,
+        const combinationsGenerator = new CombinationsGenerator({
+            matrixKeys,
+            matrixValues,
+            log: this.log,
+        });
+        const combinations = combinationsGenerator.generate();
+        log.trace('combinations =>', combinations);
+        for (const combination of combinations) {
+            await this._createSubstitutedAction({
+                actionName,
                 jsonAction: jsonActionTemplate.template,
-                parentActions: this,
-                matrixParameters: { ...combination },
+                combination,
+                newActionsMap,
             });
-            newActionsMap.set(substitutedActionName, newAction);
-        };
-        const generateCombinationsRecursively = async (index, combination) => {
-            const log = this.log;
-            log.trace(`${XpmActions.name}.#expandTemplateActions().` +
-                `generateCombinationsRecursively(${String(index)}, ${JSON.stringify(combination)})`);
-            if (index === matrixKeys.length) {
-                await createSubstitutedAction(combination);
-                return;
-            }
-            const key = matrixKeys[index];
-            const values = matrixValues[index];
-            for (const value of values) {
-                combination[key] = value;
-                await generateCombinationsRecursively(index + 1, combination);
-            }
-        };
-        await generateCombinationsRecursively(0, {});
+        }
         return newActionsMap;
+    }
+    async _createSubstitutedAction({ actionName, jsonAction, combination, newActionsMap, }) {
+        let substitutedActionName;
+        try {
+            substitutedActionName = await performSubstitutions({
+                input: actionName,
+                engine: this.engine,
+                substitutionsVariables: {
+                    ...this.substitutionsVariables,
+                    matrix: combination,
+                },
+                log: this.log,
+            });
+        }
+        catch (error) {
+            const message = getErrorMessage(error) + ` in action "${actionName}" name substitution`;
+            throw new XpmError(message);
+        }
+        const newAction = new XpmAction({
+            actionName: substitutedActionName,
+            jsonAction,
+            parentActions: this,
+            matrixParameters: { ...combination },
+        });
+        newActionsMap.set(substitutedActionName, newAction);
     }
 }
 export class XpmAction {
@@ -227,9 +247,8 @@ export class XpmAction {
     _commands;
     _isInitialised = false;
     constructor({ actionName, jsonAction, parentActions, matrixParameters, }) {
-        assert(actionName);
-        assert(jsonAction);
-        assert(parentActions);
+        assert(actionName, 'actionName is required');
+        assert(parentActions, 'parentActions is required');
         const log = parentActions.log;
         log.trace(`${XpmAction.name}(${actionName})`);
         this.actionName = actionName;
@@ -251,21 +270,26 @@ export class XpmAction {
             ? jsonAction.join(os.EOL)
             : jsonAction;
         let substitutedCommands;
-        try {
-            substitutedCommands = await performSubstitutions({
-                input: inputCommands,
-                engine: this.parentActions.engine,
-                substitutionsVariables: {
-                    ...this.parentActions.substitutionsVariables,
-                    matrix: this._matrixParameters ?? {},
-                },
-                log,
-            });
+        if (inputCommands.includes('{{') || inputCommands.includes('{%')) {
+            try {
+                substitutedCommands = await performSubstitutions({
+                    input: inputCommands,
+                    engine: this.parentActions.engine,
+                    substitutionsVariables: {
+                        ...this.parentActions.substitutionsVariables,
+                        matrix: this._matrixParameters ?? {},
+                    },
+                    log,
+                });
+            }
+            catch (error) {
+                const message = getErrorMessage(error) +
+                    ` in action "${this.actionName}" commands substitution`;
+                throw new XpmError(message);
+            }
         }
-        catch (error) {
-            const message = getErrorMessage(error) +
-                ` in action "${this.actionName}" commands substitution`;
-            throw new XpmError(message);
+        else {
+            substitutedCommands = inputCommands;
         }
         this._commands = substitutedCommands
             .replace(new RegExp(os.EOL + '$'), '')

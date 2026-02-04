@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-The parsed package.json content, when available.
+The parsed `package.json` content, when available.
 
 ## Signature
 
@@ -24,7 +24,7 @@ jsonPackage?: JsonXpmPackage;
 
 ## Remarks
 
-This property caches the parsed package.json content after successful reading, avoiding repeated file I/O and parsing operations.
+This property caches the parsed `package.json` content after successful reading, avoiding repeated file I/O and parsing operations.
 
 Lifecycle states:
 

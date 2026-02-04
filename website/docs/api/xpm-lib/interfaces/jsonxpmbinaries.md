@@ -14,7 +14,7 @@ custom_edit_url: null
 
 
 
-Represents a JSON binaries definition in package.json.
+Represents a JSON binaries definition in `package.json.`
 
 ## Signature
 

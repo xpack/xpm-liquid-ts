@@ -19,12 +19,7 @@ Constructs an <b>xpm</b> initialisation template instance.
 ## Signature
 
 ```typescript
-constructor({ context, __dirname, templatesPath, propertiesDefinitions, }: {
-        context: XpmContext;
-        __dirname: string;
-        templatesPath: string;
-        propertiesDefinitions: XpmInitTemplatePropertiesDefinitions;
-    });
+constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, }: XpmInitTemplateConstructorParameters);
 ```
 
 ## Parameters
@@ -47,12 +42,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-{ context, \_\_dirname, templatesPath, propertiesDefinitions, }
+{ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, }
 
 
 </td><td>
 
-{ context: [XpmContext](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpmcontext)<!-- -->; \_\_dirname: string; templatesPath: string; propertiesDefinitions: [XpmInitTemplatePropertiesDefinitions](/xpm-lib-ts/docs/api/xpm-lib/typealiases/xpminittemplatepropertiesdefinitions)<!-- -->; }
+[XpmInitTemplateConstructorParameters](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpminittemplateconstructorparameters)
 
 
 </td><td>

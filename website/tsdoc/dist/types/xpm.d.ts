@@ -4,7 +4,7 @@ import { Logger } from '@xpack/logger';
  *
  * @remarks
  * Action commands are always stored as an array of strings after Liquid
- * template evaluation, even if the original definition in package.json was
+ * template evaluation, even if the original definition in `package.json` was
  * a single string.
  *
  * Each string represents a complete command to be executed in sequence.

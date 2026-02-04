@@ -4,7 +4,7 @@
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
 slug: /api/xpm-lib/classes/xpmbuildconfigurations/names
-title: XpmBuildConfigurations.names() method
+title: XpmBuildConfigurations.names property
 custom_edit_url: null
 ---
 
@@ -14,18 +14,19 @@ custom_edit_url: null
 
 
 
-Retrieves the names of all build configurations.
+The names of all build configurations.
 
 ## Signature
 
 ```typescript
-names(): string[];
+get names(): string[];
 ```
-## Returns
 
-string\[\]
+## Remarks
 
-An array of build configuration names.
+This value is known only after `initialise()`<!-- -->.
+
+This getter returns the cached array of configuration names for efficient repeated access without recreating the array.
 
 <hr/>
 

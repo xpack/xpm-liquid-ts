@@ -19,12 +19,12 @@ Constructs an actions collection instance.
 ## Signature
 
 ```typescript
-constructor({ log, engine, substitutionsVariables, inheritedActionsMap, jsonActions, buildConfiguration, }: {
+constructor({ log, engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, }: {
         log: Logger;
         engine: XpmLiquidEngine;
         substitutionsVariables: XpmLiquidSubstitutionsVariables;
-        inheritedActionsMap?: Map<string, XpmAction>;
         jsonActions: JsonActions | undefined;
+        inheritedActionsMap?: Map<string, XpmAction>;
         buildConfiguration?: XpmBuildConfiguration;
     });
 ```
@@ -49,12 +49,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-{ log, engine, substitutionsVariables, inheritedActionsMap, jsonActions, buildConfiguration, }
+{ log, engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, }
 
 
 </td><td>
 
-{ log: Logger; engine: [XpmLiquidEngine](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidengine)<!-- -->; substitutionsVariables: [XpmLiquidSubstitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpmliquidsubstitutionsvariables)<!-- -->; inheritedActionsMap?: Map&lt;string, [XpmAction](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmaction)<!-- -->&gt;; jsonActions: [JsonActions](/xpm-lib-ts/docs/api/xpm-lib/typealiases/jsonactions) \| undefined; buildConfiguration?: [XpmBuildConfiguration](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration)<!-- -->; }
+{ log: Logger; engine: [XpmLiquidEngine](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmliquidengine)<!-- -->; substitutionsVariables: [XpmLiquidSubstitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpmliquidsubstitutionsvariables)<!-- -->; jsonActions: [JsonActions](/xpm-lib-ts/docs/api/xpm-lib/typealiases/jsonactions) \| undefined; inheritedActionsMap?: Map&lt;string, [XpmAction](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmaction)<!-- -->&gt;; buildConfiguration?: [XpmBuildConfiguration](/xpm-lib-ts/docs/api/xpm-lib/classes/xpmbuildconfiguration)<!-- -->; }
 
 
 </td><td>
@@ -65,7 +65,7 @@ Description
 
 ## Remarks
 
-The constructor performs partial initialisation. Complete initialisation requires calling the  method.
+The constructor performs partial initialisation. Complete initialisation requires calling the `XpmActions.initialise()` method.
 
 <hr/>
 

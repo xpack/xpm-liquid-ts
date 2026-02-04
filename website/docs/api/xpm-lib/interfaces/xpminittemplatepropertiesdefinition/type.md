@@ -19,7 +19,7 @@ The property value type.
 ## Signature
 
 ```typescript
-type: 'select' | 'string' | 'number' | 'boolean';
+type: XpmInitTemplateType;
 ```
 <hr/>
 

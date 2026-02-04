@@ -54,11 +54,21 @@ The build configuration name to retrieve.
 
 The build configuration instance.
 
+## Exceptions
+
+[XpmInputError](./xpm-lib.xpminputerror.md) If a configuration with the specified name does not exist.
+
 ## Remarks
 
-This method implements lazy evaluation to avoid unnecessary operations. Build configurations are instantiated on demand but remain uninitialised until actually used. The two-step process works as follows:
+This method implements lazy evaluation to avoid unnecessary operations. Build configurations are instantiated on demand but remain uninitialised until actually used.
 
-<ol> <li>During collection initialisation (<code>XpmBuildConfigurations.initialise</code>), only the matrix of options is evaluated for each template, expanding configuration names without processing their content.</li> <li>Later, when a configuration is accessed via this method and subsequently initialised (<code>XpmBuildConfiguration.initialise</code>), the template is fully evaluated and Liquid substitutions are performed on all properties.</li> </ol>
+Retrieval process:
+
+<ol> <li>Check if the configuration already exists in the internal map.</li> <li>If found and already instantiated, return the existing instance.</li> <li>If the configuration name is unknown (not in JSON name mapping), throw <code>XpmInputError</code>.</li> <li>For known but not yet instantiated configurations: <ul> <li>Resolve the original JSON configuration name (handles both regular and template-generated configurations).</li> <li>Retrieve the JSON configuration definition.</li> <li>Create a new <code>XpmBuildConfiguration</code> instance.</li> <li>Store the instance in the map for future access.</li> </ul> </li> <li>Return the configuration instance (still uninitialised).</li> </ol>
+
+The two-step lazy evaluation process:
+
+<ol> <li>During collection initialisation (<code>XpmBuildConfigurations.initialise()</code>), only the matrix of options is evaluated for each template, expanding configuration names without processing their content.</li> <li>Later, when a configuration is accessed via this method and subsequently initialised (<code>XpmBuildConfiguration.initialise()</code>), the template is fully evaluated and Liquid substitutions are performed on all properties.</li> </ol>
 
 This approach ensures that only build configurations that are actually used incur the cost of template evaluation and variable substitution.
 

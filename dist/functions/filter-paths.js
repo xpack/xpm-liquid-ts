@@ -1,6 +1,5 @@
-import * as os from 'node:os';
 export function filterPath(input) {
-    const fixed = os.platform() === 'win32'
+    const fixed = process.platform === 'win32'
         ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
         : input.replace(/[^a-zA-Z0-9/]+/g, '-');
     return fixed.replace(/--/g, '-');

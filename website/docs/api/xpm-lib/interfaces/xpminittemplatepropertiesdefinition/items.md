@@ -19,7 +19,7 @@ The selectable items for a `select` property.
 ## Signature
 
 ```typescript
-items: Record<string, string | XpmInitTemplateItemValue>;
+items?: XpmInitTemplateItems;
 ```
 <hr/>
 

@@ -34,7 +34,7 @@ export class XpmLiquidEngine extends Liquid {
             return util.format(format, ...args);
         });
         this.registerFilter('to_filename', (input) => {
-            const fixed = os.platform() === 'win32'
+            const fixed = process.platform === 'win32'
                 ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
                 : input.replace(/[^a-zA-Z0-9/]+/g, '-');
             return fixed.replace(/--/g, '-');
@@ -43,7 +43,7 @@ export class XpmLiquidEngine extends Liquid {
             if (Array.isArray(input)) {
                 return input.join(os.EOL);
             }
-            return input;
+            return String(input);
         });
         this.registerFilter('split_lines', (input) => {
             if (Array.isArray(input)) {
@@ -56,7 +56,13 @@ export class XpmLiquidEngine extends Liquid {
                 const keys = Object.keys(input);
                 return keys;
             }
-            return String(input);
+            else if (Array.isArray(input)) {
+                const keys = Object.keys(input);
+                return keys;
+            }
+            else {
+                return String(input);
+            }
         });
     }
 }
