@@ -1863,11 +1863,11 @@ export class XpmBuildConfiguration {
     // Process both the new 'inherits' and the deprecated 'inherit'.
     let jsonInherits: string[] = []
     if (isString(localJsonBuildConfiguration.inherits)) {
-      jsonInherits = [localJsonBuildConfiguration.inherits]
+      jsonInherits = [localJsonBuildConfiguration.inherits as string]
     } else if (Array.isArray(localJsonBuildConfiguration.inherits)) {
       jsonInherits = localJsonBuildConfiguration.inherits as string[]
     } else if (isString(localJsonBuildConfiguration.inherit)) {
-      jsonInherits = [localJsonBuildConfiguration.inherit]
+      jsonInherits = [localJsonBuildConfiguration.inherit as string]
     } else if (Array.isArray(localJsonBuildConfiguration.inherit)) {
       jsonInherits = localJsonBuildConfiguration.inherit as string[]
     }
