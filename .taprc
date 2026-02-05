@@ -23,3 +23,5 @@ snapshot-clean-cwd: true
 show-full-coverage: true
 allow-empty-coverage: true
 allow-incomplete-coverage: true
+
+# typecheck: true
