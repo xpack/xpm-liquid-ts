@@ -24,4 +24,16 @@ show-full-coverage: true
 allow-empty-coverage: true
 allow-incomplete-coverage: true
 
-# typecheck: true
+# -----------------------------------------------------------------------------
+
+# https://tapjs.org/coverage/#coverage-maps
+
+# The coverage map can return null, a string, an array of strings, or an empty array.
+# If it returns null, then no coverage will be generated for the test in question.
+# If it returns a string or string array, then it will only generate coverage for the file(s) listed.
+# If it returns an empty array, then it will generate coverage for any source files loaded. 
+
+# Added to the `tap run` command line to specify a coverage map file (`test-one`).
+# coverage-map: tests/coverage-map.js
+
+# -----------------------------------------------------------------------------
