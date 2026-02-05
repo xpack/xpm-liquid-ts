@@ -13,7 +13,10 @@
 
 // ----------------------------------------------------------------------------
 
-// import * as os from 'node:os'
+import * as os from 'node:os'
+import { fileURLToPath } from 'node:url'
+import * as path from 'node:path'
+import * as fs from 'node:fs/promises'
 
 // ----------------------------------------------------------------------------
 
@@ -34,11 +37,19 @@ import {
   XpmInitTemplatePropertiesDefinition,
   XpmInitTemplatePropertiesDefinitions,
   XpmInitTemplateType,
+  XpmOutputError,
   XpmSyntaxError,
 } from '../../../src/index.js'
 import { AssertionError } from 'node:assert'
 
 // ----------------------------------------------------------------------------
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const fixturesFolderPath = path.join(
+  path.dirname(path.dirname(__dirname)),
+  'fixtures'
+)
 
 const mockProcess: NodeJS.Process = {
   env: {},
@@ -49,6 +60,7 @@ const mockContext: XpmContext = {
   config: {
     projectName: 'test-project',
     properties: {},
+    cwd: process.cwd(),
   },
 }
 
@@ -117,7 +129,10 @@ await t.test('XpmInitTemplateBase asserts', async (t): Promise<void> => {
 
   try {
     template = new XpmInitTemplate({
-      context: { log: new Logger({ level: 'info' }), config: {} },
+      context: {
+        log: new Logger({ level: 'info' }),
+        config: { cwd: process.cwd() },
+      },
       __dirname: '/my/dir',
       templatesPath: '/my/templates',
       propertiesDefinitions: {},
@@ -136,7 +151,10 @@ await t.test('XpmInitTemplateBase asserts', async (t): Promise<void> => {
     template = new XpmInitTemplate({
       context: {
         log: new Logger({ level: 'info' }),
-        config: { projectName: 'test-project' },
+        config: {
+          projectName: 'test-project',
+          cwd: '/my/cwd',
+        },
       },
       __dirname: '/my/dir',
       templatesPath: '/my/templates',
@@ -293,6 +311,7 @@ await t.test(
           selectProp: 'option2',
           selectPropPlatform: 'option2',
         },
+        cwd: process.cwd(),
       },
     }
 
@@ -426,6 +445,7 @@ await t.test(
           properties: {
             stringProp: '',
           },
+          cwd: process.cwd(),
         },
       }
 
@@ -528,6 +548,7 @@ await t.test(
           properties: {
             undefinedProp: 'some value',
           },
+          cwd: process.cwd(),
         },
       }
 
@@ -556,6 +577,7 @@ await t.test(
           properties: {
             selectPropPlatform: 'some option3',
           },
+          cwd: process.cwd(),
         },
       }
 
@@ -584,6 +606,7 @@ await t.test(
           properties: {
             booleanProp: 'maybe',
           },
+          cwd: process.cwd(),
         },
       }
 
@@ -612,6 +635,7 @@ await t.test(
           properties: {
             numberProp: 'not a number',
           },
+          cwd: process.cwd(),
         },
       }
 
@@ -640,6 +664,7 @@ await t.test(
           properties: {
             stringPropNoDefault: '',
           },
+          cwd: process.cwd(),
         },
       }
       const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
@@ -1425,19 +1450,133 @@ t.test('XpmInitTemplateBase.isPlatformSupported()', (t): void => {
 
 // ----------------------------------------------------------------------------
 
-t.test('XpmInitTemplateBase.copyFile()', (t): void => {
-  t.end()
-})
+await t.test(
+  'XpmInitTemplateBase copy files/folders',
+  async (t): Promise<void> => {
+    class XpmInitTemplate extends XpmInitTemplateBase {
+      async generate(): Promise<void> {
+        t.ok(true, 'generate() called')
+
+        const temporaryFolderPath = await fs.mkdtemp(
+          path.join(os.tmpdir(), 'copy-')
+        )
+
+        const destinationFolderPath = path.join(temporaryFolderPath, 'output')
+        const destinationFilePath = path.join(
+          destinationFolderPath,
+          'hello-liquid.txt'
+        )
+
+        await this.copyFile({
+          sourceFileRelativePath: 'hello-liquid.txt',
+          destinationFilePath,
+        })
+
+        let fileContent = await fs.readFile(destinationFilePath, 'utf-8')
+        t.match(
+          fileContent,
+          'Hello, {{ projectName }}!',
+          'file content is correct'
+        )
+
+        await this.copyFolder({
+          sourceFolderRelativePath: 'copy',
+          destinationFolderPath,
+        })
+
+        fileContent = await fs.readFile(
+          path.join(destinationFolderPath, 'file1.md'),
+          'utf-8'
+        )
+        t.match(fileContent, '# file1.md', 'file1.md content is correct')
+
+        fileContent = await fs.readFile(
+          path.join(destinationFolderPath, 'subfolder', 'file2.md'),
+          'utf-8'
+        )
+        t.match(fileContent, '# file2.md', 'file2.md content is correct')
+
+        await fs.rm(temporaryFolderPath, { recursive: true, force: true })
+      }
+    }
+
+    // console.log(fixturesFolderPath)
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: path.join(fixturesFolderPath, 'template'),
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+
+    const exitCode = await template.run()
+    t.equal(exitCode, 0, 'exit code is 0')
+
+    t.end()
+  }
+)
 
 // ----------------------------------------------------------------------------
 
-t.test('XpmInitTemplateBase.copyFolder()', (t): void => {
-  t.end()
-})
+await t.test('XpmInitTemplateBase.render()', async (t): Promise<void> => {
+  class XpmInitTemplate extends XpmInitTemplateBase {
+    async generate(): Promise<void> {
+      t.ok(true, 'generate() called')
 
-// ----------------------------------------------------------------------------
+      const temporaryFolderPath = await fs.mkdtemp(
+        path.join(os.tmpdir(), 'render-')
+      )
 
-t.test('XpmInitTemplateBase.render()', (t): void => {
+      const sourceFilePath = path.join(this._templatesPath, 'hello-liquid.txt')
+      const destinationFilePath = path.join(
+        temporaryFolderPath,
+        'output',
+        'hello.txt'
+      )
+
+      await this.render({
+        sourceFilePath,
+        destinationFilePath,
+        substitutionsVariables: { projectName: 'Test', properties: {} },
+      })
+
+      const renderedContent = await fs.readFile(destinationFilePath, 'utf-8')
+      t.match(renderedContent, 'Hello, Test!', 'rendered content is correct')
+
+      try {
+        await this.render({
+          sourceFilePath,
+          destinationFilePath,
+          substitutionsVariables: { noProjectName: 'Test', properties: {} },
+        })
+        t.fail('should have thrown for missing substitution variable')
+      } catch (error) {
+        t.type(error, XpmOutputError, 'threw an XpmOutputError')
+        t.match(
+          (error as AssertionError).message,
+          'undefined variable',
+          'error message is "undefined variable"'
+        )
+      } finally {
+        await fs.rm(temporaryFolderPath, { recursive: true, force: true })
+      }
+    }
+  }
+
+  // console.log(fixturesFolderPath)
+
+  const template = new XpmInitTemplate({
+    context: mockContext,
+    __dirname: '/my/dir',
+    templatesPath: path.join(fixturesFolderPath, 'template'),
+    propertiesDefinitions,
+    process: mockProcess,
+  })
+
+  const exitCode = await template.run()
+  t.equal(exitCode, 0, 'exit code is 0')
+
   t.end()
 })
 
