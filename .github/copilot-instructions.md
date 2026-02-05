@@ -35,6 +35,7 @@
 - inside html lists, do not use markdown syntax for code, use `<code>` html tags  instead 
 - inside html lists, do not use `{@link name}` syntax for links, use `<code>` html tags  instead
 - outside of html lists, use markdown syntax for code (`code`) and links (`{@link name}`)
+- In the `@remarks` section, first explain why the method or property is useful, then explain how to use it, and finally provide any additional notes or details.
 
 ## Folder Structure
 
