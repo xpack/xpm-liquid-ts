@@ -20,7 +20,7 @@
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 
-test('constructor', (t): void => {
+t.test('constructor', (t): void => {
   const jsonNoXpack = { name: 'test', version: '1.2.3', xpack: [] }
   try {
     const dataModel = new XpmDataModel({

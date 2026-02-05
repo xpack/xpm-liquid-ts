@@ -18,7 +18,7 @@
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ import { getErrorMessage, getPlatformKey } from '../../../src/index.js'
 
 // ----------------------------------------------------------------------------
 
-test('getErrorMessage', (t): void => {
+t.test('getErrorMessage', (t): void => {
   t.equal(
     getErrorMessage(new Error('test')),
     'test',
@@ -52,7 +52,7 @@ test('getErrorMessage', (t): void => {
   t.end()
 })
 
-test('getPlatformKey', (t): void => {
+t.test('getPlatformKey', (t): void => {
   const defaultKey = `${process.platform}-${process.arch}`
   t.equal(getPlatformKey(), defaultKey, 'default platform key')
 

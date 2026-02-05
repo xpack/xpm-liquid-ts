@@ -18,7 +18,7 @@
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 import { Logger } from '@xpack/logger'
 
@@ -28,7 +28,7 @@ import { XpmLiquid } from '../../src/index.js'
 
 // ----------------------------------------------------------------------------
 
-await test('XpmLiquid minimal', (t) => {
+await t.test('XpmLiquid minimal', (t) => {
   const log = new Logger({ level: 'info' })
   const xpmLiquid = new XpmLiquid(log)
   const minimalPackage = {
@@ -49,7 +49,7 @@ await test('XpmLiquid minimal', (t) => {
   t.end()
 })
 
-await test('XpmLiquid xpack', (t) => {
+await t.test('XpmLiquid xpack', (t) => {
   const log = new Logger({ level: 'info' })
 
   const xpmLiquid = new XpmLiquid(log)
@@ -76,7 +76,7 @@ await test('XpmLiquid xpack', (t) => {
   t.end()
 })
 
-await test('XpmLiquid xpack config', (t) => {
+await t.test('XpmLiquid xpack config', (t) => {
   const log = new Logger({ level: 'info' })
 
   const xpmLiquid = new XpmLiquid(log)
@@ -110,7 +110,7 @@ await test('XpmLiquid xpack config', (t) => {
   t.end()
 })
 
-await test('XpmLiquid xpack no objs', (t) => {
+await t.test('XpmLiquid xpack no objs', (t) => {
   const log = new Logger({ level: 'info' })
   const xpmLiquid = new XpmLiquid(log)
   const xpack = {
@@ -139,7 +139,7 @@ await test('XpmLiquid xpack no objs', (t) => {
   t.end()
 })
 
-await test('XpmLiquid xpack bad configs', (t) => {
+await t.test('XpmLiquid xpack bad configs', (t) => {
   const log = new Logger({ level: 'info' })
 
   const xpmLiquid = new XpmLiquid(log)
@@ -163,7 +163,7 @@ await test('XpmLiquid xpack bad configs', (t) => {
   t.end()
 })
 
-await test('XpmLiquid xpack bad config debug', (t) => {
+await t.test('XpmLiquid xpack bad config debug', (t) => {
   const log = new Logger({ level: 'info' })
 
   const xpmLiquid = new XpmLiquid(log)

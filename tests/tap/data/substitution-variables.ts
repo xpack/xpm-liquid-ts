@@ -19,7 +19,7 @@ import * as path from 'path'
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ import { xpmLiquidSubstitutionsVariablesBase } from '../../../src/index.js'
 
 // ----------------------------------------------------------------------------
 
-test('substitution variables', (t) => {
+t.test('substitution variables', (t) => {
   const sv = xpmLiquidSubstitutionsVariablesBase
   sv.env
   t.equal(

@@ -18,7 +18,7 @@
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 import { Logger } from '@xpack/logger'
 
@@ -32,7 +32,7 @@ const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 
-test('XpmPolicies', (t): void => {
+t.test('XpmPolicies', (t): void => {
   let policies
 
   policies = new XpmPolicies({ log, minVersion: 'x.y.z' })
@@ -57,7 +57,7 @@ test('XpmPolicies', (t): void => {
   t.end()
 })
 
-test('XpmPolicies 0.1.2', (t): void => {
+t.test('XpmPolicies 0.1.2', (t): void => {
   let policies
 
   policies = new XpmPolicies({ log, minVersion: '0.1.2' })
@@ -78,7 +78,7 @@ test('XpmPolicies 0.1.2', (t): void => {
   t.end()
 })
 
-test('XpmPolicies 0.14.0', (t): void => {
+t.test('XpmPolicies 0.14.0', (t): void => {
   let policies
 
   policies = new XpmPolicies({ log, minVersion: '0.14.0' })
@@ -98,7 +98,7 @@ test('XpmPolicies 0.14.0', (t): void => {
   t.end()
 })
 
-test('XpmPolicies 0.16.0', (t): void => {
+t.test('XpmPolicies 0.16.0', (t): void => {
   let policies
 
   policies = new XpmPolicies({ log, minVersion: '0.16.0' })
@@ -122,7 +122,7 @@ test('XpmPolicies 0.16.0', (t): void => {
   t.end()
 })
 
-test('XpmPolicies 0.22.0', (t): void => {
+t.test('XpmPolicies 0.22.0', (t): void => {
   let policies
 
   policies = new XpmPolicies({ log, minVersion: '0.22.0' })

@@ -18,7 +18,7 @@
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 import { Logger } from '@xpack/logger'
 
@@ -38,7 +38,7 @@ const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 
-test('XpmErrors', (t): void => {
+t.test('XpmErrors', (t): void => {
   let error = new XpmError('Test error')
   t.equal(error.message, 'Test error', 'XpmError error message')
 

@@ -18,7 +18,7 @@ import * as os from 'node:os'
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ import {
 
 // ----------------------------------------------------------------------------
 
-test('filterPath', (t): void => {
+t.test('filterPath', (t): void => {
   if (os.platform() === 'win32') {
     t.equal(filterPath('a\\b'), 'a\\b', 'preserves windows path separator \\')
   } else {

@@ -19,7 +19,7 @@ import * as os from 'os'
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ const engine = new XpmLiquidEngine()
 
 // ----------------------------------------------------------------------------
 
-await test('XpmActions undefined', async (t) => {
+await t.test('XpmActions undefined', async (t) => {
   const actions = new XpmActions({
     log,
     engine,
@@ -74,7 +74,7 @@ await test('XpmActions undefined', async (t) => {
   t.end()
 })
 
-await test('XpmActions at top', async (t) => {
+await t.test('XpmActions at top', async (t) => {
   const actions = new XpmActions({
     log,
     engine,
@@ -156,7 +156,7 @@ await test('XpmActions at top', async (t) => {
   t.end()
 })
 
-await test('XpmActions in configuration', async (t) => {
+await t.test('XpmActions in configuration', async (t) => {
   const buildConfigurationsJson: JsonBuildConfigurations = {
     debug: {
       actions: {
@@ -202,7 +202,7 @@ await test('XpmActions in configuration', async (t) => {
   t.end()
 })
 
-await test('XpmActions inheritance', async (t) => {
+await t.test('XpmActions inheritance', async (t) => {
   const inheritedActions = new XpmActions({
     log,
     engine,
@@ -254,7 +254,7 @@ await test('XpmActions inheritance', async (t) => {
   t.end()
 })
 
-await test('XpmActions template', async (t) => {
+await t.test('XpmActions template', async (t) => {
   const substitutionsVariables = {
     ...xpmLiquidSubstitutionsVariablesBase,
     properties: {
@@ -344,7 +344,7 @@ await test('XpmActions template', async (t) => {
   t.end()
 })
 
-await test('XpmActions template duplicate', async (t) => {
+await t.test('XpmActions template duplicate', async (t) => {
   let actions = new XpmActions({
     log,
     engine,
@@ -402,7 +402,7 @@ await test('XpmActions template duplicate', async (t) => {
   t.end()
 })
 
-await test('XpmActions template errors', async (t) => {
+await t.test('XpmActions template errors', async (t) => {
   let actions: XpmActions
 
   actions = new XpmActions({
@@ -614,7 +614,7 @@ await test('XpmActions template errors', async (t) => {
   t.end()
 })
 
-await test('XpmAction errors', async (t) => {
+await t.test('XpmAction errors', async (t) => {
   let actions: XpmActions
   actions = new XpmActions({
     log,

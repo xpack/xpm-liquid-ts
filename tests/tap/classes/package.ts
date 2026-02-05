@@ -22,7 +22,7 @@ import * as os from 'node:os'
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 
-await test('constructor', async (t): Promise<void> => {
+await t.test('constructor', async (t): Promise<void> => {
   const packageFolderPath = path.join(fixturesFolderPath, 'package-no-json')
   const xpmPackage = new XpmPackage({
     log,
@@ -60,7 +60,7 @@ await test('constructor', async (t): Promise<void> => {
   t.end()
 })
 
-await test('no package.json', async (t): Promise<void> => {
+await t.test('no package.json', async (t): Promise<void> => {
   const packageFolderPath = path.join(fixturesFolderPath, 'package-no-json')
   const xpmPackage = new XpmPackage({
     log,
@@ -85,7 +85,7 @@ await test('no package.json', async (t): Promise<void> => {
   t.end()
 })
 
-await test('bad package.json', async (t): Promise<void> => {
+await t.test('bad package.json', async (t): Promise<void> => {
   const packageFolderPath = path.join(fixturesFolderPath, 'package-bad-json')
   const xpmPackage = new XpmPackage({
     log,
@@ -110,7 +110,7 @@ await test('bad package.json', async (t): Promise<void> => {
   t.end()
 })
 
-await test('rewritePackageDotJson', async (t): Promise<void> => {
+await t.test('rewritePackageDotJson', async (t): Promise<void> => {
   const temporaryFolderPath = await fs.mkdtemp(path.join(os.tmpdir(), 'xpm-'))
   // console.log(`Temporary folder created at ${temporaryFolderPath}`)
 
@@ -145,7 +145,7 @@ await test('rewritePackageDotJson', async (t): Promise<void> => {
   t.end()
 })
 
-test('isNpmPackage', (t): void => {
+t.test('isNpmPackage', (t): void => {
   const xpmPackage = new XpmPackage({
     log,
     packageFolderPath: '-',
@@ -186,7 +186,7 @@ test('isNpmPackage', (t): void => {
   t.end()
 })
 
-test('isXpmPackage', (t): void => {
+t.test('isXpmPackage', (t): void => {
   const xpmPackage = new XpmPackage({
     log,
     packageFolderPath: '-',
@@ -227,7 +227,7 @@ test('isXpmPackage', (t): void => {
   t.end()
 })
 
-test('isBinaryXpmPackage', (t): void => {
+t.test('isBinaryXpmPackage', (t): void => {
   const xpmPackage = new XpmPackage({
     log,
     packageFolderPath: '-',
@@ -395,7 +395,7 @@ test('isBinaryXpmPackage', (t): void => {
   t.end()
 })
 
-test('isNodeModule', (t): void => {
+t.test('isNodeModule', (t): void => {
   const xpmPackage = new XpmPackage({
     log,
     packageFolderPath: '-',
@@ -446,7 +446,7 @@ test('isNodeModule', (t): void => {
   t.end()
 })
 
-test('isBinaryNodeModule', (t): void => {
+t.test('isBinaryNodeModule', (t): void => {
   const xpmPackage = new XpmPackage({
     log,
     packageFolderPath: '-',
@@ -514,7 +514,7 @@ test('isBinaryNodeModule', (t): void => {
   t.end()
 })
 
-test('hasNpmScripts', (t): void => {
+t.test('hasNpmScripts', (t): void => {
   const xpmPackage = new XpmPackage({
     log,
     packageFolderPath: '-',
@@ -540,7 +540,7 @@ test('hasNpmScripts', (t): void => {
   t.end()
 })
 
-test('hasXpmActions', (t): void => {
+t.test('hasXpmActions', (t): void => {
   const xpmPackage = new XpmPackage({
     log,
     packageFolderPath: '-',
@@ -643,7 +643,7 @@ test('hasXpmActions', (t): void => {
   t.end()
 })
 
-test('getMinimumXpmRequired', (t): void => {
+t.test('getMinimumXpmRequired', (t): void => {
   const xpmPackage = new XpmPackage({
     log,
     packageFolderPath: '-',
@@ -682,7 +682,7 @@ test('getMinimumXpmRequired', (t): void => {
   t.end()
 })
 
-await test('checkMinimumXpmRequired', async (t): Promise<void> => {
+await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
   const xpmPackage = new XpmPackage({
     log,
     packageFolderPath: '-',
@@ -800,7 +800,7 @@ await test('checkMinimumXpmRequired', async (t): Promise<void> => {
   t.end()
 })
 
-test('parsePackageSpecifier', (t): void => {
+t.test('parsePackageSpecifier', (t): void => {
   const xpmPackage = new XpmPackage({
     log,
     packageFolderPath: '-',

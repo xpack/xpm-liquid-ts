@@ -21,7 +21,7 @@ import { fileURLToPath } from 'node:url'
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 
-await test('chmodRecursively', async (t): Promise<void> => {
+await t.test('chmodRecursively', async (t): Promise<void> => {
   const chmodFolderPath = path.join(fixturesFolderPath, 'chmod-recursively')
   const file1Path = path.join(chmodFolderPath, 'file1.md')
   const file1LinkPath = path.join(chmodFolderPath, 'file1-symlink.md')

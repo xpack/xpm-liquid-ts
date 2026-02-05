@@ -18,7 +18,7 @@ import * as os from 'node:os'
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 import {
   isBoolean,
@@ -51,7 +51,7 @@ const func = function () {
 
 // ----------------------------------------------------------------------------
 
-test('isPrimitive', (t): void => {
+t.test('isPrimitive', (t): void => {
   t.ok(isPrimitive(s), 'string is primitive')
   t.ok(isPrimitive(n), 'number is primitive')
   t.ok(isPrimitive(b), 'boolean is primitive')
@@ -66,7 +66,7 @@ test('isPrimitive', (t): void => {
   t.end()
 })
 
-test('isString', (t): void => {
+t.test('isString', (t): void => {
   t.ok(isString(s), 'string is string')
   t.notOk(isString(n), 'number is not string')
   t.notOk(isString(b), 'boolean is not string')
@@ -81,7 +81,7 @@ test('isString', (t): void => {
   t.end()
 })
 
-test('isObject', (t): void => {
+t.test('isObject', (t): void => {
   t.notOk(isObject(s), 'string is not object')
   t.notOk(isObject(n), 'number is not object')
   t.notOk(isObject(b), 'boolean is not object')
@@ -96,7 +96,7 @@ test('isObject', (t): void => {
   t.end()
 })
 
-test('isBoolean', (t): void => {
+t.test('isBoolean', (t): void => {
   t.notOk(isBoolean(s), 'string is not boolean')
   t.notOk(isBoolean(n), 'number is not boolean')
   t.ok(isBoolean(b), 'boolean is boolean')
@@ -127,7 +127,7 @@ const json = JSON.parse(jsonString)
 
 // ----------------------------------------------------------------------------
 
-test('isJsonObject', (t): void => {
+t.test('isJsonObject', (t): void => {
   t.notOk(isJsonObject(json.s), 'string is not JSON object')
   t.notOk(isJsonObject(json.n), 'number is not JSON object')
   t.notOk(isJsonObject(json.b), 'boolean is not JSON object')
@@ -139,7 +139,7 @@ test('isJsonObject', (t): void => {
   t.end()
 })
 
-test('isJsonArray', (t): void => {
+t.test('isJsonArray', (t): void => {
   t.notOk(isJsonArray(json.s), 'string is not JSON array')
   t.notOk(isJsonArray(json.n), 'number is not JSON array')
   t.notOk(isJsonArray(json.b), 'boolean is not JSON array')
@@ -150,7 +150,7 @@ test('isJsonArray', (t): void => {
   t.end()
 })
 
-test('isNonEmptyJsonObject', (t): void => {
+t.test('isNonEmptyJsonObject', (t): void => {
   t.notOk(isNonEmptyJsonObject(json.s), 'string is not non-empty JSON object')
   t.notOk(isNonEmptyJsonObject(json.n), 'number is not non-empty JSON object')
   t.notOk(isNonEmptyJsonObject(json.b), 'boolean is not non-empty JSON object')

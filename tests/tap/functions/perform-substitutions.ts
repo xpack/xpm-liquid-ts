@@ -19,7 +19,7 @@ import * as path from 'path'
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ import { performSubstitutionsTest } from '../../common.js'
 
 // ----------------------------------------------------------------------------
 
-await test('performSubstitutionsTest', async (t) => {
+await t.test('performSubstitutionsTest', async (t) => {
   const substitutionsVariables = {
     map: {
       one: '1',
@@ -69,7 +69,7 @@ await test('performSubstitutionsTest', async (t) => {
   t.end()
 })
 
-await test('performSubstitutionsTest filters cascade', async (t) => {
+await t.test('performSubstitutionsTest filters cascade', async (t) => {
   const substitutionsVariables = {
     configuration: {
       name: 'Debug',
@@ -89,7 +89,7 @@ await test('performSubstitutionsTest filters cascade', async (t) => {
   t.end()
 })
 
-await test('performSubstitutionsTest arrays original', async (t) => {
+await t.test('performSubstitutionsTest arrays original', async (t) => {
   const engine = new Liquid()
 
   const substitutionsVariables = {
@@ -128,7 +128,7 @@ await test('performSubstitutionsTest arrays original', async (t) => {
   t.end()
 })
 
-await test('performSubstitutionsTest arrays multi', async (t) => {
+await t.test('performSubstitutionsTest arrays multi', async (t) => {
   const substitutionsVariables = {
     map: {
       one: ['10', '11'],
@@ -156,7 +156,7 @@ await test('performSubstitutionsTest arrays multi', async (t) => {
   t.end()
 })
 
-await test('performSubstitutionsTest context', async (t) => {
+await t.test('performSubstitutionsTest context', async (t) => {
   const substitutionsVariables = {
     package: {
       properties2: {
@@ -175,7 +175,7 @@ await test('performSubstitutionsTest context', async (t) => {
   t.end()
 })
 
-await test('performSubstitutionsTest error', async (t) => {
+await t.test('performSubstitutionsTest error', async (t) => {
   const substitutionsVariables = {
     map: {
       one: '1',
@@ -201,7 +201,7 @@ await test('performSubstitutionsTest error', async (t) => {
   t.end()
 })
 
-await test('substitutions', async (t): Promise<void> => {
+await t.test('substitutions', async (t): Promise<void> => {
   const substitutionsVariables = {
     properties: {
       p1: ['1', '2'],

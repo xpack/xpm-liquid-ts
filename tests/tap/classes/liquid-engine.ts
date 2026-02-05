@@ -19,7 +19,7 @@ import * as os from 'os'
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ const substitutionsVariables = {}
 
 // ----------------------------------------------------------------------------
 
-await test('path_*', async (t) => {
+await t.test('path_*', async (t) => {
   if (os.platform() === 'win32') {
     // For JavaScript the double backslash is enough.
     // For Liquid, it must be doubled once more.
@@ -131,7 +131,7 @@ await test('path_*', async (t) => {
   t.end()
 })
 
-await test('path_posix_*', async (t) => {
+await t.test('path_posix_*', async (t) => {
   t.equal(
     await performSubstitutionsTest(
       '{{ "/foo/bar/baz/asdf/quux.html" | path_posix_basename }}',
@@ -181,7 +181,7 @@ await test('path_posix_*', async (t) => {
   t.end()
 })
 
-await test('path_win32_*', async (t) => {
+await t.test('path_win32_*', async (t) => {
   // For JavaScript the double backslash is enough.
   // For Liquid, it must be doubled once more.
   t.equal(
@@ -235,7 +235,7 @@ await test('path_win32_*', async (t) => {
   t.end()
 })
 
-await test('util_format', async (t) => {
+await t.test('util_format', async (t) => {
   t.equal(
     await performSubstitutionsTest(
       '{{ "%s%d" | util_format: "abc", 42 }}',
@@ -248,7 +248,7 @@ await test('util_format', async (t) => {
   t.end()
 })
 
-await test('to_filename', async (t) => {
+await t.test('to_filename', async (t) => {
   t.equal(
     await performSubstitutionsTest(
       '{{ "A@#$B" | to_filename }}',
@@ -261,7 +261,7 @@ await test('to_filename', async (t) => {
   t.end()
 })
 
-await test('(join|split)_lines', async (t) => {
+await t.test('(join|split)_lines', async (t) => {
   const substitutionsVariables = {
     map: { a: 1, b: 2, c: 3 },
     arr: ['x', 'y', 'z'],
@@ -303,7 +303,7 @@ await test('(join|split)_lines', async (t) => {
   t.end()
 })
 
-await test('keys', async (t) => {
+await t.test('keys', async (t) => {
   const substitutionsVariables = {
     map: { a: 1, b: 2, c: 3 },
     arr: ['x', 'y', 'z'],

@@ -19,7 +19,7 @@ import * as path from 'path'
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ const engine = new XpmLiquidEngine()
 
 // ----------------------------------------------------------------------------
 
-await test('XpmBuildConfigurations undefined', async (t) => {
+await t.test('XpmBuildConfigurations undefined', async (t) => {
   const buildConfigurations = new XpmBuildConfigurations({
     log,
     engine,
@@ -82,7 +82,7 @@ await test('XpmBuildConfigurations undefined', async (t) => {
   t.end()
 })
 
-await test('XpmBuildConfigurations', async (t) => {
+await t.test('XpmBuildConfigurations', async (t) => {
   const jsonBuildConfigurations: JsonBuildConfigurations = {
     configOne: {
       properties: {
@@ -206,7 +206,7 @@ await test('XpmBuildConfigurations', async (t) => {
   t.end()
 })
 
-await test('XpmBuildConfigurations buildFolderRelativePath', async (t) => {
+await t.test('XpmBuildConfigurations buildFolderRelativePath', async (t) => {
   const substitutionsVariables = {
     ...xpmLiquidSubstitutionsVariablesBase,
     properties: {
@@ -279,7 +279,7 @@ await test('XpmBuildConfigurations buildFolderRelativePath', async (t) => {
   t.end()
 })
 
-await test('XpmBuildConfigurations inheritance', async (t) => {
+await t.test('XpmBuildConfigurations inheritance', async (t) => {
   const substitutionsVariables = {
     ...xpmLiquidSubstitutionsVariablesBase,
     properties: {
@@ -508,7 +508,7 @@ await test('XpmBuildConfigurations inheritance', async (t) => {
   t.end()
 })
 
-await test('XpmBuildConfigurations templates', async (t) => {
+await t.test('XpmBuildConfigurations templates', async (t) => {
   const jsonBuildConfigurations: JsonBuildConfigurations = {
     configOne: {
       properties: {
@@ -664,7 +664,7 @@ await test('XpmBuildConfigurations templates', async (t) => {
   t.end()
 })
 
-await test('XpmBuildConfigurations templates errors', async (t) => {
+await t.test('XpmBuildConfigurations templates errors', async (t) => {
   const jsonBuildConfigurations: JsonBuildConfigurations = {
     configOne: {
       properties: {
@@ -705,7 +705,7 @@ await test('XpmBuildConfigurations templates errors', async (t) => {
   t.end()
 })
 
-await test('XpmBuildConfigurations templates matrix', async (t) => {
+await t.test('XpmBuildConfigurations templates matrix', async (t) => {
   const substitutionsVariables = {
     ...xpmLiquidSubstitutionsVariablesBase,
     properties: {
@@ -759,7 +759,7 @@ await test('XpmBuildConfigurations templates matrix', async (t) => {
   t.end()
 })
 
-await test('XpmBuildConfigurations templates matrix errors', async (t) => {
+await t.test('XpmBuildConfigurations templates matrix errors', async (t) => {
   let jsonBuildConfigurations: JsonBuildConfigurations
   let buildConfigurations
 
@@ -944,7 +944,7 @@ await test('XpmBuildConfigurations templates matrix errors', async (t) => {
   t.end()
 })
 
-await test('XpmBuildConfigurations templates duplicates', async (t) => {
+await t.test('XpmBuildConfigurations templates duplicates', async (t) => {
   let jsonBuildConfigurations: JsonBuildConfigurations
   let buildConfigurations
 
@@ -1027,7 +1027,7 @@ await test('XpmBuildConfigurations templates duplicates', async (t) => {
 
 // ----------------------------------------------------------------------------
 
-await test('configurations', async (t): Promise<void> => {
+await t.test('configurations', async (t): Promise<void> => {
   const json: JsonXpmPackage = {
     name: 'test',
     version: '1.2.3',
@@ -1229,7 +1229,7 @@ await test('configurations', async (t): Promise<void> => {
   t.end()
 })
 
-await test('configurations inheritance', async (t): Promise<void> => {
+await t.test('configurations inheritance', async (t): Promise<void> => {
   const json: JsonXpmPackage = {
     name: 'test',
     version: '1.2.3',
@@ -1423,7 +1423,7 @@ await test('configurations inheritance', async (t): Promise<void> => {
   t.end()
 })
 
-await test('configurations template', async (t): Promise<void> => {
+await t.test('configurations template', async (t): Promise<void> => {
   const json: JsonXpmPackage = {
     name: 'test',
     version: '1.2.3',

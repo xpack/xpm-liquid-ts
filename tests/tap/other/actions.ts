@@ -20,7 +20,7 @@
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
-import { test } from 'tap'
+import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 
-await test('actions', async (t): Promise<void> => {
+await t.test('actions', async (t): Promise<void> => {
   const json: JsonXpmPackage = {
     name: 'test',
     version: '1.2.3',
