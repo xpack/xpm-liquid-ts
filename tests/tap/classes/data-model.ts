@@ -9,8 +9,6 @@
  * be obtained from https://opensource.org/license/mit.
  */
 
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
-
 // ----------------------------------------------------------------------------
 
 // import * as os from 'node:os'

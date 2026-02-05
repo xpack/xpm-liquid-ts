@@ -9,8 +9,6 @@
  * be obtained from https://opensource.org/license/mit.
  */
 
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
-
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/liquidjs
@@ -19,7 +17,6 @@ import { Liquid, Context, Drop } from 'liquidjs'
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
 
-// eslint-disable-next-line max-len
 import { XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.js'
 import { isJsonObject } from '../functions/is-something.js'
 import { XpmInputError } from '../classes/errors.js'

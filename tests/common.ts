@@ -8,8 +8,6 @@
  * If a copy of the license was not distributed with this file, it can
  * be obtained from https://opensource.org/license/mit.
  */
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
-
 // ----------------------------------------------------------------------------
 
 import { Logger } from '@xpack/logger'
