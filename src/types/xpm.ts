@@ -95,6 +95,12 @@ export interface XpmConfig {
    * The properties map used for substitutions.
    */
   properties?: Record<string, string | boolean | number>
+
+  /**
+   * The current working directory for operations that require a base path.
+   */
+  cwd: string
+
   /**
    * Allows additional configuration properties.
    */
