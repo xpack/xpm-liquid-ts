@@ -171,6 +171,11 @@ export interface JsonBuildConfigurationContent {
    * The development dependencies for this configuration.
    */
   devDependencies?: JsonDependencies
+
+  /**
+   * Allows additional configuration properties.
+   */
+  [key: string]: JsonPropertyValue
 }
 
 /**
@@ -207,12 +212,47 @@ export interface JsonBuildConfigurationTemplate {
   /**
    * The matrix of parameters used to generate configuration variants.
    */
-  matrix: Record<string, string[]>
+  matrix: JsonBuildConfigurationTemplateMatrix
   /**
    * The configuration template content.
    */
   template: JsonBuildConfigurationContent
 }
+
+/**
+ * Represents a matrix of parameters for build configuration template
+ * expansion.
+ *
+ * @remarks
+ * The matrix defines parameter arrays used to generate multiple build
+ * configuration variants through Cartesian product expansion. Each key
+ * represents a parameter name, and its value is an array of possible
+ * values for that parameter.
+ *
+ * Matrix expansion rules:
+ *
+ * <ul>
+ * <li>Each parameter array is combined with all others to create every
+ *    possible combination.</li>
+ * <li>Matrix values are accessible in configuration names and template
+ *    content via <code>\{\{ matrix.parameterName \}\}</code> Liquid
+ *    syntax.</li>
+ * <li>The number of generated configurations equals the product of all
+ *    array lengths.</li>
+ * </ul>
+ *
+ * Example:
+ * ```js
+ * {
+ *   "os": ["linux", "darwin"],
+ *   "arch": ["x64", "arm64"]
+ * }
+ * ```
+ *
+ * This generates 4 configurations (2 × 2): `linux-x64`, `linux-arm64`,
+ * `darwin-x64`, `darwin-arm64`.
+ */
+export type JsonBuildConfigurationTemplateMatrix = Record<string, string[]>
 
 /**
  * Represents a JSON build configuration definition or a template of one.
