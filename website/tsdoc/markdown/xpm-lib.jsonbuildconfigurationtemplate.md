@@ -68,7 +68,7 @@ Description
 
 </td><td>
 
-Record&lt;string, string\[\]&gt;
+[JsonBuildConfigurationTemplateMatrix](./xpm-lib.jsonbuildconfigurationtemplatematrix.md)
 
 
 </td><td>

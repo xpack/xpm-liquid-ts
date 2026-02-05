@@ -9,7 +9,10 @@ Copies an entire folder from the templates folder to the destination.
 **Signature:**
 
 ```typescript
-copyFolder(source: string, destination?: string): Promise<void>;
+copyFolder({ sourceFolderRelativePath, destinationFolderPath, }: {
+        sourceFolderRelativePath: string;
+        destinationFolderPath?: string;
+    }): Promise<void>;
 ```
 
 ## Parameters
@@ -32,33 +35,15 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-source
+{ sourceFolderRelativePath, destinationFolderPath, }
 
 
 </td><td>
 
-string
+{ sourceFolderRelativePath: string; destinationFolderPath?: string; }
 
 
 </td><td>
-
-The relative path to the source folder within the templates folder.
-
-
-</td></tr>
-<tr><td>
-
-destination
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-_(Optional)_ The destination folder path (defaults to the same relative path as the source).
 
 
 </td></tr>

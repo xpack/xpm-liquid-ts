@@ -9,7 +9,10 @@ Copies a single file from the templates folder to the destination.
 **Signature:**
 
 ```typescript
-copyFile(sourceFileRelativePath: string, destinationFilePath?: string): Promise<void>;
+copyFile({ sourceFileRelativePath, destinationFilePath, }: {
+        sourceFileRelativePath: string;
+        destinationFilePath?: string;
+    }): Promise<void>;
 ```
 
 ## Parameters
@@ -32,33 +35,15 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-sourceFileRelativePath
+{ sourceFileRelativePath, destinationFilePath, }
 
 
 </td><td>
 
-string
+{ sourceFileRelativePath: string; destinationFilePath?: string; }
 
 
 </td><td>
-
-The relative path to the source file within the templates folder.
-
-
-</td></tr>
-<tr><td>
-
-destinationFilePath
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-_(Optional)_ The destination file path (defaults to the same relative path as the source).
 
 
 </td></tr>

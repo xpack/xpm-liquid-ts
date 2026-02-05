@@ -307,6 +307,17 @@
             },
             {
               "type": "category",
+              "label": "JsonBuildConfigurationTemplateMatrix",
+              "link": {
+                "type": "doc",
+                "id": "api/xpm-lib/typealiases/jsonbuildconfigurationtemplatematrix"
+              },
+              "className": "tsdocEllipsis",
+              "collapsed": true,
+              "items": []
+            },
+            {
+              "type": "category",
               "label": "JsonDependencies",
               "link": {
                 "type": "doc",
@@ -831,6 +842,12 @@
               "className": "tsdocEllipsis",
               "collapsed": true,
               "items": [
+                {
+                  "type": "doc",
+                  "label": "cwd",
+                  "className": "tsdocEllipsis",
+                  "id": "api/xpm-lib/interfaces/xpmconfig/cwd"
+                },
                 {
                   "type": "doc",
                   "label": "doForce",

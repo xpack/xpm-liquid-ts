@@ -78,7 +78,7 @@ Description
 
 </td><td>
 
-Record&lt;string, string\[\]&gt;
+[JsonBuildConfigurationTemplateMatrix](/xpm-lib-ts/docs/api/xpm-lib/typealiases/jsonbuildconfigurationtemplatematrix)
 
 
 </td><td>

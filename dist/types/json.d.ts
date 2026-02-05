@@ -24,11 +24,13 @@ export interface JsonBuildConfigurationContent {
     actions?: JsonActions;
     dependencies?: JsonDependencies;
     devDependencies?: JsonDependencies;
+    [key: string]: JsonPropertyValue;
 }
 export interface JsonBuildConfigurationTemplate {
-    matrix: Record<string, string[]>;
+    matrix: JsonBuildConfigurationTemplateMatrix;
     template: JsonBuildConfigurationContent;
 }
+export type JsonBuildConfigurationTemplateMatrix = Record<string, string[]>;
 export type JsonBuildConfiguration = JsonBuildConfigurationContent | JsonBuildConfigurationTemplate;
 export type JsonBuildConfigurations = Record<string, JsonBuildConfiguration>;
 export interface JsonXpack {

@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/interfaces/jsonbuildconfigurationtemplate/matrix
-title: JsonBuildConfigurationTemplate.matrix property
+slug: /api/xpm-lib/interfaces/xpmconfig/cwd
+title: XpmConfig.cwd property
 custom_edit_url: null
 ---
 
@@ -14,12 +14,12 @@ custom_edit_url: null
 
 
 
-The matrix of parameters used to generate configuration variants.
+The current working directory for operations that require a base path.
 
 ## Signature
 
 ```typescript
-matrix: JsonBuildConfigurationTemplateMatrix;
+cwd: string;
 ```
 <hr/>
 

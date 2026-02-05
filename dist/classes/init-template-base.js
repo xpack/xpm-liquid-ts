@@ -3,8 +3,6 @@ import * as util from 'node:util';
 import * as readline from 'node:readline/promises';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
-import { makeDirectory } from 'make-dir';
-import { copyFile } from 'cp-file';
 import { Liquid } from 'liquidjs';
 import { XpmError, XpmOutputError, XpmSyntaxError } from './errors.js';
 import { isBoolean, isNumber, isObject, isString, } from '../functions/is-something.js';
@@ -144,8 +142,6 @@ export class XpmInitTemplateBase {
                     return propDef.default;
                 }
                 break;
-            default:
-                throw new XpmError(`Unsupported property type '${String(propDef.type)}' for '${name}'`);
         }
         throw new XpmError(`Unsupported value '${value}' for property '${name}'`);
     }
@@ -224,46 +220,61 @@ export class XpmInitTemplateBase {
         }
         return false;
     }
-    async copyFile(sourceFileRelativePath, destinationFilePath = sourceFileRelativePath) {
+    async copyFile({ sourceFileRelativePath, destinationFilePath = sourceFileRelativePath, }) {
         const log = this._log;
-        await makeDirectory(path.dirname(destinationFilePath));
+        await fs.mkdir(path.dirname(destinationFilePath), { recursive: true });
         const sourceFileAbsolutePath = path.resolve(this._templatesPath, sourceFileRelativePath);
-        await copyFile(sourceFileAbsolutePath, destinationFilePath);
-        log.info(`File '${destinationFilePath}' copied.`);
+        await fs.copyFile(sourceFileAbsolutePath, destinationFilePath);
+        const destinationFileRelativePath = path.relative(this._context.config.cwd, destinationFilePath);
+        log.info(`File '${destinationFileRelativePath}' copied.`);
     }
-    async copyFolder(source, destination = source) {
+    async copyFolder({ sourceFolderRelativePath, destinationFolderPath = sourceFolderRelativePath, }) {
         const log = this._log;
-        await this._copyFolderRecursively(path.resolve(this._templatesPath, source), path.resolve(destination));
-        log.info(`Folder '${destination}' copied.`);
+        const sourceFolderAbsolutePath = path.resolve(this._templatesPath, sourceFolderRelativePath);
+        await this._copyFolderRecursively({
+            sourceFolderPath: sourceFolderAbsolutePath,
+            destinationFolderPath: path.resolve(destinationFolderPath),
+        });
+        log.info(`Folder '${destinationFolderPath}' copied.`);
     }
-    async _copyFolderRecursively(sourceFolderPath, destinationFolderPath) {
-        await makeDirectory(path.dirname(destinationFolderPath));
+    async _copyFolderRecursively({ sourceFolderPath, destinationFolderPath, }) {
+        await fs.mkdir(destinationFolderPath, { recursive: true });
         const dirents = await fs.readdir(sourceFolderPath, {
             withFileTypes: true,
         });
         for (const dirent of dirents) {
             if (dirent.isDirectory()) {
-                await this._copyFolderRecursively(path.join(sourceFolderPath, dirent.name), path.join(destinationFolderPath, dirent.name));
+                await this._copyFolderRecursively({
+                    sourceFolderPath: path.join(sourceFolderPath, dirent.name),
+                    destinationFolderPath: path.join(destinationFolderPath, dirent.name),
+                });
             }
             else {
-                await copyFile(path.join(sourceFolderPath, dirent.name), path.join(destinationFolderPath, dirent.name));
+                await fs.copyFile(path.join(sourceFolderPath, dirent.name), path.join(destinationFolderPath, dirent.name));
             }
         }
     }
-    async render(inputFileRelativePath, outputFileRelativePath, substitutionsVariables = this._substitutionsVariables) {
+    async render({ sourceFilePath, destinationFilePath, substitutionsVariables = this._substitutionsVariables, }) {
         const log = this._log;
-        log.trace(`render(${inputFileRelativePath}, ${outputFileRelativePath})`);
-        await makeDirectory(path.dirname(outputFileRelativePath));
+        const context = this._context;
+        const config = context.config;
+        const cwd = config.cwd;
+        const sourceFileRelativePath = path.relative(cwd, sourceFilePath);
+        const destinationFileRelativePath = path.relative(cwd, destinationFilePath);
+        log.info(`Rendering template '${sourceFileRelativePath}' to ` +
+            `'${destinationFileRelativePath}'`);
+        log.trace(`render(${sourceFilePath}, ${destinationFilePath})`);
         try {
-            const fileContent = (await this._engine.renderFile(inputFileRelativePath, substitutionsVariables));
-            await fs.writeFile(outputFileRelativePath, fileContent, 'utf8');
+            const fileContent = (await this._engine.renderFile(sourceFilePath, substitutionsVariables));
+            await fs.mkdir(path.dirname(destinationFilePath), { recursive: true });
+            await fs.writeFile(destinationFilePath, fileContent, 'utf8');
         }
         catch (error) {
             if (error instanceof Error) {
                 throw new XpmOutputError(error.message);
             }
         }
-        log.info(`File '${outputFileRelativePath}' generated.`);
+        log.info(`File '${destinationFileRelativePath}' generated.`);
     }
     _validatePropertiesDefinitions() {
         assert(isObject(this._propertiesDefinitions), 'propertiesDefinitions is not an object.');

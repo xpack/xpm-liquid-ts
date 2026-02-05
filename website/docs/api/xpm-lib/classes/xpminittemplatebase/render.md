@@ -19,7 +19,11 @@ Renders a template file using Liquid and writes the output.
 ## Signature
 
 ```typescript
-render(inputFileRelativePath: string, outputFileRelativePath: string, substitutionsVariables?: XpmInitTemplateSubstitutionsVariables): Promise<void>;
+render({ sourceFilePath, destinationFilePath, substitutionsVariables, }: {
+        sourceFilePath: string;
+        destinationFilePath: string;
+        substitutionsVariables?: XpmInitTemplateSubstitutionsVariables;
+    }): Promise<void>;
 ```
 
 ## Parameters
@@ -42,49 +46,15 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-inputFileRelativePath
+{ sourceFilePath, destinationFilePath, substitutionsVariables, }
 
 
 </td><td>
 
-string
+{ sourceFilePath: string; destinationFilePath: string; substitutionsVariables?: [XpmInitTemplateSubstitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpminittemplatesubstitutionsvariables)<!-- -->; }
 
 
 </td><td>
-
-The relative path to the template file within the templates folder.
-
-
-</td></tr>
-<tr><td>
-
-outputFileRelativePath
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-The destination path for the rendered file.
-
-
-</td></tr>
-<tr><td>
-
-substitutionsVariables
-
-
-</td><td>
-
-[XpmInitTemplateSubstitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/interfaces/xpminittemplatesubstitutionsvariables)
-
-
-</td><td>
-
-_(Optional)_ The variables to use for template substitutions (defaults to the instance's substitutionsVariables).
 
 
 </td></tr>

@@ -51,6 +51,25 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[cwd](./xpm-lib.xpmconfig.cwd.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The current working directory for operations that require a base path.
+
+
+</td></tr>
+<tr><td>
+
 [doForce?](./xpm-lib.xpmconfig.doforce.md)
 
 

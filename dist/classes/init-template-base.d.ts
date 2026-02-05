@@ -25,10 +25,23 @@ export declare abstract class XpmInitTemplateBase {
     protected _validatePropertyValue(name: string, value: string): string | boolean | number;
     askForMoreValues(): Promise<void>;
     isPlatformSupported(platforms: string[] | undefined): boolean;
-    copyFile(sourceFileRelativePath: string, destinationFilePath?: string): Promise<void>;
-    copyFolder(source: string, destination?: string): Promise<void>;
-    protected _copyFolderRecursively(sourceFolderPath: string, destinationFolderPath: string): Promise<void>;
-    render(inputFileRelativePath: string, outputFileRelativePath: string, substitutionsVariables?: XpmInitTemplateSubstitutionsVariables): Promise<void>;
+    copyFile({ sourceFileRelativePath, destinationFilePath, }: {
+        sourceFileRelativePath: string;
+        destinationFilePath?: string;
+    }): Promise<void>;
+    copyFolder({ sourceFolderRelativePath, destinationFolderPath, }: {
+        sourceFolderRelativePath: string;
+        destinationFolderPath?: string;
+    }): Promise<void>;
+    protected _copyFolderRecursively({ sourceFolderPath, destinationFolderPath, }: {
+        sourceFolderPath: string;
+        destinationFolderPath: string;
+    }): Promise<void>;
+    render({ sourceFilePath, destinationFilePath, substitutionsVariables, }: {
+        sourceFilePath: string;
+        destinationFilePath: string;
+        substitutionsVariables?: XpmInitTemplateSubstitutionsVariables;
+    }): Promise<void>;
     protected _validatePropertiesDefinitions(): void;
 }
 //# sourceMappingURL=init-template-base.d.ts.map

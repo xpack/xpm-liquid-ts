@@ -296,7 +296,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[\_copyFolderRecursively(sourceFolderPath, destinationFolderPath)](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_copyfolderrecursively)
+[\_copyFolderRecursively({ sourceFolderPath, destinationFolderPath, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/_copyfolderrecursively)
 
 
 </td><td>
@@ -356,7 +356,7 @@ Prompts the user interactively for missing property values.
 </td></tr>
 <tr><td>
 
-[copyFile(sourceFileRelativePath, destinationFilePath)](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/copyfile)
+[copyFile({ sourceFileRelativePath, destinationFilePath, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/copyfile)
 
 
 </td><td>
@@ -370,7 +370,7 @@ Copies a single file from the templates folder to the destination.
 </td></tr>
 <tr><td>
 
-[copyFolder(source, destination)](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/copyfolder)
+[copyFolder({ sourceFolderRelativePath, destinationFolderPath, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/copyfolder)
 
 
 </td><td>
@@ -414,7 +414,7 @@ Determines whether the current platform is supported.
 </td></tr>
 <tr><td>
 
-[render(inputFileRelativePath, outputFileRelativePath, substitutionsVariables)](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/render)
+[render({ sourceFilePath, destinationFilePath, substitutionsVariables, })](/xpm-lib-ts/docs/api/xpm-lib/classes/xpminittemplatebase/render)
 
 
 </td><td>

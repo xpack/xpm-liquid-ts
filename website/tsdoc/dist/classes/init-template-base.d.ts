@@ -201,7 +201,10 @@ export declare abstract class XpmInitTemplateBase {
      * the same relative path as the source).
      * @returns A promise that resolves when the file has been copied.
      */
-    copyFile(sourceFileRelativePath: string, destinationFilePath?: string): Promise<void>;
+    copyFile({ sourceFileRelativePath, destinationFilePath, }: {
+        sourceFileRelativePath: string;
+        destinationFilePath?: string;
+    }): Promise<void>;
     /**
      * Copies an entire folder from the templates folder to the destination.
      *
@@ -213,13 +216,16 @@ export declare abstract class XpmInitTemplateBase {
      * modifications; use {@link XpmInitTemplateBase.render} for
      * individual files that require variable substitution.
      *
-     * @param source - The relative path to the source folder within the
-     * templates folder.
-     * @param destination - The destination folder path (defaults to the
+     * @param sourceFolderRelativePath - The relative path to the source folder
+     * within the templates folder.
+     * @param destinationFolderPath - The destination folder path (defaults to the
      * same relative path as the source).
      * @returns A promise that resolves when the folder has been copied.
      */
-    copyFolder(source: string, destination?: string): Promise<void>;
+    copyFolder({ sourceFolderRelativePath, destinationFolderPath, }: {
+        sourceFolderRelativePath: string;
+        destinationFolderPath?: string;
+    }): Promise<void>;
     /**
      * Recursively copies all contents of a source folder to a destination folder.
      *
@@ -232,7 +238,10 @@ export declare abstract class XpmInitTemplateBase {
      * @param destinationFolderPath - The absolute path to the destination folder.
      * @returns A promise that resolves when all contents have been copied.
      */
-    protected _copyFolderRecursively(sourceFolderPath: string, destinationFolderPath: string): Promise<void>;
+    protected _copyFolderRecursively({ sourceFolderPath, destinationFolderPath, }: {
+        sourceFolderPath: string;
+        destinationFolderPath: string;
+    }): Promise<void>;
     /**
      * Renders a template file using Liquid and writes the output.
      *
@@ -249,9 +258,9 @@ export declare abstract class XpmInitTemplateBase {
      * is not provided, the instance's substitutionsVariables property is
      * used.
      *
-     * @param inputFileRelativePath - The relative path to the template
+     * @param sourceFilePath - The absolute path to the template
      * file within the templates folder.
-     * @param outputFileRelativePath - The destination path for the rendered
+     * @param destinationFilePath - The destination path for the rendered
      * file.
      * @param substitutionsVariables - The variables to use for template
      * substitutions (defaults to the instance's substitutionsVariables).
@@ -261,7 +270,11 @@ export declare abstract class XpmInitTemplateBase {
      * @throws {@link XpmOutputError}
      * If template rendering fails.
      */
-    render(inputFileRelativePath: string, outputFileRelativePath: string, substitutionsVariables?: XpmInitTemplateSubstitutionsVariables): Promise<void>;
+    render({ sourceFilePath, destinationFilePath, substitutionsVariables, }: {
+        sourceFilePath: string;
+        destinationFilePath: string;
+        substitutionsVariables?: XpmInitTemplateSubstitutionsVariables;
+    }): Promise<void>;
     protected _validatePropertiesDefinitions(): void;
 }
 //# sourceMappingURL=init-template-base.d.ts.map

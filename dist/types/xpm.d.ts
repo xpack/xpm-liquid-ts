@@ -5,6 +5,7 @@ export interface XpmConfig {
     doSkipIfInstalled?: boolean;
     isDryRun?: boolean;
     properties?: Record<string, string | boolean | number>;
+    cwd: string;
     [key: string]: unknown;
 }
 export interface XpmContext {

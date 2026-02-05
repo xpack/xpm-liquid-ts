@@ -9,7 +9,10 @@ Recursively copies all contents of a source folder to a destination folder.
 **Signature:**
 
 ```typescript
-protected _copyFolderRecursively(sourceFolderPath: string, destinationFolderPath: string): Promise<void>;
+protected _copyFolderRecursively({ sourceFolderPath, destinationFolderPath, }: {
+        sourceFolderPath: string;
+        destinationFolderPath: string;
+    }): Promise<void>;
 ```
 
 ## Parameters
@@ -32,33 +35,15 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-sourceFolderPath
+{ sourceFolderPath, destinationFolderPath, }
 
 
 </td><td>
 
-string
+{ sourceFolderPath: string; destinationFolderPath: string; }
 
 
 </td><td>
-
-The absolute path to the source folder.
-
-
-</td></tr>
-<tr><td>
-
-destinationFolderPath
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-The absolute path to the destination folder.
 
 
 </td></tr>

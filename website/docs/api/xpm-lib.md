@@ -734,6 +734,17 @@ Represents a JSON map of build configuration definitions.
 </td></tr>
 <tr><td>
 
+[JsonBuildConfigurationTemplateMatrix](/xpm-lib-ts/docs/api/xpm-lib/typealiases/jsonbuildconfigurationtemplatematrix)
+
+
+</td><td>
+
+Represents a matrix of parameters for build configuration template expansion.
+
+
+</td></tr>
+<tr><td>
+
 [JsonDependencies](/xpm-lib-ts/docs/api/xpm-lib/typealiases/jsondependencies)
 
 
