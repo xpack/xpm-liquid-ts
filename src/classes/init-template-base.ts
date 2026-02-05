@@ -19,12 +19,6 @@ import * as readline from 'node:readline/promises'
 import * as path from 'node:path'
 import * as fs from 'node:fs/promises'
 
-// https://www.npmjs.com/package/make-dir
-import { makeDirectory } from 'make-dir'
-
-// https://www.npmjs.com/package/cp-file
-import { copyFile } from 'cp-file'
-
 // https://www.npmjs.com/package/liquidjs
 import { Liquid } from 'liquidjs'
 
@@ -384,10 +378,7 @@ export abstract class XpmInitTemplateBase {
         }
         break
 
-      default:
-        throw new XpmError(
-          `Unsupported property type '${String(propDef.type)}' for '${name}'`
-        )
+      // No default, the definition was already validated.
     }
 
     throw new XpmError(`Unsupported value '${value}' for property '${name}'`)
@@ -534,20 +525,28 @@ export abstract class XpmInitTemplateBase {
    * the same relative path as the source).
    * @returns A promise that resolves when the file has been copied.
    */
-  async copyFile(
-    sourceFileRelativePath: string,
-    destinationFilePath = sourceFileRelativePath
-  ): Promise<void> {
+  async copyFile({
+    sourceFileRelativePath,
+    destinationFilePath = sourceFileRelativePath,
+  }: {
+    sourceFileRelativePath: string
+    destinationFilePath?: string
+  }): Promise<void> {
     const log = this._log
 
-    await makeDirectory(path.dirname(destinationFilePath))
+    await fs.mkdir(path.dirname(destinationFilePath), { recursive: true })
 
     const sourceFileAbsolutePath = path.resolve(
       this._templatesPath,
       sourceFileRelativePath
     )
-    await copyFile(sourceFileAbsolutePath, destinationFilePath)
-    log.info(`File '${destinationFilePath}' copied.`)
+    await fs.copyFile(sourceFileAbsolutePath, destinationFilePath)
+
+    const destinationFileRelativePath = path.relative(
+      this._context.config.cwd,
+      destinationFilePath
+    )
+    log.info(`File '${destinationFileRelativePath}' copied.`)
   }
 
   /**
@@ -561,20 +560,30 @@ export abstract class XpmInitTemplateBase {
    * modifications; use {@link XpmInitTemplateBase.render} for
    * individual files that require variable substitution.
    *
-   * @param source - The relative path to the source folder within the
-   * templates folder.
-   * @param destination - The destination folder path (defaults to the
+   * @param sourceFolderRelativePath - The relative path to the source folder
+   * within the templates folder.
+   * @param destinationFolderPath - The destination folder path (defaults to the
    * same relative path as the source).
    * @returns A promise that resolves when the folder has been copied.
    */
-  async copyFolder(source: string, destination = source): Promise<void> {
+  async copyFolder({
+    sourceFolderRelativePath,
+    destinationFolderPath = sourceFolderRelativePath,
+  }: {
+    sourceFolderRelativePath: string
+    destinationFolderPath?: string
+  }): Promise<void> {
     const log = this._log
 
-    await this._copyFolderRecursively(
-      path.resolve(this._templatesPath, source),
-      path.resolve(destination)
+    const sourceFolderAbsolutePath = path.resolve(
+      this._templatesPath,
+      sourceFolderRelativePath
     )
-    log.info(`Folder '${destination}' copied.`)
+    await this._copyFolderRecursively({
+      sourceFolderPath: sourceFolderAbsolutePath,
+      destinationFolderPath: path.resolve(destinationFolderPath),
+    })
+    log.info(`Folder '${destinationFolderPath}' copied.`)
   }
 
   /**
@@ -589,13 +598,16 @@ export abstract class XpmInitTemplateBase {
    * @param destinationFolderPath - The absolute path to the destination folder.
    * @returns A promise that resolves when all contents have been copied.
    */
-  protected async _copyFolderRecursively(
-    sourceFolderPath: string,
+  protected async _copyFolderRecursively({
+    sourceFolderPath,
+    destinationFolderPath,
+  }: {
+    sourceFolderPath: string
     destinationFolderPath: string
-  ): Promise<void> {
+  }): Promise<void> {
     // const log = this.log
 
-    await makeDirectory(path.dirname(destinationFolderPath))
+    await fs.mkdir(destinationFolderPath, { recursive: true })
 
     const dirents = await fs.readdir(sourceFolderPath, {
       withFileTypes: true,
@@ -605,12 +617,12 @@ export abstract class XpmInitTemplateBase {
       // log.trace(dirent.name)
 
       if (dirent.isDirectory()) {
-        await this._copyFolderRecursively(
-          path.join(sourceFolderPath, dirent.name),
-          path.join(destinationFolderPath, dirent.name)
-        )
+        await this._copyFolderRecursively({
+          sourceFolderPath: path.join(sourceFolderPath, dirent.name),
+          destinationFolderPath: path.join(destinationFolderPath, dirent.name),
+        })
       } else {
-        await copyFile(
+        await fs.copyFile(
           path.join(sourceFolderPath, dirent.name),
           path.join(destinationFolderPath, dirent.name)
         )
@@ -634,9 +646,9 @@ export abstract class XpmInitTemplateBase {
    * is not provided, the instance's substitutionsVariables property is
    * used.
    *
-   * @param inputFileRelativePath - The relative path to the template
+   * @param sourceFilePath - The absolute path to the template
    * file within the templates folder.
-   * @param outputFileRelativePath - The destination path for the rendered
+   * @param destinationFilePath - The destination path for the rendered
    * file.
    * @param substitutionsVariables - The variables to use for template
    * substitutions (defaults to the instance's substitutionsVariables).
@@ -646,32 +658,46 @@ export abstract class XpmInitTemplateBase {
    * @throws {@link XpmOutputError}
    * If template rendering fails.
    */
-  async render(
-    inputFileRelativePath: string,
-    outputFileRelativePath: string,
+  async render({
+    sourceFilePath,
+    destinationFilePath,
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    substitutionsVariables = this._substitutionsVariables!
-  ): Promise<void> {
+    substitutionsVariables = this._substitutionsVariables!,
+  }: {
+    sourceFilePath: string
+    destinationFilePath: string
+    substitutionsVariables?: XpmInitTemplateSubstitutionsVariables
+  }): Promise<void> {
     const log = this._log
+    const context = this._context
+    const config = context.config
+    const cwd = config.cwd
 
-    log.trace(`render(${inputFileRelativePath}, ${outputFileRelativePath})`)
+    const sourceFileRelativePath = path.relative(cwd, sourceFilePath)
+    const destinationFileRelativePath = path.relative(cwd, destinationFilePath)
 
-    await makeDirectory(path.dirname(outputFileRelativePath))
+    log.info(
+      `Rendering template '${sourceFileRelativePath}' to ` +
+        `'${destinationFileRelativePath}'`
+    )
+
+    log.trace(`render(${sourceFilePath}, ${destinationFilePath})`)
 
     // const headerPath = path.resolve(codePath, `${pnam}.h`)
     try {
       const fileContent = (await this._engine.renderFile(
-        inputFileRelativePath,
+        sourceFilePath,
         substitutionsVariables
       )) as string
 
-      await fs.writeFile(outputFileRelativePath, fileContent, 'utf8')
+      await fs.mkdir(path.dirname(destinationFilePath), { recursive: true })
+      await fs.writeFile(destinationFilePath, fileContent, 'utf8')
     } catch (error) {
       if (error instanceof Error) {
         throw new XpmOutputError(error.message)
       }
     }
-    log.info(`File '${outputFileRelativePath}' generated.`)
+    log.info(`File '${destinationFileRelativePath}' generated.`)
   }
 
   // --------------------------------------------------------------------------
