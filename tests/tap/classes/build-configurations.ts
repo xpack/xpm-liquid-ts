@@ -25,15 +25,20 @@ import { test } from 'tap'
 
 import { Logger } from '@xpack/logger'
 import {
+  JsonBuildConfiguration,
+  JsonBuildConfigurationContent,
   JsonBuildConfigurations,
+  JsonBuildConfigurationTemplate,
+  JsonBuildConfigurationTemplateMatrix,
+  JsonDependencyExtended,
+  JsonXpmPackage,
   XpmBuildConfigurations,
   XpmDataModel,
-  
   XpmError,
   XpmLiquidEngine,
   xpmLiquidSubstitutionsVariablesBase,
 } from '../../../src/index.js'
-import { AssertionError } from 'assert'
+import assert, { AssertionError } from 'assert'
 
 // ----------------------------------------------------------------------------
 
@@ -803,7 +808,7 @@ await test('XpmBuildConfigurations templates matrix errors', async (t) => {
     },
     'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
       matrix: {
-        alfa: [42, 'a2'],
+        alfa: [42 as unknown as string, 'a2'],
         beta: ['b1', 'b2'],
       },
       template: {
@@ -840,7 +845,7 @@ await test('XpmBuildConfigurations templates matrix errors', async (t) => {
     },
     'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
       matrix: {
-        alfa: 42,
+        alfa: 42 as unknown as string[],
         beta: ['b1', 'b2'],
       },
       template: {
@@ -880,7 +885,7 @@ await test('XpmBuildConfigurations templates matrix errors', async (t) => {
         alfa: ['a1', 'a2'],
         beta: ['b1', 'b2'],
       },
-      template: 42,
+      template: 42 as unknown as JsonBuildConfigurationContent,
     },
   }
 
@@ -909,7 +914,7 @@ await test('XpmBuildConfigurations templates matrix errors', async (t) => {
       },
     },
     'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: 42,
+      matrix: 42 as unknown as JsonBuildConfigurationTemplateMatrix,
       template: {
         properties: {
           p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
@@ -1060,6 +1065,7 @@ await test('configurations', async (t): Promise<void> => {
   t.ok(buildConfigurations, 'has buildConfigurations')
 
   // console.log(buildConfigurations.substitutionsVariables.properties)
+  assert(json.xpack.properties, 'json.xpack.properties is defined')
   t.equal(
     Object.keys(buildConfigurations.substitutionsVariables.properties).length,
     Object.keys(json.xpack.properties).length,
@@ -1141,7 +1147,10 @@ await test('configurations', async (t): Promise<void> => {
   // console.log(buildConfiguration.dependenciesMap)
   t.equal(
     Object.keys(buildConfiguration.dependencies).length,
-    Object.keys(json.xpack!.buildConfigurations!.alfa!.dependencies!).length,
+    Object.keys(
+      (json.xpack!.buildConfigurations!.alfa! as JsonBuildConfigurationContent)
+        .dependencies!
+    ).length,
     'dependencies length matches'
   )
   t.equal(
@@ -1152,7 +1161,10 @@ await test('configurations', async (t): Promise<void> => {
   // console.log(buildConfiguration.devDependenciesMap)
   t.equal(
     Object.keys(buildConfiguration.devDependencies).length,
-    Object.keys(json.xpack!.buildConfigurations!.alfa!.devDependencies!).length,
+    Object.keys(
+      (json.xpack!.buildConfigurations!.alfa! as JsonBuildConfigurationContent)
+        .devDependencies!
+    ).length,
     'devDependencies length matches'
   )
   t.equal(
@@ -1587,7 +1599,7 @@ await test('configurations template', async (t): Promise<void> => {
   t.ok(action, 'actions.get("dummy")')
 
   await action.initialise()
-  const commands = action._commands
+  const commands = action.commands
   t.equal(commands.length, 1, 'action "dummy" has 1 command')
   t.equal(commands[0], '11', 'command is as expected')
 
@@ -1648,12 +1660,12 @@ await test('configurations template', async (t): Promise<void> => {
   await buildConfiguration.initialise()
   const devDepGcc = buildConfiguration.devDependencies
   t.equal(
-    devDepGcc['@xpack-dev-tools/gcc'].specifier,
+    (devDepGcc['@xpack-dev-tools/gcc'] as JsonDependencyExtended).specifier,
     '15.2.0-1.1',
     'gcc specifier is "15.2.0-1.1"'
   )
   t.equal(
-    devDepGcc['@xpack-dev-tools/gcc'].platforms,
+    (devDepGcc['@xpack-dev-tools/gcc'] as JsonDependencyExtended).platforms,
     'linux-x64,linux-arm64,win32-x64',
     'gcc platforms is "linux-x64,linux-arm64,win32-x64"'
   )
@@ -1668,7 +1680,7 @@ await test('configurations template', async (t): Promise<void> => {
 
   await buildConfiguration.initialise()
 
-  actions = buildConfiguration._actions
+  actions = buildConfiguration.actions
   t.ok(actions, 'has actions')
 
   actionsInitialised = await actions.initialise()
@@ -1680,12 +1692,14 @@ await test('configurations template', async (t): Promise<void> => {
 
   let devDependencies = buildConfiguration.devDependencies
   t.equal(
-    devDependencies['@xpack-dev-tools/gcc'].specifier,
+    (devDependencies['@xpack-dev-tools/gcc'] as JsonDependencyExtended)
+      .specifier,
     '15.2.0-1.1',
     'gcc specifier is "15.2.0-1.1"'
   )
   t.equal(
-    devDependencies['@xpack-dev-tools/gcc'].platforms,
+    (devDependencies['@xpack-dev-tools/gcc'] as JsonDependencyExtended)
+      .platforms,
     'linux-x64,linux-arm64,win32-x64',
     'gcc platforms is "linux-x64,linux-arm64,win32-x64"'
   )
