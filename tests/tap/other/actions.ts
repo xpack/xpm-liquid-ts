@@ -24,7 +24,11 @@ import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
-import { JsonXpmPackage, XpmDataModel } from '../../../src/index.js'
+import {
+  JsonProperties,
+  JsonXpmPackage,
+  XpmDataModel,
+} from '../../../src/index.js'
 import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
@@ -89,7 +93,7 @@ await t.test('actions', async (t): Promise<void> => {
   // console.log(topActions.substitutionsVariables.properties)
   t.equal(
     Object.keys(topActions.substitutionsVariables.properties).length,
-    Object.keys(json.xpack.properties).length,
+    Object.keys(json.xpack.properties as JsonProperties).length,
     'properties length matches'
   )
 
@@ -138,7 +142,7 @@ await t.test('actions', async (t): Promise<void> => {
   initialised = await actionOne.initialise()
   t.equal(initialised, true, 'actionOne.initialise() again => true')
 
-  let commands = actionOne._commands
+  let commands = actionOne.commands
   // console.log(commands)
   t.equal(commands.length, 1, 'actionOne has 1 command')
   t.equal(commands[0], 'echo 1 command', 'command is as expected')
@@ -167,7 +171,7 @@ await t.test('actions', async (t): Promise<void> => {
   t.ok(actionThree, 'topActions.get("three")')
 
   await actionThree.initialise()
-  commands = actionThree._commands
+  commands = actionThree.commands
   // console.log(commands)
   t.equal(commands.length, 4, 'actionThree has 4 commands')
   t.equal(commands[0], 'line 1', 'command line 1 is as expected')
@@ -192,7 +196,7 @@ await t.test('actions', async (t): Promise<void> => {
 
   // console.log(actionTemplate.jsonAction)
   await actionTemplate.initialise()
-  commands = actionTemplate._commands
+  commands = actionTemplate.commands
   // console.log(commands)
   t.equal(commands.length, 2, 'actionTemplate has 2 commands')
   t.equal(
@@ -223,7 +227,7 @@ await t.test('actions', async (t): Promise<void> => {
 
   // console.log(actionTemplate.jsonAction)
   await actionTemplate.initialise()
-  commands = actionTemplate._commands
+  commands = actionTemplate.commands
   // console.log(commands)
   t.equal(commands.length, 2, 'actionTemplate has 2 commands')
   t.equal(

@@ -24,6 +24,8 @@ show-full-coverage: true
 allow-empty-coverage: true
 allow-incomplete-coverage: true
 
+typecheck: true
+
 # -----------------------------------------------------------------------------
 
 # https://tapjs.org/coverage/#coverage-maps

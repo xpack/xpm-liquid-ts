@@ -25,7 +25,10 @@ import t from 'tap'
 
 import { Logger } from '@xpack/logger'
 import {
+  JsonActionContent,
+  JsonActionTemplate,
   JsonBuildConfigurations,
+  JsonBuildConfigurationTemplate,
   XpmAction,
   XpmActions,
   XpmBuildConfigurations,
@@ -413,7 +416,7 @@ await t.test('XpmActions template errors', async (t) => {
       'one-1': 'echo "one"',
       'one-{{matrix.alfa}}': {
         template: 42,
-      },
+      } as unknown as JsonActionTemplate,
     },
   })
 
@@ -434,7 +437,7 @@ await t.test('XpmActions template errors', async (t) => {
       'one-{{matrix.alfa}}': {
         matrix: 42,
         template: 42,
-      },
+      } as unknown as JsonActionTemplate,
     },
   })
 
@@ -460,7 +463,7 @@ await t.test('XpmActions template errors', async (t) => {
         matrix: {
           alfa: ['1', '2'],
         },
-      },
+      } as unknown as JsonActionTemplate,
     },
   })
 
@@ -486,7 +489,7 @@ await t.test('XpmActions template errors', async (t) => {
         matrix: {
           alfa: ['1', '2'],
         },
-        template: 42,
+        template: 42 as unknown as JsonActionContent,
       },
     },
   })
@@ -513,7 +516,7 @@ await t.test('XpmActions template errors', async (t) => {
           alfa: 42,
         },
         template: 'echo "one-{{matrix.alfa}}"',
-      },
+      } as unknown as JsonActionTemplate,
       'one-2': 'echo "one-2"',
     },
   })
@@ -540,7 +543,7 @@ await t.test('XpmActions template errors', async (t) => {
           alfa: [42],
         },
         template: 'echo "one-{{matrix.alfa}}"',
-      },
+      } as unknown as JsonActionTemplate,
       'one-2': 'echo "one-2"',
     },
   })
