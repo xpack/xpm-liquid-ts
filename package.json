@@ -79,7 +79,7 @@
     "git-log": "git log --pretty='%cd * %h %s' --date=short",
     "prepare": "npm run compile && npm run lint",
     "pretest": "npm run compile && npm run lint",
-    "test-ci": "tap run --reporter=terse --disable-coverage",
+    "test-ci": "tap run --reporter=terse",
     "test": "tap run --disable-coverage",
     "test-coverage": "tap run",
     "test-all": "tap run --reporter=tap --disable-coverage",
