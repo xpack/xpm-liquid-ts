@@ -39,6 +39,8 @@ import {
   XpmSyntaxError,
 } from '../../../src/index.js'
 import { AssertionError } from 'node:assert'
+import { Readable, Writable } from 'node:stream'
+// import { stdout } from 'node:process'
 
 // ----------------------------------------------------------------------------
 
@@ -57,7 +59,9 @@ const mockContext: XpmContext = {
   log: new Logger({ level: 'info' }),
   config: {
     projectName: 'test-project',
-    properties: {},
+    properties: {
+      stringProp: 'a string',
+    },
     cwd: process.cwd(),
   },
 }
@@ -234,6 +238,16 @@ await t.test('XpmInitTemplateBase empty', async (t): Promise<void> => {
         this._substitutionsVariables?.year,
         new Date().getFullYear().toString(),
         'substitutionsVariables.year is correct'
+      )
+      t.equal(
+        this._substitutionsVariables?.stringProp,
+        'a string',
+        'substitutionsVariables.stringProp is correct'
+      )
+      t.equal(
+        this._substitutionsVariables?.properties.stringProp,
+        'a string',
+        'substitutionsVariables.properties.stringProp is correct'
       )
     }
   }
@@ -1580,8 +1594,498 @@ await t.test('XpmInitTemplateBase.render()', async (t): Promise<void> => {
 
 // ----------------------------------------------------------------------------
 
-t.test('XpmInitTemplateBase.askForMoreValues()', (t): void => {
-  t.end()
-})
+// https://nodejs.org/docs/latest/api/stream.html#simplified-construction
+
+class MockStdout extends Writable {
+  isTTY = true
+  output: string[] = []
+
+  _write(
+    chunk: any,
+    encoding: string,
+    callback: (error?: Error | null) => void
+  ): void {
+    const str = chunk.toString()
+    process.stdout.write(str)
+    this.output.push(str)
+    callback()
+  }
+}
+
+class MockStdin extends Readable {
+  isTTY = true
+  private readonly inputs: string[]
+  private index = 0
+
+  constructor(inputs: string[] = []) {
+    super({ encoding: 'utf8', highWaterMark: 0 })
+    this.inputs = inputs
+  }
+
+  _read(): void {
+    if (this.index < this.inputs.length) {
+      // Use setImmediate to simulate async reading
+      setImmediate(() => {
+        this.push(this.inputs[this.index] + '\n')
+        this.index++
+      })
+    } else {
+      // Add a newline to simulate the user pressing Enter after the last input.
+      this.push('\n') 
+      // Signal end of stream
+      this.push(null)
+    }
+  }
+}
+
+await t.test(
+  'XpmInitTemplateBase.askForMoreValues() not a tty',
+  async (t): Promise<void> => {
+    class MockStdin extends Readable {
+      isTTY = false
+
+      _read(): void {
+        this.push(null) // Signal end of stream
+      }
+    }
+
+    const mockProcess: NodeJS.Process = {
+      env: {},
+      stdin: new MockStdin(),
+      stdout: process.stdout,
+    } as unknown as NodeJS.Process
+
+    const mockContext: XpmContext = {
+      log: new Logger({ level: 'info' }),
+      config: {
+        projectName: 'test-project',
+        properties: {
+          // No
+        },
+        cwd: process.cwd(),
+      },
+    }
+
+    const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      stringProp: {
+        label: 'String Property',
+        description: 'A string property for testing',
+        type: 'string',
+        isMandatory: true, // <---
+      },
+    }
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    try {
+      await template.run()
+      t.fail('should have thrown for not possible without a TTY')
+    } catch (error) {
+      t.type(error, XpmSyntaxError, 'threw an XpmSyntaxError')
+      t.match(
+        (error as AssertionError).message,
+        'not possible without a TTY',
+        'error message is "not possible without a TTY"'
+      )
+    }
+
+    t.end()
+  }
+)
+
+await t.test(
+  'XpmInitTemplateBase.askForMoreValues()',
+  async (t): Promise<void> => {
+    await t.test('string', async (t): Promise<void> => {
+      let mockProcess: NodeJS.Process = {
+        env: {},
+        stdin: new MockStdin(['baburiba']),
+        stdout: new MockStdout(),
+      } as unknown as NodeJS.Process
+
+      let mockContext = {
+        log: new Logger({ level: 'info' }),
+        config: {
+          projectName: 'test-project',
+          properties: {
+            unused: 'value',
+          },
+          cwd: process.cwd(),
+        },
+      }
+
+      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+        stringProp: {
+          label: 'String Property',
+          description: 'A string property for testing',
+          type: 'string',
+          isMandatory: true, // <---
+          default: 'defaultString',
+        } as XpmInitTemplatePropertiesDefinition,
+        unused: {
+          label: 'Unused Property',
+          description: 'This property should not be asked for',
+          type: 'string',
+          isMandatory: false,
+          default: 'unusedDefault',
+        } as XpmInitTemplatePropertiesDefinition,
+      } as XpmInitTemplatePropertiesDefinitions
+
+      class XpmInitTemplate extends XpmInitTemplateBase {
+        async generate(): Promise<void> {
+          t.ok(true, 'generate() called')
+
+          t.equal(
+            this._context.config.properties!.stringProp,
+            'baburiba',
+            'string property value is correct'
+          )
+        }
+      }
+
+      let template = new XpmInitTemplate({
+        context: mockContext,
+        __dirname: '/my/dir',
+        templatesPath: '/my/templates',
+        propertiesDefinitions,
+        process: mockProcess,
+      })
+
+      await template.run()
+
+      // ----------------------------------------------------------------------
+
+      mockProcess = {
+        env: {},
+        stdin: new MockStdin(['']),
+        stdout: new MockStdout(),
+      } as unknown as NodeJS.Process
+
+      mockContext = {
+        log: new Logger({ level: 'info' }),
+        config: {
+          projectName: 'test-project',
+          properties: {
+            unused: 'value',
+          },
+          cwd: process.cwd(),
+        },
+      }
+
+      class XpmInitTemplate2 extends XpmInitTemplateBase {
+        async generate(): Promise<void> {
+          t.ok(true, 'generate() called')
+
+          t.equal(
+            this._context.config.properties!.stringProp,
+            'defaultString',
+            'string property value is default'
+          )
+        }
+      }
+
+      template = new XpmInitTemplate2({
+        context: mockContext,
+        __dirname: '/my/dir',
+        templatesPath: '/my/templates',
+        propertiesDefinitions,
+        process: mockProcess,
+      })
+
+      await template.run()
+
+      t.end()
+    })
+
+    await t.test('number', async (t): Promise<void> => {
+      let mockProcess: NodeJS.Process = {
+        env: {},
+        stdin: new MockStdin(['42']),
+        stdout: new MockStdout(),
+      } as unknown as NodeJS.Process
+
+      let mockContext = {
+        log: new Logger({ level: 'info' }),
+        config: {
+          projectName: 'test-project',
+          properties: {},
+          cwd: process.cwd(),
+        },
+      }
+
+      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+        numberProp: {
+          label: 'Number Property',
+          description: 'A number property for testing',
+          type: 'number',
+          isMandatory: true, // <---
+          default: 43,
+        } as XpmInitTemplatePropertiesDefinition,
+      } as XpmInitTemplatePropertiesDefinitions
+
+      class XpmInitTemplate extends XpmInitTemplateBase {
+        async generate(): Promise<void> {
+          t.ok(true, 'generate() called')
+
+          t.equal(
+            this._context.config.properties!.numberProp,
+            42,
+            'number property value is correct'
+          )
+        }
+      }
+
+      let template = new XpmInitTemplate({
+        context: mockContext,
+        __dirname: '/my/dir',
+        templatesPath: '/my/templates',
+        propertiesDefinitions,
+        process: mockProcess,
+      })
+
+      await template.run()
+
+      // ----------------------------------------------------------------------
+
+      mockProcess = {
+        env: {},
+        stdin: new MockStdin(),
+        stdout: new MockStdout(),
+      } as unknown as NodeJS.Process
+
+      // Update mockContext to have empty properties to avoid interference with previous test.
+      mockContext = {
+        log: new Logger({ level: 'info' }),
+        config: {
+          projectName: 'test-project',
+          properties: {},
+          cwd: process.cwd(),
+        },
+      }
+
+      class XpmInitTemplate2 extends XpmInitTemplateBase {
+        async generate(): Promise<void> {
+          t.ok(true, 'generate() called')
+
+          t.equal(
+            this._context.config.properties!.numberProp,
+            43,
+            'number property value is default'
+          )
+        }
+      }
+
+      template = new XpmInitTemplate2({
+        context: mockContext,
+        __dirname: '/my/dir',
+        templatesPath: '/my/templates',
+        propertiesDefinitions,
+        process: mockProcess,
+      })
+
+      await template.run()
+
+      // ----------------------------------------------------------------------
+      t.end()
+    })
+
+    await t.test('boolean', async (t): Promise<void> => {
+      let mockProcess: NodeJS.Process = {
+        env: {},
+        stdin: new MockStdin(['wrong', 'true']),
+        stdout: new MockStdout(),
+      } as unknown as NodeJS.Process
+
+      let mockContext = {
+        log: new Logger({ level: 'info' }),
+        config: {
+          projectName: 'test-project',
+          properties: {},
+          cwd: process.cwd(),
+        },
+      }
+
+      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+        booleanProp: {
+          label: 'Boolean Property',
+          description: 'A boolean property for testing',
+          type: 'boolean',
+          isMandatory: true, // <---
+          default: false,
+        } as XpmInitTemplatePropertiesDefinition,
+      } as XpmInitTemplatePropertiesDefinitions
+
+      class XpmInitTemplate extends XpmInitTemplateBase {
+        async generate(): Promise<void> {
+          t.ok(true, 'generate() called')
+
+          t.equal(
+            this._context.config.properties!.booleanProp,
+            true,
+            'boolean property value is correct'
+          )
+        }
+      }
+
+      let template = new XpmInitTemplate({
+        context: mockContext,
+        __dirname: '/my/dir',
+        templatesPath: '/my/templates',
+        propertiesDefinitions,
+        process: mockProcess,
+      })
+
+      await template.run()
+
+      // ----------------------------------------------------------------------
+
+      mockProcess = {
+        env: {},
+        stdin: new MockStdin(),
+        stdout: new MockStdout(),
+      } as unknown as NodeJS.Process
+
+      mockContext = {
+        log: new Logger({ level: 'info' }),
+        config: {
+          projectName: 'test-project',
+          properties: {},
+          cwd: process.cwd(),
+        },
+      }
+
+      class XpmInitTemplate2 extends XpmInitTemplateBase {
+        async generate(): Promise<void> {
+          t.ok(true, 'generate() called')
+
+          t.equal(
+            this._context.config.properties!.booleanProp,
+            false,
+            'boolean property value is default'
+          )
+        }
+      }
+
+      template = new XpmInitTemplate2({
+        context: mockContext,
+        __dirname: '/my/dir',
+        templatesPath: '/my/templates',
+        propertiesDefinitions,
+        process: mockProcess,
+      })
+
+      await template.run()
+
+      t.end()
+    })
+
+    await t.test('select', async (t): Promise<void> => {
+      let mockProcess: NodeJS.Process = {
+        env: {},
+        stdin: new MockStdin(['wrong', 'option2']),
+        stdout: new MockStdout(),
+        platform: 'linux',
+        arch: 'x64',
+      } as unknown as NodeJS.Process
+
+      let mockContext = {
+        log: new Logger({ level: 'info' }),
+        config: {
+          projectName: 'test-project',
+          properties: {},
+          cwd: process.cwd(),
+        },
+      }
+
+      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+        selectProp: {
+          label: 'Select Property',
+          description: 'A select property for testing',
+          type: 'select',
+          isMandatory: true, // <---
+          default: 'option3',
+          items: {
+            option1: 'Option 1',
+            option2: 'Option 2',
+            option3: { message: 'Option 3', platforms: ['linux', 'win32'] },
+            option4: { message: 'Option 4', platforms: ['darwin'] },
+          },
+        } as XpmInitTemplatePropertiesDefinition,
+      } as XpmInitTemplatePropertiesDefinitions
+
+      class XpmInitTemplate extends XpmInitTemplateBase {
+        async generate(): Promise<void> {
+          t.ok(true, 'generate() called')
+
+          t.equal(
+            this._context.config.properties!.selectProp,
+            'option2',
+            'select property value is correct'
+          )
+        }
+      }
+
+      let template = new XpmInitTemplate({
+        context: mockContext,
+        __dirname: '/my/dir',
+        templatesPath: '/my/templates',
+        propertiesDefinitions,
+        process: mockProcess,
+      })
+
+      await template.run()
+
+      // ----------------------------------------------------------------------
+
+      mockProcess = {
+        env: {},
+        stdin: new MockStdin(),
+        stdout: new MockStdout(),
+        platform: 'linux',
+        arch: 'x64',
+      } as unknown as NodeJS.Process
+
+      mockContext = {
+        log: new Logger({ level: 'info' }),
+        config: {
+          projectName: 'test-project',
+          properties: {},
+          cwd: process.cwd(),
+        },
+      }
+
+      class XpmInitTemplate2 extends XpmInitTemplateBase {
+        async generate(): Promise<void> {
+          t.ok(true, 'generate() called')
+
+          t.equal(
+            this._context.config.properties!.selectProp,
+            'option3',
+            'select property value is default'
+          )
+        }
+      }
+
+      template = new XpmInitTemplate2({
+        context: mockContext,
+        __dirname: '/my/dir',
+        templatesPath: '/my/templates',
+        propertiesDefinitions,
+        process: mockProcess,
+      })
+      debugger
+      await template.run()
+
+      t.end()
+    })
+
+    t.end()
+  }
+)
 
 // ----------------------------------------------------------------------------
