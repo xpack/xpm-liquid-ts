@@ -234,7 +234,7 @@ export abstract class XpmInitTemplateBase {
         throw new XpmSyntaxError('Interactive mode not possible without a TTY.')
       }
 
-      await this.askForMoreValues()
+      await this._askForMoreValues()
       log.trace(util.inspect(config.properties))
 
       // Reset start time to skip interactive time.
@@ -289,192 +289,6 @@ export abstract class XpmInitTemplateBase {
    * @returns A promise that resolves when generation is complete.
    */
   abstract /* async */ generate(): Promise<void>
-
-  /**
-   * Validates a property value against its definition.
-   *
-   * @remarks
-   * This method checks whether the provided value is valid for the
-   * specified property according to its type definition. It performs
-   * type-specific validation and conversion:
-   *
-   * <ul>
-   * <li><b>For <code>select</code> properties:</b> validates against
-   *    allowed items andchecks platform compatibility if specified</li>
-   * <li><b>For <code>boolean</code> properties:</b> converts
-   *    <code>'true'</code>/<code>'false'</code>
-   *    strings to booleans</li>
-   * <li><b>For <code>number</code> properties:</b> converts strings
-   *    to numbers</li>
-   * </ul>
-   *
-   * If the value is empty and a default is defined, the default value is
-   * returned. For select properties with platform restrictions, only
-   * platform-compatible items are considered valid.
-   *
-   * @param name - The property name to validate.
-   * @param value - The property value to validate.
-   * @returns The validated and potentially converted value (string,
-   * boolean, or number).
-   *
-   * @throws {@link XpmError}
-   * If the property is unsupported or the value is invalid.
-   */
-  protected _validatePropertyValue(
-    name: string,
-    value: string
-  ): string | boolean | number {
-    const propDef = this._propertiesDefinitions[name]
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (propDef === undefined) {
-      throw new XpmError(`Unsupported property '${name}'`)
-    }
-    const trimmedValue = value.trim()
-
-    switch (propDef.type) {
-      case 'select':
-        assert(
-          propDef.items,
-          `Property '${name}' of type 'select' has no items.`
-        )
-        if (propDef.items[value]) {
-          if (typeof propDef.items[value] === 'string') {
-            return value
-          } else if (
-            typeof propDef.items[value] === 'object' &&
-            this.isPlatformSupported(propDef.items[value].platforms)
-          ) {
-            return value
-          }
-        }
-        break
-
-      case 'boolean':
-        if (trimmedValue === 'true') {
-          return true
-        } else if (trimmedValue === 'false') {
-          return false
-        }
-        break
-
-      case 'number': {
-        const num = Number(trimmedValue)
-        if (trimmedValue !== '' && isFinite(num)) {
-          return num
-        }
-        // Fall through to error if not a valid number
-        break
-      }
-
-      case 'string':
-        if (trimmedValue !== '') {
-          return value
-        }
-
-        if (propDef.default !== undefined) {
-          return propDef.default
-        }
-        break
-
-      // No default, the definition was already validated.
-    }
-
-    throw new XpmError(`Unsupported value '${value}' for property '${name}'`)
-  }
-
-  /**
-   * Prompts the user interactively for missing property values.
-   *
-   * @remarks
-   * This method creates a readline interface and iteratively prompts the
-   * user to provide values for properties without explicit values. For
-   * each property, the prompt displays:
-   *
-   * <ul>
-   * <li>The property label</li>
-   * <li>Valid options (for select and boolean types)</li>
-   * <li>The default value in brackets, if available</li>
-   * </ul>
-   *
-   * If the user enters '?', help text is displayed showing the property
-   * description and all valid options with their descriptions. Invalid
-   * responses are rejected and the prompt is repeated until a valid value
-   * is provided. Platform-incompatible options are excluded from select
-   * properties.
-   *
-   * @returns A promise that resolves when all missing values have been
-   * collected.
-   */
-  async askForMoreValues() {
-    const context = this._context
-    const config = context.config
-
-    assert(config.properties, 'config.properties is required')
-
-    const rl = readline.createInterface({
-      input: this._process.stdin,
-      output: this._process.stdout,
-    })
-
-    for (const name of Object.keys(this._propertiesDefinitions)) {
-      if (config.properties[name]) {
-        continue
-      }
-      const definition = this._propertiesDefinitions[name]
-      let prompt = `${definition.label}?`
-      if (definition.type === 'select') {
-        prompt += ' ('
-        const validItems = []
-        assert(definition.items, 'definition.items is required')
-        for (const [ikey, ival] of Object.entries(definition.items)) {
-          if (typeof ival === 'string') {
-            validItems.push(ikey)
-          } else if (
-            typeof ival === 'object' &&
-            this.isPlatformSupported(ival.platforms)
-          ) {
-            validItems.push(ikey)
-          }
-        }
-        prompt += validItems.join(', ')
-        prompt += ', ?)'
-      } else if (definition.type === 'boolean') {
-        prompt += ' (true, false, ?)'
-      }
-      if (definition.default !== undefined) {
-        prompt += ` [${String(definition.default)}]`
-      }
-      prompt += ': '
-
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      while (true) {
-        const answer = (await rl.question(prompt)).trim()
-        try {
-          const value = this._validatePropertyValue(name, answer)
-          config.properties[name] = value
-          break
-        } catch (error) {
-          if (error instanceof Error) {
-            this._log.trace(error.message)
-          }
-          console.log(definition.description)
-          if (definition.type === 'select') {
-            assert(definition.items, 'definition.items is required')
-            for (const [ikey, ival] of Object.entries(definition.items)) {
-              if (typeof ival === 'string') {
-                console.log(`- ${ikey}: ${ival}`)
-              } else if (
-                typeof ival === 'object' &&
-                this.isPlatformSupported(ival.platforms)
-              ) {
-                console.log(`- ${ikey}: ${ival.message}`)
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 
   /**
    * Determines whether the current platform is supported.
@@ -585,50 +399,6 @@ export abstract class XpmInitTemplateBase {
   }
 
   /**
-   * Recursively copies all contents of a source folder to a destination folder.
-   *
-   * @remarks
-   * This internal method traverses the source folder structure and replicates
-   * it at the destination, copying all files and recursively processing
-   * subfolders.
-   *
-   * @param sourceFolderPath - The absolute path to the source folder.
-   * @param destinationFolderPath - The absolute path to the destination folder.
-   * @returns A promise that resolves when all contents have been copied.
-   */
-  protected async _copyFolderRecursively({
-    sourceFolderPath,
-    destinationFolderPath,
-  }: {
-    sourceFolderPath: string
-    destinationFolderPath: string
-  }): Promise<void> {
-    // const log = this.log
-
-    await fs.mkdir(destinationFolderPath, { recursive: true })
-
-    const dirents = await fs.readdir(sourceFolderPath, {
-      withFileTypes: true,
-    })
-
-    for (const dirent of dirents) {
-      // log.trace(dirent.name)
-
-      if (dirent.isDirectory()) {
-        await this._copyFolderRecursively({
-          sourceFolderPath: path.join(sourceFolderPath, dirent.name),
-          destinationFolderPath: path.join(destinationFolderPath, dirent.name),
-        })
-      } else {
-        await fs.copyFile(
-          path.join(sourceFolderPath, dirent.name),
-          path.join(destinationFolderPath, dirent.name)
-        )
-      }
-    }
-  }
-
-  /**
    * Renders a template file using Liquid and writes the output.
    *
    * @remarks
@@ -700,6 +470,254 @@ export abstract class XpmInitTemplateBase {
 
   // --------------------------------------------------------------------------
   // Protected Methods.
+
+  /**
+   * Validates a property value against its definition.
+   *
+   * @remarks
+   * This method checks whether the provided value is valid for the
+   * specified property according to its type definition. It performs
+   * type-specific validation and conversion:
+   *
+   * <ul>
+   * <li><b>For <code>select</code> properties:</b> validates against
+   *    allowed items andchecks platform compatibility if specified</li>
+   * <li><b>For <code>boolean</code> properties:</b> converts
+   *    <code>'true'</code>/<code>'false'</code>
+   *    strings to booleans</li>
+   * <li><b>For <code>number</code> properties:</b> converts strings
+   *    to numbers</li>
+   * </ul>
+   *
+   * If the value is empty and a default is defined, the default value is
+   * returned. For select properties with platform restrictions, only
+   * platform-compatible items are considered valid.
+   *
+   * @param name - The property name to validate.
+   * @param value - The property value to validate.
+   * @returns The validated and potentially converted value (string,
+   * boolean, or number).
+   *
+   * @throws {@link XpmError}
+   * If the property is unsupported or the value is invalid.
+   */
+  protected _validatePropertyValue(
+    name: string,
+    value: string
+  ): string | boolean | number {
+    const propDef = this._propertiesDefinitions[name]
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (propDef === undefined) {
+      throw new XpmError(`Unsupported property '${name}'`)
+    }
+    const trimmedValue = value.trim()
+
+    if (trimmedValue === '') {
+      if (propDef.default !== undefined) {
+        return propDef.default
+      }
+    } else {
+      switch (propDef.type) {
+        case 'select':
+          assert(
+            propDef.items,
+            `Property '${name}' of type 'select' has no items.`
+          )
+          if (propDef.items[value]) {
+            if (typeof propDef.items[value] === 'string') {
+              return value
+            } else if (
+              typeof propDef.items[value] === 'object' &&
+              this.isPlatformSupported(propDef.items[value].platforms)
+            ) {
+              return value
+            }
+          }
+          break
+
+        case 'boolean':
+          if (trimmedValue === 'true') {
+            return true
+          } else if (trimmedValue === 'false') {
+            return false
+          }
+          break
+
+        case 'number': {
+          const num = Number(trimmedValue)
+          if (isFinite(num)) {
+            return num
+          }
+          break
+        }
+
+        case 'string':
+          return value
+
+        // No default, the definition was already validated.
+      }
+    }
+
+    throw new XpmError(`Unsupported value '${value}' for property '${name}'`)
+  }
+
+  /**
+   * Prompts the user interactively for missing property values.
+   *
+   * @remarks
+   * This method creates a readline interface and iteratively prompts the
+   * user to provide values for properties without explicit values. For
+   * each property, the prompt displays:
+   *
+   * <ul>
+   * <li>The property label</li>
+   * <li>Valid options (for select and boolean types)</li>
+   * <li>The default value in brackets, if available</li>
+   * </ul>
+   *
+   * If the user enters '?', help text is displayed showing the property
+   * description and all valid options with their descriptions. Invalid
+   * responses are rejected and the prompt is repeated until a valid value
+   * is provided. Platform-incompatible options are excluded from select
+   * properties.
+   *
+   * @returns A promise that resolves when all missing values have been
+   * collected.
+   */
+  protected async _askForMoreValues() {
+    const context = this._context
+    const config = context.config
+
+    assert(config.properties, 'config.properties is required')
+
+    const rl = readline.createInterface({
+      input: this._process.stdin,
+      output: this._process.stdout,
+    })
+
+    for (const name of Object.keys(this._propertiesDefinitions)) {
+      if (config.properties[name]) {
+        continue
+      }
+      const definition = this._propertiesDefinitions[name]
+      let prompt = `${definition.label}?`
+      switch (definition.type) {
+        case 'select': {
+          prompt += ' ('
+          const validItems = []
+          assert(definition.items, 'definition.items is required')
+          for (const [ikey, ival] of Object.entries(definition.items)) {
+            if (isString(ival)) {
+              validItems.push(ikey)
+            } else if (
+              isObject(ival) &&
+              this.isPlatformSupported(
+                (ival as XpmInitTemplateItemValue).platforms
+              )
+            ) {
+              validItems.push(ikey)
+            }
+          }
+          prompt += validItems.join(', ')
+          prompt += ', ?)'
+          break
+        }
+        case 'string':
+          prompt += ' (string, ?)'
+          break
+        case 'number':
+          prompt += ' (number, ?)'
+          break
+        case 'boolean':
+          prompt += ' (true, false, ?)'
+          break
+        // No default, the definition was already validated.
+      }
+
+      if (definition.default !== undefined) {
+        prompt += ` [${String(definition.default)}]`
+      }
+      prompt += ': '
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      while (true) {
+        const answer = (await rl.question(prompt)).trim()
+        // console.log('{' + answer + '}')
+        try {
+          const value = this._validatePropertyValue(name, answer)
+          // console.log('[' + value + ']')
+          config.properties[name] = value
+          break
+        } catch (error) {
+          if (error instanceof Error) {
+            this._log.trace(error.message)
+          }
+          this._process.stdout.write(`${definition.description}\n`)
+          if (definition.type === 'select') {
+            assert(definition.items, 'definition.items is required')
+            for (const [ikey, ival] of Object.entries(definition.items)) {
+              if (isString(ival)) {
+                this._process.stdout.write(`- ${ikey}: ${ival as string}\n`)
+              } else if (
+                isObject(ival) &&
+                this.isPlatformSupported(
+                  (ival as XpmInitTemplateItemValue).platforms
+                )
+              ) {
+                this._process.stdout.write(
+                  `- ${ikey}: ${(ival as XpmInitTemplateItemValue).message}\n`
+                )
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Recursively copies all contents of a source folder to a destination folder.
+   *
+   * @remarks
+   * This internal method traverses the source folder structure and replicates
+   * it at the destination, copying all files and recursively processing
+   * subfolders.
+   *
+   * @param sourceFolderPath - The absolute path to the source folder.
+   * @param destinationFolderPath - The absolute path to the destination folder.
+   * @returns A promise that resolves when all contents have been copied.
+   */
+  protected async _copyFolderRecursively({
+    sourceFolderPath,
+    destinationFolderPath,
+  }: {
+    sourceFolderPath: string
+    destinationFolderPath: string
+  }): Promise<void> {
+    // const log = this.log
+
+    await fs.mkdir(destinationFolderPath, { recursive: true })
+
+    const dirents = await fs.readdir(sourceFolderPath, {
+      withFileTypes: true,
+    })
+
+    for (const dirent of dirents) {
+      // log.trace(dirent.name)
+
+      if (dirent.isDirectory()) {
+        await this._copyFolderRecursively({
+          sourceFolderPath: path.join(sourceFolderPath, dirent.name),
+          destinationFolderPath: path.join(destinationFolderPath, dirent.name),
+        })
+      } else {
+        await fs.copyFile(
+          path.join(sourceFolderPath, dirent.name),
+          path.join(destinationFolderPath, dirent.name)
+        )
+      }
+    }
+  }
 
   protected _validatePropertiesDefinitions(): void {
     assert(
