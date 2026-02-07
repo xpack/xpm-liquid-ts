@@ -22,8 +22,6 @@ export declare abstract class XpmInitTemplateBase {
     constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, }: XpmInitTemplateConstructorParameters);
     run(): Promise<number>;
     abstract generate(): Promise<void>;
-    protected _validatePropertyValue(name: string, value: string): string | boolean | number;
-    askForMoreValues(): Promise<void>;
     isPlatformSupported(platforms: string[] | undefined): boolean;
     copyFile({ sourceFileRelativePath, destinationFilePath, }: {
         sourceFileRelativePath: string;
@@ -33,14 +31,16 @@ export declare abstract class XpmInitTemplateBase {
         sourceFolderRelativePath: string;
         destinationFolderPath?: string;
     }): Promise<void>;
-    protected _copyFolderRecursively({ sourceFolderPath, destinationFolderPath, }: {
-        sourceFolderPath: string;
-        destinationFolderPath: string;
-    }): Promise<void>;
     render({ sourceFilePath, destinationFilePath, substitutionsVariables, }: {
         sourceFilePath: string;
         destinationFilePath: string;
         substitutionsVariables?: XpmInitTemplateSubstitutionsVariables;
+    }): Promise<void>;
+    protected _validatePropertyValue(name: string, value: string): string | boolean | number;
+    protected _askForMoreValues(): Promise<void>;
+    protected _copyFolderRecursively({ sourceFolderPath, destinationFolderPath, }: {
+        sourceFolderPath: string;
+        destinationFolderPath: string;
     }): Promise<void>;
     protected _validatePropertiesDefinitions(): void;
 }

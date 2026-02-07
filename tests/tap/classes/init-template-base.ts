@@ -1631,7 +1631,7 @@ class MockStdin extends Readable {
       })
     } else {
       // Add a newline to simulate the user pressing Enter after the last input.
-      this.push('\n') 
+      this.push('\n')
       // Signal end of stream
       this.push(null)
     }

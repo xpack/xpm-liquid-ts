@@ -73,7 +73,7 @@ export class XpmInitTemplateBase {
             if (!(this._process.stdin.isTTY && this._process.stdout.isTTY)) {
                 throw new XpmSyntaxError('Interactive mode not possible without a TTY.');
             }
-            await this.askForMoreValues();
+            await this._askForMoreValues();
             log.trace(util.inspect(config.properties));
             context.startTime = Date.now();
             isInteractive = true;
@@ -99,116 +99,6 @@ export class XpmInitTemplateBase {
         this._substitutionsVariables = substitutionsVariables;
         await this.generate();
         return 0;
-    }
-    _validatePropertyValue(name, value) {
-        const propDef = this._propertiesDefinitions[name];
-        if (propDef === undefined) {
-            throw new XpmError(`Unsupported property '${name}'`);
-        }
-        const trimmedValue = value.trim();
-        switch (propDef.type) {
-            case 'select':
-                assert(propDef.items, `Property '${name}' of type 'select' has no items.`);
-                if (propDef.items[value]) {
-                    if (typeof propDef.items[value] === 'string') {
-                        return value;
-                    }
-                    else if (typeof propDef.items[value] === 'object' &&
-                        this.isPlatformSupported(propDef.items[value].platforms)) {
-                        return value;
-                    }
-                }
-                break;
-            case 'boolean':
-                if (trimmedValue === 'true') {
-                    return true;
-                }
-                else if (trimmedValue === 'false') {
-                    return false;
-                }
-                break;
-            case 'number': {
-                const num = Number(trimmedValue);
-                if (trimmedValue !== '' && isFinite(num)) {
-                    return num;
-                }
-                break;
-            }
-            case 'string':
-                if (trimmedValue !== '') {
-                    return value;
-                }
-                if (propDef.default !== undefined) {
-                    return propDef.default;
-                }
-                break;
-        }
-        throw new XpmError(`Unsupported value '${value}' for property '${name}'`);
-    }
-    async askForMoreValues() {
-        const context = this._context;
-        const config = context.config;
-        assert(config.properties, 'config.properties is required');
-        const rl = readline.createInterface({
-            input: this._process.stdin,
-            output: this._process.stdout,
-        });
-        for (const name of Object.keys(this._propertiesDefinitions)) {
-            if (config.properties[name]) {
-                continue;
-            }
-            const definition = this._propertiesDefinitions[name];
-            let prompt = `${definition.label}?`;
-            if (definition.type === 'select') {
-                prompt += ' (';
-                const validItems = [];
-                assert(definition.items, 'definition.items is required');
-                for (const [ikey, ival] of Object.entries(definition.items)) {
-                    if (typeof ival === 'string') {
-                        validItems.push(ikey);
-                    }
-                    else if (typeof ival === 'object' &&
-                        this.isPlatformSupported(ival.platforms)) {
-                        validItems.push(ikey);
-                    }
-                }
-                prompt += validItems.join(', ');
-                prompt += ', ?)';
-            }
-            else if (definition.type === 'boolean') {
-                prompt += ' (true, false, ?)';
-            }
-            if (definition.default !== undefined) {
-                prompt += ` [${String(definition.default)}]`;
-            }
-            prompt += ': ';
-            while (true) {
-                const answer = (await rl.question(prompt)).trim();
-                try {
-                    const value = this._validatePropertyValue(name, answer);
-                    config.properties[name] = value;
-                    break;
-                }
-                catch (error) {
-                    if (error instanceof Error) {
-                        this._log.trace(error.message);
-                    }
-                    console.log(definition.description);
-                    if (definition.type === 'select') {
-                        assert(definition.items, 'definition.items is required');
-                        for (const [ikey, ival] of Object.entries(definition.items)) {
-                            if (typeof ival === 'string') {
-                                console.log(`- ${ikey}: ${ival}`);
-                            }
-                            else if (typeof ival === 'object' &&
-                                this.isPlatformSupported(ival.platforms)) {
-                                console.log(`- ${ikey}: ${ival.message}`);
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
     isPlatformSupported(platforms) {
         assert(platforms && platforms.length !== 0, 'platforms array is required');
@@ -237,23 +127,6 @@ export class XpmInitTemplateBase {
         });
         log.info(`Folder '${destinationFolderPath}' copied.`);
     }
-    async _copyFolderRecursively({ sourceFolderPath, destinationFolderPath, }) {
-        await fs.mkdir(destinationFolderPath, { recursive: true });
-        const dirents = await fs.readdir(sourceFolderPath, {
-            withFileTypes: true,
-        });
-        for (const dirent of dirents) {
-            if (dirent.isDirectory()) {
-                await this._copyFolderRecursively({
-                    sourceFolderPath: path.join(sourceFolderPath, dirent.name),
-                    destinationFolderPath: path.join(destinationFolderPath, dirent.name),
-                });
-            }
-            else {
-                await fs.copyFile(path.join(sourceFolderPath, dirent.name), path.join(destinationFolderPath, dirent.name));
-            }
-        }
-    }
     async render({ sourceFilePath, destinationFilePath, substitutionsVariables = this._substitutionsVariables, }) {
         const log = this._log;
         const context = this._context;
@@ -275,6 +148,143 @@ export class XpmInitTemplateBase {
             }
         }
         log.info(`File '${destinationFileRelativePath}' generated.`);
+    }
+    _validatePropertyValue(name, value) {
+        const propDef = this._propertiesDefinitions[name];
+        if (propDef === undefined) {
+            throw new XpmError(`Unsupported property '${name}'`);
+        }
+        const trimmedValue = value.trim();
+        if (trimmedValue === '') {
+            if (propDef.default !== undefined) {
+                return propDef.default;
+            }
+        }
+        else {
+            switch (propDef.type) {
+                case 'select':
+                    assert(propDef.items, `Property '${name}' of type 'select' has no items.`);
+                    if (propDef.items[value]) {
+                        if (typeof propDef.items[value] === 'string') {
+                            return value;
+                        }
+                        else if (typeof propDef.items[value] === 'object' &&
+                            this.isPlatformSupported(propDef.items[value].platforms)) {
+                            return value;
+                        }
+                    }
+                    break;
+                case 'boolean':
+                    if (trimmedValue === 'true') {
+                        return true;
+                    }
+                    else if (trimmedValue === 'false') {
+                        return false;
+                    }
+                    break;
+                case 'number': {
+                    const num = Number(trimmedValue);
+                    if (isFinite(num)) {
+                        return num;
+                    }
+                    break;
+                }
+                case 'string':
+                    return value;
+            }
+        }
+        throw new XpmError(`Unsupported value '${value}' for property '${name}'`);
+    }
+    async _askForMoreValues() {
+        const context = this._context;
+        const config = context.config;
+        assert(config.properties, 'config.properties is required');
+        const rl = readline.createInterface({
+            input: this._process.stdin,
+            output: this._process.stdout,
+        });
+        for (const name of Object.keys(this._propertiesDefinitions)) {
+            if (config.properties[name]) {
+                continue;
+            }
+            const definition = this._propertiesDefinitions[name];
+            let prompt = `${definition.label}?`;
+            switch (definition.type) {
+                case 'select': {
+                    prompt += ' (';
+                    const validItems = [];
+                    assert(definition.items, 'definition.items is required');
+                    for (const [ikey, ival] of Object.entries(definition.items)) {
+                        if (isString(ival)) {
+                            validItems.push(ikey);
+                        }
+                        else if (isObject(ival) &&
+                            this.isPlatformSupported(ival.platforms)) {
+                            validItems.push(ikey);
+                        }
+                    }
+                    prompt += validItems.join(', ');
+                    prompt += ', ?)';
+                    break;
+                }
+                case 'string':
+                    prompt += ' (string, ?)';
+                    break;
+                case 'number':
+                    prompt += ' (number, ?)';
+                    break;
+                case 'boolean':
+                    prompt += ' (true, false, ?)';
+                    break;
+            }
+            if (definition.default !== undefined) {
+                prompt += ` [${String(definition.default)}]`;
+            }
+            prompt += ': ';
+            while (true) {
+                const answer = (await rl.question(prompt)).trim();
+                try {
+                    const value = this._validatePropertyValue(name, answer);
+                    config.properties[name] = value;
+                    break;
+                }
+                catch (error) {
+                    if (error instanceof Error) {
+                        this._log.trace(error.message);
+                    }
+                    this._process.stdout.write(`${definition.description}\n`);
+                    if (definition.type === 'select') {
+                        assert(definition.items, 'definition.items is required');
+                        for (const [ikey, ival] of Object.entries(definition.items)) {
+                            if (isString(ival)) {
+                                this._process.stdout.write(`- ${ikey}: ${ival}\n`);
+                            }
+                            else if (isObject(ival) &&
+                                this.isPlatformSupported(ival.platforms)) {
+                                this._process.stdout.write(`- ${ikey}: ${ival.message}\n`);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    async _copyFolderRecursively({ sourceFolderPath, destinationFolderPath, }) {
+        await fs.mkdir(destinationFolderPath, { recursive: true });
+        const dirents = await fs.readdir(sourceFolderPath, {
+            withFileTypes: true,
+        });
+        for (const dirent of dirents) {
+            if (dirent.isDirectory()) {
+                await this._copyFolderRecursively({
+                    sourceFolderPath: path.join(sourceFolderPath, dirent.name),
+                    destinationFolderPath: path.join(destinationFolderPath, dirent.name),
+                });
+            }
+            else {
+                await fs.copyFile(path.join(sourceFolderPath, dirent.name), path.join(destinationFolderPath, dirent.name));
+            }
+        }
     }
     _validatePropertiesDefinitions() {
         assert(isObject(this._propertiesDefinitions), 'propertiesDefinitions is not an object.');
