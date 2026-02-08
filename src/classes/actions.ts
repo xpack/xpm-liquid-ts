@@ -128,7 +128,7 @@ export class Actions {
    * during initialisation, creating concrete actions from the Cartesian
    * product of matrix parameter values.
    */
-  readonly jsonActions: xpm.JsonActions
+  readonly jsonActions: xpm.json.Actions
 
   /**
    * The build configuration this actions collection belongs to, if any.
@@ -327,7 +327,7 @@ export class Actions {
     log: Logger
     engine: xpm.LiquidEngine
     substitutionsVariables: xpm.LiquidSubstitutionsVariables
-    jsonActions: xpm.JsonActions | undefined
+    jsonActions: xpm.json.Actions | undefined
     inheritedActionsMap?: Map<string, Action>
     buildConfiguration?: xpm.BuildConfiguration
   }) {
@@ -419,7 +419,7 @@ export class Actions {
       if (actionName.includes('{{')) {
         await this._processTemplate({
           actionName,
-          jsonActionTemplate: jsonAction as xpm.JsonActionTemplate,
+          jsonActionTemplate: jsonAction as xpm.json.ActionTemplate,
         })
       } else {
         if (this._actionsNamesSet.has(actionName)) {
@@ -540,10 +540,10 @@ export class Actions {
       const jsonActionName: string =
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._jsonActionsNamesMap.get(actionName)!
-      /* c8 ignore next 2 - safety net, action names are not undefined. */
-      const jsonAction: xpm.JsonActionContent = (this.jsonActions[
+      /* c8 ignore next 3 - safety net, action names are not undefined. */
+      const jsonAction: xpm.json.ActionContent = (this.jsonActions[
         jsonActionName
-      ] ?? '') as xpm.JsonActionContent
+      ] ?? '') as xpm.json.ActionContent
 
       action = new Action({
         actionName,
@@ -599,7 +599,7 @@ export class Actions {
     jsonActionTemplate,
   }: {
     actionName: string
-    jsonActionTemplate: xpm.JsonActionTemplate
+    jsonActionTemplate: xpm.json.ActionTemplate
   }): Promise<void> {
     // Expand template and generate multiple actions.
     try {
@@ -663,7 +663,7 @@ export class Actions {
     jsonActionTemplate,
   }: {
     actionName: string
-    jsonActionTemplate: xpm.JsonActionTemplate
+    jsonActionTemplate: xpm.json.ActionTemplate
   }): Promise<Map<string, Action>> {
     const log = this.log
     log.trace(`${Actions.name}.#expandTemplateActions(${actionName})`)
@@ -810,7 +810,7 @@ export class Actions {
   }: {
     combination: Record<string, string>
     actionName: string
-    jsonAction: xpm.JsonActionContent
+    jsonAction: xpm.json.ActionContent
     newActionsMap: Map<string, Action>
   }): Promise<void> {
     // console.log(combination)
@@ -920,7 +920,7 @@ export class Action {
    * This immutable storage ensures actions can be safely copied and
    * initialised multiple times without side effects.
    */
-  readonly jsonAction: xpm.JsonActionContent
+  readonly jsonAction: xpm.json.ActionContent
 
   /**
    * The parent actions collection this action belongs to.
@@ -1049,7 +1049,7 @@ export class Action {
     matrixParameters,
   }: {
     actionName: string
-    jsonAction: xpm.JsonActionContent
+    jsonAction: xpm.json.ActionContent
     parentActions: Actions
     matrixParameters?: xpm.LiquidSubstitutionsStrings
   }) {

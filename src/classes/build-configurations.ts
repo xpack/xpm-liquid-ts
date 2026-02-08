@@ -124,7 +124,7 @@ export class BuildConfigurations {
    * the Cartesian product of matrix parameter values. Each configuration
    * can inherit from others, creating complex dependency hierarchies.
    */
-  readonly jsonBuildConfigurations: xpm.JsonBuildConfigurations
+  readonly jsonBuildConfigurations: xpm.json.BuildConfigurations
 
   // --------------------------------------------------------------------------
   // Protected Members.
@@ -291,7 +291,7 @@ export class BuildConfigurations {
     log: Logger
     engine: xpm.LiquidEngine
     substitutionsVariables: xpm.LiquidSubstitutionsVariables
-    jsonBuildConfigurations: xpm.JsonBuildConfigurations | undefined
+    jsonBuildConfigurations: xpm.json.BuildConfigurations | undefined
   }) {
     assert(log, 'log is required')
     assert(engine, 'engine is required')
@@ -367,7 +367,7 @@ export class BuildConfigurations {
         await this._processTemplate({
           buildConfigurationName,
           jsonBuildConfigurationTemplate:
-            jsonBuildConfiguration as xpm.JsonBuildConfigurationTemplate,
+            jsonBuildConfiguration as xpm.json.BuildConfigurationTemplate,
         })
       } else {
         if (this._buildComfigurationsNamesSet.has(buildConfigurationName)) {
@@ -478,7 +478,7 @@ export class BuildConfigurations {
    * @param buildConfigurationName - The build configuration name to resolve.
    * @returns The JSON build configuration definition.
    */
-  getJson(buildConfigurationName: string): xpm.JsonBuildConfiguration {
+  getJson(buildConfigurationName: string): xpm.json.BuildConfiguration {
     return this.jsonBuildConfigurations[
       this.getJsonName(buildConfigurationName)
     ]
@@ -493,17 +493,18 @@ export class BuildConfigurations {
   isHidden(buildConfigurationName: string): boolean {
     const jsonBuildConfigurationName = this.getJsonName(buildConfigurationName)
     if (jsonBuildConfigurationName.includes('{{')) {
-      const jsonBuildConfigurationTemplate: xpm.JsonBuildConfigurationTemplate =
+      // eslint-disable-next-line max-len
+      const jsonBuildConfigurationTemplate: xpm.json.BuildConfigurationTemplate =
         this.jsonBuildConfigurations[
           jsonBuildConfigurationName
-        ] as xpm.JsonBuildConfigurationTemplate
+        ] as xpm.json.BuildConfigurationTemplate
       return jsonBuildConfigurationTemplate.template.hidden ?? false
     }
 
-    const jsonBuildConfigurationContent: xpm.JsonBuildConfigurationContent =
+    const jsonBuildConfigurationContent: xpm.json.BuildConfigurationContent =
       this.jsonBuildConfigurations[
         jsonBuildConfigurationName
-      ] as xpm.JsonBuildConfigurationContent
+      ] as xpm.json.BuildConfigurationContent
     return jsonBuildConfigurationContent.hidden ?? false
   }
 
@@ -586,10 +587,10 @@ export class BuildConfigurations {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._jsonBuildConfigurationsNamesMap.get(buildConfigurationName)!
 
-      const jsonBuildConfiguration: xpm.JsonBuildConfigurationContent =
+      const jsonBuildConfiguration: xpm.json.BuildConfigurationContent =
         /* c8 ignore next - safety net, they are always defined */
         (this.jsonBuildConfigurations[jsonBuildConfigurationName] ??
-          {}) as xpm.JsonBuildConfigurationContent
+          {}) as xpm.json.BuildConfigurationContent
 
       buildConfiguration = new BuildConfiguration({
         buildConfigurationName,
@@ -652,7 +653,7 @@ export class BuildConfigurations {
     jsonBuildConfigurationTemplate,
   }: {
     buildConfigurationName: string
-    jsonBuildConfigurationTemplate: xpm.JsonBuildConfigurationTemplate
+    jsonBuildConfigurationTemplate: xpm.json.BuildConfigurationTemplate
   }): Promise<void> {
     // Expand templates and generate multiple build configurations.
     try {
@@ -732,7 +733,7 @@ export class BuildConfigurations {
     jsonBuildConfigurationTemplate,
   }: {
     buildConfigurationName: string
-    jsonBuildConfigurationTemplate: xpm.JsonBuildConfigurationTemplate
+    jsonBuildConfigurationTemplate: xpm.json.BuildConfigurationTemplate
   }): Promise<Map<string, BuildConfiguration>> {
     const log = this.log
     log.trace(
@@ -869,7 +870,7 @@ export class BuildConfigurations {
     newBuildConfigurationsMap,
   }: {
     buildConfigurationName: string
-    jsonBuildConfiguration: xpm.JsonBuildConfigurationContent
+    jsonBuildConfiguration: xpm.json.BuildConfigurationContent
     combination: Record<string, string>
     newBuildConfigurationsMap: Map<string, BuildConfiguration>
   }): Promise<void> {
@@ -1115,7 +1116,7 @@ export class BuildConfiguration {
    * ranges or package selection based on matrix parameters, platform
    * detection, or configuration properties.
    */
-  dependencies: xpm.JsonDependencies = {}
+  dependencies: xpm.json.Dependencies = {}
 
   /**
    * The resolved development dependencies after substitutions.
@@ -1141,7 +1142,7 @@ export class BuildConfiguration {
    * specific to certain configurations (e.g., debug builds might include
    * additional analysis tools).
    */
-  devDependencies: xpm.JsonDependencies = {}
+  devDependencies: xpm.json.Dependencies = {}
 
   /**
    * The JSON build configuration content from package metadata.
@@ -1166,7 +1167,7 @@ export class BuildConfiguration {
    * This immutable storage ensures configurations can be safely referenced
    * during inheritance resolution without side effects.
    */
-  jsonBuildConfiguration: xpm.JsonBuildConfigurationContent
+  jsonBuildConfiguration: xpm.json.BuildConfigurationContent
 
   /**
    * Indicates whether this configuration originates from a template.
@@ -1408,7 +1409,7 @@ export class BuildConfiguration {
   }: {
     buildConfigurationName: string
     templateBuildConfigurationName?: string
-    jsonBuildConfiguration: xpm.JsonBuildConfigurationContent
+    jsonBuildConfiguration: xpm.json.BuildConfigurationContent
     parentBuildConfigurations: xpm.BuildConfigurations
     matrixParameters?: xpm.LiquidSubstitutionsStrings
   }) {
@@ -1508,7 +1509,7 @@ export class BuildConfiguration {
       `${BuildConfiguration.name}.initialise()` +
         ` @${this.buildConfigurationName}`
     )
-    let localJsonBuildConfiguration: xpm.JsonBuildConfigurationContent
+    let localJsonBuildConfiguration: xpm.json.BuildConfigurationContent
 
     if (this.isTemplate) {
       localJsonBuildConfiguration = await this._substituteTemplate()
@@ -1586,7 +1587,7 @@ export class BuildConfiguration {
       }
       const parsedDependencies = JSON.parse(
         substitutedDependencies
-      ) as xpm.JsonBuildConfigurationContent
+      ) as xpm.json.BuildConfigurationContent
 
       /* c8 ignore next 2 - safety net, they are always defined */
       this.dependencies = parsedDependencies.dependencies ?? {}
@@ -1697,13 +1698,13 @@ export class BuildConfiguration {
    * If Liquid template substitution fails.
    */
   // eslint-disable-next-line max-len
-  protected async _substituteTemplate(): Promise<xpm.JsonBuildConfigurationContent> {
+  protected async _substituteTemplate(): Promise<xpm.json.BuildConfigurationContent> {
     const log = this._log
 
     // For templates, perform substitutions on the entire build
     // configuration JSON, since there can be matrix references everywhere.
 
-    let localJsonBuildConfiguration: xpm.JsonBuildConfigurationContent
+    let localJsonBuildConfiguration: xpm.json.BuildConfigurationContent
 
     const stringifiedJsonBuildConfiguration = JSON.stringify(
       this.jsonBuildConfiguration
@@ -1737,7 +1738,7 @@ export class BuildConfiguration {
 
       localJsonBuildConfiguration = JSON.parse(
         substitutedJsonBuildConfiguration
-      ) as xpm.JsonBuildConfigurationContent
+      ) as xpm.json.BuildConfigurationContent
     } else {
       localJsonBuildConfiguration = this.jsonBuildConfiguration
     }
@@ -1784,10 +1785,10 @@ export class BuildConfiguration {
    * If Liquid template substitution fails on the inherits field.
    */
   // eslint-disable-next-line max-len
-  protected async _substituteInherits(): Promise<xpm.JsonBuildConfigurationContent> {
+  protected async _substituteInherits(): Promise<xpm.json.BuildConfigurationContent> {
     const log = this._log
 
-    let localJsonBuildConfiguration: xpm.JsonBuildConfigurationContent
+    let localJsonBuildConfiguration: xpm.json.BuildConfigurationContent
 
     // For non-templates, first perform substitutions on 'inherits' only.
     // The rest of the entries are collected as-is and processed later.
@@ -1823,7 +1824,7 @@ export class BuildConfiguration {
         ...this.jsonBuildConfiguration,
         inherits: JSON.parse(
           substitutedJsonInherits
-        ) as xpm.JsonBuildConfigurationInherits,
+        ) as xpm.json.BuildConfigurationInherits,
       }
     } else {
       localJsonBuildConfiguration = this.jsonBuildConfiguration
@@ -1832,7 +1833,7 @@ export class BuildConfiguration {
   }
 
   protected async _processInherits(
-    localJsonBuildConfiguration: xpm.JsonBuildConfigurationContent
+    localJsonBuildConfiguration: xpm.json.BuildConfigurationContent
   ): Promise<Map<string, xpm.Action>> {
     const log = this._log
 

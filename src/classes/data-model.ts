@@ -216,7 +216,7 @@ export class DataModel {
    * The package definition is validated during construction, requiring the
    * `xpack` section to be present and be a valid JSON object.
    */
-  protected _jsonPackage: xpm.JsonXpmPackage
+  protected _jsonPackage: xpm.json.XpmPackage
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -259,7 +259,7 @@ export class DataModel {
     jsonPackage,
   }: {
     log: Logger
-    jsonPackage: xpm.JsonXpmPackage
+    jsonPackage: xpm.json.XpmPackage
   }) {
     log.trace(`${DataModel.name}()`)
 

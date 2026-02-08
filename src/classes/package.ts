@@ -113,7 +113,7 @@ export class Package {
    * The cached content improves performance for packages that perform
    * multiple validation checks without file system access overhead.
    */
-  jsonPackage?: xpm.JsonXpmPackage
+  jsonPackage?: xpm.json.XpmPackage
 
   // --------------------------------------------------------------------------
   // Protected Members.
@@ -194,7 +194,7 @@ export class Package {
     withThrow = false,
   }: {
     withThrow?: boolean
-  } = {}): Promise<xpm.JsonXpmPackage | undefined> {
+  } = {}): Promise<xpm.json.XpmPackage | undefined> {
     const jsonFilePath = path.join(this.packageFolderPath, 'package.json')
 
     let fileContent: string | Buffer
@@ -216,7 +216,7 @@ export class Package {
     try {
       this.jsonPackage = JSON.parse(
         fileContent.toString()
-      ) as xpm.JsonXpmPackage
+      ) as xpm.json.XpmPackage
     } catch (error) {
       if (withThrow) {
         this.jsonPackage = undefined
@@ -243,7 +243,7 @@ export class Package {
    * @param jsonPackage - The `package.json` content to write.
    * @returns A promise that resolves when the file has been written.
    */
-  async rewritePackageDotJson(jsonPackage: xpm.JsonXpmPackage): Promise<void> {
+  async rewritePackageDotJson(jsonPackage: xpm.json.XpmPackage): Promise<void> {
     const log = this._log
 
     assert(jsonPackage, 'jsonPackage is required')
@@ -488,14 +488,14 @@ export class Package {
         for (const buildConfigurationName of Object.keys(
           json.xpack.buildConfigurations
         )) {
-          const buildConfiguration: xpm.JsonBuildConfiguration =
+          const buildConfiguration: xpm.json.BuildConfiguration =
             json.xpack.buildConfigurations[buildConfigurationName]
           if (
             buildConfigurationName.includes('{{') ||
             buildConfigurationName.includes('{%')
           ) {
             const buildConfigurationTemplate =
-              buildConfiguration as xpm.JsonBuildConfigurationTemplate
+              buildConfiguration as xpm.json.BuildConfigurationTemplate
             if (
               buildConfigurationTemplate.template.actions !== undefined &&
               Object.keys(buildConfigurationTemplate.template.actions).length >
@@ -505,7 +505,7 @@ export class Package {
             }
           } else {
             const buildConfigurationContent =
-              buildConfiguration as xpm.JsonBuildConfigurationContent
+              buildConfiguration as xpm.json.BuildConfigurationContent
             if (
               buildConfigurationContent.actions !== undefined &&
               Object.keys(buildConfigurationContent.actions).length > 0
@@ -607,7 +607,7 @@ export class Package {
 
     log.trace(`minimumXpmRequired: ${minimumXpmRequired}`)
 
-    let jsonXpmCliPackage: xpm.JsonXpmPackage | undefined
+    let jsonXpmCliPackage: xpm.json.XpmPackage | undefined
     try {
       const cliXpmPackage = new Package({
         log,
@@ -690,7 +690,7 @@ export class Package {
     npmPackageSpecifier,
   }: {
     npmPackageSpecifier: string
-  }): xpm.JsonPackageSpecifier {
+  }): xpm.json.PackageSpecifier {
     assert(npmPackageSpecifier, 'npmPackageSpecifier is required')
 
     const log = this._log

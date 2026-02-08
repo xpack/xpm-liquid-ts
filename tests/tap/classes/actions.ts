@@ -149,7 +149,7 @@ await t.test('Actions at top', async (t) => {
 })
 
 await t.test('Actions in configuration', async (t) => {
-  const buildConfigurationsJson: xpm.JsonBuildConfigurations = {
+  const buildConfigurationsJson: xpm.json.BuildConfigurations = {
     debug: {
       actions: {
         one: 'echo "one"',
@@ -403,7 +403,7 @@ await t.test('Actions template errors', async (t) => {
       'one-1': 'echo "one"',
       'one-{{matrix.alfa}}': {
         template: 42,
-      } as unknown as xpm.JsonActionTemplate,
+      } as unknown as xpm.json.ActionTemplate,
     },
   })
 
@@ -424,7 +424,7 @@ await t.test('Actions template errors', async (t) => {
       'one-{{matrix.alfa}}': {
         matrix: 42,
         template: 42,
-      } as unknown as xpm.JsonActionTemplate,
+      } as unknown as xpm.json.ActionTemplate,
     },
   })
 
@@ -450,7 +450,7 @@ await t.test('Actions template errors', async (t) => {
         matrix: {
           alfa: ['1', '2'],
         },
-      } as unknown as xpm.JsonActionTemplate,
+      } as unknown as xpm.json.ActionTemplate,
     },
   })
 
@@ -476,7 +476,7 @@ await t.test('Actions template errors', async (t) => {
         matrix: {
           alfa: ['1', '2'],
         },
-        template: 42 as unknown as xpm.JsonActionContent,
+        template: 42 as unknown as xpm.json.ActionContent,
       },
     },
   })
@@ -503,7 +503,7 @@ await t.test('Actions template errors', async (t) => {
           alfa: 42,
         },
         template: 'echo "one-{{matrix.alfa}}"',
-      } as unknown as xpm.JsonActionTemplate,
+      } as unknown as xpm.json.ActionTemplate,
       'one-2': 'echo "one-2"',
     },
   })
@@ -530,7 +530,7 @@ await t.test('Actions template errors', async (t) => {
           alfa: [42],
         },
         template: 'echo "one-{{matrix.alfa}}"',
-      } as unknown as xpm.JsonActionTemplate,
+      } as unknown as xpm.json.ActionTemplate,
       'one-2': 'echo "one-2"',
     },
   })

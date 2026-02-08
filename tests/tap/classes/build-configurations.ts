@@ -69,7 +69,7 @@ await t.test('BuildConfigurations undefined', async (t) => {
 })
 
 await t.test('BuildConfigurations', async (t) => {
-  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+  const jsonBuildConfigurations: xpm.json.BuildConfigurations = {
     configOne: {
       properties: {
         p1: 'v1',
@@ -201,7 +201,7 @@ await t.test('BuildConfigurations buildFolderRelativePath', async (t) => {
     },
   }
 
-  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+  const jsonBuildConfigurations: xpm.json.BuildConfigurations = {
     configOne: {
       properties: {
         p1: 'v1',
@@ -274,7 +274,7 @@ await t.test('BuildConfigurations inheritance', async (t) => {
     },
   }
 
-  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+  const jsonBuildConfigurations: xpm.json.BuildConfigurations = {
     configOne: {
       inherits: ' ',
       properties: {
@@ -494,7 +494,7 @@ await t.test('BuildConfigurations inheritance', async (t) => {
 })
 
 await t.test('BuildConfigurations templates', async (t) => {
-  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+  const jsonBuildConfigurations: xpm.json.BuildConfigurations = {
     configOne: {
       properties: {
         p1: 'v1',
@@ -650,7 +650,7 @@ await t.test('BuildConfigurations templates', async (t) => {
 })
 
 await t.test('BuildConfigurations templates errors', async (t) => {
-  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+  const jsonBuildConfigurations: xpm.json.BuildConfigurations = {
     configOne: {
       properties: {
         p1: 'v1',
@@ -698,7 +698,7 @@ await t.test('BuildConfigurations templates matrix', async (t) => {
     },
   }
 
-  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+  const jsonBuildConfigurations: xpm.json.BuildConfigurations = {
     configOne: {
       properties: {
         p1: 'v1',
@@ -745,7 +745,7 @@ await t.test('BuildConfigurations templates matrix', async (t) => {
 })
 
 await t.test('BuildConfigurations templates matrix errors', async (t) => {
-  let jsonBuildConfigurations: xpm.JsonBuildConfigurations
+  let jsonBuildConfigurations: xpm.json.BuildConfigurations
   let buildConfigurations
 
   jsonBuildConfigurations = {
@@ -870,7 +870,7 @@ await t.test('BuildConfigurations templates matrix errors', async (t) => {
         alfa: ['a1', 'a2'],
         beta: ['b1', 'b2'],
       },
-      template: 42 as unknown as xpm.JsonBuildConfigurationContent,
+      template: 42 as unknown as xpm.json.BuildConfigurationContent,
     },
   }
 
@@ -899,7 +899,7 @@ await t.test('BuildConfigurations templates matrix errors', async (t) => {
       },
     },
     'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: 42 as unknown as xpm.JsonBuildConfigurationTemplateMatrix,
+      matrix: 42 as unknown as xpm.json.BuildConfigurationTemplateMatrix,
       template: {
         properties: {
           p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
@@ -930,7 +930,7 @@ await t.test('BuildConfigurations templates matrix errors', async (t) => {
 })
 
 await t.test('BuildConfigurations templates duplicates', async (t) => {
-  let jsonBuildConfigurations: xpm.JsonBuildConfigurations
+  let jsonBuildConfigurations: xpm.json.BuildConfigurations
   let buildConfigurations
 
   jsonBuildConfigurations = {
@@ -1013,7 +1013,7 @@ await t.test('BuildConfigurations templates duplicates', async (t) => {
 // ----------------------------------------------------------------------------
 
 await t.test('configurations', async (t): Promise<void> => {
-  const json: xpm.JsonXpmPackage = {
+  const json: xpm.json.XpmPackage = {
     name: 'test',
     version: '1.2.3',
     xpack: {
@@ -1135,7 +1135,7 @@ await t.test('configurations', async (t): Promise<void> => {
     Object.keys(
       (
         json.xpack!.buildConfigurations!
-          .alfa! as xpm.JsonBuildConfigurationContent
+          .alfa! as xpm.json.BuildConfigurationContent
       ).dependencies!
     ).length,
     'dependencies length matches'
@@ -1151,7 +1151,7 @@ await t.test('configurations', async (t): Promise<void> => {
     Object.keys(
       (
         json.xpack!.buildConfigurations!
-          .alfa! as xpm.JsonBuildConfigurationContent
+          .alfa! as xpm.json.BuildConfigurationContent
       ).devDependencies!
     ).length,
     'devDependencies length matches'
@@ -1219,7 +1219,7 @@ await t.test('configurations', async (t): Promise<void> => {
 })
 
 await t.test('configurations inheritance', async (t): Promise<void> => {
-  const json: xpm.JsonXpmPackage = {
+  const json: xpm.json.XpmPackage = {
     name: 'test',
     version: '1.2.3',
     xpack: {
@@ -1413,7 +1413,7 @@ await t.test('configurations inheritance', async (t): Promise<void> => {
 })
 
 await t.test('configurations template', async (t): Promise<void> => {
-  const json: xpm.JsonXpmPackage = {
+  const json: xpm.json.XpmPackage = {
     name: 'test',
     version: '1.2.3',
     xpack: {
@@ -1649,12 +1649,14 @@ await t.test('configurations template', async (t): Promise<void> => {
   await buildConfiguration.initialise()
   const devDepGcc = buildConfiguration.devDependencies
   t.equal(
-    (devDepGcc['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended).specifier,
+    (devDepGcc['@xpack-dev-tools/gcc'] as xpm.json.DependencyExtended)
+      .specifier,
     '15.2.0-1.1',
     'gcc specifier is "15.2.0-1.1"'
   )
   t.equal(
-    (devDepGcc['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended).platforms,
+    (devDepGcc['@xpack-dev-tools/gcc'] as xpm.json.DependencyExtended)
+      .platforms,
     'linux-x64,linux-arm64,win32-x64',
     'gcc platforms is "linux-x64,linux-arm64,win32-x64"'
   )
@@ -1681,13 +1683,13 @@ await t.test('configurations template', async (t): Promise<void> => {
 
   let devDependencies = buildConfiguration.devDependencies
   t.equal(
-    (devDependencies['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended)
+    (devDependencies['@xpack-dev-tools/gcc'] as xpm.json.DependencyExtended)
       .specifier,
     '15.2.0-1.1',
     'gcc specifier is "15.2.0-1.1"'
   )
   t.equal(
-    (devDependencies['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended)
+    (devDependencies['@xpack-dev-tools/gcc'] as xpm.json.DependencyExtended)
       .platforms,
     'linux-x64,linux-arm64,win32-x64',
     'gcc platforms is "linux-x64,linux-arm64,win32-x64"'
