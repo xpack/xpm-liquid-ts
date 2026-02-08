@@ -14,7 +14,7 @@
 import * as os from 'node:os'
 import * as path from 'node:path'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /**
  * Represents a map of substitution values used by Liquid templates.
@@ -37,7 +37,7 @@ import * as path from 'node:path'
  * `matrix.arch`, etc., with the Liquid Drop pattern providing lazy
  * evaluation and nested substitution support.
  */
-export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>
+export type LiquidSubstitutionsStrings = Record<string, string | string[]>
 
 /**
  * Defines the substitution variables available to Liquid templates.
@@ -86,7 +86,7 @@ export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>
  * This ensures templates have access to appropriate
  * context without exposing unrelated data.
  */
-export interface XpmLiquidSubstitutionsVariables {
+export interface LiquidSubstitutionsVariables {
   /**
    * Process environment variables from the current execution context.
    *
@@ -308,7 +308,7 @@ export interface XpmLiquidSubstitutionsVariables {
    *
    * Access via `{{ properties.key }}` in templates.
    */
-  properties: XpmLiquidSubstitutionsStrings
+  properties: LiquidSubstitutionsStrings
 
   /**
    * Optional matrix parameters used for template expansion.
@@ -326,7 +326,7 @@ export interface XpmLiquidSubstitutionsVariables {
    * Access via `{{ matrix.key }}` in templates. Scoped to the individual
    * expanded instance, ensuring isolation between generated items.
    */
-  matrix?: XpmLiquidSubstitutionsStrings
+  matrix?: LiquidSubstitutionsStrings
 }
 
 /**
@@ -351,41 +351,40 @@ export interface XpmLiquidSubstitutionsVariables {
  * as needed. The base object is typically spread into new contexts rather
  * than mutated, preserving the original snapshot.
  */
-// eslint-disable-next-line max-len
-export const xpmLiquidSubstitutionsVariablesBase: XpmLiquidSubstitutionsVariables =
-  {
-    env: process.env,
-    os: {
-      EOL: os.EOL,
-      arch: os.arch(),
-      constants: {
-        signals: os.constants.signals,
-        errno: os.constants.errno,
-      },
-      cpus: os.cpus(),
-      endianness: os.endianness(),
-      homedir: os.homedir(),
-      hostname: os.hostname(),
-      platform: os.platform(),
-      release: os.release(),
-      tmpdir: os.tmpdir(),
-      type: os.type(),
-      // os.version() available since 12.x
-      version: os.version(),
+
+export const liquidSubstitutionsVariablesBase: LiquidSubstitutionsVariables = {
+  env: process.env,
+  os: {
+    EOL: os.EOL,
+    arch: os.arch(),
+    constants: {
+      signals: os.constants.signals,
+      errno: os.constants.errno,
     },
-    path: {
-      delimiter: path.delimiter,
-      sep: path.sep,
-      win32: {
-        delimiter: path.win32.delimiter,
-        sep: path.win32.sep,
-      },
-      posix: {
-        delimiter: path.posix.delimiter,
-        sep: path.posix.sep,
-      },
+    cpus: os.cpus(),
+    endianness: os.endianness(),
+    homedir: os.homedir(),
+    hostname: os.hostname(),
+    platform: os.platform(),
+    release: os.release(),
+    tmpdir: os.tmpdir(),
+    type: os.type(),
+    // os.version() available since 12.x
+    version: os.version(),
+  },
+  path: {
+    delimiter: path.delimiter,
+    sep: path.sep,
+    win32: {
+      delimiter: path.win32.delimiter,
+      sep: path.win32.sep,
     },
-    properties: {},
-  }
+    posix: {
+      delimiter: path.posix.delimiter,
+      sep: path.posix.sep,
+    },
+  },
+  properties: {},
+}
 
 // ----------------------------------------------------------------------------

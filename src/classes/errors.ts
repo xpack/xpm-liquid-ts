@@ -18,12 +18,12 @@
  * This class extends the standard JavaScript `Error` class and serves as
  * the foundation for all <b>xpm</b>-specific error types. Use this error for
  * general <b>xpm</b> operations that don't fit into more specific error
- * categories. More specialized errors ({@link XpmInputError},
- * {@link XpmSyntaxError}, {@link XpmOutputError},
- * {@link XpmPrerequisitesError}) should be preferred when applicable,
+ * categories. More specialized errors ({@link InputError},
+ * {@link SyntaxError}, {@link OutputError},
+ * {@link PrerequisitesError}) should be preferred when applicable,
  * as they provide clearer semantics for error handling.
  */
-export class XpmError extends Error {}
+export class Error extends globalThis.Error {}
 
 /**
  * Error indicating that required prerequisites are not met.
@@ -36,7 +36,7 @@ export class XpmError extends Error {}
  * error when validation of the execution environment fails before
  * attempting an operation.
  */
-export class XpmPrerequisitesError extends Error {}
+export class PrerequisitesError extends globalThis.Error {}
 
 /**
  * Error indicating that user input is invalid.
@@ -49,7 +49,7 @@ export class XpmPrerequisitesError extends Error {}
  * message should clearly indicate what input was invalid and why, helping
  * users correct their configuration or arguments.
  */
-export class XpmInputError extends Error {}
+export class InputError extends globalThis.Error {}
 
 /**
  * Error indicating a syntax error in configuration or template files.
@@ -59,10 +59,10 @@ export class XpmInputError extends Error {}
  * syntax, JSON structures, or other formatted data encounters invalid
  * syntax. This typically occurs during the parsing phase before semantic
  * validation. Use this error when the structure of the input is
- * malformed, as opposed to {@link XpmInputError} which indicates
+ * malformed, as opposed to {@link InputError} which indicates
  * semantically invalid but syntactically correct input.
  */
-export class XpmSyntaxError extends Error {}
+export class SyntaxError extends globalThis.Error {}
 
 /**
  * Error indicating a failure during output generation.
@@ -74,7 +74,7 @@ export class XpmSyntaxError extends Error {}
  * problems. This error indicates that the input was valid but the
  * transformation or output process encountered a problem during execution.
  */
-export class XpmOutputError extends Error {}
+export class OutputError extends globalThis.Error {}
 
 // Other errors:  Child.
 

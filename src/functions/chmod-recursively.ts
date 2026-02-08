@@ -18,7 +18,7 @@ import * as path from 'node:path'
 
 import { Logger } from '@xpack/logger'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /**
  * Recursively changes file permissions within a folder tree.

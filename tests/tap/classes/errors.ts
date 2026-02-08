@@ -13,8 +13,6 @@
 
 // import * as os from 'node:os'
 
-// ----------------------------------------------------------------------------
-
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
@@ -22,39 +20,33 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import {
-  XpmError,
-  XpmInputError,
-  XpmOutputError,
-  XpmPrerequisitesError,
-  XpmSyntaxError,
-} from '../../../src/index.js'
+import * as xpm from '../../../src/index.js'
+
+// ============================================================================
+
+// const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 
-const log = new Logger({ level: 'info' })
+t.test('xpm.Errors', (t): void => {
+  let error = new xpm.Error('Test error')
+  t.equal(error.message, 'Test error', 'xpm.Error error message')
 
-// ----------------------------------------------------------------------------
-
-t.test('XpmErrors', (t): void => {
-  let error = new XpmError('Test error')
-  t.equal(error.message, 'Test error', 'XpmError error message')
-
-  error = new XpmPrerequisitesError('Test prerequisites error')
+  error = new xpm.PrerequisitesError('Test prerequisites error')
   t.equal(
     error.message,
     'Test prerequisites error',
-    'XpmPrerequisitesError error message'
+    'xpm.PrerequisitesError error message'
   )
 
-  error = new XpmInputError('Test input error')
-  t.equal(error.message, 'Test input error', 'XpmInputError error message')
+  error = new xpm.InputError('Test input error')
+  t.equal(error.message, 'Test input error', 'xpm.InputError error message')
 
-  error = new XpmSyntaxError('Test syntax error')
-  t.equal(error.message, 'Test syntax error', 'XpmSyntaxError error message')
+  error = new xpm.SyntaxError('Test syntax error')
+  t.equal(error.message, 'Test syntax error', 'xpm.SyntaxError error message')
 
-  error = new XpmOutputError('Test output error')
-  t.equal(error.message, 'Test output error', 'XpmOutputError error message')
+  error = new xpm.OutputError('Test output error')
+  t.equal(error.message, 'Test output error', 'xpm.OutputError error message')
 
   t.end()
 })

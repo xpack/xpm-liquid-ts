@@ -18,17 +18,11 @@ import { Liquid } from 'liquidjs'
 
 import { Logger } from '@xpack/logger'
 
-import { isJsonObject } from '../functions/is-something.js'
-import {
-  xpmLiquidSubstitutionsVariablesBase,
-  XpmLiquidSubstitutionsVariables,
-} from '../data/substitutions-variables.js'
-import { XpmLiquidEngine } from './liquid-engine.js'
-import { XpmActions } from './actions.js'
-import { XpmBuildConfigurations } from './build-configurations.js'
-import { JsonXpmPackage } from '../types/json.js'
-
 // ----------------------------------------------------------------------------
+
+import * as xpm from '../index.js'
+
+// ============================================================================
 
 /**
  * The property name used for the build folder relative path.
@@ -64,7 +58,7 @@ export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath'
  * Package-level actions are available globally, while configuration-level
  * actions are scoped to their respective configurations.
  */
-export class XpmDataModel {
+export class DataModel {
   // --------------------------------------------------------------------------
   // Public Members.
 
@@ -106,7 +100,7 @@ export class XpmDataModel {
    * context with their own scoped variables (configuration, matrix) without
    * modifying the original sealed object.
    */
-  readonly substitutionsVariables: XpmLiquidSubstitutionsVariables
+  readonly substitutionsVariables: xpm.LiquidSubstitutionsVariables
 
   /**
    * The actions collection for this package.
@@ -121,7 +115,7 @@ export class XpmDataModel {
    * <ol>
    * <li>Created during construction but initially unpopulated.</li>
    * <li>Populated during the collection's own initialisation when
-   *    <code>XpmActions.initialise()</code> is called.</li>
+   *    <code>Actions.initialise()</code> is called.</li>
    * <li>Have access to package-level substitution variables but not
    *    configuration-specific variables.</li>
    * <li>Suitable for package-wide tasks like testing, documentation
@@ -130,7 +124,7 @@ export class XpmDataModel {
    *    from package-level actions.</li>
    * </ol>
    */
-  readonly actions: XpmActions
+  readonly actions: xpm.Actions
 
   /**
    * The build configurations collection for this package.
@@ -145,7 +139,7 @@ export class XpmDataModel {
    * <ol>
    * <li>Created during construction but initially unpopulated.</li>
    * <li>Populated during the collection's own initialisation when
-   *    <code>XpmBuildConfigurations.initialise()</code> is called.</li>
+   *    <code>BuildConfigurations.initialise()</code> is called.</li>
    * <li>Each configuration inherits the package-level substitution variables
    *    and extends them with configuration-specific context.</li>
    * <li>Support complex inheritance chains where configurations can inherit
@@ -156,7 +150,7 @@ export class XpmDataModel {
    *    package-level actions and adding configuration-specific ones.</li>
    * </ol>
    */
-  readonly buildConfigurations: XpmBuildConfigurations
+  readonly buildConfigurations: xpm.BuildConfigurations
 
   /**
    * The logger instance for output and diagnostics.
@@ -178,7 +172,7 @@ export class XpmDataModel {
    * The Liquid engine used for substitutions.
    *
    * @remarks
-   * This XpmLiquidEngine instance is configured with strict mode and custom
+   * This LiquidEngine instance is configured with strict mode and custom
    * filters for xpm-specific operations. It's shared across all actions and
    * build configurations within the package, ensuring consistent template
    * processing behavior.
@@ -222,7 +216,7 @@ export class XpmDataModel {
    * The package definition is validated during construction, requiring the
    * `xpack` section to be present and be a valid JSON object.
    */
-  protected _jsonPackage: JsonXpmPackage
+  protected _jsonPackage: xpm.JsonXpmPackage
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -238,7 +232,7 @@ export class XpmDataModel {
    * Initialization sequence:
    *
    * <ol>
-   * <li>Create <code>XpmLiquidEngine</code> with custom filters and strict
+   * <li>Create <code>LiquidEngine</code> with custom filters and strict
    * configuration.</li>
    * <li>Validate <code>xpack</code> section exists in
    *    <code>package.json</code>.</li>
@@ -265,15 +259,15 @@ export class XpmDataModel {
     jsonPackage,
   }: {
     log: Logger
-    jsonPackage: JsonXpmPackage
+    jsonPackage: xpm.JsonXpmPackage
   }) {
-    log.trace(`${XpmDataModel.name}()`)
+    log.trace(`${DataModel.name}()`)
 
     this._log = log
-    this._engine = new XpmLiquidEngine()
+    this._engine = new xpm.LiquidEngine()
 
     assert(
-      isJsonObject(jsonPackage.xpack),
+      xpm.isJsonObject(jsonPackage.xpack),
       'xpack section missing in package.json'
     )
     this._jsonPackage = jsonPackage
@@ -285,11 +279,11 @@ export class XpmDataModel {
     )
 
     this.substitutionsVariables = {
-      ...xpmLiquidSubstitutionsVariablesBase,
+      ...xpm.liquidSubstitutionsVariablesBase,
       package: jsonPackage,
     }
 
-    if (isJsonObject(jsonPackage.xpack.properties)) {
+    if (xpm.isJsonObject(jsonPackage.xpack.properties)) {
       this.substitutionsVariables.properties = {
         ...jsonPackage.xpack.properties,
       }
@@ -299,7 +293,7 @@ export class XpmDataModel {
     Object.seal(this.substitutionsVariables)
 
     // Empty actions.
-    this.actions = new XpmActions({
+    this.actions = new xpm.Actions({
       log: this._log,
       engine: this._engine,
       substitutionsVariables: this.substitutionsVariables,
@@ -307,7 +301,7 @@ export class XpmDataModel {
     })
 
     // Empty build configurations.
-    this.buildConfigurations = new XpmBuildConfigurations({
+    this.buildConfigurations = new xpm.BuildConfigurations({
       log: this._log,
       engine: this._engine,
       substitutionsVariables: this.substitutionsVariables,

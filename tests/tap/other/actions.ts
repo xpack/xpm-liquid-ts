@@ -15,21 +15,16 @@
 // import { fileURLToPath } from 'node:url'
 // import * as path from 'node:path'
 
-// ----------------------------------------------------------------------------
-
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
-// ----------------------------------------------------------------------------
-
-import {
-  JsonProperties,
-  JsonXpmPackage,
-  XpmDataModel,
-} from '../../../src/index.js'
 import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
+
+import * as xpm from '../../../src/index.js'
+
+// ============================================================================
 
 // const __filename = fileURLToPath(import.meta.url)
 // const __dirname = path.dirname(__filename)
@@ -40,7 +35,7 @@ const log = new Logger({ level: 'info' })
 // ----------------------------------------------------------------------------
 
 await t.test('actions', async (t): Promise<void> => {
-  const json: JsonXpmPackage = {
+  const json: xpm.JsonXpmPackage = {
     name: 'test',
     version: '1.2.3',
     xpack: {
@@ -80,7 +75,7 @@ await t.test('actions', async (t): Promise<void> => {
     },
   }
 
-  const xpmDataModel = new XpmDataModel({
+  const xpmDataModel = new xpm.DataModel({
     log,
     jsonPackage: json,
   })
@@ -91,7 +86,7 @@ await t.test('actions', async (t): Promise<void> => {
   // console.log(topActions.substitutionsVariables.properties)
   t.equal(
     Object.keys(topActions.substitutionsVariables.properties).length,
-    Object.keys(json.xpack.properties as JsonProperties).length,
+    Object.keys(json.xpack.properties as xpm.JsonProperties).length,
     'properties length matches'
   )
 

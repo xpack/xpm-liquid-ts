@@ -11,26 +11,18 @@
 
 // ----------------------------------------------------------------------------
 
-import * as os from 'os'
-import * as path from 'path'
-
-// ----------------------------------------------------------------------------
+import * as os from 'node:os'
+import * as path from 'node:path'
 
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
-import {
-  Context,
-  Liquid,
-  XpmInputError,
-  XpmLiquidMatrixDrop,
-} from '../../../src/index.js'
-
+import * as xpm from '../../../src/index.js'
 import { performSubstitutionsTest } from '../../common.js'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 await t.test('performSubstitutionsTest', async (t) => {
   const substitutionsVariables = {
@@ -88,7 +80,7 @@ await t.test('performSubstitutionsTest filters cascade', async (t) => {
 })
 
 await t.test('performSubstitutionsTest arrays original', async (t) => {
-  const engine = new Liquid()
+  const engine = new xpm.liquidjs.Liquid()
 
   const substitutionsVariables = {
     name: 'n',
@@ -99,7 +91,7 @@ await t.test('performSubstitutionsTest arrays original', async (t) => {
     compound: ['{{one}}', '{{two}}'],
   }
 
-  const context = new Context(substitutionsVariables)
+  const context = new xpm.liquidjs.Context(substitutionsVariables)
 
   const iteration = await engine.parseAndRender(
     '{% for item in array %}({{ item }}){% endfor %}',
@@ -188,7 +180,7 @@ await t.test('performSubstitutionsTest error', async (t) => {
     )
     t.fail('should have thrown an error, got ' + subs)
   } catch (error) {
-    t.throws(XpmInputError, 'throw XpmInputError')
+    t.throws(xpm.InputError, 'throw xpm.InputError')
     t.match(
       (error as Error).message,
       'undefined variable',

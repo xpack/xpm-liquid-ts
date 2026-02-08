@@ -13,7 +13,7 @@
 
 import { Logger } from '@xpack/logger'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /**
  * A matrix combination mapping parameter names to their values.
@@ -25,7 +25,9 @@ import { Logger } from '@xpack/logger'
  *
  * Example: `{ arch: 'x64', platform: 'linux', optimize: 'speed' }`
  */
-export type XpmMatrixCombination = Record<string, string>
+export type MatrixCombination = Record<string, string>
+
+// ============================================================================
 
 /**
  * Generates all possible combinations from a matrix of parameters.
@@ -114,7 +116,7 @@ export class CombinationsGenerator {
    * The array is populated during <code>generate()</code> and returned to
    * the caller.
    */
-  protected readonly combinations: XpmMatrixCombination[] = []
+  protected readonly combinations: MatrixCombination[] = []
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -175,7 +177,7 @@ export class CombinationsGenerator {
    *
    * @returns An array of all possible parameter combinations.
    */
-  generate(): XpmMatrixCombination[] {
+  generate(): MatrixCombination[] {
     this._generateRecursively(0, {})
 
     return this.combinations

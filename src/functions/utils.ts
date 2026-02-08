@@ -9,7 +9,7 @@
  * be obtained from https://opensource.org/license/mit.
  */
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /**
  * Extracts an error message string from an unknown error value.

@@ -11,43 +11,31 @@
 
 // ----------------------------------------------------------------------------
 
-import * as os from 'os'
-// import * as path from 'path'
-
-// ----------------------------------------------------------------------------
+import * as os from 'node:os'
+// import * as path from 'node:path'
+import { AssertionError } from 'node:assert'
 
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
-// ----------------------------------------------------------------------------
-
 import { Logger } from '@xpack/logger'
-import {
-  JsonActionContent,
-  JsonActionTemplate,
-  JsonBuildConfigurations,
-  JsonBuildConfigurationTemplate,
-  XpmAction,
-  XpmActions,
-  XpmBuildConfigurations,
-  XpmError,
-  XpmLiquidEngine,
-  xpmLiquidSubstitutionsVariablesBase,
-} from '../../../src/index.js'
-import { AssertionError } from 'assert'
 
 // ----------------------------------------------------------------------------
+
+import * as xpm from '../../../src/index.js'
+
+// ============================================================================
 
 const log = new Logger({ level: 'info' })
-const engine = new XpmLiquidEngine()
+const engine = new xpm.LiquidEngine()
 
 // ----------------------------------------------------------------------------
 
-await t.test('XpmActions undefined', async (t) => {
-  const actions = new XpmActions({
+await t.test('Actions undefined', async (t) => {
+  const actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: undefined,
   })
 
@@ -64,7 +52,7 @@ await t.test('XpmActions undefined', async (t) => {
     const action = actions.get('nonexistent')
     t.fail('should have thrown an error, got ' + action.actionName)
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'does not exist',
@@ -75,11 +63,11 @@ await t.test('XpmActions undefined', async (t) => {
   t.end()
 })
 
-await t.test('XpmActions at top', async (t) => {
-  const actions = new XpmActions({
+await t.test('Actions at top', async (t) => {
+  const actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       one: 'echo "one"',
       two: ['echo "two-1"', 'echo "two-2"'],
@@ -93,7 +81,7 @@ await t.test('XpmActions at top', async (t) => {
     const action = actions.get('nonexistent')
     t.fail('should have thrown an error, got ' + action.actionName)
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'does not exist',
@@ -125,7 +113,10 @@ await t.test('XpmActions at top', async (t) => {
     one.commands
     t.fail('one.commands should throw before initialise()')
   } catch (error) {
-    t.throws(AssertionError, 'one.commands throws XpmError before initialise()')
+    t.throws(
+      AssertionError,
+      'one.commands throws xpm.Error before initialise()'
+    )
     t.match(
       (error as Error).message,
       'not initialised',
@@ -157,8 +148,8 @@ await t.test('XpmActions at top', async (t) => {
   t.end()
 })
 
-await t.test('XpmActions in configuration', async (t) => {
-  const buildConfigurationsJson: JsonBuildConfigurations = {
+await t.test('Actions in configuration', async (t) => {
+  const buildConfigurationsJson: xpm.JsonBuildConfigurations = {
     debug: {
       actions: {
         one: 'echo "one"',
@@ -166,12 +157,10 @@ await t.test('XpmActions in configuration', async (t) => {
     },
   }
 
-  debugger
-
-  const buildConfigurations = new XpmBuildConfigurations({
+  const buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations: buildConfigurationsJson,
   })
   await buildConfigurations.initialise()
@@ -203,11 +192,11 @@ await t.test('XpmActions in configuration', async (t) => {
   t.end()
 })
 
-await t.test('XpmActions inheritance', async (t) => {
-  const inheritedActions = new XpmActions({
+await t.test('Actions inheritance', async (t) => {
+  const inheritedActions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       one: 'echo "one"',
       two: 'echo "two"',
@@ -215,17 +204,17 @@ await t.test('XpmActions inheritance', async (t) => {
   })
   await inheritedActions.initialise()
 
-  const inheritedActionsMap: Map<string, XpmAction> = new Map()
+  const inheritedActionsMap: Map<string, xpm.Action> = new Map()
   for (const name of inheritedActions.names) {
     const action = inheritedActions.get(name)
     inheritedActionsMap!.set(name, action)
   }
 
   let actions
-  actions = new XpmActions({
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       two: ['echo "two-1"', 'echo "two-2"'],
       three: 'echo "three"',
@@ -255,16 +244,16 @@ await t.test('XpmActions inheritance', async (t) => {
   t.end()
 })
 
-await t.test('XpmActions template', async (t) => {
+await t.test('Actions template', async (t) => {
   const substitutionsVariables = {
-    ...xpmLiquidSubstitutionsVariablesBase,
+    ...xpm.liquidSubstitutionsVariablesBase,
     properties: {
       ab: ['a', 'b'],
       ot: ['1', '2'].join(os.EOL),
     },
   }
 
-  const actions = new XpmActions({
+  const actions = new xpm.Actions({
     log,
     engine,
     substitutionsVariables: substitutionsVariables,
@@ -345,11 +334,11 @@ await t.test('XpmActions template', async (t) => {
   t.end()
 })
 
-await t.test('XpmActions template duplicate', async (t) => {
-  let actions = new XpmActions({
+await t.test('Actions template duplicate', async (t) => {
+  let actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       'one-1': 'echo "one"',
       'one-{{matrix.alfa}}': {
@@ -365,7 +354,7 @@ await t.test('XpmActions template duplicate', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'duplicate action',
@@ -373,10 +362,10 @@ await t.test('XpmActions template duplicate', async (t) => {
     )
   }
 
-  actions = new XpmActions({
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       'one-{{matrix.alfa}}': {
         matrix: {
@@ -392,7 +381,7 @@ await t.test('XpmActions template duplicate', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'already defined',
@@ -403,18 +392,18 @@ await t.test('XpmActions template duplicate', async (t) => {
   t.end()
 })
 
-await t.test('XpmActions template errors', async (t) => {
-  let actions: XpmActions
+await t.test('Actions template errors', async (t) => {
+  let actions: xpm.Actions
 
-  actions = new XpmActions({
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       'one-1': 'echo "one"',
       'one-{{matrix.alfa}}': {
         template: 42,
-      } as unknown as JsonActionTemplate,
+      } as unknown as xpm.JsonActionTemplate,
     },
   })
 
@@ -422,20 +411,20 @@ await t.test('XpmActions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match((error as Error).message, 'has no matrix', 'throws "has no matrix"')
   }
 
-  actions = new XpmActions({
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       'one-1': 'echo "one"',
       'one-{{matrix.alfa}}': {
         matrix: 42,
         template: 42,
-      } as unknown as JsonActionTemplate,
+      } as unknown as xpm.JsonActionTemplate,
     },
   })
 
@@ -443,7 +432,7 @@ await t.test('XpmActions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'matrix is not an object',
@@ -451,17 +440,17 @@ await t.test('XpmActions template errors', async (t) => {
     )
   }
 
-  actions = new XpmActions({
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       'one-1': 'echo "one"',
       'one-{{matrix.alfa}}': {
         matrix: {
           alfa: ['1', '2'],
         },
-      } as unknown as JsonActionTemplate,
+      } as unknown as xpm.JsonActionTemplate,
     },
   })
 
@@ -469,7 +458,7 @@ await t.test('XpmActions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'has no template',
@@ -477,17 +466,17 @@ await t.test('XpmActions template errors', async (t) => {
     )
   }
 
-  actions = new XpmActions({
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       'one-1': 'echo "one"',
       'one-{{matrix.alfa}}': {
         matrix: {
           alfa: ['1', '2'],
         },
-        template: 42 as unknown as JsonActionContent,
+        template: 42 as unknown as xpm.JsonActionContent,
       },
     },
   })
@@ -496,7 +485,7 @@ await t.test('XpmActions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'template is not a string',
@@ -504,17 +493,17 @@ await t.test('XpmActions template errors', async (t) => {
     )
   }
 
-  actions = new XpmActions({
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       'one-{{matrix.alfa}}': {
         matrix: {
           alfa: 42,
         },
         template: 'echo "one-{{matrix.alfa}}"',
-      } as unknown as JsonActionTemplate,
+      } as unknown as xpm.JsonActionTemplate,
       'one-2': 'echo "one-2"',
     },
   })
@@ -523,7 +512,7 @@ await t.test('XpmActions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'is not an array',
@@ -531,17 +520,17 @@ await t.test('XpmActions template errors', async (t) => {
     )
   }
 
-  actions = new XpmActions({
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       'one-{{matrix.alfa}}': {
         matrix: {
           alfa: [42],
         },
         template: 'echo "one-{{matrix.alfa}}"',
-      } as unknown as JsonActionTemplate,
+      } as unknown as xpm.JsonActionTemplate,
       'one-2': 'echo "one-2"',
     },
   })
@@ -550,7 +539,7 @@ await t.test('XpmActions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'value is not a string',
@@ -558,10 +547,10 @@ await t.test('XpmActions template errors', async (t) => {
     )
   }
 
-  actions = new XpmActions({
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       'one-{{matrix.alfa}}': {
         matrix: {
@@ -577,7 +566,7 @@ await t.test('XpmActions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -585,10 +574,10 @@ await t.test('XpmActions template errors', async (t) => {
     )
   }
 
-  actions = new XpmActions({
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       'one-{{matrix.undefined}}': {
         matrix: {
@@ -604,7 +593,7 @@ await t.test('XpmActions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'name substitution',
@@ -615,12 +604,12 @@ await t.test('XpmActions template errors', async (t) => {
   t.end()
 })
 
-await t.test('XpmAction errors', async (t) => {
-  let actions: XpmActions
-  actions = new XpmActions({
+await t.test('Action errors', async (t) => {
+  let actions: xpm.Actions
+  actions = new xpm.Actions({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonActions: {
       one: 'echo "{{ properties.one }}"',
       two: 'echo "two"',
@@ -634,7 +623,7 @@ await t.test('XpmAction errors', async (t) => {
     await actionOne.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'commands substitution',

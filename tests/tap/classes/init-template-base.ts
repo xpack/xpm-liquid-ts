@@ -15,6 +15,9 @@ import * as os from 'node:os'
 import { fileURLToPath } from 'node:url'
 import * as path from 'node:path'
 import * as fs from 'node:fs/promises'
+import { AssertionError } from 'node:assert'
+import { Readable, Writable } from 'node:stream'
+// import { stdout } from 'node:process'
 
 // ----------------------------------------------------------------------------
 
@@ -25,24 +28,9 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import {
-  isBoolean,
-  isNumber,
-  isString,
-  XpmContext,
-  XpmInitTemplateBase,
-  XpmInitTemplateItems,
-  XpmInitTemplatePropertiesDefinition,
-  XpmInitTemplatePropertiesDefinitions,
-  XpmInitTemplateType,
-  XpmOutputError,
-  XpmSyntaxError,
-} from '../../../src/index.js'
-import { AssertionError } from 'node:assert'
-import { Readable, Writable } from 'node:stream'
-// import { stdout } from 'node:process'
+import * as xpm from '../../../src/index.js'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -55,7 +43,7 @@ const mockProcess: NodeJS.Process = {
   env: {},
 } as unknown as NodeJS.Process
 
-const mockContext: XpmContext = {
+const mockContext: xpm.Context = {
   log: new Logger({ level: 'info' }),
   config: {
     projectName: 'test-project',
@@ -66,7 +54,7 @@ const mockContext: XpmContext = {
   },
 }
 
-const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
   stringProp: {
     label: 'String Property',
     description: 'A string property for testing',
@@ -75,7 +63,7 @@ const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
   },
 }
 
-class XpmInitTemplate extends XpmInitTemplateBase {
+class XpmInitTemplate extends xpm.InitTemplateBase {
   async generate(): Promise<void> {}
 }
 
@@ -84,7 +72,7 @@ class XpmInitTemplate extends XpmInitTemplateBase {
 await t.test('XpmInitTemplateBase asserts', async (t): Promise<void> => {
   let template
 
-  class XpmInitTemplate extends XpmInitTemplateBase {
+  class XpmInitTemplate extends xpm.InitTemplateBase {
     async generate(): Promise<void> {
       t.fail('generate() should not be called')
     }
@@ -92,7 +80,7 @@ await t.test('XpmInitTemplateBase asserts', async (t): Promise<void> => {
 
   try {
     template = new XpmInitTemplate({
-      context: undefined as unknown as XpmContext,
+      context: undefined as unknown as xpm.Context,
       __dirname: '/my/dir',
       templatesPath: '/my/templates',
       propertiesDefinitions: {},
@@ -105,7 +93,7 @@ await t.test('XpmInitTemplateBase asserts', async (t): Promise<void> => {
 
   try {
     template = new XpmInitTemplate({
-      context: {} as XpmContext,
+      context: {} as xpm.Context,
       __dirname: '/my/dir',
       templatesPath: '/my/templates',
       propertiesDefinitions: {},
@@ -118,7 +106,7 @@ await t.test('XpmInitTemplateBase asserts', async (t): Promise<void> => {
 
   try {
     template = new XpmInitTemplate({
-      context: { log: new Logger({ level: 'info' }) } as XpmContext,
+      context: { log: new Logger({ level: 'info' }) } as xpm.Context,
       __dirname: '/my/dir',
       templatesPath: '/my/templates',
       propertiesDefinitions: {},
@@ -204,7 +192,7 @@ await t.test('XpmInitTemplateBase asserts', async (t): Promise<void> => {
       __dirname: '/my/dir',
       templatesPath: '/my/templates',
       propertiesDefinitions:
-        undefined as unknown as XpmInitTemplatePropertiesDefinitions,
+        undefined as unknown as xpm.InitTemplatePropertiesDefinitions,
       process: mockProcess,
     })
     t.fail('should have thrown for missing context')
@@ -220,7 +208,7 @@ await t.test('XpmInitTemplateBase asserts', async (t): Promise<void> => {
 })
 
 await t.test('XpmInitTemplateBase empty', async (t): Promise<void> => {
-  class XpmInitTemplate extends XpmInitTemplateBase {
+  class XpmInitTemplate extends xpm.InitTemplateBase {
     async generate(): Promise<void> {
       t.ok(true, 'generate() called')
 
@@ -269,7 +257,7 @@ await t.test('XpmInitTemplateBase empty', async (t): Promise<void> => {
 await t.test(
   'XpmInitTemplateBase default process',
   async (t): Promise<void> => {
-    class XpmInitTemplate extends XpmInitTemplateBase {
+    class XpmInitTemplate extends xpm.InitTemplateBase {
       async generate(): Promise<void> {
         t.ok(true, 'generate() called')
 
@@ -277,7 +265,7 @@ await t.test(
       }
     }
 
-    const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
       stringProp: {
         label: 'String Property',
         description: 'A string property for testing',
@@ -311,7 +299,7 @@ await t.test(
       arch: 'x64',
     } as unknown as NodeJS.Process
 
-    const mockContext: XpmContext = {
+    const mockContext: xpm.Context = {
       log: new Logger({ level: 'info' }),
       config: {
         projectName: 'test-project',
@@ -327,7 +315,7 @@ await t.test(
       },
     }
 
-    const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
       stringProp: {
         label: 'String Property',
         description: 'A string property for testing',
@@ -401,34 +389,34 @@ await t.test(
       },
     }
 
-    class XpmInitTemplate extends XpmInitTemplateBase {
+    class XpmInitTemplate extends xpm.InitTemplateBase {
       async generate(): Promise<void> {
         t.ok(true, 'generate() called')
 
         const config = this._context.config
 
         t.equal(
-          isString(config.properties!.stringProp),
+          xpm.isString(config.properties!.stringProp),
           true,
           'stringProp is string'
         )
         t.equal(
-          isNumber(config.properties!.numberProp),
+          xpm.isNumber(config.properties!.numberProp),
           true,
           'numberProp is number'
         )
         t.equal(
-          isBoolean(config.properties!.booleanProp),
+          xpm.isBoolean(config.properties!.booleanProp),
           true,
           'booleanProp is boolean'
         )
         t.equal(
-          isString(config.properties!.selectProp),
+          xpm.isString(config.properties!.selectProp),
           true,
           'selectProp is string'
         )
         t.equal(
-          isString(config.properties!.selectPropPlatform),
+          xpm.isString(config.properties!.selectPropPlatform),
           true,
           'selectPropPlatform is string'
         )
@@ -461,14 +449,14 @@ await t.test(
         },
       }
 
-      class XpmInitTemplate extends XpmInitTemplateBase {
+      class XpmInitTemplate extends xpm.InitTemplateBase {
         async generate(): Promise<void> {
           t.ok(true, 'generate() called')
 
           const config = this._context.config
 
           t.equal(
-            isString(config.properties!.stringProp),
+            xpm.isString(config.properties!.stringProp),
             true,
             'stringProp is string'
           )
@@ -479,7 +467,7 @@ await t.test(
           )
 
           t.equal(
-            isNumber(config.properties!.numberProp),
+            xpm.isNumber(config.properties!.numberProp),
             true,
             'numberProp is number'
           )
@@ -490,7 +478,7 @@ await t.test(
           )
 
           t.equal(
-            isBoolean(config.properties!.booleanProp),
+            xpm.isBoolean(config.properties!.booleanProp),
             true,
             'booleanProp is boolean'
           )
@@ -501,7 +489,7 @@ await t.test(
           )
 
           t.equal(
-            isBoolean(config.properties!.booleanPropTrue),
+            xpm.isBoolean(config.properties!.booleanPropTrue),
             true,
             'booleanPropTrue is boolean'
           )
@@ -512,7 +500,7 @@ await t.test(
           )
 
           t.equal(
-            isString(config.properties!.selectProp),
+            xpm.isString(config.properties!.selectProp),
             true,
             'selectProp is string'
           )
@@ -523,7 +511,7 @@ await t.test(
           )
 
           t.equal(
-            isString(config.properties!.selectPropPlatform),
+            xpm.isString(config.properties!.selectPropPlatform),
             true,
             'selectPropPlatform is string'
           )
@@ -576,7 +564,7 @@ await t.test(
         await template.run()
         t.fail('should have thrown for missing property')
       } catch (error) {
-        t.type(error, XpmSyntaxError, 'threw an error for missing property')
+        t.type(error, xpm.SyntaxError, 'threw an error for missing property')
       }
       t.end()
     })
@@ -605,7 +593,11 @@ await t.test(
         await template.run()
         t.fail('should have thrown for unsupported platform')
       } catch (error) {
-        t.type(error, XpmSyntaxError, 'threw an error for unsupported platform')
+        t.type(
+          error,
+          xpm.SyntaxError,
+          'threw an error for unsupported platform'
+        )
       }
       t.end()
     })
@@ -634,7 +626,7 @@ await t.test(
         await template.run()
         t.fail('should have thrown for bad binary value')
       } catch (error) {
-        t.type(error, XpmSyntaxError, 'threw an error for bad binary value')
+        t.type(error, xpm.SyntaxError, 'threw an error for bad binary value')
       }
       t.end()
     })
@@ -663,7 +655,7 @@ await t.test(
         await template.run()
         t.fail('should have thrown for bad number value')
       } catch (error) {
-        t.type(error, XpmSyntaxError, 'threw an error for bad number value')
+        t.type(error, xpm.SyntaxError, 'threw an error for bad number value')
       }
       t.end()
     })
@@ -679,7 +671,7 @@ await t.test(
           cwd: process.cwd(),
         },
       }
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: 'String Property',
           description: 'A string property for testing',
@@ -711,7 +703,7 @@ await t.test(
       } catch (error) {
         t.type(
           error,
-          XpmSyntaxError,
+          xpm.SyntaxError,
           'threw an error for string without default value'
         )
       }
@@ -727,15 +719,15 @@ await t.test(
 await t.test(
   'XpmInitTemplateBase._validatePropertiesDefinitions()',
   async (t): Promise<void> => {
-    class XpmInitTemplate extends XpmInitTemplateBase {
+    class XpmInitTemplate extends xpm.InitTemplateBase {
       async generate(): Promise<void> {
         t.fail('generate() should not be called')
       }
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions =
-        42 as unknown as XpmInitTemplatePropertiesDefinitions
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions =
+        42 as unknown as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -755,8 +747,8 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions =
-        {} as XpmInitTemplatePropertiesDefinitions
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions =
+        {} as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -776,9 +768,9 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
-        stringProp: {} as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+        stringProp: {} as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -798,11 +790,11 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: 42 as unknown as string,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -822,11 +814,11 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: ' ',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -846,11 +838,11 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: 'string property',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -870,12 +862,12 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: 'string property',
           description: 42 as unknown as string,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -895,12 +887,12 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: 'string property',
           description: ' ',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -920,13 +912,13 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: 'string property',
           description: 'string description',
           isMandatory: 'not a boolean' as unknown as boolean,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -946,12 +938,12 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: 'string property',
           description: 'string description',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -971,13 +963,13 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'select property',
           description: 'select description',
           type: 'select',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -997,14 +989,14 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'select property',
           description: 'select description',
           type: 'select',
-          items: 42 as unknown as XpmInitTemplateItems,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+          items: 42 as unknown as xpm.InitTemplateItems,
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1024,14 +1016,14 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'select property',
           description: 'select description',
           type: 'select',
-          items: {} as unknown as XpmInitTemplateItems,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+          items: {} as unknown as xpm.InitTemplateItems,
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1051,16 +1043,16 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'select property',
           description: 'select description',
           type: 'select',
           items: {
             option1: 42 as unknown as string,
-          } as unknown as XpmInitTemplateItems,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+          } as unknown as xpm.InitTemplateItems,
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1080,7 +1072,7 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'select property',
           description: 'select description',
@@ -1090,9 +1082,9 @@ await t.test(
               platforms: 'not an array' as unknown as string[],
               message: 'Option 1',
             },
-          } as unknown as XpmInitTemplateItems,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+          } as unknown as xpm.InitTemplateItems,
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1112,7 +1104,7 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'select property',
           description: 'select description',
@@ -1122,9 +1114,9 @@ await t.test(
               platforms: ['linux', 'win32'],
               message: 42 as unknown as string,
             },
-          } as unknown as XpmInitTemplateItems,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+          } as unknown as xpm.InitTemplateItems,
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1144,7 +1136,7 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'select property',
           description: 'select description',
@@ -1153,8 +1145,8 @@ await t.test(
             option1: 'option 1',
             option2: 'option 2',
           },
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1174,7 +1166,7 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'select property',
           description: 'select description',
@@ -1184,8 +1176,8 @@ await t.test(
             option2: 'option 2',
           },
           default: 42 as unknown as string,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1205,7 +1197,7 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'select property',
           description: 'select description',
@@ -1215,8 +1207,8 @@ await t.test(
             option2: 'option 2',
           },
           default: ' ',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1236,7 +1228,7 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'select property',
           description: 'select description',
@@ -1246,8 +1238,8 @@ await t.test(
             option2: 'option 2',
           },
           default: 'nonexistent option',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1267,14 +1259,14 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: 'string property',
           description: 'string description',
           type: 'string',
           default: 42,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1294,14 +1286,14 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: 'string property',
           description: 'string description',
           type: 'string',
           default: ' ',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1321,14 +1313,14 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         numberProp: {
           label: 'number property',
           description: 'number description',
           type: 'number',
           default: 'not a number',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1348,14 +1340,14 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         BooleanProp: {
           label: 'boolean property',
           description: 'boolean description',
           type: 'boolean',
           default: 'not a boolean',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1375,13 +1367,13 @@ await t.test(
     }
 
     try {
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         unknownProp: {
           label: 'unknown property',
           description: 'unknown description',
-          type: 'unknown' as XpmInitTemplateType,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+          type: 'unknown' as xpm.InitTemplateType,
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
       const template = new XpmInitTemplate({
         context: mockContext,
@@ -1413,7 +1405,7 @@ t.test('XpmInitTemplateBase.isPlatformSupported()', (t): void => {
     arch: 'x64',
   } as unknown as NodeJS.Process
 
-  class XpmInitTemplate extends XpmInitTemplateBase {
+  class XpmInitTemplate extends xpm.InitTemplateBase {
     async generate(): Promise<void> {
       t.fail('generate() should not be called')
     }
@@ -1465,7 +1457,7 @@ t.test('XpmInitTemplateBase.isPlatformSupported()', (t): void => {
 await t.test(
   'XpmInitTemplateBase copy files/folders',
   async (t): Promise<void> => {
-    class XpmInitTemplate extends XpmInitTemplateBase {
+    class XpmInitTemplate extends xpm.InitTemplateBase {
       async generate(): Promise<void> {
         t.ok(true, 'generate() called')
 
@@ -1532,7 +1524,7 @@ await t.test(
 // ----------------------------------------------------------------------------
 
 await t.test('XpmInitTemplateBase.render()', async (t): Promise<void> => {
-  class XpmInitTemplate extends XpmInitTemplateBase {
+  class XpmInitTemplate extends xpm.InitTemplateBase {
     async generate(): Promise<void> {
       t.ok(true, 'generate() called')
 
@@ -1564,7 +1556,7 @@ await t.test('XpmInitTemplateBase.render()', async (t): Promise<void> => {
         })
         t.fail('should have thrown for missing substitution variable')
       } catch (error) {
-        t.type(error, XpmOutputError, 'threw an XpmOutputError')
+        t.type(error, xpm.OutputError, 'threw an XpmOutputError')
         t.match(
           (error as AssertionError).message,
           'undefined variable',
@@ -1655,7 +1647,7 @@ await t.test(
       stdout: process.stdout,
     } as unknown as NodeJS.Process
 
-    const mockContext: XpmContext = {
+    const mockContext: xpm.Context = {
       log: new Logger({ level: 'info' }),
       config: {
         projectName: 'test-project',
@@ -1666,7 +1658,7 @@ await t.test(
       },
     }
 
-    const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
       stringProp: {
         label: 'String Property',
         description: 'A string property for testing',
@@ -1686,7 +1678,7 @@ await t.test(
       await template.run()
       t.fail('should have thrown for not possible without a TTY')
     } catch (error) {
-      t.type(error, XpmSyntaxError, 'threw an XpmSyntaxError')
+      t.type(error, xpm.SyntaxError, 'threw an XpmSyntaxError')
       t.match(
         (error as AssertionError).message,
         'not possible without a TTY',
@@ -1719,24 +1711,24 @@ await t.test(
         },
       }
 
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
           label: 'String Property',
           description: 'A string property for testing',
           type: 'string',
           isMandatory: true, // <---
           default: 'defaultString',
-        } as XpmInitTemplatePropertiesDefinition,
+        } as xpm.InitTemplatePropertiesDefinition,
         unused: {
           label: 'Unused Property',
           description: 'This property should not be asked for',
           type: 'string',
           isMandatory: false,
           default: 'unusedDefault',
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
-      class XpmInitTemplate extends XpmInitTemplateBase {
+      class XpmInitTemplate extends xpm.InitTemplateBase {
         async generate(): Promise<void> {
           t.ok(true, 'generate() called')
 
@@ -1777,7 +1769,7 @@ await t.test(
         },
       }
 
-      class XpmInitTemplate2 extends XpmInitTemplateBase {
+      class XpmInitTemplate2 extends xpm.InitTemplateBase {
         async generate(): Promise<void> {
           t.ok(true, 'generate() called')
 
@@ -1818,17 +1810,17 @@ await t.test(
         },
       }
 
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         numberProp: {
           label: 'Number Property',
           description: 'A number property for testing',
           type: 'number',
           isMandatory: true, // <---
           default: 43,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
-      class XpmInitTemplate extends XpmInitTemplateBase {
+      class XpmInitTemplate extends xpm.InitTemplateBase {
         async generate(): Promise<void> {
           t.ok(true, 'generate() called')
 
@@ -1868,7 +1860,7 @@ await t.test(
         },
       }
 
-      class XpmInitTemplate2 extends XpmInitTemplateBase {
+      class XpmInitTemplate2 extends xpm.InitTemplateBase {
         async generate(): Promise<void> {
           t.ok(true, 'generate() called')
 
@@ -1910,17 +1902,17 @@ await t.test(
         },
       }
 
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         booleanProp: {
           label: 'Boolean Property',
           description: 'A boolean property for testing',
           type: 'boolean',
           isMandatory: true, // <---
           default: false,
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
-      class XpmInitTemplate extends XpmInitTemplateBase {
+      class XpmInitTemplate extends xpm.InitTemplateBase {
         async generate(): Promise<void> {
           t.ok(true, 'generate() called')
 
@@ -1959,7 +1951,7 @@ await t.test(
         },
       }
 
-      class XpmInitTemplate2 extends XpmInitTemplateBase {
+      class XpmInitTemplate2 extends xpm.InitTemplateBase {
         async generate(): Promise<void> {
           t.ok(true, 'generate() called')
 
@@ -2002,7 +1994,7 @@ await t.test(
         },
       }
 
-      const propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {
+      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         selectProp: {
           label: 'Select Property',
           description: 'A select property for testing',
@@ -2015,10 +2007,10 @@ await t.test(
             option3: { message: 'Option 3', platforms: ['linux', 'win32'] },
             option4: { message: 'Option 4', platforms: ['darwin'] },
           },
-        } as XpmInitTemplatePropertiesDefinition,
-      } as XpmInitTemplatePropertiesDefinitions
+        } as xpm.InitTemplatePropertiesDefinition,
+      } as xpm.InitTemplatePropertiesDefinitions
 
-      class XpmInitTemplate extends XpmInitTemplateBase {
+      class XpmInitTemplate extends xpm.InitTemplateBase {
         async generate(): Promise<void> {
           t.ok(true, 'generate() called')
 
@@ -2059,7 +2051,7 @@ await t.test(
         },
       }
 
-      class XpmInitTemplate2 extends XpmInitTemplateBase {
+      class XpmInitTemplate2 extends xpm.InitTemplateBase {
         async generate(): Promise<void> {
           t.ok(true, 'generate() called')
 
@@ -2078,7 +2070,6 @@ await t.test(
         propertiesDefinitions,
         process: mockProcess,
       })
-      debugger
       await template.run()
 
       t.end()

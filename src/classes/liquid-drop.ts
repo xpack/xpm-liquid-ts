@@ -17,9 +17,9 @@ import { Liquid, Context, Drop } from 'liquidjs'
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
 
-import { XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.js'
-import { isJsonObject } from '../functions/is-something.js'
-import { XpmInputError } from '../classes/errors.js'
+// ----------------------------------------------------------------------------
+
+import * as xpm from '../index.js'
 
 // ============================================================================
 
@@ -34,7 +34,7 @@ import { XpmInputError } from '../classes/errors.js'
  *
  * Implements the Liquid Drop pattern to provide lazy property resolution and
  * recursive template evaluation. When a template accesses `properties.foo`,
- * the Liquid engine calls {@link XpmLiquidPropertiesDrop.liquidMethodMissing}
+ * the Liquid engine calls {@link LiquidPropertiesDrop.liquidMethodMissing}
  * which:
  *
  * <ol>
@@ -49,7 +49,7 @@ import { XpmInputError } from '../classes/errors.js'
  * reference another, which can reference yet another, with the engine
  * automatically resolving the entire chain.
  */
-export class XpmLiquidPropertiesDrop extends Drop {
+export class LiquidPropertiesDrop extends Drop {
   // --------------------------------------------------------------------------
   // Public Members.
 
@@ -64,7 +64,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
   /**
    * The properties map used for substitutions.
    */
-  protected _properties: XpmLiquidSubstitutionsStrings
+  protected _properties: xpm.LiquidSubstitutionsStrings
 
   /**
    * The Liquid engine used to render nested substitutions.
@@ -88,11 +88,11 @@ export class XpmLiquidPropertiesDrop extends Drop {
   }: {
     log: Logger
     engine: Liquid
-    properties: XpmLiquidSubstitutionsStrings
+    properties: xpm.LiquidSubstitutionsStrings
   }) {
     super()
 
-    log.trace(`${XpmLiquidPropertiesDrop.name}()`)
+    log.trace(`${LiquidPropertiesDrop.name}()`)
 
     this._log = log
     this._engine = engine
@@ -113,7 +113,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
    * Resolution process:
    *
    * <ol>
-   * <li>Validate the property exists, throw <code>XpmInputError</code> if
+   * <li>Validate the property exists, throw <code>xpm.InputError</code> if
    * not.</li>
    * <li>Retrieve the property value (string, array, or object).</li>
    * <li>If object, return as-is for Liquid to access nested properties.</li>
@@ -130,7 +130,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
    * @param context - The Liquid rendering context.
    * @returns The resolved property value.
    *
-   * @throws {@link XpmInputError}
+   * @throws {@link xpm.InputError}
    * If the property is not defined.
    */
   override async liquidMethodMissing(
@@ -141,21 +141,21 @@ export class XpmLiquidPropertiesDrop extends Drop {
     // console.log(key)
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this._properties[key] === undefined) {
-      throw new XpmInputError(`"properties.${key}" not defined`)
+      throw new xpm.InputError(`"properties.${key}" not defined`)
     }
 
     const log = this._log
 
     const value = this._properties[key]
     log.trace(
-      `${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}') in (`,
+      `${LiquidPropertiesDrop.name}.liquidMethodMissing('${key}') in (`,
       value,
       ')'
     )
 
     let result: string | string[]
 
-    if (isJsonObject(value)) {
+    if (xpm.isJsonObject(value)) {
       return value
     }
 
@@ -170,7 +170,7 @@ export class XpmLiquidPropertiesDrop extends Drop {
       result = value
     }
     log.trace(
-      `${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}')` + ` => (`,
+      `${LiquidPropertiesDrop.name}.liquidMethodMissing('${key}')` + ` => (`,
       result,
       ')'
     )
@@ -191,16 +191,16 @@ export class XpmLiquidPropertiesDrop extends Drop {
  * actions or build configurations from a single template definition. Each
  * expanded instance receives a specific combination of matrix values.
  *
- * Implements the same Drop pattern as {@link XpmLiquidPropertiesDrop} but
+ * Implements the same Drop pattern as {@link LiquidPropertiesDrop} but
  * for matrix-scoped variables. When a template accesses `matrix.arch`, the
- * engine calls {@link XpmLiquidMatrixDrop.liquidMethodMissing} which resolves
+ * engine calls {@link LiquidMatrixDrop.liquidMethodMissing} which resolves
  * the parameter value and recursively evaluates any nested Liquid syntax.
  *
  * Matrix parameters are isolated per template instance, ensuring that each
  * generated action or configuration has access only to its specific matrix
  * combination.
  */
-export class XpmLiquidMatrixDrop extends Drop {
+export class LiquidMatrixDrop extends Drop {
   // --------------------------------------------------------------------------
   // Protected Members.
 
@@ -212,7 +212,7 @@ export class XpmLiquidMatrixDrop extends Drop {
   /**
    * The matrix parameters map used for substitutions.
    */
-  protected _matrix: XpmLiquidSubstitutionsStrings
+  protected _matrix: xpm.LiquidSubstitutionsStrings
 
   /**
    * The Liquid engine used to render nested substitutions.
@@ -236,11 +236,11 @@ export class XpmLiquidMatrixDrop extends Drop {
   }: {
     log: Logger
     engine: Liquid
-    matrix: XpmLiquidSubstitutionsStrings
+    matrix: xpm.LiquidSubstitutionsStrings
   }) {
     super()
 
-    log.trace(`${XpmLiquidMatrixDrop.name}()`)
+    log.trace(`${LiquidMatrixDrop.name}()`)
 
     this._log = log
     this._engine = engine
@@ -261,7 +261,7 @@ export class XpmLiquidMatrixDrop extends Drop {
    * Resolution process:
    *
    * <ol>
-   * <li>Validate the parameter exists, throw <code>XpmInputError</code> if
+   * <li>Validate the parameter exists, throw <code>xpm.InputError</code> if
    * not.</li>
    * <li>Retrieve the parameter value (string, array, or object).</li>
    * <li>If object, return as-is for Liquid to access nested properties.</li>
@@ -271,7 +271,7 @@ export class XpmLiquidMatrixDrop extends Drop {
    * <li>Return the final resolved value.</li>
    * </ol>
    *
-   * This mirrors the behavior of {@link XpmLiquidPropertiesDrop} but operates
+   * This mirrors the behavior of {@link LiquidPropertiesDrop} but operates
    * on matrix parameters instead of properties. Matrix values can reference
    * other substitution variables, enabling complex template expansions.
    *
@@ -279,7 +279,7 @@ export class XpmLiquidMatrixDrop extends Drop {
    * @param context - The Liquid rendering context.
    * @returns The resolved matrix parameter value.
    *
-   * @throws {@link XpmInputError}
+   * @throws {@link xpm.InputError}
    * If the matrix parameter is not defined.
    */
   override async liquidMethodMissing(
@@ -290,21 +290,21 @@ export class XpmLiquidMatrixDrop extends Drop {
     // console.log(key)
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this._matrix[key] === undefined) {
-      throw new XpmInputError(`"matrix.${key}" not defined`)
+      throw new xpm.InputError(`"matrix.${key}" not defined`)
     }
 
     const log = this._log
 
     const value = this._matrix[key]
     log.trace(
-      `${XpmLiquidMatrixDrop.name}.liquidMethodMissing('${key}') in (`,
+      `${LiquidMatrixDrop.name}.liquidMethodMissing('${key}') in (`,
       value,
       ')'
     )
 
     let result: string | string[]
 
-    if (isJsonObject(value)) {
+    if (xpm.isJsonObject(value)) {
       return value
     }
 
@@ -319,7 +319,7 @@ export class XpmLiquidMatrixDrop extends Drop {
       result = value
     }
     log.trace(
-      `${XpmLiquidMatrixDrop.name}.liquidMethodMissing('${key}')` + ` => (`,
+      `${LiquidMatrixDrop.name}.liquidMethodMissing('${key}')` + ` => (`,
       result,
       ')'
     )

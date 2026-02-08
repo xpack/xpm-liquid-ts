@@ -21,12 +21,13 @@ import { fileURLToPath } from 'node:url'
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
-// ----------------------------------------------------------------------------
-
-import { chmodRecursively, XpmPackage } from '../../../src/index.js'
 import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
+
+import * as xpm from '../../../src/index.js'
+
+// ============================================================================
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -47,7 +48,7 @@ await t.test('chmodRecursively', async (t): Promise<void> => {
   const subFolderLinkPath = path.join(chmodFolderPath, 'subfolder-symlink')
   const file2Path = path.join(subFolderPath, 'file2.md')
 
-  await chmodRecursively({
+  await xpm.chmodRecursively({
     inputPath: chmodFolderPath,
     readOnly: true,
     log,
@@ -68,7 +69,7 @@ await t.test('chmodRecursively', async (t): Promise<void> => {
   mode = (await fs.lstat(file2Path)).mode
   t.equal(mode & fs.constants.S_IWUSR, 0, 'file2.md is read-only')
 
-  await chmodRecursively({
+  await xpm.chmodRecursively({
     inputPath: chmodFolderPath,
     readOnly: false,
     log,

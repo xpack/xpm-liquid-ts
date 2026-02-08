@@ -11,22 +11,20 @@
 
 // ----------------------------------------------------------------------------
 
-import * as os from 'os'
-import * as path from 'path'
-
-// ----------------------------------------------------------------------------
+import * as os from 'node:os'
+import * as path from 'node:path'
 
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
-import { xpmLiquidSubstitutionsVariablesBase } from '../../../src/index.js'
+import * as xpm from '../../../src/index.js'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 t.test('substitution variables', (t) => {
-  const sv = xpmLiquidSubstitutionsVariablesBase
+  const sv = xpm.liquidSubstitutionsVariablesBase
   sv.env
   t.equal(
     Object.keys(sv.env).length,

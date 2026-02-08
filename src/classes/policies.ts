@@ -11,7 +11,7 @@
 
 // ----------------------------------------------------------------------------
 
-// import assert from 'assert'
+// import assert from 'node:assert'
 
 // https://nodejs.org/docs/latest/api/
 import { Logger } from '@xpack/logger'
@@ -54,7 +54,7 @@ import semver from 'semver'
  * Policy flags are evaluated once during initialization and cached for the
  * duration of the operation.
  */
-export class XpmPolicies {
+export class Policies {
   // --------------------------------------------------------------------------
   // Public Members.
 
@@ -155,7 +155,7 @@ export class XpmPolicies {
    * @param minVersion - The minimum <b>xpm</b> version to evaluate.
    */
   constructor({ log, minVersion }: { log: Logger; minVersion: string }) {
-    log.trace(`${XpmPolicies.name}({minVersion: ${minVersion})`)
+    log.trace(`${Policies.name}({minVersion: ${minVersion})`)
 
     if (semver.valid(minVersion) !== null) {
       this.minVersion = minVersion

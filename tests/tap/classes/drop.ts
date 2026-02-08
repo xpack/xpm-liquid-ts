@@ -11,8 +11,8 @@
 
 // ----------------------------------------------------------------------------
 
-// import * as os from 'os'
-// import * as path from 'path'
+// import * as os from 'node:os'
+// import * as path from 'node:path'
 
 // ----------------------------------------------------------------------------
 
@@ -21,14 +21,12 @@ import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
-// import { Context, Liquid } from '../../../src/index.js'
-
+import * as xpm from '../../../src/index.js'
 import { performSubstitutionsTest } from '../../common.js'
-import { XpmInputError } from '../../../src/index.js'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
-await t.test('XpmLiquidPropertiesDrop', async (t) => {
+await t.test('xpm.LiquidPropertiesDrop', async (t) => {
   const substitutionsVariables = {
     properties: {
       one: '1',
@@ -66,7 +64,7 @@ await t.test('XpmLiquidPropertiesDrop', async (t) => {
   t.end()
 })
 
-await t.test('XpmLiquidPropertiesDrop arrays', async (t) => {
+await t.test('xpm.LiquidPropertiesDrop arrays', async (t) => {
   const substitutionsVariables = {
     properties: {
       one: ['10', '11'],
@@ -94,7 +92,7 @@ await t.test('XpmLiquidPropertiesDrop arrays', async (t) => {
   t.end()
 })
 
-await t.test('XpmLiquidPropertiesDrop object', async (t) => {
+await t.test('xpm.LiquidPropertiesDrop object', async (t) => {
   const substitutionsVariables = {
     properties: {
       map: {
@@ -121,7 +119,7 @@ await t.test('XpmLiquidPropertiesDrop object', async (t) => {
   t.end()
 })
 
-await t.test('XpmLiquidPropertiesDrop context', async (t) => {
+await t.test('xpm.LiquidPropertiesDrop context', async (t) => {
   const substitutionsVariables = {
     properties: {
       valueWithParam: 'the {{ param }} value',
@@ -144,7 +142,7 @@ await t.test('XpmLiquidPropertiesDrop context', async (t) => {
   t.end()
 })
 
-await t.test('XpmLiquidPropertiesDrop context missing', async (t) => {
+await t.test('xpm.LiquidPropertiesDrop context missing', async (t) => {
   const substitutionsVariables = {
     properties: {
       other: null,
@@ -158,7 +156,7 @@ await t.test('XpmLiquidPropertiesDrop context missing', async (t) => {
     )
     t.fail('should have thrown')
   } catch (error) {
-    t.throws(XpmInputError, 'throw XpmInputError')
+    t.throws(xpm.InputError, 'throw xpm.InputError')
     t.match(
       (error as Error).message,
       'not defined',
@@ -173,7 +171,7 @@ await t.test('XpmLiquidPropertiesDrop context missing', async (t) => {
     )
     t.fail('should have thrown')
   } catch (error) {
-    t.throws(XpmInputError, 'throw XpmInputError')
+    t.throws(xpm.InputError, 'throw xpm.InputError')
     t.match(
       (error as Error).message,
       'Cannot read properties',
@@ -185,7 +183,7 @@ await t.test('XpmLiquidPropertiesDrop context missing', async (t) => {
 
 // ----------------------------------------------------------------------------
 
-await t.test(' XpmLiquidMatrixDrop', async (t) => {
+await t.test(' xpm.LiquidMatrixDrop', async (t) => {
   const substitutionsVariables = {
     matrix: {
       one: '1',
@@ -223,7 +221,7 @@ await t.test(' XpmLiquidMatrixDrop', async (t) => {
   t.end()
 })
 
-await t.test('XpmLiquidMatrixDrop arrays', async (t) => {
+await t.test('xpm.LiquidMatrixDrop arrays', async (t) => {
   const substitutionsVariables = {
     matrix: {
       one: ['10', '11'],
@@ -251,7 +249,7 @@ await t.test('XpmLiquidMatrixDrop arrays', async (t) => {
   t.end()
 })
 
-await t.test(' XpmLiquidMatrixDrop object', async (t) => {
+await t.test(' xpm.LiquidMatrixDrop object', async (t) => {
   const substitutionsVariables = {
     matrix: {
       map: {
@@ -278,7 +276,7 @@ await t.test(' XpmLiquidMatrixDrop object', async (t) => {
   t.end()
 })
 
-await t.test(' XpmLiquidMatrixDrop context', async (t) => {
+await t.test(' xpm.LiquidMatrixDrop context', async (t) => {
   const substitutionsVariables = {
     matrix: {
       valueWithParam: 'the {{ param }} value',
@@ -301,7 +299,7 @@ await t.test(' XpmLiquidMatrixDrop context', async (t) => {
   t.end()
 })
 
-await t.test(' XpmLiquidMatrixDrop context missing', async (t) => {
+await t.test(' xpm.LiquidMatrixDrop context missing', async (t) => {
   const substitutionsVariables = {
     matrix: {
       other: null,
@@ -315,7 +313,7 @@ await t.test(' XpmLiquidMatrixDrop context missing', async (t) => {
     )
     t.fail('should have thrown')
   } catch (error) {
-    t.throws(XpmInputError, 'throw XpmInputError')
+    t.throws(xpm.InputError, 'throw xpm.InputError')
     t.match(
       (error as Error).message,
       'not defined',
@@ -330,7 +328,7 @@ await t.test(' XpmLiquidMatrixDrop context missing', async (t) => {
     )
     t.fail('should have thrown')
   } catch (error) {
-    t.throws(XpmInputError, 'throw XpmInputError')
+    t.throws(xpm.InputError, 'throw xpm.InputError')
     t.match(
       (error as Error).message,
       'Cannot read properties',

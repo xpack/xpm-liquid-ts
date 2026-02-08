@@ -13,42 +13,40 @@
 
 import * as os from 'node:os'
 
-// ----------------------------------------------------------------------------
-
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
 // ----------------------------------------------------------------------------
 
-import {
-  filterPath,
-  filterPosixPath,
-  filterWin32Path,
-} from '../../../src/index.js'
+import * as xpm from '../../../src/index.js'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 t.test('filterPath', (t): void => {
   if (os.platform() === 'win32') {
-    t.equal(filterPath('a\\b'), 'a\\b', 'preserves windows path separator \\')
+    t.equal(
+      xpm.filterPath('a\\b'),
+      'a\\b',
+      'preserves windows path separator \\'
+    )
   } else {
-    t.equal(filterPath('a/b'), 'a/b', 'preserves posix path separator /')
+    t.equal(xpm.filterPath('a/b'), 'a/b', 'preserves posix path separator /')
   }
 
   t.equal(
-    filterWin32Path('a\\b'),
+    xpm.filterWin32Path('a\\b'),
     'a\\b',
     'preserves windows path separator \\'
   )
-  t.equal(filterPosixPath('a/b'), 'a/b', 'preserves posix path separator /')
+  t.equal(xpm.filterPosixPath('a/b'), 'a/b', 'preserves posix path separator /')
 
-  t.equal(filterPath('A!B'), 'A-B', 'replaces by dash')
+  t.equal(xpm.filterPath('A!B'), 'A-B', 'replaces by dash')
 
-  t.equal(filterWin32Path('a/b'), 'a-b', 'replaces by dash')
-  t.equal(filterPosixPath('a\\b'), 'a-b', 'replaces by dash')
+  t.equal(xpm.filterWin32Path('a/b'), 'a-b', 'replaces by dash')
+  t.equal(xpm.filterPosixPath('a\\b'), 'a-b', 'replaces by dash')
 
-  t.equal(filterPath('A--B'), 'A-B', 'replaces two dashes')
-  t.equal(filterPath('A---B'), 'A-B', 'replaces three dashes')
+  t.equal(xpm.filterPath('A--B'), 'A-B', 'replaces two dashes')
+  t.equal(xpm.filterPath('A---B'), 'A-B', 'replaces three dashes')
 
   t.end()
 })

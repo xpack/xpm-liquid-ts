@@ -22,18 +22,18 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import { XpmPolicies } from '../../../src/index.js'
+import * as xpm from '../../../src/index.js'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 
-t.test('XpmPolicies', (t): void => {
+t.test('xpm.Policies', (t): void => {
   let policies
 
-  policies = new XpmPolicies({ log, minVersion: 'x.y.z' })
+  policies = new xpm.Policies({ log, minVersion: 'x.y.z' })
   t.equal(policies.minVersion, '0.0.0', 'minVersion set to default')
   t.equal(policies.shareNpmDependencies, false, 'shareNpmDependencies false')
   t.equal(
@@ -55,10 +55,10 @@ t.test('XpmPolicies', (t): void => {
   t.end()
 })
 
-t.test('XpmPolicies 0.1.2', (t): void => {
+t.test('xpm.Policies 0.1.2', (t): void => {
   let policies
 
-  policies = new XpmPolicies({ log, minVersion: '0.1.2' })
+  policies = new xpm.Policies({ log, minVersion: '0.1.2' })
   t.equal(policies.minVersion, '0.1.2', 'minVersion set correctly')
   t.equal(policies.shareNpmDependencies, true, 'shareNpmDependencies true')
   t.equal(
@@ -76,10 +76,10 @@ t.test('XpmPolicies 0.1.2', (t): void => {
   t.end()
 })
 
-t.test('XpmPolicies 0.14.0', (t): void => {
+t.test('xpm.Policies 0.14.0', (t): void => {
   let policies
 
-  policies = new XpmPolicies({ log, minVersion: '0.14.0' })
+  policies = new xpm.Policies({ log, minVersion: '0.14.0' })
   t.equal(policies.shareNpmDependencies, false, 'shareNpmDependencies false')
   t.equal(
     policies.nonHierarchicalLocalXpacksFolder,
@@ -96,10 +96,10 @@ t.test('XpmPolicies 0.14.0', (t): void => {
   t.end()
 })
 
-t.test('XpmPolicies 0.16.0', (t): void => {
+t.test('xpm.Policies 0.16.0', (t): void => {
   let policies
 
-  policies = new XpmPolicies({ log, minVersion: '0.16.0' })
+  policies = new xpm.Policies({ log, minVersion: '0.16.0' })
   t.equal(policies.shareNpmDependencies, false, 'shareNpmDependencies false')
   t.equal(
     policies.nonHierarchicalLocalXpacksFolder,
@@ -120,10 +120,10 @@ t.test('XpmPolicies 0.16.0', (t): void => {
   t.end()
 })
 
-t.test('XpmPolicies 0.22.0', (t): void => {
+t.test('xpm.Policies 0.22.0', (t): void => {
   let policies
 
-  policies = new XpmPolicies({ log, minVersion: '0.22.0' })
+  policies = new xpm.Policies({ log, minVersion: '0.22.0' })
   t.equal(policies.shareNpmDependencies, false, 'shareNpmDependencies false')
   t.equal(
     policies.nonHierarchicalLocalXpacksFolder,

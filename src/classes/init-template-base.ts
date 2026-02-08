@@ -22,27 +22,17 @@ import { Liquid } from 'liquidjs'
 
 import { Logger } from '@xpack/logger'
 
-import { XpmContext } from '../types/xpm.js'
-import { XpmError, XpmOutputError, XpmSyntaxError } from './errors.js'
-import {
-  XpmInitTemplateItemValue,
-  XpmInitTemplatePropertiesDefinitions,
-  XpmInitTemplateSubstitutionsVariables,
-} from '../types/xpm-init-template.js'
-import {
-  isBoolean,
-  isNumber,
-  isObject,
-  isString,
-} from '../functions/is-something.js'
+// ----------------------------------------------------------------------------
+
+import * as xpm from '../index.js'
 
 // ============================================================================
 
-export interface XpmInitTemplateConstructorParameters {
-  context: XpmContext
+export interface InitTemplateConstructorParameters {
+  context: xpm.Context
   __dirname: string
   templatesPath: string
-  propertiesDefinitions: XpmInitTemplatePropertiesDefinitions
+  propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions
   process?: NodeJS.Process
 }
 
@@ -61,14 +51,14 @@ export interface XpmInitTemplateConstructorParameters {
  * <li>Properties are validated against their definitions</li>
  * <li>Missing mandatory properties trigger interactive prompts (if TTY)</li>
  * <li>Substitution variables are prepared from properties</li>
- * <li>The <code>XpmInitTemplateBase.generate()</code> method creates project
+ * <li>The <code>InitTemplateBase.generate()</code> method creates project
  * files</li>
  * </ol>
  *
- * Derived classes must implement {@link XpmInitTemplateBase.generate}
+ * Derived classes must implement {@link InitTemplateBase.generate}
  * to define the specific files and folder structure to create.
  */
-export abstract class XpmInitTemplateBase {
+export abstract class InitTemplateBase {
   // --------------------------------------------------------------------------
   // Public Members.
 
@@ -78,7 +68,7 @@ export abstract class XpmInitTemplateBase {
   /**
    * The <b>xpm</b> context containing configuration and logging utilities.
    */
-  protected _context: XpmContext
+  protected _context: xpm.Context
 
   /**
    * The logger instance for output and diagnostics.
@@ -88,7 +78,7 @@ export abstract class XpmInitTemplateBase {
   /**
    * Definitions of all properties supported by this template.
    */
-  protected _propertiesDefinitions: XpmInitTemplatePropertiesDefinitions = {}
+  protected _propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {}
 
   /**
    * The absolute path to the module folder.
@@ -108,7 +98,7 @@ export abstract class XpmInitTemplateBase {
   /**
    * The variables to be used for template substitutions.
    */
-  protected _substitutionsVariables?: XpmInitTemplateSubstitutionsVariables
+  protected _substitutionsVariables?: xpm.InitTemplateSubstitutionsVariables
 
   protected _isInteractive = false
 
@@ -132,7 +122,7 @@ export abstract class XpmInitTemplateBase {
     templatesPath,
     propertiesDefinitions,
     process: _process = process,
-  }: XpmInitTemplateConstructorParameters) {
+  }: InitTemplateConstructorParameters) {
     assert(context, 'context is required')
     assert(context.log, 'context.log is required')
     assert(context.config, 'context.context is required')
@@ -177,7 +167,7 @@ export abstract class XpmInitTemplateBase {
    * mode is required (when mandatory properties are missing), prompts for
    * missing values if in a TTY environment, prepares substitution variables
    * including the current year, and invokes the template-specific
-   * {@link XpmInitTemplateBase.generate} method to create project files.
+   * {@link InitTemplateBase.generate} method to create project files.
    *
    * The method automatically applies default values to optional properties
    * that were not explicitly set. In interactive mode, the timer is reset
@@ -185,7 +175,7 @@ export abstract class XpmInitTemplateBase {
    *
    * @returns A promise that resolves to 0 on success.
    *
-   * @throws {@link XpmSyntaxError}
+   * @throws {@link xpm.SyntaxError}
    * If property validation fails or interactive mode is required but not
    * available (non-TTY environment).
    */
@@ -212,7 +202,7 @@ export abstract class XpmInitTemplateBase {
       }
     }
     if (isError) {
-      throw new XpmSyntaxError()
+      throw new xpm.SyntaxError()
     }
 
     // Properties set by `--property name=value` are in `config.properties`.
@@ -231,7 +221,9 @@ export abstract class XpmInitTemplateBase {
     if (mustAsk) {
       // Need to ask for more values.
       if (!(this._process.stdin.isTTY && this._process.stdout.isTTY)) {
-        throw new XpmSyntaxError('Interactive mode not possible without a TTY.')
+        throw new xpm.SyntaxError(
+          'Interactive mode not possible without a TTY.'
+        )
       }
 
       await this._askForMoreValues()
@@ -255,7 +247,7 @@ export abstract class XpmInitTemplateBase {
 
     const currentTime = new Date()
 
-    const substitutionsVariables: XpmInitTemplateSubstitutionsVariables = {
+    const substitutionsVariables: xpm.InitTemplateSubstitutionsVariables = {
       // Spread all config properties.
       ...config.properties,
       // Also pass the properties grouped.
@@ -277,11 +269,11 @@ export abstract class XpmInitTemplateBase {
    * @remarks
    * This abstract method must be implemented by derived classes to define
    * the specific files and folder structure to create for the project.
-   * Implementations should use {@link XpmInitTemplateBase.copyFile},
-   * {@link XpmInitTemplateBase.copyFolder}, and
-   * {@link XpmInitTemplateBase.render} to create the project structure.
+   * Implementations should use {@link InitTemplateBase.copyFile},
+   * {@link InitTemplateBase.copyFolder}, and
+   * {@link InitTemplateBase.render} to create the project structure.
    * The substitution variables are available via the
-   * {@link XpmInitTemplateBase._substitutionsVariables} property.
+   * {@link InitTemplateBase._substitutionsVariables} property.
    *
    * The implementation must be <b>asynchronous</b> to allow for file system
    * operations.
@@ -328,7 +320,7 @@ export abstract class XpmInitTemplateBase {
    * folder and copies it to the destination, creating any necessary
    * parent directories. The file is copied without modifications,
    * preserving its content and structure. Use
-   * {@link XpmInitTemplateBase.render} instead if variable substitution
+   * {@link InitTemplateBase.render} instead if variable substitution
    * is needed.
    *
    * @param sourceFileRelativePath - The relative path to the source file
@@ -369,7 +361,7 @@ export abstract class XpmInitTemplateBase {
    * including all files and subfolders, from the source to the
    * destination. The entire folder tree is replicated, preserving the
    * relative paths and structure. Files are copied without
-   * modifications; use {@link XpmInitTemplateBase.render} for
+   * modifications; use {@link InitTemplateBase.render} for
    * individual files that require variable substitution.
    *
    * @param sourceFolderRelativePath - The relative path to the source folder
@@ -423,7 +415,7 @@ export abstract class XpmInitTemplateBase {
    * @returns A promise that resolves when the file has been rendered and
    * written.
    *
-   * @throws {@link XpmOutputError}
+   * @throws {@link xpm.OutputError}
    * If template rendering fails.
    */
   async render({
@@ -434,7 +426,7 @@ export abstract class XpmInitTemplateBase {
   }: {
     sourceFilePath: string
     destinationFilePath: string
-    substitutionsVariables?: XpmInitTemplateSubstitutionsVariables
+    substitutionsVariables?: xpm.InitTemplateSubstitutionsVariables
   }): Promise<void> {
     const log = this._log
     const context = this._context
@@ -462,7 +454,7 @@ export abstract class XpmInitTemplateBase {
       await fs.writeFile(destinationFilePath, fileContent, 'utf8')
     } catch (error) {
       if (error instanceof Error) {
-        throw new XpmOutputError(error.message)
+        throw new xpm.OutputError(error.message)
       }
     }
     log.info(`File '${destinationFileRelativePath}' generated.`)
@@ -498,7 +490,7 @@ export abstract class XpmInitTemplateBase {
    * @returns The validated and potentially converted value (string,
    * boolean, or number).
    *
-   * @throws {@link XpmError}
+   * @throws {@link xpm.Error}
    * If the property is unsupported or the value is invalid.
    */
   protected _validatePropertyValue(
@@ -508,7 +500,7 @@ export abstract class XpmInitTemplateBase {
     const propDef = this._propertiesDefinitions[name]
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (propDef === undefined) {
-      throw new XpmError(`Unsupported property '${name}'`)
+      throw new xpm.Error(`Unsupported property '${name}'`)
     }
     const trimmedValue = value.trim()
 
@@ -558,7 +550,7 @@ export abstract class XpmInitTemplateBase {
       }
     }
 
-    throw new XpmError(`Unsupported value '${value}' for property '${name}'`)
+    throw new xpm.Error(`Unsupported value '${value}' for property '${name}'`)
   }
 
   /**
@@ -607,12 +599,12 @@ export abstract class XpmInitTemplateBase {
           const validItems = []
           assert(definition.items, 'definition.items is required')
           for (const [ikey, ival] of Object.entries(definition.items)) {
-            if (isString(ival)) {
+            if (xpm.isString(ival)) {
               validItems.push(ikey)
             } else if (
-              isObject(ival) &&
+              xpm.isObject(ival) &&
               this.isPlatformSupported(
-                (ival as XpmInitTemplateItemValue).platforms
+                (ival as xpm.InitTemplateItemValue).platforms
               )
             ) {
               validItems.push(ikey)
@@ -656,16 +648,16 @@ export abstract class XpmInitTemplateBase {
           if (definition.type === 'select') {
             assert(definition.items, 'definition.items is required')
             for (const [ikey, ival] of Object.entries(definition.items)) {
-              if (isString(ival)) {
+              if (xpm.isString(ival)) {
                 this._process.stdout.write(`- ${ikey}: ${ival as string}\n`)
               } else if (
-                isObject(ival) &&
+                xpm.isObject(ival) &&
                 this.isPlatformSupported(
-                  (ival as XpmInitTemplateItemValue).platforms
+                  (ival as xpm.InitTemplateItemValue).platforms
                 )
               ) {
                 this._process.stdout.write(
-                  `- ${ikey}: ${(ival as XpmInitTemplateItemValue).message}\n`
+                  `- ${ikey}: ${(ival as xpm.InitTemplateItemValue).message}\n`
                 )
               }
             }
@@ -721,7 +713,7 @@ export abstract class XpmInitTemplateBase {
 
   protected _validatePropertiesDefinitions(): void {
     assert(
-      isObject(this._propertiesDefinitions),
+      xpm.isObject(this._propertiesDefinitions),
       'propertiesDefinitions is not an object.'
     )
 
@@ -731,11 +723,14 @@ export abstract class XpmInitTemplateBase {
     )
 
     for (const [key, val] of Object.entries(this._propertiesDefinitions)) {
-      assert(isString(val.label), `Property '${key}' must have a string label`)
+      assert(
+        xpm.isString(val.label),
+        `Property '${key}' must have a string label`
+      )
       assert(val.label.trim() !== '', `Property '${key}' has an empty label`)
 
       assert(
-        isString(val.description),
+        xpm.isString(val.description),
         `Property '${key}' must have a string description`
       )
       assert(
@@ -745,7 +740,7 @@ export abstract class XpmInitTemplateBase {
 
       if (val.isMandatory !== undefined) {
         assert(
-          isBoolean(val.isMandatory),
+          xpm.isBoolean(val.isMandatory),
           `Property '${key}' has a non boolean isMandatory value.`
         )
       }
@@ -761,7 +756,7 @@ export abstract class XpmInitTemplateBase {
           )
 
           assert(
-            isObject(val.items),
+            xpm.isObject(val.items),
             `Property '${key}' of type 'select' has invalid items.`
           )
 
@@ -772,10 +767,12 @@ export abstract class XpmInitTemplateBase {
 
           for (const [ikey, ival] of Object.entries(val.items)) {
             assert(
-              isString(ival) ||
-                (isObject(ival) &&
-                  Array.isArray((ival as XpmInitTemplateItemValue).platforms) &&
-                  isString((ival as XpmInitTemplateItemValue).message)),
+              xpm.isString(ival) ||
+                (xpm.isObject(ival) &&
+                  Array.isArray(
+                    (ival as xpm.InitTemplateItemValue).platforms
+                  ) &&
+                  xpm.isString((ival as xpm.InitTemplateItemValue).message)),
               `Property '${key}' has invalid item '${ikey}'.`
             )
           }
@@ -790,7 +787,7 @@ export abstract class XpmInitTemplateBase {
 
           if (val.default !== undefined) {
             assert(
-              isString(val.default),
+              xpm.isString(val.default),
               `Property '${key}' has a non string default value.`
             )
 
@@ -811,7 +808,7 @@ export abstract class XpmInitTemplateBase {
         case 'string':
           if (val.default !== undefined) {
             assert(
-              isString(val.default),
+              xpm.isString(val.default),
               `Property '${key}' has a non string default value.`
             )
 
@@ -825,7 +822,7 @@ export abstract class XpmInitTemplateBase {
         case 'number':
           if (val.default !== undefined) {
             assert(
-              isNumber(val.default),
+              xpm.isNumber(val.default),
               `Property '${key}' has a non number default value.`
             )
           }
@@ -834,7 +831,7 @@ export abstract class XpmInitTemplateBase {
         case 'boolean':
           if (val.default !== undefined) {
             assert(
-              isBoolean(val.default),
+              xpm.isBoolean(val.default),
               `Property '${key}' has a non boolean default value.`
             )
           }

@@ -18,19 +18,11 @@ import { Context } from 'liquidjs'
 
 import { Logger } from '@xpack/logger'
 
-import { XpmLiquidEngine } from '../classes/liquid-engine.js'
-import {
-  XpmLiquidMatrixDrop,
-  XpmLiquidPropertiesDrop,
-} from '../classes/liquid-drop.js'
-
-import {
-  XpmLiquidSubstitutionsStrings,
-  XpmLiquidSubstitutionsVariables,
-} from '../data/substitutions-variables.js'
-import { XpmError } from '../classes/errors.js'
-
 // ----------------------------------------------------------------------------
+
+import * as xpm from '../index.js'
+
+// ============================================================================
 
 /**
  * Performs substitutions on an input string using Liquid.
@@ -47,10 +39,10 @@ import { XpmError } from '../classes/errors.js'
  * <li>Skip processing for empty strings to avoid unnecessary overhead.</li>
  * <li>Prepare Liquid context with substitution variables.</li>
  * <li>If <code>properties</code> exist, wrap them in
- *    <code>XpmLiquidPropertiesDrop</code>
+ *    <code>LiquidPropertiesDrop</code>
  *    for lazy evaluation and nested substitution support.</li>
  * <li>If <code>matrix</code> parameters exist, wrap them in
- *    <code>XpmLiquidMatrixDrop</code>
+ *    <code>LiquidMatrixDrop</code>
  *    for template expansion variable access.</li>
  * <li>Iterate while Liquid syntax (<code>\{\{</code> or <code>\{%</code>)
  *   is present:
@@ -72,7 +64,7 @@ import { XpmError } from '../classes/errors.js'
  *
  * Liquid rendering errors are caught, stripped of line
  * number information (which can be misleading for nested templates), and
- * re-thrown as {@link XpmError}.
+ * re-thrown as {@link xpm.Error}.
  *
  * @param log - The logger instance for output and diagnostics.
  * @param engine - The Liquid engine used to render substitutions.
@@ -80,7 +72,7 @@ import { XpmError } from '../classes/errors.js'
  * @param substitutionsVariables - The variables available for substitution.
  * @returns The fully substituted string.
  *
- * @throws {@link XpmError}
+ * @throws {@link xpm.Error}
  * If Liquid rendering fails.
  */
 export async function performSubstitutions({
@@ -90,9 +82,9 @@ export async function performSubstitutions({
   substitutionsVariables,
 }: {
   log: Logger
-  engine: XpmLiquidEngine
+  engine: xpm.LiquidEngine
   input: string
-  substitutionsVariables: XpmLiquidSubstitutionsVariables
+  substitutionsVariables: xpm.LiquidSubstitutionsVariables
 }): Promise<string> {
   assert(substitutionsVariables, 'substitutionsVariables is required')
 
@@ -103,13 +95,15 @@ export async function performSubstitutions({
 
   // Wrap properties into a liquid drop (a mechanism to process
   // substitutions immediately).
-  let properties: XpmLiquidSubstitutionsStrings | XpmLiquidPropertiesDrop =
+  let properties: xpm.LiquidSubstitutionsStrings | xpm.LiquidPropertiesDrop =
     substitutionsVariables.properties
-  let matrix: XpmLiquidSubstitutionsStrings | XpmLiquidMatrixDrop | undefined =
-    substitutionsVariables.matrix
+  let matrix:
+    | xpm.LiquidSubstitutionsStrings
+    | xpm.LiquidMatrixDrop
+    | undefined = substitutionsVariables.matrix
 
   if (Object.keys(substitutionsVariables.properties).length > 0) {
-    properties = new XpmLiquidPropertiesDrop({
+    properties = new xpm.LiquidPropertiesDrop({
       log,
       engine,
       properties: substitutionsVariables.properties,
@@ -119,7 +113,7 @@ export async function performSubstitutions({
     substitutionsVariables.matrix &&
     Object.keys(substitutionsVariables.matrix).length > 0
   ) {
-    matrix = new XpmLiquidMatrixDrop({
+    matrix = new xpm.LiquidMatrixDrop({
       log,
       engine,
       matrix: substitutionsVariables.matrix,
@@ -166,10 +160,10 @@ export async function performSubstitutions({
     } catch (error) {
       if (error instanceof Error) {
         log.trace(util.inspect(error))
-        throw new XpmError(error.message.replace(/, line:.*/g, ''))
+        throw new xpm.Error(error.message.replace(/, line:.*/g, ''))
         /* c8 ignore next 3 - safety net, currently all are Errors */
       } else {
-        throw new XpmError(String(error))
+        throw new xpm.Error(String(error))
       }
     }
 

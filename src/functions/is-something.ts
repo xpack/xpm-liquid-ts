@@ -9,7 +9,7 @@
  * be obtained from https://opensource.org/license/mit.
  */
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /**
  * Determines whether a value is a JavaScript primitive.

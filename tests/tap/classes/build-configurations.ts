@@ -11,45 +11,33 @@
 
 // ----------------------------------------------------------------------------
 
-// import * as os from 'os'
-import * as path from 'path'
+// import * as os from 'node:os'
+import * as path from 'node:path'
+import assert, { AssertionError } from 'node:assert'
 
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
-// ----------------------------------------------------------------------------
-
 import { Logger } from '@xpack/logger'
-import {
-  JsonBuildConfiguration,
-  JsonBuildConfigurationContent,
-  JsonBuildConfigurations,
-  JsonBuildConfigurationTemplate,
-  JsonBuildConfigurationTemplateMatrix,
-  JsonDependencyExtended,
-  JsonXpmPackage,
-  XpmBuildConfigurations,
-  XpmDataModel,
-  XpmError,
-  XpmLiquidEngine,
-  xpmLiquidSubstitutionsVariablesBase,
-} from '../../../src/index.js'
-import assert, { AssertionError } from 'assert'
 
 // ----------------------------------------------------------------------------
+
+import * as xpm from '../../../src/index.js'
+
+// ============================================================================
 
 const log = new Logger({ level: 'info' })
-const engine = new XpmLiquidEngine()
+const engine = new xpm.LiquidEngine()
 
 // ----------------------------------------------------------------------------
 
-await t.test('XpmBuildConfigurations undefined', async (t) => {
-  const buildConfigurations = new XpmBuildConfigurations({
+await t.test('BuildConfigurations undefined', async (t) => {
+  const buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations: undefined,
   })
 
@@ -69,7 +57,7 @@ await t.test('XpmBuildConfigurations undefined', async (t) => {
         buildConfiguration.buildConfigurationName
     )
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'does not exist',
@@ -80,8 +68,8 @@ await t.test('XpmBuildConfigurations undefined', async (t) => {
   t.end()
 })
 
-await t.test('XpmBuildConfigurations', async (t) => {
-  const jsonBuildConfigurations: JsonBuildConfigurations = {
+await t.test('BuildConfigurations', async (t) => {
+  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
     configOne: {
       properties: {
         p1: 'v1',
@@ -106,10 +94,10 @@ await t.test('XpmBuildConfigurations', async (t) => {
       },
     },
   }
-  const buildConfigurations = new XpmBuildConfigurations({
+  const buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations,
   })
 
@@ -193,7 +181,7 @@ await t.test('XpmBuildConfigurations', async (t) => {
   try {
     await configTwo.initialise()
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -204,16 +192,16 @@ await t.test('XpmBuildConfigurations', async (t) => {
   t.end()
 })
 
-await t.test('XpmBuildConfigurations buildFolderRelativePath', async (t) => {
+await t.test('BuildConfigurations buildFolderRelativePath', async (t) => {
   const substitutionsVariables = {
-    ...xpmLiquidSubstitutionsVariablesBase,
+    ...xpm.liquidSubstitutionsVariablesBase,
     properties: {
       buildFolderRelativePath:
         "{{ 'topBuild' | path_join: configuration.name | to_filename | downcase }}",
     },
   }
 
-  const jsonBuildConfigurations: JsonBuildConfigurations = {
+  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
     configOne: {
       properties: {
         p1: 'v1',
@@ -233,7 +221,7 @@ await t.test('XpmBuildConfigurations buildFolderRelativePath', async (t) => {
       },
     },
   }
-  const buildConfigurations = new XpmBuildConfigurations({
+  const buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
     substitutionsVariables,
@@ -266,7 +254,7 @@ await t.test('XpmBuildConfigurations buildFolderRelativePath', async (t) => {
   try {
     await configThree.initialise()
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -277,16 +265,16 @@ await t.test('XpmBuildConfigurations buildFolderRelativePath', async (t) => {
   t.end()
 })
 
-await t.test('XpmBuildConfigurations inheritance', async (t) => {
+await t.test('BuildConfigurations inheritance', async (t) => {
   const substitutionsVariables = {
-    ...xpmLiquidSubstitutionsVariablesBase,
+    ...xpm.liquidSubstitutionsVariablesBase,
     properties: {
       package3version: '3.2.1',
       inherits: 'configOne',
     },
   }
 
-  const jsonBuildConfigurations: JsonBuildConfigurations = {
+  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
     configOne: {
       inherits: ' ',
       properties: {
@@ -358,7 +346,7 @@ await t.test('XpmBuildConfigurations inheritance', async (t) => {
     },
   }
 
-  const buildConfigurations = new XpmBuildConfigurations({
+  const buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
     substitutionsVariables,
@@ -460,7 +448,7 @@ await t.test('XpmBuildConfigurations inheritance', async (t) => {
     await configFive.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'circular reference',
@@ -478,7 +466,7 @@ await t.test('XpmBuildConfigurations inheritance', async (t) => {
     await configEight.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -487,7 +475,6 @@ await t.test('XpmBuildConfigurations inheritance', async (t) => {
   }
 
   const configNine = buildConfigurations.get('configNine')
-  debugger
   await configNine.initialise()
   t.equal(
     configNine.dependencies['package9a'],
@@ -506,8 +493,8 @@ await t.test('XpmBuildConfigurations inheritance', async (t) => {
   t.end()
 })
 
-await t.test('XpmBuildConfigurations templates', async (t) => {
-  const jsonBuildConfigurations: JsonBuildConfigurations = {
+await t.test('BuildConfigurations templates', async (t) => {
+  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
     configOne: {
       properties: {
         p1: 'v1',
@@ -565,10 +552,10 @@ await t.test('XpmBuildConfigurations templates', async (t) => {
     },
   }
 
-  const buildConfigurations = new XpmBuildConfigurations({
+  const buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations,
   })
 
@@ -651,7 +638,7 @@ await t.test('XpmBuildConfigurations templates', async (t) => {
   try {
     await configSixA1.initialise()
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -662,8 +649,8 @@ await t.test('XpmBuildConfigurations templates', async (t) => {
   t.end()
 })
 
-await t.test('XpmBuildConfigurations templates errors', async (t) => {
-  const jsonBuildConfigurations: JsonBuildConfigurations = {
+await t.test('BuildConfigurations templates errors', async (t) => {
+  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
     configOne: {
       properties: {
         p1: 'v1',
@@ -682,17 +669,17 @@ await t.test('XpmBuildConfigurations templates errors', async (t) => {
     },
   }
 
-  const buildConfigurations = new XpmBuildConfigurations({
+  const buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations,
   })
   try {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -703,15 +690,15 @@ await t.test('XpmBuildConfigurations templates errors', async (t) => {
   t.end()
 })
 
-await t.test('XpmBuildConfigurations templates matrix', async (t) => {
+await t.test('BuildConfigurations templates matrix', async (t) => {
   const substitutionsVariables = {
-    ...xpmLiquidSubstitutionsVariablesBase,
+    ...xpm.liquidSubstitutionsVariablesBase,
     properties: {
       alfa2: 'a2',
     },
   }
 
-  const jsonBuildConfigurations: JsonBuildConfigurations = {
+  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
     configOne: {
       properties: {
         p1: 'v1',
@@ -730,7 +717,7 @@ await t.test('XpmBuildConfigurations templates matrix', async (t) => {
     },
   }
 
-  const buildConfigurations = new XpmBuildConfigurations({
+  const buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
     substitutionsVariables,
@@ -757,8 +744,8 @@ await t.test('XpmBuildConfigurations templates matrix', async (t) => {
   t.end()
 })
 
-await t.test('XpmBuildConfigurations templates matrix errors', async (t) => {
-  let jsonBuildConfigurations: JsonBuildConfigurations
+await t.test('BuildConfigurations templates matrix errors', async (t) => {
+  let jsonBuildConfigurations: xpm.JsonBuildConfigurations
   let buildConfigurations
 
   jsonBuildConfigurations = {
@@ -780,17 +767,17 @@ await t.test('XpmBuildConfigurations templates matrix errors', async (t) => {
     },
   }
 
-  buildConfigurations = new XpmBuildConfigurations({
+  buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations,
   })
   try {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -817,17 +804,17 @@ await t.test('XpmBuildConfigurations templates matrix errors', async (t) => {
     },
   }
 
-  buildConfigurations = new XpmBuildConfigurations({
+  buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations,
   })
   try {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'value is not a string',
@@ -854,17 +841,17 @@ await t.test('XpmBuildConfigurations templates matrix errors', async (t) => {
     },
   }
 
-  buildConfigurations = new XpmBuildConfigurations({
+  buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations,
   })
   try {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'is not an array',
@@ -883,21 +870,21 @@ await t.test('XpmBuildConfigurations templates matrix errors', async (t) => {
         alfa: ['a1', 'a2'],
         beta: ['b1', 'b2'],
       },
-      template: 42 as unknown as JsonBuildConfigurationContent,
+      template: 42 as unknown as xpm.JsonBuildConfigurationContent,
     },
   }
 
-  buildConfigurations = new XpmBuildConfigurations({
+  buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations,
   })
   try {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'template is not a JSON object',
@@ -912,7 +899,7 @@ await t.test('XpmBuildConfigurations templates matrix errors', async (t) => {
       },
     },
     'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: 42 as unknown as JsonBuildConfigurationTemplateMatrix,
+      matrix: 42 as unknown as xpm.JsonBuildConfigurationTemplateMatrix,
       template: {
         properties: {
           p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
@@ -921,17 +908,17 @@ await t.test('XpmBuildConfigurations templates matrix errors', async (t) => {
     },
   }
 
-  buildConfigurations = new XpmBuildConfigurations({
+  buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations,
   })
   try {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'matrix is not an object',
@@ -942,8 +929,8 @@ await t.test('XpmBuildConfigurations templates matrix errors', async (t) => {
   t.end()
 })
 
-await t.test('XpmBuildConfigurations templates duplicates', async (t) => {
-  let jsonBuildConfigurations: JsonBuildConfigurations
+await t.test('BuildConfigurations templates duplicates', async (t) => {
+  let jsonBuildConfigurations: xpm.JsonBuildConfigurations
   let buildConfigurations
 
   jsonBuildConfigurations = {
@@ -965,17 +952,17 @@ await t.test('XpmBuildConfigurations templates duplicates', async (t) => {
     },
   }
 
-  buildConfigurations = new XpmBuildConfigurations({
+  buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations,
   })
   try {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'could not be generated',
@@ -1002,17 +989,17 @@ await t.test('XpmBuildConfigurations templates duplicates', async (t) => {
     },
   }
 
-  buildConfigurations = new XpmBuildConfigurations({
+  buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
-    substitutionsVariables: xpmLiquidSubstitutionsVariablesBase,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     jsonBuildConfigurations,
   })
   try {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(XpmError, 'throws XpmError')
+    t.throws(xpm.Error, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'already defined',
@@ -1026,7 +1013,7 @@ await t.test('XpmBuildConfigurations templates duplicates', async (t) => {
 // ----------------------------------------------------------------------------
 
 await t.test('configurations', async (t): Promise<void> => {
-  const json: JsonXpmPackage = {
+  const json: xpm.JsonXpmPackage = {
     name: 'test',
     version: '1.2.3',
     xpack: {
@@ -1054,7 +1041,7 @@ await t.test('configurations', async (t): Promise<void> => {
     },
   }
 
-  const xpmDataModel = new XpmDataModel({
+  const xpmDataModel = new xpm.DataModel({
     log,
     jsonPackage: json,
   })
@@ -1146,8 +1133,10 @@ await t.test('configurations', async (t): Promise<void> => {
   t.equal(
     Object.keys(buildConfiguration.dependencies).length,
     Object.keys(
-      (json.xpack!.buildConfigurations!.alfa! as JsonBuildConfigurationContent)
-        .dependencies!
+      (
+        json.xpack!.buildConfigurations!
+          .alfa! as xpm.JsonBuildConfigurationContent
+      ).dependencies!
     ).length,
     'dependencies length matches'
   )
@@ -1160,8 +1149,10 @@ await t.test('configurations', async (t): Promise<void> => {
   t.equal(
     Object.keys(buildConfiguration.devDependencies).length,
     Object.keys(
-      (json.xpack!.buildConfigurations!.alfa! as JsonBuildConfigurationContent)
-        .devDependencies!
+      (
+        json.xpack!.buildConfigurations!
+          .alfa! as xpm.JsonBuildConfigurationContent
+      ).devDependencies!
     ).length,
     'devDependencies length matches'
   )
@@ -1228,7 +1219,7 @@ await t.test('configurations', async (t): Promise<void> => {
 })
 
 await t.test('configurations inheritance', async (t): Promise<void> => {
-  const json: JsonXpmPackage = {
+  const json: xpm.JsonXpmPackage = {
     name: 'test',
     version: '1.2.3',
     xpack: {
@@ -1313,7 +1304,7 @@ await t.test('configurations inheritance', async (t): Promise<void> => {
     },
   }
 
-  const xpmDataModel = new XpmDataModel({
+  const xpmDataModel = new xpm.DataModel({
     log,
     jsonPackage: json,
   })
@@ -1422,7 +1413,7 @@ await t.test('configurations inheritance', async (t): Promise<void> => {
 })
 
 await t.test('configurations template', async (t): Promise<void> => {
-  const json: JsonXpmPackage = {
+  const json: xpm.JsonXpmPackage = {
     name: 'test',
     version: '1.2.3',
     xpack: {
@@ -1573,7 +1564,7 @@ await t.test('configurations template', async (t): Promise<void> => {
   }
 
   // log.level = 'trace'
-  const xpmDataModel = new XpmDataModel({
+  const xpmDataModel = new xpm.DataModel({
     log,
     jsonPackage: json,
   })
@@ -1658,12 +1649,12 @@ await t.test('configurations template', async (t): Promise<void> => {
   await buildConfiguration.initialise()
   const devDepGcc = buildConfiguration.devDependencies
   t.equal(
-    (devDepGcc['@xpack-dev-tools/gcc'] as JsonDependencyExtended).specifier,
+    (devDepGcc['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended).specifier,
     '15.2.0-1.1',
     'gcc specifier is "15.2.0-1.1"'
   )
   t.equal(
-    (devDepGcc['@xpack-dev-tools/gcc'] as JsonDependencyExtended).platforms,
+    (devDepGcc['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended).platforms,
     'linux-x64,linux-arm64,win32-x64',
     'gcc platforms is "linux-x64,linux-arm64,win32-x64"'
   )
@@ -1690,13 +1681,13 @@ await t.test('configurations template', async (t): Promise<void> => {
 
   let devDependencies = buildConfiguration.devDependencies
   t.equal(
-    (devDependencies['@xpack-dev-tools/gcc'] as JsonDependencyExtended)
+    (devDependencies['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended)
       .specifier,
     '15.2.0-1.1',
     'gcc specifier is "15.2.0-1.1"'
   )
   t.equal(
-    (devDependencies['@xpack-dev-tools/gcc'] as JsonDependencyExtended)
+    (devDependencies['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended)
       .platforms,
     'linux-x64,linux-arm64,win32-x64',
     'gcc platforms is "linux-x64,linux-arm64,win32-x64"'

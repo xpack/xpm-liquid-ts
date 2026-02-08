@@ -14,19 +14,18 @@
 // import * as os from 'node:os'
 // import { fileURLToPath } from 'node:url'
 // import * as path from 'node:path'
-
-// ----------------------------------------------------------------------------
+import { AssertionError } from 'node:assert'
 
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
-// ----------------------------------------------------------------------------
-
-import { JsonXpmPackage, XpmDataModel } from '../../../src/index.js'
 import { Logger } from '@xpack/logger'
-import { AssertionError } from 'node:assert'
 
 // ----------------------------------------------------------------------------
+
+import * as xpm from '../../../src/index.js'
+
+// ============================================================================
 
 // const __filename = fileURLToPath(import.meta.url)
 // const __dirname = path.dirname(__filename)
@@ -39,9 +38,9 @@ const log = new Logger({ level: 'info' })
 t.test('constructor', (t): void => {
   const jsonNoXpack = { name: 'test', version: '1.2.3', xpack: [] }
   try {
-    const dataModel = new XpmDataModel({
+    const dataModel = new xpm.DataModel({
       log,
-      jsonPackage: jsonNoXpack as JsonXpmPackage,
+      jsonPackage: jsonNoXpack as xpm.JsonXpmPackage,
     })
     t.fail('should have thrown an error')
   } catch (error) {
@@ -60,9 +59,9 @@ t.test('constructor', (t): void => {
     xpack: { properties: { one: '1' } },
   }
 
-  const xpmDataModel = new XpmDataModel({
+  const xpmDataModel = new xpm.DataModel({
     log,
-    jsonPackage: json as JsonXpmPackage,
+    jsonPackage: json as xpm.JsonXpmPackage,
   })
 
   // console.log(xpmDataModel)

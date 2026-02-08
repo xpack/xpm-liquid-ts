@@ -13,7 +13,7 @@
 
 import { Logger } from '@xpack/logger'
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /**
  * Represents a list of action command strings.
@@ -40,7 +40,7 @@ import { Logger } from '@xpack/logger'
  * environment variables, pipe outputs, or chain operations using standard
  * shell syntax (`&&`, `||`, `|`, etc.).
  */
-export type XpmActionCommands = string[]
+export type ActionCommands = string[]
 
 /**
  * Defines the <b>xpm</b> configuration options.
@@ -56,7 +56,7 @@ export type XpmActionCommands = string[]
  * <ol>
  * <li>Created from CLI arguments or programmatic API calls.</li>
  * <li>Merged with defaults to form complete configuration.</li>
- * <li>Passed through <code>XpmContext</code> to all <b>xpm</b> operations.</li>
+ * <li>Passed through <code>Context</code> to all <b>xpm</b> operations.</li>
  * <li>Consulted by operations to determine behavior (skip, force,
  * dry-run).</li>
  * </ol>
@@ -76,7 +76,7 @@ export type XpmActionCommands = string[]
  * The extensible design (additional properties allowed) supports future
  * configuration options without breaking changes.
  */
-export interface XpmConfig {
+export interface Config {
   /**
    * Whether to force operations even when safeguards would prevent them.
    */
@@ -142,7 +142,7 @@ export interface XpmConfig {
  * testable and allowing operations to access shared resources without
  * global state.
  */
-export interface XpmContext {
+export interface Context {
   /**
    * The logger instance for output and diagnostics.
    */
@@ -150,7 +150,7 @@ export interface XpmContext {
   /**
    * The <b>xpm</b> configuration options.
    */
-  config: XpmConfig
+  config: Config
 
   /**
    * Allows additional context properties.

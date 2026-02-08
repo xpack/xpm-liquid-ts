@@ -17,7 +17,10 @@ import * as util from 'node:util'
 
 // https://www.npmjs.com/package/liquidjs
 import { Liquid } from 'liquidjs'
-import { isJsonObject } from '../functions/is-something.js'
+
+// ----------------------------------------------------------------------------
+
+import * as xpm from '../index.js'
 
 // ============================================================================
 
@@ -51,7 +54,7 @@ import { isJsonObject } from '../functions/is-something.js'
  * string transformations without requiring external dependencies or custom
  * template tags.
  */
-export class XpmLiquidEngine extends Liquid {
+export class LiquidEngine extends Liquid {
   // --------------------------------------------------------------------------
   // Public Members.
 
@@ -217,7 +220,7 @@ export class XpmLiquidEngine extends Liquid {
     })
 
     this.registerFilter('keys', (input: unknown): string[] | string => {
-      if (isJsonObject(input)) {
+      if (xpm.isJsonObject(input)) {
         const keys = Object.keys(input as object)
         // console.log('input object', input)
         // console.log('input keys', keys)

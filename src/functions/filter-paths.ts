@@ -13,6 +13,8 @@
 
 // import * as os from 'node:os'
 
+// ============================================================================
+
 /**
  * Replaces non-alphanumeric characters with dashes to make paths
  * comply with file system names.
