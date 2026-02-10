@@ -42,8 +42,12 @@ t.test('xpm.Errors', (t): void => {
   error = new xpm.InputError('Test input error')
   t.equal(error.message, 'Test input error', 'xpm.InputError error message')
 
-  error = new xpm.SyntaxError('Test syntax error')
-  t.equal(error.message, 'Test syntax error', 'xpm.SyntaxError error message')
+  error = new xpm.JsonSyntaxError('Test syntax error')
+  t.equal(
+    error.message,
+    'Test syntax error',
+    'xpm.JsonSyntaxError error message'
+  )
 
   error = new xpm.OutputError('Test output error')
   t.equal(error.message, 'Test output error', 'xpm.OutputError error message')

@@ -57,7 +57,7 @@ await t.test('BuildConfigurations undefined', async (t) => {
         buildConfiguration.buildConfigurationName
     )
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'does not exist',
@@ -181,7 +181,7 @@ await t.test('BuildConfigurations', async (t) => {
   try {
     await configTwo.initialise()
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -254,7 +254,7 @@ await t.test('BuildConfigurations buildFolderRelativePath', async (t) => {
   try {
     await configThree.initialise()
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -448,7 +448,7 @@ await t.test('BuildConfigurations inheritance', async (t) => {
     await configFive.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'circular reference',
@@ -466,7 +466,7 @@ await t.test('BuildConfigurations inheritance', async (t) => {
     await configEight.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -638,7 +638,7 @@ await t.test('BuildConfigurations templates', async (t) => {
   try {
     await configSixA1.initialise()
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -679,7 +679,7 @@ await t.test('BuildConfigurations templates errors', async (t) => {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -777,7 +777,7 @@ await t.test('BuildConfigurations templates matrix errors', async (t) => {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -814,7 +814,7 @@ await t.test('BuildConfigurations templates matrix errors', async (t) => {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'value is not a string',
@@ -851,7 +851,7 @@ await t.test('BuildConfigurations templates matrix errors', async (t) => {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'is not an array',
@@ -884,7 +884,7 @@ await t.test('BuildConfigurations templates matrix errors', async (t) => {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'template is not a JSON object',
@@ -918,7 +918,7 @@ await t.test('BuildConfigurations templates matrix errors', async (t) => {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'matrix is not an object',
@@ -962,7 +962,7 @@ await t.test('BuildConfigurations templates duplicates', async (t) => {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'could not be generated',
@@ -999,7 +999,7 @@ await t.test('BuildConfigurations templates duplicates', async (t) => {
     await buildConfigurations.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'already defined',

@@ -149,7 +149,7 @@ export class BuildConfigurations {
    * </ol>
    *
    * Configurations transition from `undefined` to instantiated when first
-   * accessed via {@link xpm.BuildConfigurations.get}, implementing the
+   * accessed via {@link BuildConfigurations.get}, implementing the
    * lazy evaluation pattern to avoid unnecessary processing.
    */
   protected readonly _buildConfigurationsMap: Map<
@@ -206,8 +206,8 @@ export class BuildConfigurations {
    *    configuration names.</li>
    * </ol>
    *
-   * Detection occurs during {@link xpm.BuildConfigurations.initialise},
-   * throwing {@link xpm.Error} when duplicates are found to ensure
+   * Detection occurs during {@link BuildConfigurations.initialise},
+   * throwing {@link ConfigurationError} when duplicates are found to ensure
    * configuration name uniqueness.
    */
   protected readonly _buildComfigurationsNamesSet: Set<string> =
@@ -218,7 +218,7 @@ export class BuildConfigurations {
    *
    * @remarks
    * This flag prevents redundant initialisation and ensures idempotent
-   * behavior when {@link xpm.BuildConfigurations.initialise} is called
+   * behavior when {@link BuildConfigurations.initialise} is called
    * multiple times.
    *
    * State transitions:
@@ -274,7 +274,7 @@ export class BuildConfigurations {
    * @remarks
    * The constructor performs partial initialisation. Complete
    * initialisation requires calling
-   * {@link xpm.BuildConfigurations.initialise}.
+   * {@link BuildConfigurations.initialise}.
    *
    * @param log - The logger instance for output and diagnostics.
    * @param engine - The Liquid templating engine for variable substitution.
@@ -346,7 +346,7 @@ export class BuildConfigurations {
    * @returns A promise that resolves to `true` if initialisation was performed,
    * or `false` if already initialised.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If duplicate names are detected or template expansion fails.
    */
   async initialise(): Promise<boolean> {
@@ -371,7 +371,7 @@ export class BuildConfigurations {
         })
       } else {
         if (this._buildComfigurationsNamesSet.has(buildConfigurationName)) {
-          throw new xpm.Error(
+          throw new xpm.ConfigurationError(
             `build configuration name ` +
               `"${buildConfigurationName}" already defined.`
           )
@@ -566,7 +566,7 @@ export class BuildConfigurations {
    * @param buildConfigurationName - The build configuration name to retrieve.
    * @returns The build configuration instance.
    *
-   * @throws {@link xpm.InputError}
+   * @throws {@link InputError}
    * If a configuration with the specified name does not exist.
    */
   get(buildConfigurationName: string): BuildConfiguration {
@@ -644,7 +644,7 @@ export class BuildConfigurations {
    * matrix parameters and a configuration template.
    * @returns A promise that resolves when processing is complete.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If duplicate configuration names are detected during expansion or if
    * template expansion fails.
    */
@@ -669,7 +669,7 @@ export class BuildConfigurations {
         if (
           this._buildComfigurationsNamesSet.has(expandedBuildConfigurationName)
         ) {
-          throw new xpm.Error(
+          throw new xpm.ConfigurationError(
             `duplicate build configuration name ` +
               `"${expandedBuildConfigurationName}" ` +
               `could not be generated from template.`
@@ -690,7 +690,7 @@ export class BuildConfigurations {
       const message =
         xpm.getErrorMessage(error) +
         ` in buildConfiguration "${buildConfigurationName}"`
-      throw new xpm.Error(message)
+      throw new xpm.ConfigurationError(message)
     }
   }
 
@@ -725,7 +725,7 @@ export class BuildConfigurations {
    * @returns A promise that resolves to a map of expanded configuration names
    * to their corresponding instances.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If the matrix structure is invalid or substitution fails.
    */
   protected async _expandTemplateBuildConfigurations({
@@ -744,13 +744,13 @@ export class BuildConfigurations {
     const newBuildConfigurationsMap = new Map<string, BuildConfiguration>()
 
     if (!xpm.isJsonObject(jsonBuildConfigurationTemplate.matrix)) {
-      throw new xpm.Error(
+      throw new xpm.ConfigurationError(
         `buildConfiguration "${buildConfigurationName}" ` +
           `matrix is not an object`
       )
     }
     if (!xpm.isJsonObject(jsonBuildConfigurationTemplate.template)) {
-      throw new xpm.Error(
+      throw new xpm.ConfigurationError(
         `buildConfiguration "${buildConfigurationName}" ` +
           `template is not a JSON object`
       )
@@ -763,14 +763,14 @@ export class BuildConfigurations {
       jsonBuildConfigurationTemplate.matrix
     )) {
       if (!xpm.isJsonArray(matrixValueArray)) {
-        throw new xpm.Error(
+        throw new xpm.ConfigurationError(
           `buildConfiguration "${buildConfigurationName}" ` +
             `matrix.${matrixKey} is not an array`
         )
       }
       for (const matrixValue of matrixValueArray) {
         if (!xpm.isString(matrixValue)) {
-          throw new xpm.Error(
+          throw new xpm.ConfigurationError(
             `buildConfiguration "${buildConfigurationName}" ` +
               `matrix.${matrixKey} value is not a string`
           )
@@ -794,7 +794,7 @@ export class BuildConfigurations {
             xpm.getErrorMessage(error) +
             ` in buildConfiguration "${buildConfigurationName}" ` +
             `matrix substitution`
-          throw new xpm.Error(message)
+          throw new xpm.ConfigurationError(message)
         }
 
         // console.log('substitutedValue =>', substitutedValue)
@@ -860,7 +860,7 @@ export class BuildConfigurations {
    * @returns A promise that resolves when the configuration has been created
    * and registered.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If substitutions fail during build configuration name expansion.
    */
   protected async _createSubstitutedBuildConfiguration({
@@ -892,7 +892,7 @@ export class BuildConfigurations {
         xpm.getErrorMessage(error) +
         ` in buildConfiguration "${buildConfigurationName}" ` +
         `name substitution`
-      throw new xpm.Error(message)
+      throw new xpm.ConfigurationError(message)
     }
 
     // console.log(substitutedActionName)
@@ -960,7 +960,7 @@ export class BuildConfiguration {
    * </ol>
    *
    * Names must be unique within the configurations collection, enforced
-   * during {@link xpm.BuildConfigurations.initialise}.
+   * during {@link BuildConfigurations.initialise}.
    */
   readonly buildConfigurationName: string
 
@@ -1484,10 +1484,10 @@ export class BuildConfiguration {
    * @returns A promise that resolves to `true` if initialisation was performed,
    * or `false` if already initialised.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If substitutions fail.
    *
-   * @throws {@link xpm.InputError}
+   * @throws {@link InputError}
    * If inheritance references are invalid or circular.
    */
   async initialise(): Promise<boolean> {
@@ -1583,7 +1583,7 @@ export class BuildConfiguration {
         const message =
           xpm.getErrorMessage(error) +
           ` in buildConfiguration "${this.buildConfigurationName}" dependencies`
-        throw new xpm.Error(message)
+        throw new xpm.ConfigurationError(message)
       }
       const parsedDependencies = JSON.parse(
         substitutedDependencies
@@ -1694,7 +1694,7 @@ export class BuildConfiguration {
    * @returns A promise that resolves to the build configuration content with
    * all template variables substituted.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If Liquid template substitution fails.
    */
   // eslint-disable-next-line max-len
@@ -1733,7 +1733,7 @@ export class BuildConfiguration {
         const message =
           xpm.getErrorMessage(error) +
           ` in buildConfiguration "${this.buildConfigurationName}"`
-        throw new xpm.Error(message)
+        throw new xpm.ConfigurationError(message)
       }
 
       localJsonBuildConfiguration = JSON.parse(
@@ -1781,7 +1781,7 @@ export class BuildConfiguration {
    * @returns A promise that resolves to the build configuration content with
    * the inherits field substituted.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If Liquid template substitution fails on the inherits field.
    */
   // eslint-disable-next-line max-len
@@ -1817,7 +1817,7 @@ export class BuildConfiguration {
         const message =
           xpm.getErrorMessage(error) +
           ` in buildConfiguration "${this.buildConfigurationName}" inherits`
-        throw new xpm.Error(message)
+        throw new xpm.ConfigurationError(message)
       }
 
       localJsonBuildConfiguration = {
@@ -1972,7 +1972,7 @@ export class BuildConfiguration {
           const message =
             xpm.getErrorMessage(error) +
             ` in buildConfiguration "${this.buildConfigurationName}"`
-          throw new xpm.Error(message)
+          throw new xpm.ConfigurationError(message)
         }
       }
     }

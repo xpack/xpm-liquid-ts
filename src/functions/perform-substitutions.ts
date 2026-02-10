@@ -64,7 +64,7 @@ import * as xpm from '../index.js'
  *
  * Liquid rendering errors are caught, stripped of line
  * number information (which can be misleading for nested templates), and
- * re-thrown as {@link xpm.Error}.
+ * re-thrown as {@link ConfigurationError}.
  *
  * @param log - The logger instance for output and diagnostics.
  * @param engine - The Liquid engine used to render substitutions.
@@ -72,7 +72,7 @@ import * as xpm from '../index.js'
  * @param substitutionsVariables - The variables available for substitution.
  * @returns The fully substituted string.
  *
- * @throws {@link xpm.Error}
+ * @throws {@link ConfigurationError}
  * If Liquid rendering fails.
  */
 export async function performSubstitutions({
@@ -160,10 +160,12 @@ export async function performSubstitutions({
     } catch (error) {
       if (error instanceof Error) {
         log.trace(util.inspect(error))
-        throw new xpm.Error(error.message.replace(/, line:.*/g, ''))
+        throw new xpm.ConfigurationError(
+          error.message.replace(/, line:.*/g, '')
+        )
         /* c8 ignore next 3 - safety net, currently all are Errors */
       } else {
-        throw new xpm.Error(String(error))
+        throw new xpm.ConfigurationError(String(error))
       }
     }
 

@@ -180,14 +180,14 @@ export class Package {
    *
    * When `withThrow` is false, the method returns undefined for missing or
    * invalid files, allowing callers to handle the absence gracefully. When
-   * `withThrow` is true, errors are thrown as {@link xpm.InputError} for
+   * `withThrow` is true, errors are thrown as {@link InputError} for
    * consistent error handling across the application.
    *
    * @param withThrow - Whether to throw on missing or invalid `package.json`.
    * @returns The parsed `package.json` content, or undefined when missing or
    * invalid and `withThrow` is false.
    *
-   * @throws {@link xpm.InputError}
+   * @throws {@link InputError}
    * If `package.json` is missing or invalid and `withThrow` is true.
    */
   async readPackageDotJson({
@@ -329,7 +329,7 @@ export class Package {
    * @returns `true` if the package defines binaries and executables, `false`
    * otherwise.
    *
-   * @throws {@link xpm.InputError}
+   * @throws {@link InputError}
    * If required binary package fields are missing.
    */
   isBinaryXpmPackage() {
@@ -581,7 +581,7 @@ export class Package {
    * @returns The cleaned minimum required version, or undefined if no check is
    * required.
    *
-   * @throws {@link xpm.PrerequisitesError}
+   * @throws {@link PrerequisitesError}
    * If the installed <b>xpm</b> version is lower than the required minimum.
    */
   async checkMinimumXpmRequired({
@@ -683,7 +683,7 @@ export class Package {
    * @param npmPackageSpecifier - The npm package specifier to parse.
    * @returns The parsed package specifier components.
    *
-   * @throws {@link xpm.InputError}
+   * @throws {@link InputError}
    * If the specifier is not a valid package name format.
    */
   parsePackageSpecifier({

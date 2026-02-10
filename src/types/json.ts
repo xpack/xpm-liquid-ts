@@ -148,7 +148,7 @@ export namespace json {
      */
     inherits?: BuildConfigurationInherits | string
     /**
-     * Deprecated alias of {@link BuildConfigurationContent.inherits}.
+     * Deprecated alias of {@link json.BuildConfigurationContent.inherits}.
      */
     inherit?: BuildConfigurationInherits | string // Deprecated, use inherits
     /**
@@ -310,7 +310,7 @@ export namespace json {
      */
     executables?: Record<string, string>
     /**
-     * Deprecated alias of {@link Xpack.executables}.
+     * Deprecated alias of {@link json.Xpack.executables}.
      */
     bin?: Record<string, string> // Deprecated, use executables
     /**

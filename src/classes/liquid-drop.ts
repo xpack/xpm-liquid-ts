@@ -130,7 +130,7 @@ export class LiquidPropertiesDrop extends Drop {
    * @param context - The Liquid rendering context.
    * @returns The resolved property value.
    *
-   * @throws {@link xpm.InputError}
+   * @throws {@link InputError}
    * If the property is not defined.
    */
   override async liquidMethodMissing(
@@ -279,7 +279,7 @@ export class LiquidMatrixDrop extends Drop {
    * @param context - The Liquid rendering context.
    * @returns The resolved matrix parameter value.
    *
-   * @throws {@link xpm.InputError}
+   * @throws {@link InputError}
    * If the matrix parameter is not defined.
    */
   override async liquidMethodMissing(

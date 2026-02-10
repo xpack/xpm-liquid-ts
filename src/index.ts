@@ -77,7 +77,9 @@ export * from './types/xpm.js'
 
 // ----------------------------------------------------------------------------
 
-// Re-export liquidjs to the application to ensure consistent versions.
-export * as liquidjs from 'liquidjs'
+// Note: liquidjs is not re-exported to avoid API Extractor conflicts.
+// Consumers should import it directly: import { Liquid } from 'liquidjs'
+// This ensures they use the same version as this library via peer dependencies.
+// export * as liquidjs from 'liquidjs'
 
 // ----------------------------------------------------------------------------

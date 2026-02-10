@@ -564,7 +564,11 @@ await t.test(
         await template.run()
         t.fail('should have thrown for missing property')
       } catch (error) {
-        t.type(error, xpm.SyntaxError, 'threw an error for missing property')
+        t.type(
+          error,
+          xpm.JsonSyntaxError,
+          'threw an error for missing property'
+        )
       }
       t.end()
     })
@@ -595,7 +599,7 @@ await t.test(
       } catch (error) {
         t.type(
           error,
-          xpm.SyntaxError,
+          xpm.JsonSyntaxError,
           'threw an error for unsupported platform'
         )
       }
@@ -626,7 +630,11 @@ await t.test(
         await template.run()
         t.fail('should have thrown for bad binary value')
       } catch (error) {
-        t.type(error, xpm.SyntaxError, 'threw an error for bad binary value')
+        t.type(
+          error,
+          xpm.JsonSyntaxError,
+          'threw an error for bad binary value'
+        )
       }
       t.end()
     })
@@ -655,7 +663,11 @@ await t.test(
         await template.run()
         t.fail('should have thrown for bad number value')
       } catch (error) {
-        t.type(error, xpm.SyntaxError, 'threw an error for bad number value')
+        t.type(
+          error,
+          xpm.JsonSyntaxError,
+          'threw an error for bad number value'
+        )
       }
       t.end()
     })
@@ -703,7 +715,7 @@ await t.test(
       } catch (error) {
         t.type(
           error,
-          xpm.SyntaxError,
+          xpm.JsonSyntaxError,
           'threw an error for string without default value'
         )
       }
@@ -1678,7 +1690,7 @@ await t.test(
       await template.run()
       t.fail('should have thrown for not possible without a TTY')
     } catch (error) {
-      t.type(error, xpm.SyntaxError, 'threw an XpmSyntaxError')
+      t.type(error, xpm.JsonSyntaxError, 'threw an XpmSyntaxError')
       t.match(
         (error as AssertionError).message,
         'not possible without a TTY',

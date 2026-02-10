@@ -52,7 +52,7 @@ await t.test('Actions undefined', async (t) => {
     const action = actions.get('nonexistent')
     t.fail('should have thrown an error, got ' + action.actionName)
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'does not exist',
@@ -81,7 +81,7 @@ await t.test('Actions at top', async (t) => {
     const action = actions.get('nonexistent')
     t.fail('should have thrown an error, got ' + action.actionName)
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'does not exist',
@@ -354,7 +354,7 @@ await t.test('Actions template duplicate', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'duplicate action',
@@ -381,7 +381,7 @@ await t.test('Actions template duplicate', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'already defined',
@@ -411,7 +411,7 @@ await t.test('Actions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match((error as Error).message, 'has no matrix', 'throws "has no matrix"')
   }
 
@@ -432,7 +432,7 @@ await t.test('Actions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'matrix is not an object',
@@ -458,7 +458,7 @@ await t.test('Actions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'has no template',
@@ -485,7 +485,7 @@ await t.test('Actions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'template is not a string',
@@ -512,7 +512,7 @@ await t.test('Actions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'is not an array',
@@ -539,7 +539,7 @@ await t.test('Actions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'value is not a string',
@@ -566,7 +566,7 @@ await t.test('Actions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'undefined variable',
@@ -593,7 +593,7 @@ await t.test('Actions template errors', async (t) => {
     await actions.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'name substitution',
@@ -623,7 +623,7 @@ await t.test('Action errors', async (t) => {
     await actionOne.initialise()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.throws(xpm.Error, 'throws xpm.Error')
+    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
     t.match(
       (error as Error).message,
       'commands substitution',

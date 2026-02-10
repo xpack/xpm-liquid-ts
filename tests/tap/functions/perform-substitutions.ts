@@ -17,6 +17,8 @@ import * as path from 'node:path'
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
+import * as liquidjs from 'liquidjs'
+
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../src/index.js'
@@ -80,7 +82,7 @@ await t.test('performSubstitutionsTest filters cascade', async (t) => {
 })
 
 await t.test('performSubstitutionsTest arrays original', async (t) => {
-  const engine = new xpm.liquidjs.Liquid()
+  const engine = new liquidjs.Liquid()
 
   const substitutionsVariables = {
     name: 'n',
@@ -91,7 +93,7 @@ await t.test('performSubstitutionsTest arrays original', async (t) => {
     compound: ['{{one}}', '{{two}}'],
   }
 
-  const context = new xpm.liquidjs.Context(substitutionsVariables)
+  const context = new liquidjs.Context(substitutionsVariables)
 
   const iteration = await engine.parseAndRender(
     '{% for item in array %}({{ item }}){% endfor %}',

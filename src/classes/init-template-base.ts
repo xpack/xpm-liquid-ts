@@ -175,7 +175,7 @@ export abstract class InitTemplateBase {
    *
    * @returns A promise that resolves to 0 on success.
    *
-   * @throws {@link xpm.SyntaxError}
+   * @throws {@link JsonSyntaxError}
    * If property validation fails or interactive mode is required but not
    * available (non-TTY environment).
    */
@@ -202,7 +202,7 @@ export abstract class InitTemplateBase {
       }
     }
     if (isError) {
-      throw new xpm.SyntaxError()
+      throw new xpm.JsonSyntaxError()
     }
 
     // Properties set by `--property name=value` are in `config.properties`.
@@ -221,7 +221,7 @@ export abstract class InitTemplateBase {
     if (mustAsk) {
       // Need to ask for more values.
       if (!(this._process.stdin.isTTY && this._process.stdout.isTTY)) {
-        throw new xpm.SyntaxError(
+        throw new xpm.JsonSyntaxError(
           'Interactive mode not possible without a TTY.'
         )
       }
@@ -415,7 +415,7 @@ export abstract class InitTemplateBase {
    * @returns A promise that resolves when the file has been rendered and
    * written.
    *
-   * @throws {@link xpm.OutputError}
+   * @throws {@link OutputError}
    * If template rendering fails.
    */
   async render({
@@ -490,7 +490,7 @@ export abstract class InitTemplateBase {
    * @returns The validated and potentially converted value (string,
    * boolean, or number).
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If the property is unsupported or the value is invalid.
    */
   protected _validatePropertyValue(
@@ -500,7 +500,7 @@ export abstract class InitTemplateBase {
     const propDef = this._propertiesDefinitions[name]
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (propDef === undefined) {
-      throw new xpm.Error(`Unsupported property '${name}'`)
+      throw new xpm.ConfigurationError(`Unsupported property '${name}'`)
     }
     const trimmedValue = value.trim()
 
@@ -550,7 +550,9 @@ export abstract class InitTemplateBase {
       }
     }
 
-    throw new xpm.Error(`Unsupported value '${value}' for property '${name}'`)
+    throw new xpm.ConfigurationError(
+      `Unsupported value '${value}' for property '${name}'`
+    )
   }
 
   /**

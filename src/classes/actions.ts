@@ -388,7 +388,7 @@ export class Actions {
    * @returns A promise that resolves to `true` if initialisation was
    * performed, or `false` if already initialised.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If duplicate action names are detected or if template expansion fails.
    */
   async initialise(): Promise<boolean> {
@@ -423,7 +423,9 @@ export class Actions {
         })
       } else {
         if (this._actionsNamesSet.has(actionName)) {
-          throw new xpm.Error(`action name "${actionName}" already defined.`)
+          throw new xpm.ConfigurationError(
+            `action name "${actionName}" already defined.`
+          )
         } else {
           this._actionsMap.set(actionName, undefined)
           this._jsonActionsNamesMap.set(actionName, actionName)
@@ -524,7 +526,7 @@ export class Actions {
    * @param actionName - The name of the action to retrieve.
    * @returns The action instance.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If an action with that name does not exist.
    */
   get(actionName: string): Action {
@@ -534,7 +536,9 @@ export class Actions {
     let action = this._actionsMap.get(actionName)
     if (action === undefined) {
       if (!this._jsonActionsNamesMap.has(actionName)) {
-        throw new xpm.Error(`action "${actionName}" does not exist`)
+        throw new xpm.ConfigurationError(
+          `action "${actionName}" does not exist`
+        )
       }
 
       const jsonActionName: string =
@@ -590,7 +594,7 @@ export class Actions {
    * parameters and an action template.
    * @returns A promise that resolves when processing is complete.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If duplicate action names are detected during expansion or if template
    * expansion fails.
    */
@@ -609,7 +613,7 @@ export class Actions {
       })
       for (const [expandedActionName, expandedAction] of expandedActionsMap) {
         if (this._actionsNamesSet.has(expandedActionName)) {
-          throw new xpm.Error(
+          throw new xpm.ConfigurationError(
             `duplicate action name "${expandedActionName}" ` +
               `could not be generated from template.`
           )
@@ -621,7 +625,7 @@ export class Actions {
       }
     } catch (error) {
       const message = xpm.getErrorMessage(error) + ` in action "${actionName}"`
-      throw new xpm.Error(message)
+      throw new xpm.ConfigurationError(message)
     }
   }
 
@@ -654,7 +658,7 @@ export class Actions {
    * @returns A promise that resolves to a map of expanded action names to
    * their corresponding action instances.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If the matrix structure is invalid, template format is incorrect, or
    * substitution fails.
    */
@@ -672,22 +676,24 @@ export class Actions {
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (jsonActionTemplate.matrix == undefined) {
-      throw new xpm.Error(`action "${actionName}" has no matrix`)
+      throw new xpm.ConfigurationError(`action "${actionName}" has no matrix`)
     }
 
     if (!xpm.isJsonObject(jsonActionTemplate.matrix)) {
-      throw new xpm.Error(`action "${actionName}" matrix is not an object`)
+      throw new xpm.ConfigurationError(
+        `action "${actionName}" matrix is not an object`
+      )
     }
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (jsonActionTemplate.template == undefined) {
-      throw new xpm.Error(`action "${actionName}" has no template`)
+      throw new xpm.ConfigurationError(`action "${actionName}" has no template`)
     }
 
     if (
       !xpm.isString(jsonActionTemplate.template) &&
       !xpm.isJsonArray(jsonActionTemplate.template)
     ) {
-      throw new xpm.Error(
+      throw new xpm.ConfigurationError(
         `action "${actionName}" template is not a string or array`
       )
     }
@@ -699,13 +705,13 @@ export class Actions {
       jsonActionTemplate.matrix
     )) {
       if (!xpm.isJsonArray(matrixValueArray)) {
-        throw new xpm.Error(
+        throw new xpm.ConfigurationError(
           `action "${actionName}" matrix.${matrixKey} is not an array`
         )
       }
       for (const matrixValue of matrixValueArray) {
         if (!xpm.isString(matrixValue)) {
-          throw new xpm.Error(
+          throw new xpm.ConfigurationError(
             `action "${actionName}" matrix.${matrixKey} value is not a string`
           )
         }
@@ -727,7 +733,7 @@ export class Actions {
           const message =
             xpm.getErrorMessage(error) +
             ` in action "${actionName}" matrix.${matrixKey}`
-          throw new xpm.Error(message)
+          throw new xpm.ConfigurationError(message)
         }
 
         // console.log('substitutedValue =>', substitutedValue)
@@ -799,7 +805,7 @@ export class Actions {
    * @returns A promise that resolves when the action has been created and
    * stored.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If the action name substitution fails.
    */
   protected async _createSubstitutedAction({
@@ -830,7 +836,7 @@ export class Actions {
       const message =
         xpm.getErrorMessage(error) +
         ` in action "${actionName}" name substitution`
-      throw new xpm.Error(message)
+      throw new xpm.ConfigurationError(message)
     }
 
     // console.log(substitutedActionName)
@@ -1096,7 +1102,7 @@ export class Action {
    * @returns A promise that resolves to `true` if initialisation was
    * performed, or `false` if already initialised.
    *
-   * @throws {@link xpm.Error}
+   * @throws {@link ConfigurationError}
    * If command substitution fails.
    */
   async initialise(): Promise<boolean> {
@@ -1132,7 +1138,7 @@ export class Action {
         const message =
           xpm.getErrorMessage(error) +
           ` in action "${this.actionName}" commands substitution`
-        throw new xpm.Error(message)
+        throw new xpm.ConfigurationError(message)
       }
     } else {
       substitutedCommands = inputCommands
