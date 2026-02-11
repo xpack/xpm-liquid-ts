@@ -14,13 +14,26 @@ custom_edit_url: null
 
 
 
+The Node.js process object for accessing runtime environment information.
+
 ## Signature
 
 ```typescript
 protected _process: NodeJS.Process;
 ```
+
+## Remarks
+
+This reference provides access to process properties including standard I/O streams, platform information, and architecture details. It is configurable via the constructor to support testing scenarios where process properties need to be mocked or controlled.
+
+Usage within the template:
+
+<ol> <li>Platform detection via <code>process.platform</code> and <code>process.arch</code> for platform-specific property validation.</li> <li>TTY detection via <code>stdin.isTTY</code> and <code>stdout.isTTY</code> to determine whether interactive prompting is possible.</li> <li>Standard I/O access for interactive user prompts and diagnostic output.</li> </ol>
+
+Defaults to the global Node.js <code>process</code> object when not explicitly provided in the constructor, enabling normal runtime behaviour whilst allowing test environments to inject controlled process implementations.
+
 <hr/>
 
-<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.56.3.</p>
+<p class="doxyGeneratedBy">Generated via <a href="https://xpack.github.io/doxygen2docusaurus">tsdoc2docusaurus</a> 1.3.0 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.56.3.</p>
 
 </div>

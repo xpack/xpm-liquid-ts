@@ -516,6 +516,8 @@ Computes the build folder relative path for this configuration.
 
 </td><td>
 
+Processes inheritance for a build configuration.
+
 
 </td></tr>
 <tr><td>

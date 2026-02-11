@@ -159,6 +159,8 @@ boolean
 
 </td><td>
 
+Flag indicating whether the template is running in interactive mode.
+
 
 </td></tr>
 <tr><td>
@@ -198,6 +200,8 @@ NodeJS.Process
 
 
 </td><td>
+
+The Node.js process object for accessing runtime environment information.
 
 
 </td></tr>
@@ -327,6 +331,8 @@ Recursively copies all contents of a source folder to a destination folder.
 
 
 </td><td>
+
+Validates the structure and content of property definitions.
 
 
 </td></tr>

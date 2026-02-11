@@ -14,6 +14,8 @@ custom_edit_url: null
 
 
 
+Processes inheritance for a build configuration.
+
 ## Signature
 
 ```typescript
@@ -50,6 +52,8 @@ localJsonBuildConfiguration
 
 </td><td>
 
+The JSON configuration content after template or inherits field substitution.
+
 
 </td></tr>
 </tbody></table>
@@ -58,8 +62,26 @@ localJsonBuildConfiguration
 
 Promise&lt;Map&lt;string, [Action](/xpm-lib-ts/docs/api/xpm-lib/classes/action)<!-- -->&gt;&gt;
 
+A promise that resolves to a map of inherited actions, where keys are action names and values are action instances from all inherited configurations.
+
+## Exceptions
+
+[InputError](/xpm-lib-ts/docs/api/xpm-lib/classes/inputerror) If an inherited configuration name does not exist in the parent collection.
+
+[InputError](/xpm-lib-ts/docs/api/xpm-lib/classes/inputerror) If a circular inheritance reference is detected.
+
+## Remarks
+
+This method implements the inheritance resolution mechanism for build configurations, enabling configurations to share properties, dependencies, and actions by inheriting from one or more base configurations, recursively.
+
+Processing workflow:
+
+<ol> <li>Extract inheritance specification from the configuration: <ul> <li>Supports both the current <code>inherits</code> field and the deprecated <code>inherit</code> field for backwards compatibility.</li> <li>Handles both string format (single parent) and array format (multiple parents).</li> <li>Normalises line-separated names within array elements to support multi-line specifications.</li> </ul> </li> <li>Process each inherited configuration sequentially: <ul> <li>Skip empty names from the inheritance list.</li> <li>Validate that the inherited configuration exists in the parent collection.</li> <li>Detect circular references by checking <code>\_inheritedNamesSet</code>.</li> <li>Recursively initialise the inherited configuration (which may itself have inheritance).</li> </ul> </li> <li>Merge inherited content into the current configuration: <ul> <li>Properties: Later inherited configurations override earlier ones, local properties override all inherited.</li> <li>Dependencies and devDependencies: Same override behaviour as properties.</li> <li>Actions: Collected into a map where later definitions override earlier ones with the same name.</li> </ul> </li> </ol>
+
+The inheritance chain is processed depth-first, ensuring that transitive inheritance (A inherits B, B inherits C) is fully resolved before merging properties. Circular references are detected to prevent infinite recursion.
+
 <hr/>
 
-<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.56.3.</p>
+<p class="doxyGeneratedBy">Generated via <a href="https://xpack.github.io/doxygen2docusaurus">tsdoc2docusaurus</a> 1.3.0 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.56.3.</p>
 
 </div>
