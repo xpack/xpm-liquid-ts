@@ -120,7 +120,7 @@ await t.test('rewritePackageDotJson', async (t): Promise<void> => {
   })
 
   const jsonPackage =
-    (await xpmPackage.readPackageDotJson()) as xpm.json.XpmPackage
+    (await xpmPackage.readPackageDotJson()) as xpm.JsonXpmPackage
   t.not(jsonPackage, undefined, 'package.json')
   t.not(xpmPackage.isXpmPackage(), true, 'is not xpm package before rewrite')
 
@@ -146,7 +146,7 @@ t.test('isNpmPackage', (t): void => {
   xpmPackage.jsonPackage = undefined
   t.not(xpmPackage.isNpmPackage(), true, 'undefined not an npm package')
 
-  xpmPackage.jsonPackage = {} as xpm.json.XpmPackage
+  xpmPackage.jsonPackage = {} as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isNpmPackage(),
     true,
@@ -156,19 +156,19 @@ t.test('isNpmPackage', (t): void => {
   xpmPackage.jsonPackage = {
     name: ' ',
     version: '1.0.0',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(xpmPackage.isNpmPackage(), true, 'empty name is not an npm package')
 
   xpmPackage.jsonPackage = {
     name: 'n',
     version: ' ',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(xpmPackage.isNpmPackage(), true, 'empty version is not an npm package')
 
   xpmPackage.jsonPackage = {
     name: 'n',
     version: '1.0.0',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.equal(
     xpmPackage.isNpmPackage(),
     true,
@@ -184,7 +184,7 @@ t.test('isXpmPackage', (t): void => {
     packageFolderPath: '-',
   })
 
-  xpmPackage.jsonPackage = {} as xpm.json.XpmPackage
+  xpmPackage.jsonPackage = {} as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isXpmPackage(),
     true,
@@ -194,26 +194,26 @@ t.test('isXpmPackage', (t): void => {
   xpmPackage.jsonPackage = {
     name: ' ',
     version: '1.0.0',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(xpmPackage.isXpmPackage(), true, 'empty name is not an xpm package')
 
   xpmPackage.jsonPackage = {
     name: 'n',
     version: ' ',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(xpmPackage.isXpmPackage(), true, 'empty version is not an xpm package')
 
   xpmPackage.jsonPackage = {
     name: 'n',
     version: '1.0.0',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(xpmPackage.isXpmPackage(), true, 'without xpack is not an xpm package')
 
   xpmPackage.jsonPackage = {
     name: 'n',
     version: '1.0.0',
     xpack: {},
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.equal(xpmPackage.isXpmPackage(), true, 'with xpack is an xpm package')
 
   t.end()
@@ -225,7 +225,7 @@ t.test('isBinaryXpmPackage', (t): void => {
     packageFolderPath: '-',
   })
 
-  xpmPackage.jsonPackage = {} as xpm.json.XpmPackage
+  xpmPackage.jsonPackage = {} as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isBinaryXpmPackage(),
     true,
@@ -235,7 +235,7 @@ t.test('isBinaryXpmPackage', (t): void => {
   xpmPackage.jsonPackage = {
     name: ' ',
     version: '1.0.0',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isBinaryXpmPackage(),
     true,
@@ -245,7 +245,7 @@ t.test('isBinaryXpmPackage', (t): void => {
   xpmPackage.jsonPackage = {
     name: 'n',
     version: ' ',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isBinaryXpmPackage(),
     true,
@@ -255,7 +255,7 @@ t.test('isBinaryXpmPackage', (t): void => {
   xpmPackage.jsonPackage = {
     name: 'n',
     version: '1.0.0',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isBinaryXpmPackage(),
     true,
@@ -266,7 +266,7 @@ t.test('isBinaryXpmPackage', (t): void => {
     name: 'n',
     version: '1.0.0',
     xpack: {},
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isBinaryXpmPackage(),
     true,
@@ -282,7 +282,7 @@ t.test('isBinaryXpmPackage', (t): void => {
           mybin: './.content/bin/mybin',
         },
       },
-    } as xpm.json.XpmPackage
+    } as xpm.JsonXpmPackage
     xpmPackage.isBinaryXpmPackage()
     t.fail('should have thrown an error')
   } catch (error) {
@@ -305,9 +305,9 @@ t.test('isBinaryXpmPackage', (t): void => {
         binaries: {
           destination: './.content/bin',
           baseUrl: 'https://example.com/downloads/mybin',
-        } as xpm.json.XpmBinaries,
+        } as xpm.JsonXpmBinaries,
       },
-    } as xpm.json.XpmPackage
+    } as xpm.JsonXpmPackage
     xpmPackage.isBinaryXpmPackage()
     t.fail('should have thrown an error')
   } catch (error) {
@@ -332,7 +332,7 @@ t.test('isBinaryXpmPackage', (t): void => {
         platforms: {},
       },
     },
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.equal(
     xpmPackage.isBinaryXpmPackage(),
     true,
@@ -349,7 +349,7 @@ t.test('isBinaryXpmPackage', (t): void => {
           baseUrl: 'https://example.com/downloads/mybin',
         },
       },
-    } as xpm.json.XpmPackage
+    } as xpm.JsonXpmPackage
     xpmPackage.isBinaryXpmPackage()
     t.fail('should have thrown an error')
   } catch (error) {
@@ -372,7 +372,7 @@ t.test('isBinaryXpmPackage', (t): void => {
           platforms: {},
         },
       },
-    } as xpm.json.XpmPackage
+    } as xpm.JsonXpmPackage
     xpmPackage.isBinaryXpmPackage()
     t.fail('should have thrown an error')
   } catch (error) {
@@ -396,7 +396,7 @@ t.test('isNodeModule', (t): void => {
   xpmPackage.jsonPackage = undefined
   t.not(xpmPackage.isNodeModule(), true, 'undefined not an node module')
 
-  xpmPackage.jsonPackage = {} as xpm.json.XpmPackage
+  xpmPackage.jsonPackage = {} as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isNodeModule(),
     true,
@@ -406,19 +406,19 @@ t.test('isNodeModule', (t): void => {
   xpmPackage.jsonPackage = {
     name: ' ',
     version: '1.0.0',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(xpmPackage.isNodeModule(), true, 'empty name is not an node module')
   xpmPackage.jsonPackage = {
     name: 'n',
     version: ' ',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(xpmPackage.isNodeModule(), true, 'empty version is not an node module')
 
   xpmPackage.jsonPackage = {
     name: 'n',
     version: '1.0.0',
     xpack: {},
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isNodeModule(),
     true,
@@ -428,7 +428,7 @@ t.test('isNodeModule', (t): void => {
   xpmPackage.jsonPackage = {
     name: 'n',
     version: '1.0.0',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.equal(
     xpmPackage.isNodeModule(),
     true,
@@ -447,7 +447,7 @@ t.test('isBinaryNodeModule', (t): void => {
   xpmPackage.jsonPackage = undefined
   t.not(xpmPackage.isBinaryNodeModule(), true, 'undefined not an node module')
 
-  xpmPackage.jsonPackage = {} as xpm.json.XpmPackage
+  xpmPackage.jsonPackage = {} as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isBinaryNodeModule(),
     true,
@@ -457,7 +457,7 @@ t.test('isBinaryNodeModule', (t): void => {
   xpmPackage.jsonPackage = {
     name: ' ',
     version: '1.0.0',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isBinaryNodeModule(),
     true,
@@ -466,7 +466,7 @@ t.test('isBinaryNodeModule', (t): void => {
   xpmPackage.jsonPackage = {
     name: 'n',
     version: ' ',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isBinaryNodeModule(),
     true,
@@ -477,13 +477,13 @@ t.test('isBinaryNodeModule', (t): void => {
     name: 'n',
     version: '1.0.0',
     xpack: {},
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(xpmPackage.isBinaryNodeModule(), true, 'with xpack is an node module')
 
   xpmPackage.jsonPackage = {
     name: 'n',
     version: '1.0.0',
-  } as xpm.json.XpmPackage
+  } as xpm.JsonXpmPackage
   t.not(
     xpmPackage.isBinaryNodeModule(),
     true,
@@ -496,7 +496,7 @@ t.test('isBinaryNodeModule', (t): void => {
     bin: {
       mybin: './.content/bin/mybin',
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
   t.equal(
     xpmPackage.isBinaryNodeModule(),
     true,
@@ -515,7 +515,7 @@ t.test('hasNpmScripts', (t): void => {
   xpmPackage.jsonPackage = {
     name: 'n',
     version: '1.0.0',
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.not(xpmPackage.hasNpmScripts(), true, 'has no npm scripts')
 
@@ -525,7 +525,7 @@ t.test('hasNpmScripts', (t): void => {
     scripts: {
       start: 'node index.js',
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.equal(xpmPackage.hasNpmScripts(), true, 'has npm scripts')
 
@@ -541,7 +541,7 @@ t.test('hasXpmActions', (t): void => {
   xpmPackage.jsonPackage = {
     name: 'n',
     version: '1.0.0',
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.not(xpmPackage.hasXpmActions(), true, 'without xpack has no xpm actions')
 
@@ -549,7 +549,7 @@ t.test('hasXpmActions', (t): void => {
     name: 'n',
     version: '1.0.0',
     xpack: {},
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.not(xpmPackage.hasXpmActions(), true, 'with empty xpack has no xpm actions')
 
@@ -559,7 +559,7 @@ t.test('hasXpmActions', (t): void => {
     xpack: {
       actions: {},
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.not(
     xpmPackage.hasXpmActions(),
@@ -575,7 +575,7 @@ t.test('hasXpmActions', (t): void => {
         build: 'echo Building...',
       },
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.equal(xpmPackage.hasXpmActions(), true, 'with top actions')
 
@@ -587,7 +587,7 @@ t.test('hasXpmActions', (t): void => {
         Debug: {},
       },
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.not(xpmPackage.hasXpmActions(), true, 'without configuration actions')
 
@@ -603,7 +603,7 @@ t.test('hasXpmActions', (t): void => {
         },
       },
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.equal(xpmPackage.hasXpmActions(), true, 'with configuration actions')
 
@@ -624,7 +624,7 @@ t.test('hasXpmActions', (t): void => {
         },
       },
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.equal(
     xpmPackage.hasXpmActions(),
@@ -653,7 +653,7 @@ t.test('getMinimumXpmRequired', (t): void => {
     xpack: {
       minimumXpmRequired: 42,
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.equal(
     xpmPackage.getMinimumXpmRequired(),
@@ -667,7 +667,7 @@ t.test('getMinimumXpmRequired', (t): void => {
     xpack: {
       minimumXpmRequired: '1.2.3-4',
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   t.equal(xpmPackage.getMinimumXpmRequired(), '1.2.3', 'has minimumXpmRequired')
 
@@ -690,7 +690,7 @@ await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
     name: 'n',
     version: '1.0.0',
     xpack: {},
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
   t.equal(
     await xpmPackage.checkMinimumXpmRequired({ xpmRootFolderPath: '-' }),
     undefined,
@@ -703,7 +703,7 @@ await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
     xpack: {
       minimumXpmRequired: '1.2.3',
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   let packageFolderPath = path.join(fixturesFolderPath, 'package-bad-json')
   t.equal(
@@ -720,7 +720,7 @@ await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
     xpack: {
       minimumXpmRequired: '1.2.3',
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   packageFolderPath = path.join(fixturesFolderPath, 'package-no-version')
   t.equal(
@@ -737,7 +737,7 @@ await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
     xpack: {
       minimumXpmRequired: '1.2.3',
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   packageFolderPath = path.join(fixturesFolderPath, 'package-bad-version')
   t.equal(
@@ -754,7 +754,7 @@ await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
     xpack: {
       minimumXpmRequired: '1.2.3',
     },
-  } as unknown as xpm.json.XpmPackage
+  } as unknown as xpm.JsonXpmPackage
 
   packageFolderPath = path.join(fixturesFolderPath, 'package-version')
   t.equal(
@@ -772,7 +772,7 @@ await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
       xpack: {
         minimumXpmRequired: '1.2.4',
       },
-    } as unknown as xpm.json.XpmPackage
+    } as unknown as xpm.JsonXpmPackage
 
     packageFolderPath = path.join(fixturesFolderPath, 'package-version')
 

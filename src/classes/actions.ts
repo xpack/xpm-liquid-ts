@@ -18,7 +18,26 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import * as xpm from '../index.js'
+import {
+  LiquidSubstitutionsVariables,
+  LiquidSubstitutionsStrings,
+} from '../data/substitutions-variables.js'
+import {
+  isJsonObject,
+  isString,
+  isJsonArray,
+} from '../functions/is-something.js'
+import { performSubstitutions } from '../functions/perform-substitutions.js'
+import { getErrorMessage } from '../functions/utils.js'
+import {
+  JsonActionContent,
+  JsonActions,
+  JsonActionTemplate,
+} from '../types/json.js'
+import { BuildConfiguration } from './build-configurations.js'
+import { CombinationsGenerator } from './combinations-generator.js'
+import { ConfigurationError } from './errors.js'
+import { LiquidEngine } from './liquid-engine.js'
 
 // ============================================================================
 
@@ -76,7 +95,7 @@ export class Actions {
    * expansion and later during individual action command substitution,
    * ensuring consistent template processing throughout the action lifecycle.
    */
-  readonly engine: xpm.LiquidEngine
+  readonly engine: LiquidEngine
 
   /**
    * The variables available for substitution in action definitions.
@@ -106,7 +125,7 @@ export class Actions {
    * (e.g., `{{ package.name }}`,
    * `{{ configuration.buildFolderRelativePath }}`).
    */
-  readonly substitutionsVariables: xpm.LiquidSubstitutionsVariables
+  readonly substitutionsVariables: LiquidSubstitutionsVariables
 
   /**
    * The JSON object containing action definitions from the package manifest.
@@ -128,7 +147,7 @@ export class Actions {
    * during initialisation, creating concrete actions from the Cartesian
    * product of matrix parameter values.
    */
-  readonly jsonActions: xpm.json.Actions
+  readonly jsonActions: JsonActions
 
   /**
    * The build configuration this actions collection belongs to, if any.
@@ -158,7 +177,7 @@ export class Actions {
    *    substitution.</li>
    * </ol>
    */
-  readonly buildConfiguration: xpm.BuildConfiguration | undefined
+  readonly buildConfiguration: BuildConfiguration | undefined
 
   // --------------------------------------------------------------------------
   // Protected Members.
@@ -325,11 +344,11 @@ export class Actions {
     buildConfiguration,
   }: {
     log: Logger
-    engine: xpm.LiquidEngine
-    substitutionsVariables: xpm.LiquidSubstitutionsVariables
-    jsonActions: xpm.json.Actions | undefined
+    engine: LiquidEngine
+    substitutionsVariables: LiquidSubstitutionsVariables
+    jsonActions: JsonActions | undefined
     inheritedActionsMap?: Map<string, Action>
-    buildConfiguration?: xpm.BuildConfiguration
+    buildConfiguration?: BuildConfiguration
   }) {
     assert(log, 'log is required')
     assert(engine, 'engine is required')
@@ -419,11 +438,11 @@ export class Actions {
       if (actionName.includes('{{')) {
         await this._processTemplate({
           actionName,
-          jsonActionTemplate: jsonAction as xpm.json.ActionTemplate,
+          jsonActionTemplate: jsonAction as JsonActionTemplate,
         })
       } else {
         if (this._actionsNamesSet.has(actionName)) {
-          throw new xpm.ConfigurationError(
+          throw new ConfigurationError(
             `action name "${actionName}" already defined.`
           )
         } else {
@@ -536,18 +555,15 @@ export class Actions {
     let action = this._actionsMap.get(actionName)
     if (action === undefined) {
       if (!this._jsonActionsNamesMap.has(actionName)) {
-        throw new xpm.ConfigurationError(
-          `action "${actionName}" does not exist`
-        )
+        throw new ConfigurationError(`action "${actionName}" does not exist`)
       }
 
       const jsonActionName: string =
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._jsonActionsNamesMap.get(actionName)!
       /* c8 ignore next 3 - safety net, action names are not undefined. */
-      const jsonAction: xpm.json.ActionContent = (this.jsonActions[
-        jsonActionName
-      ] ?? '') as xpm.json.ActionContent
+      const jsonAction: JsonActionContent = (this.jsonActions[jsonActionName] ??
+        '') as JsonActionContent
 
       action = new Action({
         actionName,
@@ -603,7 +619,7 @@ export class Actions {
     jsonActionTemplate,
   }: {
     actionName: string
-    jsonActionTemplate: xpm.json.ActionTemplate
+    jsonActionTemplate: JsonActionTemplate
   }): Promise<void> {
     // Expand template and generate multiple actions.
     try {
@@ -613,7 +629,7 @@ export class Actions {
       })
       for (const [expandedActionName, expandedAction] of expandedActionsMap) {
         if (this._actionsNamesSet.has(expandedActionName)) {
-          throw new xpm.ConfigurationError(
+          throw new ConfigurationError(
             `duplicate action name "${expandedActionName}" ` +
               `could not be generated from template.`
           )
@@ -624,8 +640,8 @@ export class Actions {
         }
       }
     } catch (error) {
-      const message = xpm.getErrorMessage(error) + ` in action "${actionName}"`
-      throw new xpm.ConfigurationError(message)
+      const message = getErrorMessage(error) + ` in action "${actionName}"`
+      throw new ConfigurationError(message)
     }
   }
 
@@ -667,7 +683,7 @@ export class Actions {
     jsonActionTemplate,
   }: {
     actionName: string
-    jsonActionTemplate: xpm.json.ActionTemplate
+    jsonActionTemplate: JsonActionTemplate
   }): Promise<Map<string, Action>> {
     const log = this.log
     log.trace(`${Actions.name}.#expandTemplateActions(${actionName})`)
@@ -676,24 +692,25 @@ export class Actions {
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (jsonActionTemplate.matrix == undefined) {
-      throw new xpm.ConfigurationError(`action "${actionName}" has no matrix`)
+      throw new ConfigurationError(`action "${actionName}" has no matrix`)
     }
 
-    if (!xpm.isJsonObject(jsonActionTemplate.matrix)) {
-      throw new xpm.ConfigurationError(
+    if (!isJsonObject(jsonActionTemplate.matrix)) {
+      throw new ConfigurationError(
         `action "${actionName}" matrix is not an object`
       )
     }
+
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (jsonActionTemplate.template == undefined) {
-      throw new xpm.ConfigurationError(`action "${actionName}" has no template`)
+      throw new ConfigurationError(`action "${actionName}" has no template`)
     }
 
     if (
-      !xpm.isString(jsonActionTemplate.template) &&
-      !xpm.isJsonArray(jsonActionTemplate.template)
+      !isString(jsonActionTemplate.template) &&
+      !isJsonArray(jsonActionTemplate.template)
     ) {
-      throw new xpm.ConfigurationError(
+      throw new ConfigurationError(
         `action "${actionName}" template is not a string or array`
       )
     }
@@ -704,14 +721,14 @@ export class Actions {
     for (const [matrixKey, matrixValueArray] of Object.entries(
       jsonActionTemplate.matrix
     )) {
-      if (!xpm.isJsonArray(matrixValueArray)) {
-        throw new xpm.ConfigurationError(
+      if (!isJsonArray(matrixValueArray)) {
+        throw new ConfigurationError(
           `action "${actionName}" matrix.${matrixKey} is not an array`
         )
       }
       for (const matrixValue of matrixValueArray) {
-        if (!xpm.isString(matrixValue)) {
-          throw new xpm.ConfigurationError(
+        if (!isString(matrixValue)) {
+          throw new ConfigurationError(
             `action "${actionName}" matrix.${matrixKey} value is not a string`
           )
         }
@@ -721,7 +738,7 @@ export class Actions {
       if (stringValue.includes('{{') || stringValue.includes('{%')) {
         let substitutedValue
         try {
-          substitutedValue = await xpm.performSubstitutions({
+          substitutedValue = await performSubstitutions({
             input: stringValue,
             engine: this.engine,
             substitutionsVariables: {
@@ -731,9 +748,9 @@ export class Actions {
           })
         } catch (error) {
           const message =
-            xpm.getErrorMessage(error) +
+            getErrorMessage(error) +
             ` in action "${actionName}" matrix.${matrixKey}`
-          throw new xpm.ConfigurationError(message)
+          throw new ConfigurationError(message)
         }
 
         // console.log('substitutedValue =>', substitutedValue)
@@ -746,7 +763,7 @@ export class Actions {
     }
 
     // Compute all combinations (cartesian product)
-    const combinationsGenerator = new xpm.CombinationsGenerator({
+    const combinationsGenerator = new CombinationsGenerator({
       matrixKeys,
       matrixValues,
       log: this.log,
@@ -816,14 +833,14 @@ export class Actions {
   }: {
     combination: Record<string, string>
     actionName: string
-    jsonAction: xpm.json.ActionContent
+    jsonAction: JsonActionContent
     newActionsMap: Map<string, Action>
   }): Promise<void> {
     // console.log(combination)
 
     let substitutedActionName
     try {
-      substitutedActionName = await xpm.performSubstitutions({
+      substitutedActionName = await performSubstitutions({
         input: actionName,
         engine: this.engine,
         substitutionsVariables: {
@@ -834,9 +851,8 @@ export class Actions {
       })
     } catch (error) {
       const message =
-        xpm.getErrorMessage(error) +
-        ` in action "${actionName}" name substitution`
-      throw new xpm.ConfigurationError(message)
+        getErrorMessage(error) + ` in action "${actionName}" name substitution`
+      throw new ConfigurationError(message)
     }
 
     // console.log(substitutedActionName)
@@ -926,7 +942,7 @@ export class Action {
    * This immutable storage ensures actions can be safely copied and
    * initialised multiple times without side effects.
    */
-  readonly jsonAction: xpm.json.ActionContent
+  readonly jsonAction: JsonActionContent
 
   /**
    * The parent actions collection this action belongs to.
@@ -979,7 +995,7 @@ export class Action {
    * Example: A template with `{{ matrix.arch }}` becomes `x64` when this
    * action's matrix parameters include `{ arch: 'x64' }`.
    */
-  protected readonly _matrixParameters?: xpm.LiquidSubstitutionsStrings
+  protected readonly _matrixParameters?: LiquidSubstitutionsStrings
 
   /**
    * The array of command strings after variable substitution.
@@ -1055,9 +1071,9 @@ export class Action {
     matrixParameters,
   }: {
     actionName: string
-    jsonAction: xpm.json.ActionContent
+    jsonAction: JsonActionContent
     parentActions: Actions
-    matrixParameters?: xpm.LiquidSubstitutionsStrings
+    matrixParameters?: LiquidSubstitutionsStrings
   }) {
     assert(actionName, 'actionName is required')
     // assert(jsonAction) // Can be an empty string.
@@ -1125,7 +1141,7 @@ export class Action {
     let substitutedCommands
     if (inputCommands.includes('{{') || inputCommands.includes('{%')) {
       try {
-        substitutedCommands = await xpm.performSubstitutions({
+        substitutedCommands = await performSubstitutions({
           input: inputCommands,
           engine: this.parentActions.engine,
           substitutionsVariables: {
@@ -1136,9 +1152,9 @@ export class Action {
         })
       } catch (error) {
         const message =
-          xpm.getErrorMessage(error) +
+          getErrorMessage(error) +
           ` in action "${this.actionName}" commands substitution`
-        throw new xpm.ConfigurationError(message)
+        throw new ConfigurationError(message)
       }
     } else {
       substitutedCommands = inputCommands

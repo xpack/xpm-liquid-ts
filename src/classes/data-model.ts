@@ -20,7 +20,15 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import * as xpm from '../index.js'
+import {
+  LiquidSubstitutionsVariables,
+  liquidSubstitutionsVariablesBase,
+} from '../data/substitutions-variables.js'
+import { isJsonObject } from '../functions/is-something.js'
+import { Actions } from './actions.js'
+import { BuildConfigurations } from './build-configurations.js'
+import { LiquidEngine } from './liquid-engine.js'
+import { JsonXpmPackage } from '../types/json.js'
 
 // ============================================================================
 
@@ -100,7 +108,7 @@ export class DataModel {
    * context with their own scoped variables (configuration, matrix) without
    * modifying the original sealed object.
    */
-  readonly substitutionsVariables: xpm.LiquidSubstitutionsVariables
+  readonly substitutionsVariables: LiquidSubstitutionsVariables
 
   /**
    * The actions collection for this package.
@@ -124,7 +132,7 @@ export class DataModel {
    *    from package-level actions.</li>
    * </ol>
    */
-  readonly actions: xpm.Actions
+  readonly actions: Actions
 
   /**
    * The build configurations collection for this package.
@@ -150,7 +158,7 @@ export class DataModel {
    *    package-level actions and adding configuration-specific ones.</li>
    * </ol>
    */
-  readonly buildConfigurations: xpm.BuildConfigurations
+  readonly buildConfigurations: BuildConfigurations
 
   /**
    * The logger instance for output and diagnostics.
@@ -216,7 +224,7 @@ export class DataModel {
    * The package definition is validated during construction, requiring the
    * `xpack` section to be present and be a valid JSON object.
    */
-  protected _jsonPackage: xpm.json.XpmPackage
+  protected _jsonPackage: JsonXpmPackage
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -259,15 +267,15 @@ export class DataModel {
     jsonPackage,
   }: {
     log: Logger
-    jsonPackage: xpm.json.XpmPackage
+    jsonPackage: JsonXpmPackage
   }) {
     log.trace(`${DataModel.name}()`)
 
     this._log = log
-    this._engine = new xpm.LiquidEngine()
+    this._engine = new LiquidEngine()
 
     assert(
-      xpm.isJsonObject(jsonPackage.xpack),
+      isJsonObject(jsonPackage.xpack),
       'xpack section missing in package.json'
     )
     this._jsonPackage = jsonPackage
@@ -279,11 +287,11 @@ export class DataModel {
     )
 
     this.substitutionsVariables = {
-      ...xpm.liquidSubstitutionsVariablesBase,
+      ...liquidSubstitutionsVariablesBase,
       package: jsonPackage,
     }
 
-    if (xpm.isJsonObject(jsonPackage.xpack.properties)) {
+    if (isJsonObject(jsonPackage.xpack.properties)) {
       this.substitutionsVariables.properties = {
         ...jsonPackage.xpack.properties,
       }
@@ -293,7 +301,7 @@ export class DataModel {
     Object.seal(this.substitutionsVariables)
 
     // Empty actions.
-    this.actions = new xpm.Actions({
+    this.actions = new Actions({
       log: this._log,
       engine: this._engine,
       substitutionsVariables: this.substitutionsVariables,
@@ -301,7 +309,7 @@ export class DataModel {
     })
 
     // Empty build configurations.
-    this.buildConfigurations = new xpm.BuildConfigurations({
+    this.buildConfigurations = new BuildConfigurations({
       log: this._log,
       engine: this._engine,
       substitutionsVariables: this.substitutionsVariables,

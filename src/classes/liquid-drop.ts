@@ -12,14 +12,16 @@
 // ----------------------------------------------------------------------------
 
 // https://www.npmjs.com/package/liquidjs
-import { Liquid, Context, Drop } from 'liquidjs'
+import * as liquidjs from 'liquidjs'
 
 // https://www.npmjs.com/package/@xpack/logger
 import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import * as xpm from '../index.js'
+import { LiquidSubstitutionsStrings } from '../data/substitutions-variables.js'
+import { isJsonObject } from '../functions/is-something.js'
+import { InputError } from './errors.js'
 
 // ============================================================================
 
@@ -49,7 +51,7 @@ import * as xpm from '../index.js'
  * reference another, which can reference yet another, with the engine
  * automatically resolving the entire chain.
  */
-export class LiquidPropertiesDrop extends Drop {
+export class LiquidPropertiesDrop extends liquidjs.Drop {
   // --------------------------------------------------------------------------
   // Public Members.
 
@@ -64,12 +66,12 @@ export class LiquidPropertiesDrop extends Drop {
   /**
    * The properties map used for substitutions.
    */
-  protected _properties: xpm.LiquidSubstitutionsStrings
+  protected _properties: LiquidSubstitutionsStrings
 
   /**
    * The Liquid engine used to render nested substitutions.
    */
-  protected _engine: Liquid
+  protected _engine: liquidjs.Liquid
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -87,8 +89,8 @@ export class LiquidPropertiesDrop extends Drop {
     properties,
   }: {
     log: Logger
-    engine: Liquid
-    properties: xpm.LiquidSubstitutionsStrings
+    engine: liquidjs.Liquid
+    properties: LiquidSubstitutionsStrings
   }) {
     super()
 
@@ -113,7 +115,7 @@ export class LiquidPropertiesDrop extends Drop {
    * Resolution process:
    *
    * <ol>
-   * <li>Validate the property exists, throw <code>xpm.InputError</code> if
+   * <li>Validate the property exists, throw <code>InputError</code> if
    * not.</li>
    * <li>Retrieve the property value (string, array, or object).</li>
    * <li>If object, return as-is for Liquid to access nested properties.</li>
@@ -135,13 +137,13 @@ export class LiquidPropertiesDrop extends Drop {
    */
   override async liquidMethodMissing(
     key: string,
-    context: Context
+    context: liquidjs.Context
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     // console.log(key)
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this._properties[key] === undefined) {
-      throw new xpm.InputError(`"properties.${key}" not defined`)
+      throw new InputError(`"properties.${key}" not defined`)
     }
 
     const log = this._log
@@ -155,7 +157,7 @@ export class LiquidPropertiesDrop extends Drop {
 
     let result: string | string[]
 
-    if (xpm.isJsonObject(value)) {
+    if (isJsonObject(value)) {
       return value
     }
 
@@ -200,7 +202,7 @@ export class LiquidPropertiesDrop extends Drop {
  * generated action or configuration has access only to its specific matrix
  * combination.
  */
-export class LiquidMatrixDrop extends Drop {
+export class LiquidMatrixDrop extends liquidjs.Drop {
   // --------------------------------------------------------------------------
   // Protected Members.
 
@@ -212,12 +214,12 @@ export class LiquidMatrixDrop extends Drop {
   /**
    * The matrix parameters map used for substitutions.
    */
-  protected _matrix: xpm.LiquidSubstitutionsStrings
+  protected _matrix: LiquidSubstitutionsStrings
 
   /**
    * The Liquid engine used to render nested substitutions.
    */
-  protected _engine: Liquid
+  protected _engine: liquidjs.Liquid
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -235,8 +237,8 @@ export class LiquidMatrixDrop extends Drop {
     matrix,
   }: {
     log: Logger
-    engine: Liquid
-    matrix: xpm.LiquidSubstitutionsStrings
+    engine: liquidjs.Liquid
+    matrix: LiquidSubstitutionsStrings
   }) {
     super()
 
@@ -261,7 +263,7 @@ export class LiquidMatrixDrop extends Drop {
    * Resolution process:
    *
    * <ol>
-   * <li>Validate the parameter exists, throw <code>xpm.InputError</code> if
+   * <li>Validate the parameter exists, throw <code>InputError</code> if
    * not.</li>
    * <li>Retrieve the parameter value (string, array, or object).</li>
    * <li>If object, return as-is for Liquid to access nested properties.</li>
@@ -284,13 +286,13 @@ export class LiquidMatrixDrop extends Drop {
    */
   override async liquidMethodMissing(
     key: string,
-    context: Context
+    context: liquidjs.Context
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     // console.log(key)
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this._matrix[key] === undefined) {
-      throw new xpm.InputError(`"matrix.${key}" not defined`)
+      throw new InputError(`"matrix.${key}" not defined`)
     }
 
     const log = this._log
@@ -304,7 +306,7 @@ export class LiquidMatrixDrop extends Drop {
 
     let result: string | string[]
 
-    if (xpm.isJsonObject(value)) {
+    if (isJsonObject(value)) {
       return value
     }
 

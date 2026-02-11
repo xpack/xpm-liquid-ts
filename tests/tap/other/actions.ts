@@ -35,7 +35,7 @@ const log = new Logger({ level: 'info' })
 // ----------------------------------------------------------------------------
 
 await t.test('actions', async (t): Promise<void> => {
-  const json: xpm.json.XpmPackage = {
+  const json: xpm.JsonXpmPackage = {
     name: 'test',
     version: '1.2.3',
     xpack: {
@@ -86,7 +86,7 @@ await t.test('actions', async (t): Promise<void> => {
   // console.log(topActions.substitutionsVariables.properties)
   t.equal(
     Object.keys(topActions.substitutionsVariables.properties).length,
-    Object.keys(json.xpack.properties as xpm.json.Properties).length,
+    Object.keys(json.xpack.properties as xpm.JsonProperties).length,
     'properties length matches'
   )
 

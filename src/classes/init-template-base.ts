@@ -24,15 +24,27 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import * as xpm from '../index.js'
+import {
+  InitTemplateItemValue,
+  InitTemplatePropertiesDefinitions,
+  InitTemplateSubstitutionsVariables,
+} from '../types/xpm-init-template.js'
+import { Context } from '../types/xpm.js'
+import {
+  isString,
+  isObject,
+  isBoolean,
+  isNumber,
+} from '../functions/is-something.js'
+import { JsonSyntaxError, OutputError, ConfigurationError } from './errors.js'
 
 // ============================================================================
 
 export interface InitTemplateConstructorParameters {
-  context: xpm.Context
+  context: Context
   __dirname: string
   templatesPath: string
-  propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions
+  propertiesDefinitions: InitTemplatePropertiesDefinitions
   process?: NodeJS.Process
 }
 
@@ -68,7 +80,7 @@ export abstract class InitTemplateBase {
   /**
    * The <b>xpm</b> context containing configuration and logging utilities.
    */
-  protected _context: xpm.Context
+  protected _context: Context
 
   /**
    * The logger instance for output and diagnostics.
@@ -78,7 +90,7 @@ export abstract class InitTemplateBase {
   /**
    * Definitions of all properties supported by this template.
    */
-  protected _propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {}
+  protected _propertiesDefinitions: InitTemplatePropertiesDefinitions = {}
 
   /**
    * The absolute path to the module folder.
@@ -98,7 +110,7 @@ export abstract class InitTemplateBase {
   /**
    * The variables to be used for template substitutions.
    */
-  protected _substitutionsVariables?: xpm.InitTemplateSubstitutionsVariables
+  protected _substitutionsVariables?: InitTemplateSubstitutionsVariables
 
   protected _isInteractive = false
 
@@ -202,7 +214,7 @@ export abstract class InitTemplateBase {
       }
     }
     if (isError) {
-      throw new xpm.JsonSyntaxError()
+      throw new JsonSyntaxError()
     }
 
     // Properties set by `--property name=value` are in `config.properties`.
@@ -221,7 +233,7 @@ export abstract class InitTemplateBase {
     if (mustAsk) {
       // Need to ask for more values.
       if (!(this._process.stdin.isTTY && this._process.stdout.isTTY)) {
-        throw new xpm.JsonSyntaxError(
+        throw new JsonSyntaxError(
           'Interactive mode not possible without a TTY.'
         )
       }
@@ -247,7 +259,7 @@ export abstract class InitTemplateBase {
 
     const currentTime = new Date()
 
-    const substitutionsVariables: xpm.InitTemplateSubstitutionsVariables = {
+    const substitutionsVariables: InitTemplateSubstitutionsVariables = {
       // Spread all config properties.
       ...config.properties,
       // Also pass the properties grouped.
@@ -426,7 +438,7 @@ export abstract class InitTemplateBase {
   }: {
     sourceFilePath: string
     destinationFilePath: string
-    substitutionsVariables?: xpm.InitTemplateSubstitutionsVariables
+    substitutionsVariables?: InitTemplateSubstitutionsVariables
   }): Promise<void> {
     const log = this._log
     const context = this._context
@@ -454,7 +466,7 @@ export abstract class InitTemplateBase {
       await fs.writeFile(destinationFilePath, fileContent, 'utf8')
     } catch (error) {
       if (error instanceof Error) {
-        throw new xpm.OutputError(error.message)
+        throw new OutputError(error.message)
       }
     }
     log.info(`File '${destinationFileRelativePath}' generated.`)
@@ -500,7 +512,7 @@ export abstract class InitTemplateBase {
     const propDef = this._propertiesDefinitions[name]
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (propDef === undefined) {
-      throw new xpm.ConfigurationError(`Unsupported property '${name}'`)
+      throw new ConfigurationError(`Unsupported property '${name}'`)
     }
     const trimmedValue = value.trim()
 
@@ -550,7 +562,7 @@ export abstract class InitTemplateBase {
       }
     }
 
-    throw new xpm.ConfigurationError(
+    throw new ConfigurationError(
       `Unsupported value '${value}' for property '${name}'`
     )
   }
@@ -601,12 +613,12 @@ export abstract class InitTemplateBase {
           const validItems = []
           assert(definition.items, 'definition.items is required')
           for (const [ikey, ival] of Object.entries(definition.items)) {
-            if (xpm.isString(ival)) {
+            if (isString(ival)) {
               validItems.push(ikey)
             } else if (
-              xpm.isObject(ival) &&
+              isObject(ival) &&
               this.isPlatformSupported(
-                (ival as xpm.InitTemplateItemValue).platforms
+                (ival as InitTemplateItemValue).platforms
               )
             ) {
               validItems.push(ikey)
@@ -650,16 +662,16 @@ export abstract class InitTemplateBase {
           if (definition.type === 'select') {
             assert(definition.items, 'definition.items is required')
             for (const [ikey, ival] of Object.entries(definition.items)) {
-              if (xpm.isString(ival)) {
+              if (isString(ival)) {
                 this._process.stdout.write(`- ${ikey}: ${ival as string}\n`)
               } else if (
-                xpm.isObject(ival) &&
+                isObject(ival) &&
                 this.isPlatformSupported(
-                  (ival as xpm.InitTemplateItemValue).platforms
+                  (ival as InitTemplateItemValue).platforms
                 )
               ) {
                 this._process.stdout.write(
-                  `- ${ikey}: ${(ival as xpm.InitTemplateItemValue).message}\n`
+                  `- ${ikey}: ${(ival as InitTemplateItemValue).message}\n`
                 )
               }
             }
@@ -715,7 +727,7 @@ export abstract class InitTemplateBase {
 
   protected _validatePropertiesDefinitions(): void {
     assert(
-      xpm.isObject(this._propertiesDefinitions),
+      isObject(this._propertiesDefinitions),
       'propertiesDefinitions is not an object.'
     )
 
@@ -725,14 +737,11 @@ export abstract class InitTemplateBase {
     )
 
     for (const [key, val] of Object.entries(this._propertiesDefinitions)) {
-      assert(
-        xpm.isString(val.label),
-        `Property '${key}' must have a string label`
-      )
+      assert(isString(val.label), `Property '${key}' must have a string label`)
       assert(val.label.trim() !== '', `Property '${key}' has an empty label`)
 
       assert(
-        xpm.isString(val.description),
+        isString(val.description),
         `Property '${key}' must have a string description`
       )
       assert(
@@ -742,7 +751,7 @@ export abstract class InitTemplateBase {
 
       if (val.isMandatory !== undefined) {
         assert(
-          xpm.isBoolean(val.isMandatory),
+          isBoolean(val.isMandatory),
           `Property '${key}' has a non boolean isMandatory value.`
         )
       }
@@ -758,7 +767,7 @@ export abstract class InitTemplateBase {
           )
 
           assert(
-            xpm.isObject(val.items),
+            isObject(val.items),
             `Property '${key}' of type 'select' has invalid items.`
           )
 
@@ -769,12 +778,10 @@ export abstract class InitTemplateBase {
 
           for (const [ikey, ival] of Object.entries(val.items)) {
             assert(
-              xpm.isString(ival) ||
-                (xpm.isObject(ival) &&
-                  Array.isArray(
-                    (ival as xpm.InitTemplateItemValue).platforms
-                  ) &&
-                  xpm.isString((ival as xpm.InitTemplateItemValue).message)),
+              isString(ival) ||
+                (isObject(ival) &&
+                  Array.isArray((ival as InitTemplateItemValue).platforms) &&
+                  isString((ival as InitTemplateItemValue).message)),
               `Property '${key}' has invalid item '${ikey}'.`
             )
           }
@@ -789,7 +796,7 @@ export abstract class InitTemplateBase {
 
           if (val.default !== undefined) {
             assert(
-              xpm.isString(val.default),
+              isString(val.default),
               `Property '${key}' has a non string default value.`
             )
 
@@ -810,7 +817,7 @@ export abstract class InitTemplateBase {
         case 'string':
           if (val.default !== undefined) {
             assert(
-              xpm.isString(val.default),
+              isString(val.default),
               `Property '${key}' has a non string default value.`
             )
 
@@ -824,7 +831,7 @@ export abstract class InitTemplateBase {
         case 'number':
           if (val.default !== undefined) {
             assert(
-              xpm.isNumber(val.default),
+              isNumber(val.default),
               `Property '${key}' has a non number default value.`
             )
           }
@@ -833,7 +840,7 @@ export abstract class InitTemplateBase {
         case 'boolean':
           if (val.default !== undefined) {
             assert(
-              xpm.isBoolean(val.default),
+              isBoolean(val.default),
               `Property '${key}' has a non boolean default value.`
             )
           }

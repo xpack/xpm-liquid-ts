@@ -20,7 +20,16 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import * as xpm from '../index.js'
+import { LiquidEngine } from '../classes/liquid-engine.js'
+import { ConfigurationError } from '../classes/errors.js'
+import {
+  LiquidPropertiesDrop,
+  LiquidMatrixDrop,
+} from '../classes/liquid-drop.js'
+import {
+  LiquidSubstitutionsVariables,
+  LiquidSubstitutionsStrings,
+} from '../data/substitutions-variables.js'
 
 // ============================================================================
 
@@ -82,9 +91,9 @@ export async function performSubstitutions({
   substitutionsVariables,
 }: {
   log: Logger
-  engine: xpm.LiquidEngine
+  engine: LiquidEngine
   input: string
-  substitutionsVariables: xpm.LiquidSubstitutionsVariables
+  substitutionsVariables: LiquidSubstitutionsVariables
 }): Promise<string> {
   assert(substitutionsVariables, 'substitutionsVariables is required')
 
@@ -95,15 +104,13 @@ export async function performSubstitutions({
 
   // Wrap properties into a liquid drop (a mechanism to process
   // substitutions immediately).
-  let properties: xpm.LiquidSubstitutionsStrings | xpm.LiquidPropertiesDrop =
+  let properties: LiquidSubstitutionsStrings | LiquidPropertiesDrop =
     substitutionsVariables.properties
-  let matrix:
-    | xpm.LiquidSubstitutionsStrings
-    | xpm.LiquidMatrixDrop
-    | undefined = substitutionsVariables.matrix
+  let matrix: LiquidSubstitutionsStrings | LiquidMatrixDrop | undefined =
+    substitutionsVariables.matrix
 
   if (Object.keys(substitutionsVariables.properties).length > 0) {
-    properties = new xpm.LiquidPropertiesDrop({
+    properties = new LiquidPropertiesDrop({
       log,
       engine,
       properties: substitutionsVariables.properties,
@@ -113,7 +120,7 @@ export async function performSubstitutions({
     substitutionsVariables.matrix &&
     Object.keys(substitutionsVariables.matrix).length > 0
   ) {
-    matrix = new xpm.LiquidMatrixDrop({
+    matrix = new LiquidMatrixDrop({
       log,
       engine,
       matrix: substitutionsVariables.matrix,
@@ -160,12 +167,10 @@ export async function performSubstitutions({
     } catch (error) {
       if (error instanceof Error) {
         log.trace(util.inspect(error))
-        throw new xpm.ConfigurationError(
-          error.message.replace(/, line:.*/g, '')
-        )
+        throw new ConfigurationError(error.message.replace(/, line:.*/g, ''))
         /* c8 ignore next 3 - safety net, currently all are Errors */
       } else {
-        throw new xpm.ConfigurationError(String(error))
+        throw new ConfigurationError(String(error))
       }
     }
 

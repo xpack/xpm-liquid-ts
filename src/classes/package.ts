@@ -23,7 +23,15 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import * as xpm from '../index.js'
+import { InputError, PrerequisitesError } from './errors.js'
+import { isString } from '../functions/is-something.js'
+import {
+  JsonBuildConfiguration,
+  JsonBuildConfigurationContent,
+  JsonBuildConfigurationTemplate,
+  JsonPackageSpecifier,
+  JsonXpmPackage,
+} from '../types/json.js'
 
 // ============================================================================
 
@@ -113,7 +121,7 @@ export class Package {
    * The cached content improves performance for packages that perform
    * multiple validation checks without file system access overhead.
    */
-  jsonPackage?: xpm.json.XpmPackage
+  jsonPackage?: JsonXpmPackage
 
   // --------------------------------------------------------------------------
   // Protected Members.
@@ -194,7 +202,7 @@ export class Package {
     withThrow = false,
   }: {
     withThrow?: boolean
-  } = {}): Promise<xpm.json.XpmPackage | undefined> {
+  } = {}): Promise<JsonXpmPackage | undefined> {
     const jsonFilePath = path.join(this.packageFolderPath, 'package.json')
 
     let fileContent: string | Buffer
@@ -205,7 +213,7 @@ export class Package {
         if (error instanceof Error) {
           this._log.trace(error.message)
         }
-        throw new xpm.InputError(
+        throw new InputError(
           `no package.json in folder ‘${this.packageFolderPath}’`
         )
       } else {
@@ -214,16 +222,14 @@ export class Package {
     }
 
     try {
-      this.jsonPackage = JSON.parse(
-        fileContent.toString()
-      ) as xpm.json.XpmPackage
+      this.jsonPackage = JSON.parse(fileContent.toString()) as JsonXpmPackage
     } catch (error) {
       if (withThrow) {
         this.jsonPackage = undefined
         if (error instanceof Error) {
           this._log.trace(error.message)
         }
-        throw new xpm.InputError(
+        throw new InputError(
           `invalid package.json in folder ‘${this.packageFolderPath}’`
         )
       } else {
@@ -243,7 +249,7 @@ export class Package {
    * @param jsonPackage - The `package.json` content to write.
    * @returns A promise that resolves when the file has been written.
    */
-  async rewritePackageDotJson(jsonPackage: xpm.json.XpmPackage): Promise<void> {
+  async rewritePackageDotJson(jsonPackage: JsonXpmPackage): Promise<void> {
     const log = this._log
 
     assert(jsonPackage, 'jsonPackage is required')
@@ -344,7 +350,7 @@ export class Package {
       // If it has `executables` or `bin`, it must have `binaries` and
       // `binaries.platforms` too.
       if (!jsonPackage.xpack.binaries) {
-        throw new xpm.InputError(
+        throw new InputError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.binaries"'
         )
@@ -352,7 +358,7 @@ export class Package {
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!jsonPackage.xpack.binaries.platforms) {
-        throw new xpm.InputError(
+        throw new InputError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.binaries.platforms"'
         )
@@ -365,13 +371,13 @@ export class Package {
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!jsonPackage.xpack.binaries.platforms) {
-        throw new xpm.InputError(
+        throw new InputError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.binaries.platforms"'
         )
       }
       // if (!(jsonPackage.xpack.executables ?? jsonPackage.xpack.bin)) {
-      throw new xpm.InputError(
+      throw new InputError(
         "doesn't look like a proper binary xpm package, " +
           'package.json has no "xpack.executables"'
       )
@@ -488,14 +494,14 @@ export class Package {
         for (const buildConfigurationName of Object.keys(
           json.xpack.buildConfigurations
         )) {
-          const buildConfiguration: xpm.json.BuildConfiguration =
+          const buildConfiguration: JsonBuildConfiguration =
             json.xpack.buildConfigurations[buildConfigurationName]
           if (
             buildConfigurationName.includes('{{') ||
             buildConfigurationName.includes('{%')
           ) {
             const buildConfigurationTemplate =
-              buildConfiguration as xpm.json.BuildConfigurationTemplate
+              buildConfiguration as JsonBuildConfigurationTemplate
             if (
               buildConfigurationTemplate.template.actions !== undefined &&
               Object.keys(buildConfigurationTemplate.template.actions).length >
@@ -505,7 +511,7 @@ export class Package {
             }
           } else {
             const buildConfigurationContent =
-              buildConfiguration as xpm.json.BuildConfigurationContent
+              buildConfiguration as JsonBuildConfigurationContent
             if (
               buildConfigurationContent.actions !== undefined &&
               Object.keys(buildConfigurationContent.actions).length > 0
@@ -541,7 +547,7 @@ export class Package {
       return undefined
     }
 
-    if (!xpm.isString(version)) {
+    if (!isString(version)) {
       return undefined
     }
 
@@ -607,7 +613,7 @@ export class Package {
 
     log.trace(`minimumXpmRequired: ${minimumXpmRequired}`)
 
-    let jsonXpmCliPackage: xpm.json.XpmPackage | undefined
+    let jsonXpmCliPackage: JsonXpmPackage | undefined
     try {
       const cliXpmPackage = new Package({
         log,
@@ -641,7 +647,7 @@ export class Package {
     }
     if (semver.lt(xpmVersion, minimumXpmRequired)) {
       assert(jsonPackage?.name, 'jsonPackage.name is required')
-      throw new xpm.PrerequisitesError(
+      throw new PrerequisitesError(
         `package '${jsonPackage.name}' ` +
           `requires xpm v${minimumXpmRequired} or later, please upgrade`
       )
@@ -690,7 +696,7 @@ export class Package {
     npmPackageSpecifier,
   }: {
     npmPackageSpecifier: string
-  }): xpm.json.PackageSpecifier {
+  }): JsonPackageSpecifier {
     assert(npmPackageSpecifier, 'npmPackageSpecifier is required')
 
     const log = this._log
@@ -702,7 +708,7 @@ export class Package {
     if (npmPackageSpecifier.startsWith('@')) {
       const arr = npmPackageSpecifier.split('/')
       if (arr.length > 2) {
-        throw new xpm.InputError(`'${npmPackageSpecifier}' not a package name`)
+        throw new InputError(`'${npmPackageSpecifier}' not a package name`)
       }
       scope = arr[0]
       if (arr.length > 1) {

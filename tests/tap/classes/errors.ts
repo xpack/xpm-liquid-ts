@@ -29,7 +29,7 @@ import * as xpm from '../../../src/index.js'
 // ----------------------------------------------------------------------------
 
 t.test('xpm.Errors', (t): void => {
-  let error = new xpm.Error('Test error')
+  let error = new xpm.ConfigurationError('Test error')
   t.equal(error.message, 'Test error', 'xpm.Error error message')
 
   error = new xpm.PrerequisitesError('Test prerequisites error')

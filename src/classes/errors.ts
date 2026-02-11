@@ -54,10 +54,10 @@ export class PrerequisitesError extends Error {}
  * Error indicating a configuration issue.
  *
  * @remarks
- * This error is thrown when configuration files, such as `xpm.json`, contain
- * invalid values, missing required fields, circular references, or other
- * issues that prevent proper initialization or execution. Use this error when
- * the problem is related to the content of configuration files rather than
+ * This error is thrown when configuration files, such as `package.json`, 
+ * contain invalid values, missing required fields, circular references, or 
+ * other issues that prevent proper initialization or execution. Use this error 
+ * whenthe problem is related to the content of configuration files rather than
  * user input or output generation.
  */
 export class ConfigurationError extends Error {}

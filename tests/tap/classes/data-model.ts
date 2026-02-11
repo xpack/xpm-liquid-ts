@@ -40,7 +40,7 @@ t.test('constructor', (t): void => {
   try {
     const dataModel = new xpm.DataModel({
       log,
-      jsonPackage: jsonNoXpack as xpm.json.XpmPackage,
+      jsonPackage: jsonNoXpack as xpm.JsonXpmPackage,
     })
     t.fail('should have thrown an error')
   } catch (error) {
@@ -61,7 +61,7 @@ t.test('constructor', (t): void => {
 
   const xpmDataModel = new xpm.DataModel({
     log,
-    jsonPackage: json as xpm.json.XpmPackage,
+    jsonPackage: json as xpm.JsonXpmPackage,
   })
 
   // console.log(xpmDataModel)
