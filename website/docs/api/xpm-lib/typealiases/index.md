@@ -19,6 +19,51 @@ The following type aliases are defined:
 <tbody>
 <tr><td>
 
+[ActionCommands](/docs/api/xpm-lib/typealiases/actioncommands)
+
+</td><td>
+
+Represents a list of action command strings.
+
+</td></tr>
+<tr><td>
+
+[InitTemplateItems](/docs/api/xpm-lib/typealiases/inittemplateitems)
+
+</td><td>
+
+Represents the available items for a `select` type property in `xpm init` templates.
+
+</td></tr>
+<tr><td>
+
+[InitTemplatePlatform](/docs/api/xpm-lib/typealiases/inittemplateplatform)
+
+</td><td>
+
+Represents the supported platform identifiers for `xpm init` template items.
+
+</td></tr>
+<tr><td>
+
+[InitTemplatePropertiesDefinitions](/docs/api/xpm-lib/typealiases/inittemplatepropertiesdefinitions)
+
+</td><td>
+
+Represents a map of `xpm init` template property definitions.
+
+</td></tr>
+<tr><td>
+
+[InitTemplateType](/docs/api/xpm-lib/typealiases/inittemplatetype)
+
+</td><td>
+
+Represents the supported property types for `xpm init` template properties.
+
+</td></tr>
+<tr><td>
+
 [JsonAction](/docs/api/xpm-lib/typealiases/jsonaction)
 
 </td><td>
@@ -136,60 +181,24 @@ Represents a JSON map of binaries platforms.
 </td></tr>
 <tr><td>
 
-[XpmActionCommands](/docs/api/xpm-lib/typealiases/xpmactioncommands)
-
-</td><td>
-
-Represents a list of action command strings.
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplateItems](/docs/api/xpm-lib/typealiases/xpminittemplateitems)
-
-</td><td>
-
-Represents the available items for a `select` type property in `xpm init` templates.
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplatePlatform](/docs/api/xpm-lib/typealiases/xpminittemplateplatform)
-
-</td><td>
-
-Represents the supported platform identifiers for `xpm init` template items.
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplatePropertiesDefinitions](/docs/api/xpm-lib/typealiases/xpminittemplatepropertiesdefinitions)
-
-</td><td>
-
-Represents a map of `xpm init` template property definitions.
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplateType](/docs/api/xpm-lib/typealiases/xpminittemplatetype)
-
-</td><td>
-
-Represents the supported property types for `xpm init` template properties.
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidSubstitutionsStrings](/docs/api/xpm-lib/typealiases/xpmliquidsubstitutionsstrings)
+[LiquidSubstitutionsStrings](/docs/api/xpm-lib/typealiases/liquidsubstitutionsstrings)
 
 </td><td>
 
 Represents a map of substitution values used by Liquid templates.
 
 </td></tr>
+<tr><td>
+
+[MatrixCombination](/docs/api/xpm-lib/typealiases/matrixcombination)
+
+</td><td>
+
+A matrix combination mapping parameter names to their values.
+
+</td></tr>
 </tbody></table><hr/>
 
-<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.0-pre by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.55.2.</p>
+<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.56.3.</p>
 
 </div>

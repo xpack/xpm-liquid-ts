@@ -28,7 +28,7 @@
  * }
  * ```
  */
-export type XpmInitTemplatePropertiesDefinitions = Record<string, XpmInitTemplatePropertiesDefinition>;
+export type InitTemplatePropertiesDefinitions = Record<string, InitTemplatePropertiesDefinition>;
 /**
  * Defines an `xpm init` single template property.
  *
@@ -49,7 +49,7 @@ export type XpmInitTemplatePropertiesDefinitions = Record<string, XpmInitTemplat
  * </ul>
  *
  * Platform filtering: For `select` types, items can specify platform
- * constraints via `XpmInitTemplateItemValue`, hiding options that
+ * constraints via `InitTemplateItemValue`, hiding options that
  * don't match the current platform. This enables platform-specific
  * configuration without manual filtering.
  *
@@ -57,7 +57,7 @@ export type XpmInitTemplatePropertiesDefinitions = Record<string, XpmInitTemplat
  * until the user provides a value. Optional properties with defaults use
  * the default when the user skips the prompt.
  */
-export interface XpmInitTemplatePropertiesDefinition {
+export interface InitTemplatePropertiesDefinition {
     /**
      * The human-readable label used in prompts.
      */
@@ -69,11 +69,11 @@ export interface XpmInitTemplatePropertiesDefinition {
     /**
      * The property value type.
      */
-    type: XpmInitTemplateType;
+    type: InitTemplateType;
     /**
      * The selectable items for a `select` property.
      */
-    items?: XpmInitTemplateItems;
+    items?: InitTemplateItems;
     /**
      * Indicates whether the property is mandatory; defaults to `false`.
      */
@@ -103,7 +103,7 @@ export interface XpmInitTemplatePropertiesDefinition {
  *    <code>true</code> or <code>false</code>.</li>
  * </ul>
  */
-export type XpmInitTemplateType = 'select' | 'string' | 'number' | 'boolean';
+export type InitTemplateType = 'select' | 'string' | 'number' | 'boolean';
 /**
  * Represents the available items for a `select` type property in `xpm init`
  * templates.
@@ -119,7 +119,7 @@ export type XpmInitTemplateType = 'select' | 'string' | 'number' | 'boolean';
  * <ul>
  * <li><b>Simple string:</b> A description shown to all users regardless
  *    of platform.</li>
- * <li><b><code>XpmInitTemplateItemValue</code>:</b> A platform-specific
+ * <li><b><code>InitTemplateItemValue</code>:</b> A platform-specific
  *    item that only appears when the current platform matches the
  *    <code>platforms</code> constraint.</li>
  * </ul>
@@ -135,7 +135,7 @@ export type XpmInitTemplateType = 'select' | 'string' | 'number' | 'boolean';
  * }
  * ```
  */
-export type XpmInitTemplateItems = Record<string, string | XpmInitTemplateItemValue>;
+export type InitTemplateItems = Record<string, string | InitTemplateItemValue>;
 /**
  * Represents the supported platform identifiers for `xpm init` template items.
  *
@@ -159,7 +159,7 @@ export type XpmInitTemplateItems = Record<string, string | XpmInitTemplateItemVa
  * Common use case: Offering different toolchain options based on whether
  * the user is on Windows, macOS Intel, macOS ARM, or Linux.
  */
-export type XpmInitTemplatePlatform = 'linux' | 'linux-x64' | 'linux-arm64' | 'win32' | 'darwin' | 'darwin-x64' | 'darwin-arm64';
+export type InitTemplatePlatform = 'linux' | 'linux-x64' | 'linux-arm64' | 'win32' | 'darwin' | 'darwin-x64' | 'darwin-arm64';
 /**
  * Defines an `xpm init` template platform-specific item value.
  *
@@ -196,11 +196,11 @@ export type XpmInitTemplatePlatform = 'linux' | 'linux-x64' | 'linux-arm64' | 'w
  * When running on Windows, only the "msvc" option appears. On Linux or
  * macOS Intel, only "gcc-arm" appears.
  */
-export interface XpmInitTemplateItemValue {
+export interface InitTemplateItemValue {
     /**
      * The list of supported platforms.
      */
-    platforms: XpmInitTemplatePlatform[];
+    platforms: InitTemplatePlatform[];
     /**
      * The description message for this item.
      */
@@ -239,7 +239,7 @@ export interface XpmInitTemplateItemValue {
  * {% endif %}
  * ```
  */
-export interface XpmInitTemplateSubstitutionsVariables {
+export interface InitTemplateSubstitutionsVariables {
     /**
      * The resolved template properties.
      */

@@ -1,27 +1,27 @@
 import assert from 'node:assert';
 import * as os from 'node:os';
+import { liquidSubstitutionsVariablesBase, } from '../data/substitutions-variables.js';
 import { isJsonObject } from '../functions/is-something.js';
-import { xpmLiquidSubstitutionsVariablesBase, } from '../data/substitutions-variables.js';
-import { XpmLiquidEngine } from './liquid-engine.js';
-import { XpmActions } from './actions.js';
-import { XpmBuildConfigurations } from './build-configurations.js';
+import { Actions } from './actions.js';
+import { BuildConfigurations } from './build-configurations.js';
+import { LiquidEngine } from './liquid-engine.js';
 export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath';
-export class XpmDataModel {
+export class DataModel {
     substitutionsVariables;
     actions;
     buildConfigurations;
     _log;
     _engine;
     _jsonPackage;
-    constructor({ log, jsonPackage, }) {
-        log.trace(`${XpmDataModel.name}()`);
+    constructor({ jsonPackage, log }) {
+        log.trace(`${DataModel.name}()`);
         this._log = log;
-        this._engine = new XpmLiquidEngine();
+        this._engine = new LiquidEngine();
         assert(isJsonObject(jsonPackage.xpack), 'xpack section missing in package.json');
         this._jsonPackage = jsonPackage;
         assert(typeof os.version === 'function', 'Mandatory os.version available only since 12.x');
         this.substitutionsVariables = {
-            ...xpmLiquidSubstitutionsVariablesBase,
+            ...liquidSubstitutionsVariablesBase,
             package: jsonPackage,
         };
         if (isJsonObject(jsonPackage.xpack.properties)) {
@@ -30,13 +30,13 @@ export class XpmDataModel {
             };
         }
         Object.seal(this.substitutionsVariables);
-        this.actions = new XpmActions({
+        this.actions = new Actions({
             log: this._log,
             engine: this._engine,
             substitutionsVariables: this.substitutionsVariables,
             jsonActions: this._jsonPackage.xpack.actions,
         });
-        this.buildConfigurations = new XpmBuildConfigurations({
+        this.buildConfigurations = new BuildConfigurations({
             log: this._log,
             engine: this._engine,
             substitutionsVariables: this.substitutionsVariables,

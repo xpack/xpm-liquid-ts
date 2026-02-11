@@ -1,11 +1,11 @@
-export class XpmError extends Error {
+export class JsonSyntaxError extends Error {
 }
-export class XpmPrerequisitesError extends Error {
+export class PrerequisitesError extends Error {
 }
-export class XpmInputError extends Error {
+export class ConfigurationError extends Error {
 }
-export class XpmSyntaxError extends Error {
+export class InputError extends Error {
 }
-export class XpmOutputError extends Error {
+export class OutputError extends Error {
 }
 //# sourceMappingURL=errors.js.map

@@ -9,7 +9,7 @@ Recursively changes file permissions within a folder tree.
 **Signature:**
 
 ```typescript
-export declare function chmodRecursively({ inputPath, readOnly, log, }: {
+export declare function chmodRecursively(input: {
     inputPath: string;
     readOnly: boolean;
     log: Logger;
@@ -37,6 +37,20 @@ Description
 <tbody><tr><td>
 
 { inputPath, readOnly, log, }
+
+
+</td><td>
+
+(not declared)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+input
 
 
 </td><td>

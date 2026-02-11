@@ -171,9 +171,9 @@ export interface JsonBuildConfigurationContent {
  * }
  * ```
  *
- * This generates four configurations: `linux-x64`, `linux-arm64`, `darwin-x64`,
- * and `darwin-arm64`, each with matrix values available for property
- * substitution.
+ * This generates four configurations: `linux-x64`, `linux-arm64`,
+ * `darwin-x64`, and `darwin-arm64`, each with matrix values available
+ * for property substitution.
  */
 export interface JsonBuildConfigurationTemplate {
     /**
@@ -298,12 +298,12 @@ export interface JsonXpack {
  */
 export type JsonXpmBinariesPlatforms = Record<string, JsonXpmPlatformFile>;
 /**
- * Represents a JSON binaries definition in `package.json.`
+ * Represents a JSON binaries definition in `package.`
  *
  * @remarks
  * Configures binary package distribution for tools, SDKs, or compiled
- * applications. <b>xpm</b> downloads platform-specific archives, verifies their
- * integrity, and extracts them to the specified destination.
+ * applications. <b>xpm</b> downloads platform-specific archives, verifies
+ * their integrity, and extracts them to the specified destination.
  *
  * Example usage in `package.json`:
  * ```json
@@ -418,8 +418,8 @@ export interface JsonNpmPackage {
  *    platforms with automated installation.</li>
  * </ul>
  *
- * The presence of the `xpack` section enables <b>xpm</b>-specific features like
- * template-based build configurations, matrix expansion, property
+ * The presence of the `xpack` section enables <b>xpm</b>-specific features
+ * like template-based build configurations, matrix expansion, property
  * substitution, and platform-specific binary distribution. Standard npm
  * fields (name, version, etc.) are used for package
  * identification.

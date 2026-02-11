@@ -14,9 +14,9 @@ The main functionality is to manage actions and build configurations, especially
 
 <h3>The Lazy Evaluation Mechanism</h3>
 
-Actions ([XpmActions](./xpm-lib.xpmactions.md)<!-- -->) and build configurations ([XpmBuildConfigurations](./xpm-lib.xpmbuildconfigurations.md)<!-- -->) implement a two-step lazy evaluation process to avoid unnecessary operations:
+Actions ([Actions](./xpm-lib.actions.md)<!-- -->) and build configurations ([BuildConfigurations](./xpm-lib.buildconfigurations.md)<!-- -->) implement a two-step lazy evaluation process to avoid unnecessary operations:
 
-<ol> <li><b>Name Expansion:</b> During collection initialisation, only the matrix of options is evaluated for each template, expanding template names into concrete action or configuration names without processing their content.</li> <li><b>Content Evaluation:</b> Later, when an action or build configuration is actually accessed and initialised (via <code>XpmAction.initialise()</code> or <code>XpmBuildConfiguration.initialise()</code>), the template is fully evaluated and Liquid substitutions are performed.</li> </ol>
+<ol> <li><b>Name Expansion:</b> During collection initialisation, only the matrix of options is evaluated for each template, expanding template names into concrete action or configuration names without processing their content.</li> <li><b>Content Evaluation:</b> Later, when an action or build configuration is actually accessed and initialised (via <code>Action.initialise()</code> or <code>BuildConfiguration.initialise()</code>), the template is fully evaluated and Liquid substitutions are performed.</li> </ol>
 
 This approach ensures that only items that are actually used incur the cost of template evaluation and variable substitution, significantly improving performance for projects with many actions or configurations.
 
@@ -35,7 +35,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[XpmAction](./xpm-lib.xpmaction.md)
+[Action](./xpm-lib.action.md)
 
 
 </td><td>
@@ -46,7 +46,7 @@ An individual <b>xpm</b> action containing commands to be executed.
 </td></tr>
 <tr><td>
 
-[XpmActions](./xpm-lib.xpmactions.md)
+[Actions](./xpm-lib.actions.md)
 
 
 </td><td>
@@ -57,7 +57,7 @@ A collection of <b>xpm</b> actions for a build configuration or the entire packa
 </td></tr>
 <tr><td>
 
-[XpmBuildConfiguration](./xpm-lib.xpmbuildconfiguration.md)
+[BuildConfiguration](./xpm-lib.buildconfiguration.md)
 
 
 </td><td>
@@ -68,7 +68,7 @@ An individual <b>xpm</b> build configuration.
 </td></tr>
 <tr><td>
 
-[XpmBuildConfigurations](./xpm-lib.xpmbuildconfigurations.md)
+[BuildConfigurations](./xpm-lib.buildconfigurations.md)
 
 
 </td><td>
@@ -79,7 +79,29 @@ A collection of <b>xpm</b> build configurations.
 </td></tr>
 <tr><td>
 
-[XpmDataModel](./xpm-lib.xpmdatamodel.md)
+[CombinationsGenerator](./xpm-lib.combinationsgenerator.md)
+
+
+</td><td>
+
+Generates all possible combinations from a matrix of parameters.
+
+
+</td></tr>
+<tr><td>
+
+[ConfigurationError](./xpm-lib.configurationerror.md)
+
+
+</td><td>
+
+Error indicating a configuration issue.
+
+
+</td></tr>
+<tr><td>
+
+[DataModel](./xpm-lib.datamodel.md)
 
 
 </td><td>
@@ -90,18 +112,7 @@ Represents a lazy-loading data model for an <b>xpm</b> package.
 </td></tr>
 <tr><td>
 
-[XpmError](./xpm-lib.xpmerror.md)
-
-
-</td><td>
-
-Base class for xpm-related errors.
-
-
-</td></tr>
-<tr><td>
-
-[XpmInputError](./xpm-lib.xpminputerror.md)
+[InputError](./xpm-lib.inputerror.md)
 
 
 </td><td>
@@ -112,7 +123,18 @@ Error indicating that user input is invalid.
 </td></tr>
 <tr><td>
 
-[XpmLiquidEngine](./xpm-lib.xpmliquidengine.md)
+[JsonSyntaxError](./xpm-lib.jsonsyntaxerror.md)
+
+
+</td><td>
+
+Error indicating a syntax error in configuration or template files.
+
+
+</td></tr>
+<tr><td>
+
+[LiquidEngine](./xpm-lib.liquidengine.md)
 
 
 </td><td>
@@ -123,7 +145,7 @@ Liquid engine configured for <b>xpm</b> templates.
 </td></tr>
 <tr><td>
 
-[XpmLiquidMatrixDrop](./xpm-lib.xpmliquidmatrixdrop.md)
+[LiquidMatrixDrop](./xpm-lib.liquidmatrixdrop.md)
 
 
 </td><td>
@@ -134,7 +156,7 @@ Liquid drop that resolves `matrix` parameter values for templates.
 </td></tr>
 <tr><td>
 
-[XpmLiquidPropertiesDrop](./xpm-lib.xpmliquidpropertiesdrop.md)
+[LiquidPropertiesDrop](./xpm-lib.liquidpropertiesdrop.md)
 
 
 </td><td>
@@ -145,7 +167,7 @@ Liquid drop that resolves `property` values for template substitutions.
 </td></tr>
 <tr><td>
 
-[XpmOutputError](./xpm-lib.xpmoutputerror.md)
+[OutputError](./xpm-lib.outputerror.md)
 
 
 </td><td>
@@ -156,7 +178,7 @@ Error indicating a failure during output generation.
 </td></tr>
 <tr><td>
 
-[XpmPackage](./xpm-lib.xpmpackage.md)
+[Package](./xpm-lib.package.md)
 
 
 </td><td>
@@ -167,7 +189,7 @@ Provides access to package metadata and xpm-specific validation.
 </td></tr>
 <tr><td>
 
-[XpmPolicies](./xpm-lib.xpmpolicies.md)
+[Policies](./xpm-lib.policies.md)
 
 
 </td><td>
@@ -178,23 +200,12 @@ Computes feature policy flags based on a minimum <b>xpm</b> version.
 </td></tr>
 <tr><td>
 
-[XpmPrerequisitesError](./xpm-lib.xpmprerequisiteserror.md)
+[PrerequisitesError](./xpm-lib.prerequisiteserror.md)
 
 
 </td><td>
 
 Error indicating that required prerequisites are not met.
-
-
-</td></tr>
-<tr><td>
-
-[XpmSyntaxError](./xpm-lib.xpmsyntaxerror.md)
-
-
-</td><td>
-
-Error indicating a syntax error in configuration or template files.
 
 
 </td></tr>
@@ -215,12 +226,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[XpmInitTemplateBase](./xpm-lib.xpminittemplatebase.md)
+[InitTemplateBase](./xpm-lib.inittemplatebase.md)
 
 
 </td><td>
 
-Base class for <b>xpm</b> initialisation templates.
+Base class for `xpm init` templates.
 
 
 </td></tr>
@@ -241,7 +252,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[chmodRecursively({ inputPath, readOnly, log, })](./xpm-lib.chmodrecursively.md)
+[chmodRecursively({ inputPath, readOnly, log, }, input)](./xpm-lib.chmodrecursively.md)
 
 
 </td><td>
@@ -296,7 +307,7 @@ Extracts an error message string from an unknown error value.
 </td></tr>
 <tr><td>
 
-[getPlatformKey({ doForce32bit, })](./xpm-lib.getplatformkey.md)
+[getPlatformKey({ doForce32bit, }, input)](./xpm-lib.getplatformkey.md)
 
 
 </td><td>
@@ -395,7 +406,7 @@ Determines whether a value is a string.
 </td></tr>
 <tr><td>
 
-[performSubstitutions({ log, engine, input, substitutionsVariables, })](./xpm-lib.performsubstitutions.md)
+[performSubstitutions({ log, engine, input, substitutionsVariables, }, input)](./xpm-lib.performsubstitutions.md)
 
 
 </td><td>
@@ -420,6 +431,138 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[ActionConstructorParameters](./xpm-lib.actionconstructorparameters.md)
+
+
+</td><td>
+
+Configuration parameters for constructing an action instance.
+
+
+</td></tr>
+<tr><td>
+
+[ActionsConstructorParameters](./xpm-lib.actionsconstructorparameters.md)
+
+
+</td><td>
+
+Configuration parameters for constructing an actions collection instance.
+
+
+</td></tr>
+<tr><td>
+
+[BuildConfigurationConstructorParameters](./xpm-lib.buildconfigurationconstructorparameters.md)
+
+
+</td><td>
+
+Configuration parameters for constructing a build configuration instance.
+
+
+</td></tr>
+<tr><td>
+
+[BuildConfigurationsConstructorParameters](./xpm-lib.buildconfigurationsconstructorparameters.md)
+
+
+</td><td>
+
+Configuration parameters for constructing a build configurations collection.
+
+
+</td></tr>
+<tr><td>
+
+[CombinationsGeneratorConstructorParameters](./xpm-lib.combinationsgeneratorconstructorparameters.md)
+
+
+</td><td>
+
+Configuration parameters for constructing a combinations generator instance.
+
+
+</td></tr>
+<tr><td>
+
+[Config](./xpm-lib.config.md)
+
+
+</td><td>
+
+Defines the <b>xpm</b> configuration options.
+
+
+</td></tr>
+<tr><td>
+
+[Context](./xpm-lib.context.md)
+
+
+</td><td>
+
+Provides the execution context for <b>xpm</b> operations.
+
+
+</td></tr>
+<tr><td>
+
+[DataModelConstructorParameters](./xpm-lib.datamodelconstructorparameters.md)
+
+
+</td><td>
+
+Configuration parameters for constructing a data model instance.
+
+
+</td></tr>
+<tr><td>
+
+[InitTemplateConstructorParameters](./xpm-lib.inittemplateconstructorparameters.md)
+
+
+</td><td>
+
+Configuration parameters for constructing an `xpm init` template.
+
+
+</td></tr>
+<tr><td>
+
+[InitTemplateItemValue](./xpm-lib.inittemplateitemvalue.md)
+
+
+</td><td>
+
+Defines an `xpm init` template platform-specific item value.
+
+
+</td></tr>
+<tr><td>
+
+[InitTemplatePropertiesDefinition](./xpm-lib.inittemplatepropertiesdefinition.md)
+
+
+</td><td>
+
+Defines an `xpm init` single template property.
+
+
+</td></tr>
+<tr><td>
+
+[InitTemplateSubstitutionsVariables](./xpm-lib.inittemplatesubstitutionsvariables.md)
+
+
+</td><td>
+
+Defines the substitution variables used by `xpm init` templates.
+
+
+</td></tr>
+<tr><td>
 
 [JsonActionTemplate](./xpm-lib.jsonactiontemplate.md)
 
@@ -503,7 +646,7 @@ Represents a JSON xpm-specific section in `package.json`<!-- -->.
 
 </td><td>
 
-Represents a JSON binaries definition in `package.json.`
+Represents a JSON binaries definition in `package.`
 
 
 </td></tr>
@@ -531,76 +674,56 @@ Represents a JSON platform-specific binary file definition.
 </td></tr>
 <tr><td>
 
-[XpmConfig](./xpm-lib.xpmconfig.md)
+[LiquidMatrixDropConstructorParameters](./xpm-lib.liquidmatrixdropconstructorparameters.md)
 
 
 </td><td>
 
-Defines the <b>xpm</b> configuration options.
+Configuration parameters for constructing a matrix drop instance.
 
 
 </td></tr>
 <tr><td>
 
-[XpmContext](./xpm-lib.xpmcontext.md)
+[LiquidPropertiesDropConstructorParameters](./xpm-lib.liquidpropertiesdropconstructorparameters.md)
 
 
 </td><td>
 
-Provides the execution context for <b>xpm</b> operations.
+Configuration parameters for constructing a properties drop instance.
 
 
 </td></tr>
 <tr><td>
 
-[XpmInitTemplateConstructorParameters](./xpm-lib.xpminittemplateconstructorparameters.md)
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplateItemValue](./xpm-lib.xpminittemplateitemvalue.md)
-
-
-</td><td>
-
-Defines an `xpm init` template platform-specific item value.
-
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplatePropertiesDefinition](./xpm-lib.xpminittemplatepropertiesdefinition.md)
-
-
-</td><td>
-
-Defines an `xpm init` single template property.
-
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplateSubstitutionsVariables](./xpm-lib.xpminittemplatesubstitutionsvariables.md)
-
-
-</td><td>
-
-Defines the substitution variables used by `xpm init` templates.
-
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidSubstitutionsVariables](./xpm-lib.xpmliquidsubstitutionsvariables.md)
+[LiquidSubstitutionsVariables](./xpm-lib.liquidsubstitutionsvariables.md)
 
 
 </td><td>
 
 Defines the substitution variables available to Liquid templates.
+
+
+</td></tr>
+<tr><td>
+
+[PackageConstructorParameters](./xpm-lib.packageconstructorparameters.md)
+
+
+</td><td>
+
+Configuration parameters for constructing a package instance.
+
+
+</td></tr>
+<tr><td>
+
+[PoliciesConstructorParameters](./xpm-lib.policiesconstructorparameters.md)
+
+
+</td><td>
+
+Configuration parameters for constructing a policies instance.
 
 
 </td></tr>
@@ -632,7 +755,7 @@ The property name used for the build folder relative path.
 </td></tr>
 <tr><td>
 
-[xpmLiquidSubstitutionsVariablesBase](./xpm-lib.xpmliquidsubstitutionsvariablesbase.md)
+[liquidSubstitutionsVariablesBase](./xpm-lib.liquidsubstitutionsvariablesbase.md)
 
 
 </td><td>
@@ -657,6 +780,61 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[ActionCommands](./xpm-lib.actioncommands.md)
+
+
+</td><td>
+
+Represents a list of action command strings.
+
+
+</td></tr>
+<tr><td>
+
+[InitTemplateItems](./xpm-lib.inittemplateitems.md)
+
+
+</td><td>
+
+Represents the available items for a `select` type property in `xpm init` templates.
+
+
+</td></tr>
+<tr><td>
+
+[InitTemplatePlatform](./xpm-lib.inittemplateplatform.md)
+
+
+</td><td>
+
+Represents the supported platform identifiers for `xpm init` template items.
+
+
+</td></tr>
+<tr><td>
+
+[InitTemplatePropertiesDefinitions](./xpm-lib.inittemplatepropertiesdefinitions.md)
+
+
+</td><td>
+
+Represents a map of `xpm init` template property definitions.
+
+
+</td></tr>
+<tr><td>
+
+[InitTemplateType](./xpm-lib.inittemplatetype.md)
+
+
+</td><td>
+
+Represents the supported property types for `xpm init` template properties.
+
+
+</td></tr>
+<tr><td>
 
 [JsonAction](./xpm-lib.jsonaction.md)
 
@@ -801,67 +979,23 @@ Represents a JSON map of binaries platforms.
 </td></tr>
 <tr><td>
 
-[XpmActionCommands](./xpm-lib.xpmactioncommands.md)
-
-
-</td><td>
-
-Represents a list of action command strings.
-
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplateItems](./xpm-lib.xpminittemplateitems.md)
-
-
-</td><td>
-
-Represents the available items for a `select` type property in `xpm init` templates.
-
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplatePlatform](./xpm-lib.xpminittemplateplatform.md)
-
-
-</td><td>
-
-Represents the supported platform identifiers for `xpm init` template items.
-
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplatePropertiesDefinitions](./xpm-lib.xpminittemplatepropertiesdefinitions.md)
-
-
-</td><td>
-
-Represents a map of `xpm init` template property definitions.
-
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplateType](./xpm-lib.xpminittemplatetype.md)
-
-
-</td><td>
-
-Represents the supported property types for `xpm init` template properties.
-
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidSubstitutionsStrings](./xpm-lib.xpmliquidsubstitutionsstrings.md)
+[LiquidSubstitutionsStrings](./xpm-lib.liquidsubstitutionsstrings.md)
 
 
 </td><td>
 
 Represents a map of substitution values used by Liquid templates.
+
+
+</td></tr>
+<tr><td>
+
+[MatrixCombination](./xpm-lib.matrixcombination.md)
+
+
+</td><td>
+
+A matrix combination mapping parameter names to their values.
 
 
 </td></tr>

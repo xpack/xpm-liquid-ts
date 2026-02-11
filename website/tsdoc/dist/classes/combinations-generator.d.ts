@@ -9,7 +9,32 @@ import { Logger } from '@xpack/logger';
  *
  * Example: `{ arch: 'x64', platform: 'linux', optimize: 'speed' }`
  */
-export type XpmMatrixCombination = Record<string, string>;
+export type MatrixCombination = Record<string, string>;
+/**
+ * Configuration parameters for constructing a combinations generator instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link CombinationsGenerator}. All properties are mandatory.
+ *
+ * The parameters provide the matrix parameter names, their corresponding
+ * value arrays for Cartesian product computation, and the logger for
+ * diagnostic output during combination generation.
+ */
+export interface CombinationsGeneratorConstructorParameters {
+    /**
+     * The array of parameter names.
+     */
+    matrixKeys: string[];
+    /**
+     * The array of value arrays for each parameter.
+     */
+    matrixValues: string[][];
+    /**
+     * The logger instance for output and diagnostics.
+     */
+    log: Logger;
+}
 /**
  * Generates all possible combinations from a matrix of parameters.
  *
@@ -91,7 +116,7 @@ export declare class CombinationsGenerator {
      * The array is populated during <code>generate()</code> and returned to
      * the caller.
      */
-    protected readonly combinations: XpmMatrixCombination[];
+    protected readonly combinations: MatrixCombination[];
     /**
      * Constructs a combinations generator instance.
      *
@@ -104,11 +129,7 @@ export declare class CombinationsGenerator {
      * correct and prepares the generator for combination generation. The
      * actual generation is performed by calling <code>generate()</code>.
      */
-    constructor({ matrixKeys, matrixValues, log, }: {
-        matrixKeys: string[];
-        matrixValues: string[][];
-        log: Logger;
-    });
+    constructor({ matrixKeys, matrixValues, log, }: CombinationsGeneratorConstructorParameters);
     /**
      * Generates all possible combinations from the matrix parameters.
      *
@@ -130,7 +151,7 @@ export declare class CombinationsGenerator {
      *
      * @returns An array of all possible parameter combinations.
      */
-    generate(): XpmMatrixCombination[];
+    generate(): MatrixCombination[];
     /**
      * Recursively generates combinations by exploring the parameter space.
      *

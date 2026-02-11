@@ -1,5 +1,27 @@
 {
   "label": "API Reference",
   "position": "left",
-  "to": "/docs/api"
+  "to": "/docs/api",
+  "items": [
+    {
+      "label": "Classes",
+      "to": "/docs/api/xpm-lib/classes"
+    },
+    {
+      "label": "Type Aliases",
+      "to": "/docs/api/xpm-lib/typealiases"
+    },
+    {
+      "label": "Interfaces",
+      "to": "/docs/api/xpm-lib/interfaces"
+    },
+    {
+      "label": "Variables",
+      "to": "/docs/api/xpm-lib/variables"
+    },
+    {
+      "label": "Functions",
+      "to": "/docs/api/xpm-lib/functions"
+    }
+  ]
 }

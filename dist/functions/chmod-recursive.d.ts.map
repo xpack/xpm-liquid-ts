@@ -1,1 +1,0 @@
-{"version":3,"file":"chmod-recursive.d.ts","sourceRoot":"","sources":["../../src/functions/chmod-recursive.ts"],"names":[],"mappings":"AAoBA,OAAO,EAAE,MAAM,EAAE,MAAM,eAAe,CAAA;AA+CtC,wBAAsB,cAAc,CAAC,EACnC,SAAS,EACT,QAAQ,EACR,GAAG,GACJ,EAAE;IACD,SAAS,EAAE,MAAM,CAAA;IACjB,QAAQ,EAAE,OAAO,CAAA;IACjB,GAAG,EAAE,MAAM,CAAA;CACZ,GAAG,OAAO,CAAC,IAAI,CAAC,CAoEhB"}

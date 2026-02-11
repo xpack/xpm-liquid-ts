@@ -1,11 +1,11 @@
-export declare class XpmError extends Error {
+export declare class JsonSyntaxError extends Error {
 }
-export declare class XpmPrerequisitesError extends Error {
+export declare class PrerequisitesError extends Error {
 }
-export declare class XpmInputError extends Error {
+export declare class ConfigurationError extends Error {
 }
-export declare class XpmSyntaxError extends Error {
+export declare class InputError extends Error {
 }
-export declare class XpmOutputError extends Error {
+export declare class OutputError extends Error {
 }
 //# sourceMappingURL=errors.d.ts.map

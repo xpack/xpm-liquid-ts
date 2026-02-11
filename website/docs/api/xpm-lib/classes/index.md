@@ -19,7 +19,7 @@ The following classes are defined:
 <tbody>
 <tr><td>
 
-[XpmAction](/docs/api/xpm-lib/classes/xpmaction)
+[Action](/docs/api/xpm-lib/classes/action)
 
 </td><td>
 
@@ -28,7 +28,7 @@ An individual <b>xpm</b> action containing commands to be executed.
 </td></tr>
 <tr><td>
 
-[XpmActions](/docs/api/xpm-lib/classes/xpmactions)
+[Actions](/docs/api/xpm-lib/classes/actions)
 
 </td><td>
 
@@ -37,7 +37,7 @@ A collection of <b>xpm</b> actions for a build configuration or the entire packa
 </td></tr>
 <tr><td>
 
-[XpmBuildConfiguration](/docs/api/xpm-lib/classes/xpmbuildconfiguration)
+[BuildConfiguration](/docs/api/xpm-lib/classes/buildconfiguration)
 
 </td><td>
 
@@ -46,7 +46,7 @@ An individual <b>xpm</b> build configuration.
 </td></tr>
 <tr><td>
 
-[XpmBuildConfigurations](/docs/api/xpm-lib/classes/xpmbuildconfigurations)
+[BuildConfigurations](/docs/api/xpm-lib/classes/buildconfigurations)
 
 </td><td>
 
@@ -55,7 +55,25 @@ A collection of <b>xpm</b> build configurations.
 </td></tr>
 <tr><td>
 
-[XpmDataModel](/docs/api/xpm-lib/classes/xpmdatamodel)
+[CombinationsGenerator](/docs/api/xpm-lib/classes/combinationsgenerator)
+
+</td><td>
+
+Generates all possible combinations from a matrix of parameters.
+
+</td></tr>
+<tr><td>
+
+[ConfigurationError](/docs/api/xpm-lib/classes/configurationerror)
+
+</td><td>
+
+Error indicating a configuration issue.
+
+</td></tr>
+<tr><td>
+
+[DataModel](/docs/api/xpm-lib/classes/datamodel)
 
 </td><td>
 
@@ -64,25 +82,16 @@ Represents a lazy-loading data model for an <b>xpm</b> package.
 </td></tr>
 <tr><td>
 
-[XpmError](/docs/api/xpm-lib/classes/xpmerror)
+[InitTemplateBase](/docs/api/xpm-lib/classes/inittemplatebase)
 
 </td><td>
 
-Base class for xpm-related errors.
+Base class for `xpm init` templates.
 
 </td></tr>
 <tr><td>
 
-[XpmInitTemplateBase](/docs/api/xpm-lib/classes/xpminittemplatebase)
-
-</td><td>
-
-Base class for <b>xpm</b> initialisation templates.
-
-</td></tr>
-<tr><td>
-
-[XpmInputError](/docs/api/xpm-lib/classes/xpminputerror)
+[InputError](/docs/api/xpm-lib/classes/inputerror)
 
 </td><td>
 
@@ -91,7 +100,16 @@ Error indicating that user input is invalid.
 </td></tr>
 <tr><td>
 
-[XpmLiquidEngine](/docs/api/xpm-lib/classes/xpmliquidengine)
+[JsonSyntaxError](/docs/api/xpm-lib/classes/jsonsyntaxerror)
+
+</td><td>
+
+Error indicating a syntax error in configuration or template files.
+
+</td></tr>
+<tr><td>
+
+[LiquidEngine](/docs/api/xpm-lib/classes/liquidengine)
 
 </td><td>
 
@@ -100,7 +118,7 @@ Liquid engine configured for <b>xpm</b> templates.
 </td></tr>
 <tr><td>
 
-[XpmLiquidMatrixDrop](/docs/api/xpm-lib/classes/xpmliquidmatrixdrop)
+[LiquidMatrixDrop](/docs/api/xpm-lib/classes/liquidmatrixdrop)
 
 </td><td>
 
@@ -109,7 +127,7 @@ Liquid drop that resolves `matrix` parameter values for templates.
 </td></tr>
 <tr><td>
 
-[XpmLiquidPropertiesDrop](/docs/api/xpm-lib/classes/xpmliquidpropertiesdrop)
+[LiquidPropertiesDrop](/docs/api/xpm-lib/classes/liquidpropertiesdrop)
 
 </td><td>
 
@@ -118,7 +136,7 @@ Liquid drop that resolves `property` values for template substitutions.
 </td></tr>
 <tr><td>
 
-[XpmOutputError](/docs/api/xpm-lib/classes/xpmoutputerror)
+[OutputError](/docs/api/xpm-lib/classes/outputerror)
 
 </td><td>
 
@@ -127,7 +145,7 @@ Error indicating a failure during output generation.
 </td></tr>
 <tr><td>
 
-[XpmPackage](/docs/api/xpm-lib/classes/xpmpackage)
+[Package](/docs/api/xpm-lib/classes/package)
 
 </td><td>
 
@@ -136,7 +154,7 @@ Provides access to package metadata and xpm-specific validation.
 </td></tr>
 <tr><td>
 
-[XpmPolicies](/docs/api/xpm-lib/classes/xpmpolicies)
+[Policies](/docs/api/xpm-lib/classes/policies)
 
 </td><td>
 
@@ -145,24 +163,15 @@ Computes feature policy flags based on a minimum <b>xpm</b> version.
 </td></tr>
 <tr><td>
 
-[XpmPrerequisitesError](/docs/api/xpm-lib/classes/xpmprerequisiteserror)
+[PrerequisitesError](/docs/api/xpm-lib/classes/prerequisiteserror)
 
 </td><td>
 
 Error indicating that required prerequisites are not met.
 
 </td></tr>
-<tr><td>
-
-[XpmSyntaxError](/docs/api/xpm-lib/classes/xpmsyntaxerror)
-
-</td><td>
-
-Error indicating a syntax error in configuration or template files.
-
-</td></tr>
 </tbody></table><hr/>
 
-<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.0-pre by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.55.2.</p>
+<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.56.3.</p>
 
 </div>

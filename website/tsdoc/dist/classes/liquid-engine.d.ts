@@ -1,4 +1,4 @@
-import { Liquid } from 'liquidjs';
+import * as liquidjs from 'liquidjs';
 /**
  * Liquid engine configured for <b>xpm</b> templates.
  *
@@ -29,7 +29,7 @@ import { Liquid } from 'liquidjs';
  * string transformations without requiring external dependencies or custom
  * template tags.
  */
-export declare class XpmLiquidEngine extends Liquid {
+export declare class LiquidEngine extends liquidjs.Liquid {
     /**
      * Constructs a Liquid engine instance with xpm-specific settings and
      * filters.

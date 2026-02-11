@@ -4,9 +4,9 @@ import * as readline from 'node:readline/promises';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 import { Liquid } from 'liquidjs';
-import { XpmError, XpmOutputError, XpmSyntaxError } from './errors.js';
-import { isBoolean, isNumber, isObject, isString, } from '../functions/is-something.js';
-export class XpmInitTemplateBase {
+import { isString, isObject, isBoolean, isNumber, } from '../functions/is-something.js';
+import { JsonSyntaxError, OutputError, ConfigurationError } from './errors.js';
+export class InitTemplateBase {
     _context;
     _log;
     _propertiesDefinitions = {};
@@ -62,7 +62,7 @@ export class XpmInitTemplateBase {
             }
         }
         if (isError) {
-            throw new XpmSyntaxError();
+            throw new JsonSyntaxError();
         }
         const mustAsk = Object.keys(this._propertiesDefinitions).some((key) => {
             return (this._propertiesDefinitions[key].isMandatory &&
@@ -71,7 +71,7 @@ export class XpmInitTemplateBase {
         let isInteractive;
         if (mustAsk) {
             if (!(this._process.stdin.isTTY && this._process.stdout.isTTY)) {
-                throw new XpmSyntaxError('Interactive mode not possible without a TTY.');
+                throw new JsonSyntaxError('Interactive mode not possible without a TTY.');
             }
             await this._askForMoreValues();
             log.trace(util.inspect(config.properties));
@@ -144,7 +144,7 @@ export class XpmInitTemplateBase {
         }
         catch (error) {
             if (error instanceof Error) {
-                throw new XpmOutputError(error.message);
+                throw new OutputError(error.message);
             }
         }
         log.info(`File '${destinationFileRelativePath}' generated.`);
@@ -152,7 +152,7 @@ export class XpmInitTemplateBase {
     _validatePropertyValue(name, value) {
         const propDef = this._propertiesDefinitions[name];
         if (propDef === undefined) {
-            throw new XpmError(`Unsupported property '${name}'`);
+            throw new ConfigurationError(`Unsupported property '${name}'`);
         }
         const trimmedValue = value.trim();
         if (trimmedValue === '') {
@@ -193,7 +193,7 @@ export class XpmInitTemplateBase {
                     return value;
             }
         }
-        throw new XpmError(`Unsupported value '${value}' for property '${name}'`);
+        throw new ConfigurationError(`Unsupported value '${value}' for property '${name}'`);
     }
     async _askForMoreValues() {
         const context = this._context;

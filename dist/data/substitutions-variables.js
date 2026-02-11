@@ -1,6 +1,6 @@
 import * as os from 'node:os';
 import * as path from 'node:path';
-export const xpmLiquidSubstitutionsVariablesBase = {
+export const liquidSubstitutionsVariablesBase = {
     env: process.env,
     os: {
         EOL: os.EOL,

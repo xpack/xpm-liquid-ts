@@ -1,8 +1,50 @@
 import { Logger } from '@xpack/logger';
-import { XpmLiquidEngine } from './liquid-engine.js';
-import { XpmLiquidSubstitutionsVariables, XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.js';
-import { JsonActions, JsonActionContent, JsonActionTemplate } from '../types/json.js';
-import { XpmBuildConfiguration } from './build-configurations.js';
+import { LiquidSubstitutionsVariables, LiquidSubstitutionsStrings } from '../data/substitutions-variables.js';
+import { JsonActionContent, JsonActions, JsonActionTemplate } from '../types/json.js';
+import { BuildConfiguration } from './build-configurations.js';
+import { LiquidEngine } from './liquid-engine.js';
+/**
+ * Configuration parameters for constructing an actions collection instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link Actions}. Most properties are mandatory except for
+ * the optional <code>inheritedActionsMap</code> and
+ * <code>buildConfiguration</code> parameters.
+ *
+ * The parameters provide the actions collection with access to the Liquid
+ * templating engine, substitution variables hierarchy, action definitions
+ * from the package manifest, optional inherited actions from a parent
+ * package, optional build configuration context, and the logger for
+ * diagnostic output.
+ */
+export interface ActionsConstructorParameters {
+    /**
+     * The Liquid templating engine for variable substitution.
+     */
+    engine: LiquidEngine;
+    /**
+     * The variables available for substitution in action definitions.
+     */
+    substitutionsVariables: LiquidSubstitutionsVariables;
+    /**
+     * The JSON object containing action definitions, or undefined if there are
+     * no actions.
+     */
+    jsonActions: JsonActions | undefined;
+    /**
+     * Optional map of actions inherited from a parent package.
+     */
+    inheritedActionsMap?: Map<string, Action>;
+    /**
+     * Optional build configuration this actions collection belongs to.
+     */
+    buildConfiguration?: BuildConfiguration;
+    /**
+     * The logger instance for output and diagnostics.
+     */
+    log: Logger;
+}
 /**
  * A collection of <b>xpm</b> actions for a build configuration or
  * the entire package.
@@ -31,7 +73,7 @@ import { XpmBuildConfiguration } from './build-configurations.js';
  * This multi-phase approach ensures efficient resource usage by deferring
  * expensive operations until actions are actually needed.
  */
-export declare class XpmActions {
+export declare class Actions {
     /**
      * The logger instance for output and diagnostics.
      *
@@ -53,7 +95,7 @@ export declare class XpmActions {
      * expansion and later during individual action command substitution,
      * ensuring consistent template processing throughout the action lifecycle.
      */
-    readonly engine: XpmLiquidEngine;
+    readonly engine: LiquidEngine;
     /**
      * The variables available for substitution in action definitions.
      *
@@ -82,7 +124,7 @@ export declare class XpmActions {
      * (e.g., `{{ package.name }}`,
      * `{{ configuration.buildFolderRelativePath }}`).
      */
-    readonly substitutionsVariables: XpmLiquidSubstitutionsVariables;
+    readonly substitutionsVariables: LiquidSubstitutionsVariables;
     /**
      * The JSON object containing action definitions from the package manifest.
      *
@@ -132,7 +174,7 @@ export declare class XpmActions {
      *    substitution.</li>
      * </ol>
      */
-    readonly buildConfiguration: XpmBuildConfiguration | undefined;
+    readonly buildConfiguration: BuildConfiguration | undefined;
     /**
      * Map of action names to their corresponding action instances.
      *
@@ -143,7 +185,7 @@ export declare class XpmActions {
      * Key characteristics:
      *
      * <ol>
-     * <li>Known only after <code>XpmActions.initialise()</code>
+     * <li>Known only after <code>Actions.initialise()</code>
      *   completes.</li>
      * <li>Possibly empty if there are no actions defined.</li>
      * <li>Values can be <code>undefined</code> to indicate an action
@@ -154,10 +196,10 @@ export declare class XpmActions {
      * </ol>
      *
      * Actions transition from `undefined` to instantiated when first accessed
-     * via {@link XpmActions.get}, implementing the lazy evaluation
+     * via {@link Actions.get}, implementing the lazy evaluation
      * pattern.
      */
-    protected readonly _actionsMap: Map<string, XpmAction | undefined>;
+    protected readonly _actionsMap: Map<string, Action | undefined>;
     /**
      * Set of all action names for quick lookup.
      *
@@ -168,7 +210,7 @@ export declare class XpmActions {
      * Key characteristics:
      *
      * <ol>
-     * <li>Known only after <code>XpmActions.initialise()</code>
+     * <li>Known only after <code>Actions.initialise()</code>
      *    completes.</li>
      * <li>Contains all action names including those generated from
      *    templates.</li>
@@ -197,7 +239,7 @@ export declare class XpmActions {
      * <li><b>For template actions:</b> Maps each generated action name back to
      *    the original template name (e.g.,
      *    <code>test-x64</code> → <code>test-\{\{ matrix.arch \}\}</code>).</li>
-     * <li>Enables <code>XpmActions.get()</code> to locate the correct JSON
+     * <li>Enables <code>Actions.get()</code> to locate the correct JSON
      *    definition when instantiating an action on demand.</li>
      * </ol>
      *
@@ -211,7 +253,7 @@ export declare class XpmActions {
      *
      * @remarks
      * This flag prevents redundant initialisation and ensures idempotent
-     * behavior when {@link XpmActions.initialise} is called multiple
+     * behavior when {@link Actions.initialise} is called multiple
      * times.
      *
      * State transitions:
@@ -221,7 +263,7 @@ export declare class XpmActions {
      * <li>Set to <code>true</code> after successful template expansion and
      *   action name
      *   registration.</li>
-     * <li>Checked at the beginning of <code>XpmActions.initialise()</code> to
+     * <li>Checked at the beginning of <code>Actions.initialise()</code> to
      *   return early if already initialised.</li>
      * </ol>
      *
@@ -241,7 +283,7 @@ export declare class XpmActions {
      *
      * <ol>
      * <li>Empty initially after construction.</li>
-     * <li>Populated during <code>XpmActions.initialise()</code> after all
+     * <li>Populated during <code>Actions.initialise()</code> after all
      *    action names
      *    are determined.</li>
      * <li>Contains all action names including those generated from
@@ -260,26 +302,11 @@ export declare class XpmActions {
      *
      * @remarks
      * The constructor performs partial initialisation. Complete initialisation
-     * requires calling the `XpmActions.initialise()` method.
+     * requires calling the `Actions.initialise()` method.
      *
      * @param log - The logger instance for output and diagnostics.
-     * @param engine - The Liquid templating engine for variable substitution.
-     * @param substitutionsVariables - The variables available for substitution.
-     * @param jsonActions - The JSON object containing action definitions, or
-     * undefined if there are no actions.
-     * @param inheritedActionsMap - Optional map of actions inherited from a
-     * parent package.
-     * @param buildConfiguration - Optional build configuration this actions
-     * collection belongs to.
      */
-    constructor({ log, engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, }: {
-        log: Logger;
-        engine: XpmLiquidEngine;
-        substitutionsVariables: XpmLiquidSubstitutionsVariables;
-        jsonActions: JsonActions | undefined;
-        inheritedActionsMap?: Map<string, XpmAction>;
-        buildConfiguration?: XpmBuildConfiguration;
-    });
+    constructor({ engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, log, }: ActionsConstructorParameters);
     /**
      * Completes the async initialisation of the actions collection.
      *
@@ -289,7 +316,7 @@ export declare class XpmActions {
      * parameters, but does not evaluate the action content or perform Liquid
      * substitutions. The actual template evaluation and variable substitution
      * occur later when individual actions are initialised via
-     * {@link XpmAction.initialise}, and only for actions that are
+     * {@link Action.initialise}, and only for actions that are
      * actually used. This approach avoids unnecessary operations on unused
      * actions. The method also validates that all expanded action names are
      * unique.
@@ -297,7 +324,7 @@ export declare class XpmActions {
      * @returns A promise that resolves to `true` if initialisation was
      * performed, or `false` if already initialised.
      *
-     * @throws {@link XpmError}
+     * @throws {@link ConfigurationError}
      * If duplicate action names are detected or if template expansion fails.
      */
     initialise(): Promise<boolean>;
@@ -355,11 +382,11 @@ export declare class XpmActions {
      *
      * <ol>
      * <li>During collection initialisation
-     *   (<code>XpmActions.initialise()</code>),
+     *   (<code>Actions.initialise()</code>),
      *   only the matrix of options is evaluated for each template, expanding
      *   only the action names without processing their content.</li>
      * <li>Later, when an action is accessed via this method and subsequently
-     *   initialised (<code>XpmAction.initialise()</code>), the template is
+     *   initialised (<code>Action.initialise()</code>), the template is
      *   fully evaluated and Liquid substitutions are performed on the
      *   commands.</li>
      * </ol>
@@ -370,10 +397,10 @@ export declare class XpmActions {
      * @param actionName - The name of the action to retrieve.
      * @returns The action instance.
      *
-     * @throws {@link XpmError}
+     * @throws {@link ConfigurationError}
      * If an action with that name does not exist.
      */
-    get(actionName: string): XpmAction;
+    get(actionName: string): Action;
     /**
      * Processes a template action by expanding it and registering the generated
      * actions.
@@ -405,7 +432,7 @@ export declare class XpmActions {
      * parameters and an action template.
      * @returns A promise that resolves when processing is complete.
      *
-     * @throws {@link XpmError}
+     * @throws {@link ConfigurationError}
      * If duplicate action names are detected during expansion or if template
      * expansion fails.
      */
@@ -442,14 +469,14 @@ export declare class XpmActions {
      * @returns A promise that resolves to a map of expanded action names to
      * their corresponding action instances.
      *
-     * @throws {@link XpmError}
+     * @throws {@link ConfigurationError}
      * If the matrix structure is invalid, template format is incorrect, or
      * substitution fails.
      */
     protected _expandTemplateActions({ actionName, jsonActionTemplate, }: {
         actionName: string;
         jsonActionTemplate: JsonActionTemplate;
-    }): Promise<Map<string, XpmAction>>;
+    }): Promise<Map<string, Action>>;
     /**
      * Creates a substituted action from a template and matrix combination.
      *
@@ -463,7 +490,7 @@ export declare class XpmActions {
      * <ol>
      * <li>Performs Liquid substitution on the template action name using the
      *    specific matrix combination values.</li>
-     * <li>Creates a new <code>XpmAction</code> instance with:
+     * <li>Creates a new <code>Action</code> instance with:
      *   <ul>
      *   <li>The substituted concrete action name.</li>
      *   <li>The action's command template (not yet evaluated).</li>
@@ -487,15 +514,46 @@ export declare class XpmActions {
      * @returns A promise that resolves when the action has been created and
      * stored.
      *
-     * @throws {@link XpmError}
+     * @throws {@link ConfigurationError}
      * If the action name substitution fails.
      */
     protected _createSubstitutedAction({ actionName, jsonAction, combination, newActionsMap, }: {
         combination: Record<string, string>;
         actionName: string;
         jsonAction: JsonActionContent;
-        newActionsMap: Map<string, XpmAction>;
+        newActionsMap: Map<string, Action>;
     }): Promise<void>;
+}
+/**
+ * Configuration parameters for constructing an action instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link Action}. Most properties are mandatory except for
+ * the optional <code>matrixParameters</code>, which is only needed for
+ * template-generated actions that were created from matrix expansion.
+ *
+ * The parameters provide the action with its identity (name), command
+ * definitions, access to the parent collection for shared resources, and
+ * optional matrix parameter values for template-generated actions.
+ */
+export interface ActionConstructorParameters {
+    /**
+     * The name of the action.
+     */
+    actionName: string;
+    /**
+     * The JSON definition of the action commands.
+     */
+    jsonAction: JsonActionContent;
+    /**
+     * The parent actions collection this action belongs to.
+     */
+    parentActions: Actions;
+    /**
+     * Optional matrix parameter values for template-generated actions.
+     */
+    matrixParameters?: LiquidSubstitutionsStrings;
 }
 /**
  * An individual <b>xpm</b> action containing commands to be executed.
@@ -519,7 +577,7 @@ export declare class XpmActions {
  * defined but never executed, which is common when using matrix templates
  * to generate platform-specific or configuration-specific actions.
  */
-export declare class XpmAction {
+export declare class Action {
     /**
      * The name of the action.
      *
@@ -538,7 +596,7 @@ export declare class XpmAction {
      * </ol>
      *
      * Names must be unique within the actions collection, enforced during
-     * {@link XpmActions.initialise}.
+     * {@link Actions.initialise}.
      */
     readonly actionName: string;
     /**
@@ -558,7 +616,7 @@ export declare class XpmAction {
      * <ol>
      * <li>Creating copies of inherited actions with identical definitions.</li>
      * <li>Deferred template evaluation during
-     * <code>XpmAction.initialise()</code>.</li>
+     * <code>Action.initialise()</code>.</li>
      * <li>Re-evaluation if needed with different variable contexts.</li>
      * </ol>
      *
@@ -591,7 +649,7 @@ export declare class XpmAction {
      * with its own matrix parameters to create a complete context for Liquid
      * template processing.
      */
-    readonly parentActions: XpmActions;
+    readonly parentActions: Actions;
     /**
      * The matrix parameter values for template-generated actions.
      *
@@ -607,7 +665,7 @@ export declare class XpmAction {
      *   combination (e.g.,
      *   <code>\{ arch: 'x64', platform: 'linux' \}</code>).</li>
      * <li>Merged into substitution variables during
-     *   <code>XpmAction.initialise()</code>, making values accessible via the
+     *   <code>Action.initialise()</code>, making values accessible via the
      *   <code>matrix</code> namespace in command templates.</li>
      * <li>Enables the same command template to generate different concrete
      *   commands for each matrix combination.</li>
@@ -616,7 +674,7 @@ export declare class XpmAction {
      * Example: A template with `{{ matrix.arch }}` becomes `x64` when this
      * action's matrix parameters include `{ arch: 'x64' }`.
      */
-    protected readonly _matrixParameters?: XpmLiquidSubstitutionsStrings;
+    protected readonly _matrixParameters?: LiquidSubstitutionsStrings;
     /**
      * The array of command strings after variable substitution.
      *
@@ -627,7 +685,7 @@ export declare class XpmAction {
      * Lifecycle states:
      *
      * <ol>
-     * <li>Undefined initially and until <code>XpmAction.initialise()</code>
+     * <li>Undefined initially and until <code>Action.initialise()</code>
      *   is called.</li>
      * <li>Populated during initialisation by evaluating
      *   <code>jsonAction</code> with the
@@ -647,7 +705,7 @@ export declare class XpmAction {
      *
      * @remarks
      * This flag ensures idempotent initialization and prevents redundant
-     * template evaluation when {@link XpmAction.initialise} is called
+     * template evaluation when {@link Action.initialise} is called
      * multiple times.
      *
      * State transitions:
@@ -656,7 +714,7 @@ export declare class XpmAction {
      * <li>Initially <code>false</code> after construction.</li>
      * <li>Set to <code>true</code> after successful command substitution and
      *   evaluation.</li>
-     * <li>Checked at the start of <code>XpmAction.initialise()</code> to
+     * <li>Checked at the start of <code>Action.initialise()</code> to
      *   return early if already initialised.</li>
      * </ol>
      *
@@ -670,7 +728,7 @@ export declare class XpmAction {
      *
      * @remarks
      * The constructor performs partial initialisation. Variable substitution
-     * requires calling the {@link XpmAction.initialise} method.
+     * requires calling the {@link Action.initialise} method.
      *
      * @param actionName - The name of the action.
      * @param jsonAction - The JSON definition of the action commands.
@@ -679,12 +737,7 @@ export declare class XpmAction {
      * @param matrixParameters - Optional matrix parameter values for
      * template-generated actions.
      */
-    constructor({ actionName, jsonAction, parentActions, matrixParameters, }: {
-        actionName: string;
-        jsonAction: JsonActionContent;
-        parentActions: XpmActions;
-        matrixParameters?: XpmLiquidSubstitutionsStrings;
-    });
+    constructor({ actionName, jsonAction, parentActions, matrixParameters, }: ActionConstructorParameters);
     /**
      * Completes the async initialisation of the action.
      *
@@ -713,7 +766,7 @@ export declare class XpmAction {
      * @returns A promise that resolves to `true` if initialisation was
      * performed, or `false` if already initialised.
      *
-     * @throws {@link XpmError}
+     * @throws {@link ConfigurationError}
      * If command substitution fails.
      */
     initialise(): Promise<boolean>;
@@ -721,7 +774,7 @@ export declare class XpmAction {
      * Retrieves the array of command strings for this action.
      *
      * @remarks
-     * The action must be initialised via {@link XpmAction.initialise}
+     * The action must be initialised via {@link Action.initialise}
      * before accessing this property. Attempting to access commands from an
      * uninitialised action will result in an assertion error.
      *

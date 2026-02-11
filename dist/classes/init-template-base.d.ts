@@ -1,25 +1,25 @@
 import { Liquid } from 'liquidjs';
 import { Logger } from '@xpack/logger';
-import { XpmContext } from '../types/xpm.js';
-import { XpmInitTemplatePropertiesDefinitions, XpmInitTemplateSubstitutionsVariables } from '../types/xpm-init-template.js';
-export interface XpmInitTemplateConstructorParameters {
-    context: XpmContext;
+import { InitTemplatePropertiesDefinitions, InitTemplateSubstitutionsVariables } from '../types/xpm-init-template.js';
+import { Context } from '../types/xpm.js';
+export interface InitTemplateConstructorParameters {
+    context: Context;
     __dirname: string;
     templatesPath: string;
-    propertiesDefinitions: XpmInitTemplatePropertiesDefinitions;
+    propertiesDefinitions: InitTemplatePropertiesDefinitions;
     process?: NodeJS.Process;
 }
-export declare abstract class XpmInitTemplateBase {
-    protected _context: XpmContext;
+export declare abstract class InitTemplateBase {
+    protected _context: Context;
     protected _log: Logger;
-    protected _propertiesDefinitions: XpmInitTemplatePropertiesDefinitions;
+    protected _propertiesDefinitions: InitTemplatePropertiesDefinitions;
     protected __dirname: string;
     protected _templatesPath: string;
     protected _engine: Liquid;
-    protected _substitutionsVariables?: XpmInitTemplateSubstitutionsVariables;
+    protected _substitutionsVariables?: InitTemplateSubstitutionsVariables;
     protected _isInteractive: boolean;
     protected _process: NodeJS.Process;
-    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, }: XpmInitTemplateConstructorParameters);
+    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, }: InitTemplateConstructorParameters);
     run(): Promise<number>;
     abstract generate(): Promise<void>;
     isPlatformSupported(platforms: string[] | undefined): boolean;
@@ -34,7 +34,7 @@ export declare abstract class XpmInitTemplateBase {
     render({ sourceFilePath, destinationFilePath, substitutionsVariables, }: {
         sourceFilePath: string;
         destinationFilePath: string;
-        substitutionsVariables?: XpmInitTemplateSubstitutionsVariables;
+        substitutionsVariables?: InitTemplateSubstitutionsVariables;
     }): Promise<void>;
     protected _validatePropertyValue(name: string, value: string): string | boolean | number;
     protected _askForMoreValues(): Promise<void>;

@@ -1,15 +1,15 @@
 import assert from 'node:assert';
 import * as path from 'node:path';
 import * as os from 'node:os';
-import { buildFolderRelativePathPropertyName } from './data-model.js';
-import { performSubstitutions } from '../functions/perform-substitutions.js';
-import { XpmActions } from './actions.js';
-import { getErrorMessage } from '../functions/utils.js';
-import { isJsonArray, isJsonObject, isString, } from '../functions/is-something.js';
 import { filterPath } from '../functions/filter-paths.js';
-import { XpmError, XpmInputError } from './errors.js';
+import { isJsonObject, isJsonArray, isString, } from '../functions/is-something.js';
+import { performSubstitutions } from '../functions/perform-substitutions.js';
+import { getErrorMessage } from '../functions/utils.js';
+import { Actions } from './actions.js';
 import { CombinationsGenerator } from './combinations-generator.js';
-export class XpmBuildConfigurations {
+import { buildFolderRelativePathPropertyName } from './data-model.js';
+import { ConfigurationError, InputError } from './errors.js';
+export class BuildConfigurations {
     log;
     engine;
     substitutionsVariables;
@@ -19,11 +19,11 @@ export class XpmBuildConfigurations {
     _buildComfigurationsNamesSet = new Set();
     _isInitialised = false;
     _buildConfigurationsNames = [];
-    constructor({ log, engine, substitutionsVariables, jsonBuildConfigurations, }) {
+    constructor({ engine, substitutionsVariables, jsonBuildConfigurations, log, }) {
         assert(log, 'log is required');
         assert(engine, 'engine is required');
         assert(substitutionsVariables, 'substitutionsVariables is required');
-        log.trace(`${XpmBuildConfigurations.name}()`);
+        log.trace(`${BuildConfigurations.name}()`);
         this.log = log;
         this.engine = engine;
         this.substitutionsVariables = substitutionsVariables;
@@ -32,10 +32,10 @@ export class XpmBuildConfigurations {
     async initialise() {
         const log = this.log;
         if (this._isInitialised) {
-            log.trace(`${XpmBuildConfigurations.name}.initialise() again`);
+            log.trace(`${BuildConfigurations.name}.initialise() again`);
             return false;
         }
-        log.trace(`${XpmBuildConfigurations.name}.initialise()`);
+        log.trace(`${BuildConfigurations.name}.initialise()`);
         for (const [buildConfigurationName, jsonBuildConfiguration,] of Object.entries(this.jsonBuildConfigurations)) {
             if (buildConfigurationName.includes('{{')) {
                 await this._processTemplate({
@@ -45,7 +45,7 @@ export class XpmBuildConfigurations {
             }
             else {
                 if (this._buildComfigurationsNamesSet.has(buildConfigurationName)) {
-                    throw new XpmError(`build configuration name ` +
+                    throw new ConfigurationError(`build configuration name ` +
                         `"${buildConfigurationName}" already defined.`);
                 }
                 else {
@@ -57,7 +57,7 @@ export class XpmBuildConfigurations {
         }
         const buildConfigurationsNames = Array.from(this._buildConfigurationsMap.keys());
         this._buildConfigurationsNames = buildConfigurationsNames;
-        log.trace(`${XpmBuildConfigurations.name}.initialise() =>`, buildConfigurationsNames);
+        log.trace(`${BuildConfigurations.name}.initialise() =>`, buildConfigurationsNames);
         this._isInitialised = true;
         return true;
     }
@@ -94,16 +94,16 @@ export class XpmBuildConfigurations {
     }
     get(buildConfigurationName) {
         const log = this.log;
-        log.trace(`${XpmBuildConfigurations.name}.get(${buildConfigurationName})`);
+        log.trace(`${BuildConfigurations.name}.get(${buildConfigurationName})`);
         let buildConfiguration = this._buildConfigurationsMap.get(buildConfigurationName);
         if (buildConfiguration === undefined) {
             if (!this._jsonBuildConfigurationsNamesMap.has(buildConfigurationName)) {
-                throw new XpmInputError(`buildConfiguration "${buildConfigurationName}" ` + `does not exist`);
+                throw new InputError(`buildConfiguration "${buildConfigurationName}" ` + `does not exist`);
             }
             const jsonBuildConfigurationName = this._jsonBuildConfigurationsNamesMap.get(buildConfigurationName);
             const jsonBuildConfiguration = (this.jsonBuildConfigurations[jsonBuildConfigurationName] ??
                 {});
-            buildConfiguration = new XpmBuildConfiguration({
+            buildConfiguration = new BuildConfiguration({
                 buildConfigurationName,
                 jsonBuildConfiguration,
                 parentBuildConfigurations: this,
@@ -120,7 +120,7 @@ export class XpmBuildConfigurations {
             });
             for (const [expandedBuildConfigurationName, expandedBuildConfiguration,] of expandedBuildConfigurationsMap) {
                 if (this._buildComfigurationsNamesSet.has(expandedBuildConfigurationName)) {
-                    throw new XpmError(`duplicate build configuration name ` +
+                    throw new ConfigurationError(`duplicate build configuration name ` +
                         `"${expandedBuildConfigurationName}" ` +
                         `could not be generated from template.`);
                 }
@@ -134,32 +134,32 @@ export class XpmBuildConfigurations {
         catch (error) {
             const message = getErrorMessage(error) +
                 ` in buildConfiguration "${buildConfigurationName}"`;
-            throw new XpmError(message);
+            throw new ConfigurationError(message);
         }
     }
     async _expandTemplateBuildConfigurations({ buildConfigurationName, jsonBuildConfigurationTemplate, }) {
         const log = this.log;
-        log.trace(`${XpmBuildConfigurations.name}.` +
+        log.trace(`${BuildConfigurations.name}.` +
             `#expandTemplateBuildConfigurations(${buildConfigurationName})`);
         const newBuildConfigurationsMap = new Map();
         if (!isJsonObject(jsonBuildConfigurationTemplate.matrix)) {
-            throw new XpmError(`buildConfiguration "${buildConfigurationName}" ` +
+            throw new ConfigurationError(`buildConfiguration "${buildConfigurationName}" ` +
                 `matrix is not an object`);
         }
         if (!isJsonObject(jsonBuildConfigurationTemplate.template)) {
-            throw new XpmError(`buildConfiguration "${buildConfigurationName}" ` +
+            throw new ConfigurationError(`buildConfiguration "${buildConfigurationName}" ` +
                 `template is not a JSON object`);
         }
         const matrixKeys = [];
         const matrixValues = [];
         for (const [matrixKey, matrixValueArray] of Object.entries(jsonBuildConfigurationTemplate.matrix)) {
             if (!isJsonArray(matrixValueArray)) {
-                throw new XpmError(`buildConfiguration "${buildConfigurationName}" ` +
+                throw new ConfigurationError(`buildConfiguration "${buildConfigurationName}" ` +
                     `matrix.${matrixKey} is not an array`);
             }
             for (const matrixValue of matrixValueArray) {
                 if (!isString(matrixValue)) {
-                    throw new XpmError(`buildConfiguration "${buildConfigurationName}" ` +
+                    throw new ConfigurationError(`buildConfiguration "${buildConfigurationName}" ` +
                         `matrix.${matrixKey} value is not a string`);
                 }
             }
@@ -181,7 +181,7 @@ export class XpmBuildConfigurations {
                     const message = getErrorMessage(error) +
                         ` in buildConfiguration "${buildConfigurationName}" ` +
                         `matrix substitution`;
-                    throw new XpmError(message);
+                    throw new ConfigurationError(message);
                 }
                 matrixValues.push(substitutedValue.replace(new RegExp(os.EOL + '$'), '').split(os.EOL));
             }
@@ -223,9 +223,9 @@ export class XpmBuildConfigurations {
             const message = getErrorMessage(error) +
                 ` in buildConfiguration "${buildConfigurationName}" ` +
                 `name substitution`;
-            throw new XpmError(message);
+            throw new ConfigurationError(message);
         }
-        const newBuildConfiguration = new XpmBuildConfiguration({
+        const newBuildConfiguration = new BuildConfiguration({
             buildConfigurationName: substitutedBuildConfigurationName,
             templateBuildConfigurationName: buildConfigurationName,
             jsonBuildConfiguration,
@@ -235,7 +235,7 @@ export class XpmBuildConfigurations {
         newBuildConfigurationsMap.set(substitutedBuildConfigurationName, newBuildConfiguration);
     }
 }
-export class XpmBuildConfiguration {
+export class BuildConfiguration {
     buildConfigurationName;
     templateBuildConfigurationName;
     parentBuildConfigurations;
@@ -259,7 +259,7 @@ export class XpmBuildConfiguration {
         assert(parentBuildConfigurations, 'parentBuildConfigurations is required');
         const log = parentBuildConfigurations.log;
         this._log = log;
-        log.trace(`${XpmBuildConfiguration.name}(${buildConfigurationName})`);
+        log.trace(`${BuildConfiguration.name}(${buildConfigurationName})`);
         this.buildConfigurationName = buildConfigurationName;
         this.jsonBuildConfiguration = jsonBuildConfiguration;
         this.parentBuildConfigurations = parentBuildConfigurations;
@@ -277,14 +277,14 @@ export class XpmBuildConfiguration {
     }
     async initialise() {
         const log = this._log;
-        log.trace(`${XpmBuildConfiguration.name}.initialise()` +
+        log.trace(`${BuildConfiguration.name}.initialise()` +
             ` @${this.buildConfigurationName}`);
         if (this._isInitialised) {
-            log.trace(`${XpmBuildConfiguration.name}.initialise()` +
+            log.trace(`${BuildConfiguration.name}.initialise()` +
                 ` @${this.buildConfigurationName} again`);
             return false;
         }
-        log.trace(`${XpmBuildConfiguration.name}.initialise()` +
+        log.trace(`${BuildConfiguration.name}.initialise()` +
             ` @${this.buildConfigurationName}`);
         let localJsonBuildConfiguration;
         if (this.isTemplate) {
@@ -343,13 +343,13 @@ export class XpmBuildConfiguration {
             catch (error) {
                 const message = getErrorMessage(error) +
                     ` in buildConfiguration "${this.buildConfigurationName}" dependencies`;
-                throw new XpmError(message);
+                throw new ConfigurationError(message);
             }
             const parsedDependencies = JSON.parse(substitutedDependencies);
             this.dependencies = parsedDependencies.dependencies ?? {};
             this.devDependencies = parsedDependencies.devDependencies ?? {};
         }
-        this._actions = new XpmActions({
+        this._actions = new Actions({
             log: this._log,
             engine: this.parentBuildConfigurations.engine,
             substitutionsVariables: this._substitutionsVariables,
@@ -357,7 +357,7 @@ export class XpmBuildConfiguration {
             jsonActions: localJsonBuildConfiguration.actions,
             buildConfiguration: this,
         });
-        log.trace(`${XpmBuildConfiguration.name}.initialise() `, `@{this.buildConfigurationName}`);
+        log.trace(`${BuildConfiguration.name}.initialise() `, `@{this.buildConfigurationName}`);
         if (!this.isHidden) {
             log.trace(this.buildConfigurationName, 'buildFolderRelativePath =>', this._buildFolderRelativePath);
         }
@@ -369,11 +369,11 @@ export class XpmBuildConfiguration {
         return true;
     }
     get actions() {
-        assert(this._actions !== undefined, 'XpmActions not initialised');
+        assert(this._actions !== undefined, 'Actions not initialised');
         return this._actions;
     }
     get buildFolderRelativePath() {
-        assert(this._buildFolderRelativePath !== undefined, 'XpmActions not initialised');
+        assert(this._buildFolderRelativePath !== undefined, 'Actions not initialised');
         return this._buildFolderRelativePath;
     }
     async _substituteTemplate() {
@@ -401,7 +401,7 @@ export class XpmBuildConfiguration {
             catch (error) {
                 const message = getErrorMessage(error) +
                     ` in buildConfiguration "${this.buildConfigurationName}"`;
-                throw new XpmError(message);
+                throw new ConfigurationError(message);
             }
             localJsonBuildConfiguration = JSON.parse(substitutedJsonBuildConfiguration);
         }
@@ -434,7 +434,7 @@ export class XpmBuildConfiguration {
             catch (error) {
                 const message = getErrorMessage(error) +
                     ` in buildConfiguration "${this.buildConfigurationName}" inherits`;
-                throw new XpmError(message);
+                throw new ConfigurationError(message);
             }
             localJsonBuildConfiguration = {
                 ...this.jsonBuildConfiguration,
@@ -475,7 +475,7 @@ export class XpmBuildConfiguration {
             }
             if (this.parentBuildConfigurations.hasJson(inheritedBuildConfigurationName)) {
                 if (this._inheritedNamesSet.has(inheritedBuildConfigurationName)) {
-                    throw new XpmInputError('buildConfiguration' +
+                    throw new InputError('buildConfiguration' +
                         ` '${this.buildConfigurationName}'` +
                         ' inherits from circular reference' +
                         ` '${inheritedBuildConfigurationName}'`);
@@ -502,7 +502,7 @@ export class XpmBuildConfiguration {
                 }
             }
             else {
-                throw new XpmInputError('buildConfiguration' +
+                throw new InputError('buildConfiguration' +
                     ` '${this.buildConfigurationName}'` +
                     ' inherits from missing' +
                     ` '${inheritedBuildConfigurationName}'`);
@@ -529,7 +529,7 @@ export class XpmBuildConfiguration {
                 catch (error) {
                     const message = getErrorMessage(error) +
                         ` in buildConfiguration "${this.buildConfigurationName}"`;
-                    throw new XpmError(message);
+                    throw new ConfigurationError(message);
                 }
             }
         }

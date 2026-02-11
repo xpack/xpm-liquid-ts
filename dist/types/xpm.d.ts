@@ -1,6 +1,6 @@
 import { Logger } from '@xpack/logger';
-export type XpmActionCommands = string[];
-export interface XpmConfig {
+export type ActionCommands = string[];
+export interface Config {
     doForce?: boolean;
     doSkipIfInstalled?: boolean;
     isDryRun?: boolean;
@@ -8,9 +8,9 @@ export interface XpmConfig {
     cwd: string;
     [key: string]: unknown;
 }
-export interface XpmContext {
+export interface Context {
     log: Logger;
-    config: XpmConfig;
+    config: Config;
     [key: string]: any;
 }
 //# sourceMappingURL=xpm.d.ts.map

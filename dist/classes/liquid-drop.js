@@ -1,24 +1,24 @@
-import { Drop } from 'liquidjs';
+import * as liquidjs from 'liquidjs';
 import { isJsonObject } from '../functions/is-something.js';
-import { XpmInputError } from '../classes/errors.js';
-export class XpmLiquidPropertiesDrop extends Drop {
+import { InputError } from './errors.js';
+export class LiquidPropertiesDrop extends liquidjs.Drop {
     _log;
     _properties;
     _engine;
-    constructor({ log, engine, properties, }) {
+    constructor({ engine, properties, log, }) {
         super();
-        log.trace(`${XpmLiquidPropertiesDrop.name}()`);
+        log.trace(`${LiquidPropertiesDrop.name}()`);
         this._log = log;
         this._engine = engine;
         this._properties = properties;
     }
     async liquidMethodMissing(key, context) {
         if (this._properties[key] === undefined) {
-            throw new XpmInputError(`"properties.${key}" not defined`);
+            throw new InputError(`"properties.${key}" not defined`);
         }
         const log = this._log;
         const value = this._properties[key];
-        log.trace(`${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}') in (`, value, ')');
+        log.trace(`${LiquidPropertiesDrop.name}.liquidMethodMissing('${key}') in (`, value, ')');
         let result;
         if (isJsonObject(value)) {
             return value;
@@ -30,28 +30,28 @@ export class XpmLiquidPropertiesDrop extends Drop {
         else {
             result = value;
         }
-        log.trace(`${XpmLiquidPropertiesDrop.name}.liquidMethodMissing('${key}')` + ` => (`, result, ')');
+        log.trace(`${LiquidPropertiesDrop.name}.liquidMethodMissing('${key}')` + ` => (`, result, ')');
         return result;
     }
 }
-export class XpmLiquidMatrixDrop extends Drop {
+export class LiquidMatrixDrop extends liquidjs.Drop {
     _log;
     _matrix;
     _engine;
-    constructor({ log, engine, matrix, }) {
+    constructor({ engine, matrix, log }) {
         super();
-        log.trace(`${XpmLiquidMatrixDrop.name}()`);
+        log.trace(`${LiquidMatrixDrop.name}()`);
         this._log = log;
         this._engine = engine;
         this._matrix = matrix;
     }
     async liquidMethodMissing(key, context) {
         if (this._matrix[key] === undefined) {
-            throw new XpmInputError(`"matrix.${key}" not defined`);
+            throw new InputError(`"matrix.${key}" not defined`);
         }
         const log = this._log;
         const value = this._matrix[key];
-        log.trace(`${XpmLiquidMatrixDrop.name}.liquidMethodMissing('${key}') in (`, value, ')');
+        log.trace(`${LiquidMatrixDrop.name}.liquidMethodMissing('${key}') in (`, value, ')');
         let result;
         if (isJsonObject(value)) {
             return value;
@@ -63,7 +63,7 @@ export class XpmLiquidMatrixDrop extends Drop {
         else {
             result = value;
         }
-        log.trace(`${XpmLiquidMatrixDrop.name}.liquidMethodMissing('${key}')` + ` => (`, result, ')');
+        log.trace(`${LiquidMatrixDrop.name}.liquidMethodMissing('${key}')` + ` => (`, result, ')');
         return result;
     }
 }

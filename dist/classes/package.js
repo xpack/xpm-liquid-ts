@@ -2,16 +2,16 @@ import assert from 'node:assert';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import semver from 'semver';
-import { XpmInputError, XpmPrerequisitesError } from './errors.js';
-import { isString } from '../index.js';
-export class XpmPackage {
+import { InputError, PrerequisitesError } from './errors.js';
+import { isString } from '../functions/is-something.js';
+export class Package {
     packageFolderPath;
     jsonPackage;
     _log;
-    constructor({ log, packageFolderPath, }) {
+    constructor({ packageFolderPath, log }) {
         this._log = log;
         this.packageFolderPath = packageFolderPath;
-        log.trace(`${XpmPackage.name}(${packageFolderPath})`);
+        log.trace(`${Package.name}(${packageFolderPath})`);
     }
     async readPackageDotJson({ withThrow = false, } = {}) {
         const jsonFilePath = path.join(this.packageFolderPath, 'package.json');
@@ -24,7 +24,7 @@ export class XpmPackage {
                 if (error instanceof Error) {
                     this._log.trace(error.message);
                 }
-                throw new XpmInputError(`no package.json in folder ‘${this.packageFolderPath}’`);
+                throw new InputError(`no package.json in folder ‘${this.packageFolderPath}’`);
             }
             else {
                 return undefined;
@@ -39,7 +39,7 @@ export class XpmPackage {
                 if (error instanceof Error) {
                     this._log.trace(error.message);
                 }
-                throw new XpmInputError(`invalid package.json in folder ‘${this.packageFolderPath}’`);
+                throw new InputError(`invalid package.json in folder ‘${this.packageFolderPath}’`);
             }
             else {
                 return undefined;
@@ -90,21 +90,21 @@ export class XpmPackage {
         }
         if (jsonPackage?.xpack.executables ?? jsonPackage?.xpack.bin) {
             if (!jsonPackage.xpack.binaries) {
-                throw new XpmInputError("doesn't look like a proper binary xpm package, " +
+                throw new InputError("doesn't look like a proper binary xpm package, " +
                     'package.json has no "xpack.binaries"');
             }
             if (!jsonPackage.xpack.binaries.platforms) {
-                throw new XpmInputError("doesn't look like a proper binary xpm package, " +
+                throw new InputError("doesn't look like a proper binary xpm package, " +
                     'package.json has no "xpack.binaries.platforms"');
             }
             return true;
         }
         if (jsonPackage?.xpack.binaries) {
             if (!jsonPackage.xpack.binaries.platforms) {
-                throw new XpmInputError("doesn't look like a proper binary xpm package, " +
+                throw new InputError("doesn't look like a proper binary xpm package, " +
                     'package.json has no "xpack.binaries.platforms"');
             }
-            throw new XpmInputError("doesn't look like a proper binary xpm package, " +
+            throw new InputError("doesn't look like a proper binary xpm package, " +
                 'package.json has no "xpack.executables"');
         }
         return false;
@@ -174,7 +174,7 @@ export class XpmPackage {
     getMinimumXpmRequired() {
         const log = this._log;
         const jsonPackage = this.jsonPackage;
-        log.trace(`${XpmPackage.name}.getMinimumXpmRequired()`);
+        log.trace(`${Package.name}.getMinimumXpmRequired()`);
         const version = jsonPackage?.xpack.minimumXpmRequired;
         if (version === undefined) {
             return undefined;
@@ -187,7 +187,7 @@ export class XpmPackage {
     async checkMinimumXpmRequired({ xpmRootFolderPath, }) {
         const log = this._log;
         const jsonPackage = this.jsonPackage;
-        log.trace(`${XpmPackage.name}.checkMinimumXpmRequired()`);
+        log.trace(`${Package.name}.checkMinimumXpmRequired()`);
         if (!this.isXpmPackage()) {
             return undefined;
         }
@@ -199,7 +199,7 @@ export class XpmPackage {
         log.trace(`minimumXpmRequired: ${minimumXpmRequired}`);
         let jsonXpmCliPackage;
         try {
-            const cliXpmPackage = new XpmPackage({
+            const cliXpmPackage = new Package({
                 log,
                 packageFolderPath: xpmRootFolderPath,
             });
@@ -227,7 +227,7 @@ export class XpmPackage {
         }
         if (semver.lt(xpmVersion, minimumXpmRequired)) {
             assert(jsonPackage?.name, 'jsonPackage.name is required');
-            throw new XpmPrerequisitesError(`package '${jsonPackage.name}' ` +
+            throw new PrerequisitesError(`package '${jsonPackage.name}' ` +
                 `requires xpm v${minimumXpmRequired} or later, please upgrade`);
         }
         return minimumXpmRequired;
@@ -241,7 +241,7 @@ export class XpmPackage {
         if (npmPackageSpecifier.startsWith('@')) {
             const arr = npmPackageSpecifier.split('/');
             if (arr.length > 2) {
-                throw new XpmInputError(`'${npmPackageSpecifier}' not a package name`);
+                throw new InputError(`'${npmPackageSpecifier}' not a package name`);
             }
             scope = arr[0];
             if (arr.length > 1) {

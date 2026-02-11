@@ -1,9 +1,9 @@
 import * as os from 'node:os';
 import * as path from 'node:path';
 import * as util from 'node:util';
-import { Liquid } from 'liquidjs';
+import * as liquidjs from 'liquidjs';
 import { isJsonObject } from '../functions/is-something.js';
-export class XpmLiquidEngine extends Liquid {
+export class LiquidEngine extends liquidjs.Liquid {
     constructor() {
         super({
             strictFilters: true,

@@ -1,6 +1,6 @@
 import { Logger } from '@xpack/logger';
-import { XpmLiquidEngine } from '../classes/liquid-engine.js';
-import { XpmLiquidSubstitutionsVariables } from '../data/substitutions-variables.js';
+import { LiquidEngine } from '../classes/liquid-engine.js';
+import { LiquidSubstitutionsVariables } from '../data/substitutions-variables.js';
 /**
  * Performs substitutions on an input string using Liquid.
  *
@@ -16,10 +16,10 @@ import { XpmLiquidSubstitutionsVariables } from '../data/substitutions-variables
  * <li>Skip processing for empty strings to avoid unnecessary overhead.</li>
  * <li>Prepare Liquid context with substitution variables.</li>
  * <li>If <code>properties</code> exist, wrap them in
- *    <code>XpmLiquidPropertiesDrop</code>
+ *    <code>LiquidPropertiesDrop</code>
  *    for lazy evaluation and nested substitution support.</li>
  * <li>If <code>matrix</code> parameters exist, wrap them in
- *    <code>XpmLiquidMatrixDrop</code>
+ *    <code>LiquidMatrixDrop</code>
  *    for template expansion variable access.</li>
  * <li>Iterate while Liquid syntax (<code>\{\{</code> or <code>\{%</code>)
  *   is present:
@@ -41,7 +41,7 @@ import { XpmLiquidSubstitutionsVariables } from '../data/substitutions-variables
  *
  * Liquid rendering errors are caught, stripped of line
  * number information (which can be misleading for nested templates), and
- * re-thrown as {@link XpmError}.
+ * re-thrown as {@link ConfigurationError}.
  *
  * @param log - The logger instance for output and diagnostics.
  * @param engine - The Liquid engine used to render substitutions.
@@ -49,13 +49,13 @@ import { XpmLiquidSubstitutionsVariables } from '../data/substitutions-variables
  * @param substitutionsVariables - The variables available for substitution.
  * @returns The fully substituted string.
  *
- * @throws {@link XpmError}
+ * @throws {@link ConfigurationError}
  * If Liquid rendering fails.
  */
 export declare function performSubstitutions({ log, engine, input, substitutionsVariables, }: {
     log: Logger;
-    engine: XpmLiquidEngine;
+    engine: LiquidEngine;
     input: string;
-    substitutionsVariables: XpmLiquidSubstitutionsVariables;
+    substitutionsVariables: LiquidSubstitutionsVariables;
 }): Promise<string>;
 //# sourceMappingURL=perform-substitutions.d.ts.map

@@ -1,14 +1,14 @@
 import { Logger } from '@xpack/logger';
-import { JsonXpmPackage } from '../types/json.js';
-import { JsonPackageSpecifier } from '../types/json.js';
-export declare class XpmPackage {
+import { JsonPackageSpecifier, JsonXpmPackage } from '../types/json.js';
+export interface PackageConstructorParameters {
+    packageFolderPath: string;
+    log: Logger;
+}
+export declare class Package {
     packageFolderPath: string;
     jsonPackage?: JsonXpmPackage;
     protected _log: Logger;
-    constructor({ log, packageFolderPath, }: {
-        log: Logger;
-        packageFolderPath: string;
-    });
+    constructor({ packageFolderPath, log }: PackageConstructorParameters);
     readPackageDotJson({ withThrow, }?: {
         withThrow?: boolean;
     }): Promise<JsonXpmPackage | undefined>;

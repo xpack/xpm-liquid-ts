@@ -1,33 +1,34 @@
 import { Logger } from '@xpack/logger';
-import { XpmLiquidEngine } from './liquid-engine.js';
-import { XpmLiquidSubstitutionsVariables, XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.js';
-import { JsonActions, JsonActionContent, JsonActionTemplate } from '../types/json.js';
-import { XpmBuildConfiguration } from './build-configurations.js';
-export declare class XpmActions {
+import { LiquidSubstitutionsVariables, LiquidSubstitutionsStrings } from '../data/substitutions-variables.js';
+import { JsonActionContent, JsonActions, JsonActionTemplate } from '../types/json.js';
+import { BuildConfiguration } from './build-configurations.js';
+import { LiquidEngine } from './liquid-engine.js';
+export interface ActionsConstructorParameters {
+    engine: LiquidEngine;
+    substitutionsVariables: LiquidSubstitutionsVariables;
+    jsonActions: JsonActions | undefined;
+    inheritedActionsMap?: Map<string, Action>;
+    buildConfiguration?: BuildConfiguration;
+    log: Logger;
+}
+export declare class Actions {
     readonly log: Logger;
-    readonly engine: XpmLiquidEngine;
-    readonly substitutionsVariables: XpmLiquidSubstitutionsVariables;
+    readonly engine: LiquidEngine;
+    readonly substitutionsVariables: LiquidSubstitutionsVariables;
     readonly jsonActions: JsonActions;
-    readonly buildConfiguration: XpmBuildConfiguration | undefined;
-    protected readonly _actionsMap: Map<string, XpmAction | undefined>;
+    readonly buildConfiguration: BuildConfiguration | undefined;
+    protected readonly _actionsMap: Map<string, Action | undefined>;
     protected readonly _actionsNamesSet: Set<string>;
     protected readonly _jsonActionsNamesMap: Map<string, string>;
     protected _isInitialised: boolean;
     protected _actionsNames: string[];
-    constructor({ log, engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, }: {
-        log: Logger;
-        engine: XpmLiquidEngine;
-        substitutionsVariables: XpmLiquidSubstitutionsVariables;
-        jsonActions: JsonActions | undefined;
-        inheritedActionsMap?: Map<string, XpmAction>;
-        buildConfiguration?: XpmBuildConfiguration;
-    });
+    constructor({ engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, log, }: ActionsConstructorParameters);
     initialise(): Promise<boolean>;
     get size(): number;
     get isEmpty(): boolean;
     get names(): string[];
     has(actionName: string): boolean;
-    get(actionName: string): XpmAction;
+    get(actionName: string): Action;
     protected _processTemplate({ actionName, jsonActionTemplate, }: {
         actionName: string;
         jsonActionTemplate: JsonActionTemplate;
@@ -35,27 +36,28 @@ export declare class XpmActions {
     protected _expandTemplateActions({ actionName, jsonActionTemplate, }: {
         actionName: string;
         jsonActionTemplate: JsonActionTemplate;
-    }): Promise<Map<string, XpmAction>>;
+    }): Promise<Map<string, Action>>;
     protected _createSubstitutedAction({ actionName, jsonAction, combination, newActionsMap, }: {
         combination: Record<string, string>;
         actionName: string;
         jsonAction: JsonActionContent;
-        newActionsMap: Map<string, XpmAction>;
+        newActionsMap: Map<string, Action>;
     }): Promise<void>;
 }
-export declare class XpmAction {
+export interface ActionConstructorParameters {
+    actionName: string;
+    jsonAction: JsonActionContent;
+    parentActions: Actions;
+    matrixParameters?: LiquidSubstitutionsStrings;
+}
+export declare class Action {
     readonly actionName: string;
     readonly jsonAction: JsonActionContent;
-    readonly parentActions: XpmActions;
-    protected readonly _matrixParameters?: XpmLiquidSubstitutionsStrings;
+    readonly parentActions: Actions;
+    protected readonly _matrixParameters?: LiquidSubstitutionsStrings;
     protected _commands?: string[];
     protected _isInitialised: boolean;
-    constructor({ actionName, jsonAction, parentActions, matrixParameters, }: {
-        actionName: string;
-        jsonAction: JsonActionContent;
-        parentActions: XpmActions;
-        matrixParameters?: XpmLiquidSubstitutionsStrings;
-    });
+    constructor({ actionName, jsonAction, parentActions, matrixParameters, }: ActionConstructorParameters);
     initialise(): Promise<boolean>;
     get commands(): string[];
 }

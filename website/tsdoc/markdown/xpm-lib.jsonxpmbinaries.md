@@ -4,7 +4,7 @@
 
 ## JsonXpmBinaries interface
 
-Represents a JSON binaries definition in `package.json.`
+Represents a JSON binaries definition in `package.`
 
 **Signature:**
 

@@ -9,7 +9,7 @@ Builds a unique key using the current platform and architecture.
 **Signature:**
 
 ```typescript
-export declare function getPlatformKey({ doForce32bit, }?: {
+export declare function getPlatformKey(input?: {
     doForce32bit?: boolean;
 }): string;
 ```
@@ -35,6 +35,22 @@ Description
 <tbody><tr><td>
 
 { doForce32bit, }
+
+
+</td><td>
+
+(not declared)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+input
 
 
 </td><td>

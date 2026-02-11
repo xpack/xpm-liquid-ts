@@ -9,11 +9,11 @@ Performs substitutions on an input string using Liquid.
 **Signature:**
 
 ```typescript
-export declare function performSubstitutions({ log, engine, input, substitutionsVariables, }: {
+export declare function performSubstitutions(input: {
     log: Logger;
-    engine: XpmLiquidEngine;
+    engine: LiquidEngine;
     input: string;
-    substitutionsVariables: XpmLiquidSubstitutionsVariables;
+    substitutionsVariables: LiquidSubstitutionsVariables;
 }): Promise<string>;
 ```
 
@@ -42,10 +42,26 @@ Description
 
 </td><td>
 
-{ log: Logger; engine: [XpmLiquidEngine](./xpm-lib.xpmliquidengine.md)<!-- -->; input: string; substitutionsVariables: [XpmLiquidSubstitutionsVariables](./xpm-lib.xpmliquidsubstitutionsvariables.md)<!-- -->; }
+(not declared)
 
 
 </td><td>
+
+
+</td></tr>
+<tr><td>
+
+input
+
+
+</td><td>
+
+{ log: Logger; engine: [LiquidEngine](./xpm-lib.liquidengine.md)<!-- -->; input: string; substitutionsVariables: [LiquidSubstitutionsVariables](./xpm-lib.liquidsubstitutionsvariables.md)<!-- -->; }
+
+
+</td><td>
+
+The input string, possibly containing substitutions.
 
 
 </td></tr>
@@ -59,7 +75,7 @@ The fully substituted string.
 
 ## Exceptions
 
-[XpmError](./xpm-lib.xpmerror.md) If Liquid rendering fails.
+[ConfigurationError](./xpm-lib.configurationerror.md) If Liquid rendering fails.
 
 ## Remarks
 
@@ -67,11 +83,11 @@ This function processes Liquid template syntax (variables and tags) by repeatedl
 
 Processing workflow:
 
-<ol> <li>Skip processing for empty strings to avoid unnecessary overhead.</li> <li>Prepare Liquid context with substitution variables.</li> <li>If <code>properties</code> exist, wrap them in <code>XpmLiquidPropertiesDrop</code> for lazy evaluation and nested substitution support.</li> <li>If <code>matrix</code> parameters exist, wrap them in <code>XpmLiquidMatrixDrop</code> for template expansion variable access.</li> <li>Iterate while Liquid syntax (<code>{<!-- -->{</code> or <code>{<!-- -->%</code>) is present: <ul> <li>Parse and render the current string.</li> <li>Break if no changes occur (safety check).</li> <li>Continue with the substituted result.</li> </ul> </li> <li>Return the fully substituted string.</li> </ol>
+<ol> <li>Skip processing for empty strings to avoid unnecessary overhead.</li> <li>Prepare Liquid context with substitution variables.</li> <li>If <code>properties</code> exist, wrap them in <code>LiquidPropertiesDrop</code> for lazy evaluation and nested substitution support.</li> <li>If <code>matrix</code> parameters exist, wrap them in <code>LiquidMatrixDrop</code> for template expansion variable access.</li> <li>Iterate while Liquid syntax (<code>{<!-- -->{</code> or <code>{<!-- -->%</code>) is present: <ul> <li>Parse and render the current string.</li> <li>Break if no changes occur (safety check).</li> <li>Continue with the substituted result.</li> </ul> </li> <li>Return the fully substituted string.</li> </ol>
 
 The Drop pattern enables recursive property resolution: when a template accesses `{{ properties.foo }}` and `foo` contains `{{ properties.bar }}`<!-- -->, the next iteration resolves `bar`<!-- -->, and so on until no Liquid syntax remains.
 
 Error handling:
 
-Liquid rendering errors are caught, stripped of line number information (which can be misleading for nested templates), and re-thrown as [XpmError](./xpm-lib.xpmerror.md)<!-- -->.
+Liquid rendering errors are caught, stripped of line number information (which can be misleading for nested templates), and re-thrown as [ConfigurationError](./xpm-lib.configurationerror.md)<!-- -->.
 

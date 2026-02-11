@@ -19,6 +19,114 @@ The following interfaces are defined:
 <tbody>
 <tr><td>
 
+[ActionConstructorParameters](/docs/api/xpm-lib/interfaces/actionconstructorparameters)
+
+</td><td>
+
+Configuration parameters for constructing an action instance.
+
+</td></tr>
+<tr><td>
+
+[ActionsConstructorParameters](/docs/api/xpm-lib/interfaces/actionsconstructorparameters)
+
+</td><td>
+
+Configuration parameters for constructing an actions collection instance.
+
+</td></tr>
+<tr><td>
+
+[BuildConfigurationConstructorParameters](/docs/api/xpm-lib/interfaces/buildconfigurationconstructorparameters)
+
+</td><td>
+
+Configuration parameters for constructing a build configuration instance.
+
+</td></tr>
+<tr><td>
+
+[BuildConfigurationsConstructorParameters](/docs/api/xpm-lib/interfaces/buildconfigurationsconstructorparameters)
+
+</td><td>
+
+Configuration parameters for constructing a build configurations collection.
+
+</td></tr>
+<tr><td>
+
+[CombinationsGeneratorConstructorParameters](/docs/api/xpm-lib/interfaces/combinationsgeneratorconstructorparameters)
+
+</td><td>
+
+Configuration parameters for constructing a combinations generator instance.
+
+</td></tr>
+<tr><td>
+
+[Config](/docs/api/xpm-lib/interfaces/config)
+
+</td><td>
+
+Defines the <b>xpm</b> configuration options.
+
+</td></tr>
+<tr><td>
+
+[Context](/docs/api/xpm-lib/interfaces/context)
+
+</td><td>
+
+Provides the execution context for <b>xpm</b> operations.
+
+</td></tr>
+<tr><td>
+
+[DataModelConstructorParameters](/docs/api/xpm-lib/interfaces/datamodelconstructorparameters)
+
+</td><td>
+
+Configuration parameters for constructing a data model instance.
+
+</td></tr>
+<tr><td>
+
+[InitTemplateConstructorParameters](/docs/api/xpm-lib/interfaces/inittemplateconstructorparameters)
+
+</td><td>
+
+Configuration parameters for constructing an `xpm init` template.
+
+</td></tr>
+<tr><td>
+
+[InitTemplateItemValue](/docs/api/xpm-lib/interfaces/inittemplateitemvalue)
+
+</td><td>
+
+Defines an `xpm init` template platform-specific item value.
+
+</td></tr>
+<tr><td>
+
+[InitTemplatePropertiesDefinition](/docs/api/xpm-lib/interfaces/inittemplatepropertiesdefinition)
+
+</td><td>
+
+Defines an `xpm init` single template property.
+
+</td></tr>
+<tr><td>
+
+[InitTemplateSubstitutionsVariables](/docs/api/xpm-lib/interfaces/inittemplatesubstitutionsvariables)
+
+</td><td>
+
+Defines the substitution variables used by `xpm init` templates.
+
+</td></tr>
+<tr><td>
+
 [JsonActionTemplate](/docs/api/xpm-lib/interfaces/jsonactiontemplate)
 
 </td><td>
@@ -86,7 +194,7 @@ Represents a JSON xpm-specific section in `package.json`.
 
 </td><td>
 
-Represents a JSON binaries definition in `package.json.`
+Represents a JSON binaries definition in `package.`
 
 </td></tr>
 <tr><td>
@@ -109,66 +217,51 @@ Represents a JSON platform-specific binary file definition.
 </td></tr>
 <tr><td>
 
-[XpmConfig](/docs/api/xpm-lib/interfaces/xpmconfig)
+[LiquidMatrixDropConstructorParameters](/docs/api/xpm-lib/interfaces/liquidmatrixdropconstructorparameters)
 
 </td><td>
 
-Defines the <b>xpm</b> configuration options.
+Configuration parameters for constructing a matrix drop instance.
 
 </td></tr>
 <tr><td>
 
-[XpmContext](/docs/api/xpm-lib/interfaces/xpmcontext)
+[LiquidPropertiesDropConstructorParameters](/docs/api/xpm-lib/interfaces/liquidpropertiesdropconstructorparameters)
 
 </td><td>
 
-Provides the execution context for <b>xpm</b> operations.
+Configuration parameters for constructing a properties drop instance.
 
 </td></tr>
 <tr><td>
 
-[XpmInitTemplateConstructorParameters](/docs/api/xpm-lib/interfaces/xpminittemplateconstructorparameters)
-
-</td><td>
-</td></tr>
-<tr><td>
-
-[XpmInitTemplateItemValue](/docs/api/xpm-lib/interfaces/xpminittemplateitemvalue)
-
-</td><td>
-
-Defines an `xpm init` template platform-specific item value.
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplatePropertiesDefinition](/docs/api/xpm-lib/interfaces/xpminittemplatepropertiesdefinition)
-
-</td><td>
-
-Defines an `xpm init` single template property.
-
-</td></tr>
-<tr><td>
-
-[XpmInitTemplateSubstitutionsVariables](/docs/api/xpm-lib/interfaces/xpminittemplatesubstitutionsvariables)
-
-</td><td>
-
-Defines the substitution variables used by `xpm init` templates.
-
-</td></tr>
-<tr><td>
-
-[XpmLiquidSubstitutionsVariables](/docs/api/xpm-lib/interfaces/xpmliquidsubstitutionsvariables)
+[LiquidSubstitutionsVariables](/docs/api/xpm-lib/interfaces/liquidsubstitutionsvariables)
 
 </td><td>
 
 Defines the substitution variables available to Liquid templates.
 
 </td></tr>
+<tr><td>
+
+[PackageConstructorParameters](/docs/api/xpm-lib/interfaces/packageconstructorparameters)
+
+</td><td>
+
+Configuration parameters for constructing a package instance.
+
+</td></tr>
+<tr><td>
+
+[PoliciesConstructorParameters](/docs/api/xpm-lib/interfaces/policiesconstructorparameters)
+
+</td><td>
+
+Configuration parameters for constructing a policies instance.
+
+</td></tr>
 </tbody></table><hr/>
 
-<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.0-pre by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.55.2.</p>
+<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.56.3.</p>
 
 </div>

@@ -1,6 +1,26 @@
 import { Logger } from '@xpack/logger';
-import { JsonXpmPackage } from '../types/json.js';
-import { JsonPackageSpecifier } from '../types/json.js';
+import { JsonPackageSpecifier, JsonXpmPackage } from '../types/json.js';
+/**
+ * Configuration parameters for constructing a package instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link Package}. Both properties are mandatory.
+ *
+ * The parameters provide the absolute path to the package folder containing
+ * (or that will contain) the <code>package.json</code> file, and the logger
+ * for diagnostic output during package operations.
+ */
+export interface PackageConstructorParameters {
+    /**
+     * The absolute path to the package folder.
+     */
+    packageFolderPath: string;
+    /**
+     * The logger instance for output and diagnostics.
+     */
+    log: Logger;
+}
 /**
  * Provides access to package metadata and xpm-specific validation.
  *
@@ -32,7 +52,7 @@ import { JsonPackageSpecifier } from '../types/json.js';
  * This hierarchy allows validation to be performed incrementally as needed,
  * avoiding unnecessary checks for packages that don't meet earlier criteria.
  */
-export declare class XpmPackage {
+export declare class Package {
     /**
      * The absolute path to the package folder.
      *
@@ -49,7 +69,7 @@ export declare class XpmPackage {
      * <li>Used to construct the path to <code>package.json</code> as
      *    <code>\{packageFolderPath\}/package.json</code>.</li>
      * <li>Remains constant throughout the lifecycle of the
-     *    <code>XpmPackage</code> instance.</li>
+     *    <code>Package</code> instance.</li>
      * </ol>
      *
      * The path is set during construction and used by all methods that access
@@ -66,18 +86,18 @@ export declare class XpmPackage {
      * Lifecycle states:
      *
      * <ol>
-     * <li>Initially undefined when the <code>XpmPackage</code> instance
+     * <li>Initially undefined when the <code>Package</code> instance
      *    is created.</li>
-     * <li>Populated by <code>XpmPackage.readPackageDotJson()</code> upon
+     * <li>Populated by <code>Package.readPackageDotJson()</code> upon
      *    successful read and parse.</li>
      * <li>Cleared to undefined if parsing fails with
      *    <code>withThrow</code> enabled.</li>
      * <li>Used by validation methods (<code>isNpmPackage</code>,
-     *    <code>isXpmPackage</code>,
+     *    <code>isxpm.Package</code>,
      *    <code>isBinaryXpmPackage</code>) to check package capabilities.</li>
      * <li>Not automatically updated when <code>package.json</code> is
      *    modified externally;
-     *    call <code>XpmPackage.readPackageDotJson()</code> again to refresh.</li>
+     *    call <code>Package.readPackageDotJson()</code> again to refresh.</li>
      * </ol>
      *
      * The cached content improves performance for packages that perform
@@ -112,13 +132,10 @@ export declare class XpmPackage {
     /**
      * Constructs a package helper bound to a specific folder.
      *
-     * @param log - The logger instance for output and diagnostics.
      * @param packageFolderPath - The absolute path to the package folder.
+     * @param log - The logger instance for output and diagnostics.
      */
-    constructor({ log, packageFolderPath, }: {
-        log: Logger;
-        packageFolderPath: string;
-    });
+    constructor({ packageFolderPath, log }: PackageConstructorParameters);
     /**
      * Reads and parses `package.json` from the package folder.
      *
@@ -130,14 +147,14 @@ export declare class XpmPackage {
      *
      * When `withThrow` is false, the method returns undefined for missing or
      * invalid files, allowing callers to handle the absence gracefully. When
-     * `withThrow` is true, errors are thrown as {@link XpmInputError} for
+     * `withThrow` is true, errors are thrown as {@link InputError} for
      * consistent error handling across the application.
      *
      * @param withThrow - Whether to throw on missing or invalid `package.json`.
      * @returns The parsed `package.json` content, or undefined when missing or
      * invalid and `withThrow` is false.
      *
-     * @throws {@link XpmInputError}
+     * @throws {@link InputError}
      * If `package.json` is missing or invalid and `withThrow` is true.
      */
     readPackageDotJson({ withThrow, }?: {
@@ -197,7 +214,7 @@ export declare class XpmPackage {
      * @returns `true` if the package defines binaries and executables, `false`
      * otherwise.
      *
-     * @throws {@link XpmInputError}
+     * @throws {@link InputError}
      * If required binary package fields are missing.
      */
     isBinaryXpmPackage(): boolean;
@@ -281,7 +298,7 @@ export declare class XpmPackage {
      *     provided root folder.</li>
      * <li>Extract and clean the installed <b>xpm</b> version.</li>
      * <li>Compare versions using semver to determine if upgrade is needed.</li>
-     * <li>Throw <code>XpmPrerequisitesError</code> if installed version is
+     * <li>Throw <code>PrerequisitesError</code> if installed version is
      * too old.</li>
      * </ol>
      *
@@ -293,7 +310,7 @@ export declare class XpmPackage {
      * @returns The cleaned minimum required version, or undefined if no check is
      * required.
      *
-     * @throws {@link XpmPrerequisitesError}
+     * @throws {@link PrerequisitesError}
      * If the installed <b>xpm</b> version is lower than the required minimum.
      */
     checkMinimumXpmRequired({ xpmRootFolderPath, }: {
@@ -332,7 +349,7 @@ export declare class XpmPackage {
      * @param npmPackageSpecifier - The npm package specifier to parse.
      * @returns The parsed package specifier components.
      *
-     * @throws {@link XpmInputError}
+     * @throws {@link InputError}
      * If the specifier is not a valid package name format.
      */
     parsePackageSpecifier({ npmPackageSpecifier, }: {

@@ -1,6 +1,6 @@
 import * as os from 'node:os';
-export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>;
-export interface XpmLiquidSubstitutionsVariables {
+export type LiquidSubstitutionsStrings = Record<string, string | string[]>;
+export interface LiquidSubstitutionsVariables {
     env: NodeJS.ProcessEnv;
     os: {
         EOL: string;
@@ -36,8 +36,8 @@ export interface XpmLiquidSubstitutionsVariables {
         name: string;
         [key: string]: any;
     };
-    properties: XpmLiquidSubstitutionsStrings;
-    matrix?: XpmLiquidSubstitutionsStrings;
+    properties: LiquidSubstitutionsStrings;
+    matrix?: LiquidSubstitutionsStrings;
 }
-export declare const xpmLiquidSubstitutionsVariablesBase: XpmLiquidSubstitutionsVariables;
+export declare const liquidSubstitutionsVariablesBase: LiquidSubstitutionsVariables;
 //# sourceMappingURL=substitutions-variables.d.ts.map

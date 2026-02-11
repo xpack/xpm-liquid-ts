@@ -1,8 +1,8 @@
 import assert from 'node:assert';
 import * as util from 'node:util';
 import { Context } from 'liquidjs';
-import { XpmLiquidMatrixDrop, XpmLiquidPropertiesDrop, } from '../classes/liquid-drop.js';
-import { XpmError } from '../classes/errors.js';
+import { ConfigurationError } from '../classes/errors.js';
+import { LiquidPropertiesDrop, LiquidMatrixDrop, } from '../classes/liquid-drop.js';
 export async function performSubstitutions({ log, engine, input, substitutionsVariables, }) {
     assert(substitutionsVariables, 'substitutionsVariables is required');
     if (input.trim() === '') {
@@ -11,7 +11,7 @@ export async function performSubstitutions({ log, engine, input, substitutionsVa
     let properties = substitutionsVariables.properties;
     let matrix = substitutionsVariables.matrix;
     if (Object.keys(substitutionsVariables.properties).length > 0) {
-        properties = new XpmLiquidPropertiesDrop({
+        properties = new LiquidPropertiesDrop({
             log,
             engine,
             properties: substitutionsVariables.properties,
@@ -19,7 +19,7 @@ export async function performSubstitutions({ log, engine, input, substitutionsVa
     }
     if (substitutionsVariables.matrix &&
         Object.keys(substitutionsVariables.matrix).length > 0) {
-        matrix = new XpmLiquidMatrixDrop({
+        matrix = new LiquidMatrixDrop({
             log,
             engine,
             matrix: substitutionsVariables.matrix,
@@ -46,10 +46,10 @@ export async function performSubstitutions({ log, engine, input, substitutionsVa
         catch (error) {
             if (error instanceof Error) {
                 log.trace(util.inspect(error));
-                throw new XpmError(error.message.replace(/, line:.*/g, ''));
+                throw new ConfigurationError(error.message.replace(/, line:.*/g, ''));
             }
             else {
-                throw new XpmError(String(error));
+                throw new ConfigurationError(String(error));
             }
         }
         log.trace(`performSubstitutions() step ${String(count)} => (`, substituted, ')');

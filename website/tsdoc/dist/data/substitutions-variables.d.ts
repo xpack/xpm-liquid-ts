@@ -20,7 +20,7 @@ import * as os from 'node:os';
  * `matrix.arch`, etc., with the Liquid Drop pattern providing lazy
  * evaluation and nested substitution support.
  */
-export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>;
+export type LiquidSubstitutionsStrings = Record<string, string | string[]>;
 /**
  * Defines the substitution variables available to Liquid templates.
  *
@@ -68,7 +68,7 @@ export type XpmLiquidSubstitutionsStrings = Record<string, string | string[]>;
  * This ensures templates have access to appropriate
  * context without exposing unrelated data.
  */
-export interface XpmLiquidSubstitutionsVariables {
+export interface LiquidSubstitutionsVariables {
     /**
      * Process environment variables from the current execution context.
      *
@@ -288,7 +288,7 @@ export interface XpmLiquidSubstitutionsVariables {
      *
      * Access via `{{ properties.key }}` in templates.
      */
-    properties: XpmLiquidSubstitutionsStrings;
+    properties: LiquidSubstitutionsStrings;
     /**
      * Optional matrix parameters used for template expansion.
      *
@@ -305,7 +305,7 @@ export interface XpmLiquidSubstitutionsVariables {
      * Access via `{{ matrix.key }}` in templates. Scoped to the individual
      * expanded instance, ensuring isolation between generated items.
      */
-    matrix?: XpmLiquidSubstitutionsStrings;
+    matrix?: LiquidSubstitutionsStrings;
 }
 /**
  * The base substitution variables initialised from the current environment.
@@ -329,5 +329,5 @@ export interface XpmLiquidSubstitutionsVariables {
  * as needed. The base object is typically spread into new contexts rather
  * than mutated, preserving the original snapshot.
  */
-export declare const xpmLiquidSubstitutionsVariablesBase: XpmLiquidSubstitutionsVariables;
+export declare const liquidSubstitutionsVariablesBase: LiquidSubstitutionsVariables;
 //# sourceMappingURL=substitutions-variables.d.ts.map

@@ -1,12 +1,12 @@
 import semver from 'semver';
-export class XpmPolicies {
+export class Policies {
     minVersion = '0.0.0';
     shareNpmDependencies = false;
     nonHierarchicalLocalXpacksFolder = false;
     onlyStringDependencies = false;
     singleParameterXpmInitTemplate = false;
-    constructor({ log, minVersion }) {
-        log.trace(`${XpmPolicies.name}({minVersion: ${minVersion})`);
+    constructor({ minVersion, log }) {
+        log.trace(`${Policies.name}({minVersion: ${minVersion})`);
         if (semver.valid(minVersion) !== null) {
             this.minVersion = minVersion;
             this.shareNpmDependencies = semver.lt(this.minVersion, '0.14.0');

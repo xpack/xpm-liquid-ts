@@ -1,6 +1,31 @@
-import { Liquid, Context, Drop } from 'liquidjs';
+import * as liquidjs from 'liquidjs';
 import { Logger } from '@xpack/logger';
-import { XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.js';
+import { LiquidSubstitutionsStrings } from '../data/substitutions-variables.js';
+/**
+ * Configuration parameters for constructing a properties drop instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link LiquidPropertiesDrop}. All properties are mandatory.
+ *
+ * The parameters provide the Liquid engine for nested template evaluation,
+ * the properties map for value lookups, and the logger for diagnostic
+ * output during property resolution and substitution.
+ */
+export interface LiquidPropertiesDropConstructorParameters {
+    /**
+     * The Liquid engine used to render nested substitutions.
+     */
+    engine: liquidjs.Liquid;
+    /**
+     * The properties map used for substitutions.
+     */
+    properties: LiquidSubstitutionsStrings;
+    /**
+     * The logger instance for output and diagnostics.
+     */
+    log: Logger;
+}
 /**
  * Liquid drop that resolves `property` values for template substitutions.
  *
@@ -10,7 +35,7 @@ import { XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.j
  *
  * Implements the Liquid Drop pattern to provide lazy property resolution and
  * recursive template evaluation. When a template accesses `properties.foo`,
- * the Liquid engine calls {@link XpmLiquidPropertiesDrop.liquidMethodMissing}
+ * the Liquid engine calls {@link LiquidPropertiesDrop.liquidMethodMissing}
  * which:
  *
  * <ol>
@@ -25,7 +50,7 @@ import { XpmLiquidSubstitutionsStrings } from '../data/substitutions-variables.j
  * reference another, which can reference yet another, with the engine
  * automatically resolving the entire chain.
  */
-export declare class XpmLiquidPropertiesDrop extends Drop {
+export declare class LiquidPropertiesDrop extends liquidjs.Drop {
     /**
      * The logger instance for output and diagnostics.
      */
@@ -33,23 +58,19 @@ export declare class XpmLiquidPropertiesDrop extends Drop {
     /**
      * The properties map used for substitutions.
      */
-    protected _properties: XpmLiquidSubstitutionsStrings;
+    protected _properties: LiquidSubstitutionsStrings;
     /**
      * The Liquid engine used to render nested substitutions.
      */
-    protected _engine: Liquid;
+    protected _engine: liquidjs.Liquid;
     /**
      * Constructs a properties drop.
      *
-     * @param log - The logger instance for output and diagnostics.
      * @param engine - The Liquid engine used to render nested substitutions.
      * @param properties - The properties map used for substitutions.
+     * @param log - The logger instance for output and diagnostics.
      */
-    constructor({ log, engine, properties, }: {
-        log: Logger;
-        engine: Liquid;
-        properties: XpmLiquidSubstitutionsStrings;
-    });
+    constructor({ engine, properties, log, }: LiquidPropertiesDropConstructorParameters);
     /**
      * Resolves a missing property and performs nested substitutions.
      *
@@ -61,7 +82,7 @@ export declare class XpmLiquidPropertiesDrop extends Drop {
      * Resolution process:
      *
      * <ol>
-     * <li>Validate the property exists, throw <code>XpmInputError</code> if
+     * <li>Validate the property exists, throw <code>InputError</code> if
      * not.</li>
      * <li>Retrieve the property value (string, array, or object).</li>
      * <li>If object, return as-is for Liquid to access nested properties.</li>
@@ -78,10 +99,35 @@ export declare class XpmLiquidPropertiesDrop extends Drop {
      * @param context - The Liquid rendering context.
      * @returns The resolved property value.
      *
-     * @throws {@link XpmInputError}
+     * @throws {@link InputError}
      * If the property is not defined.
      */
-    liquidMethodMissing(key: string, context: Context): Promise<any>;
+    liquidMethodMissing(key: string, context: liquidjs.Context): Promise<any>;
+}
+/**
+ * Configuration parameters for constructing a matrix drop instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link LiquidMatrixDrop}. All properties are mandatory.
+ *
+ * The parameters provide the Liquid engine for nested template evaluation,
+ * the matrix parameters map for value lookups, and the logger for diagnostic
+ * output during matrix parameter resolution and substitution.
+ */
+export interface LiquidMatrixDropConstructorParameters {
+    /**
+     * The Liquid engine used to render nested substitutions.
+     */
+    engine: liquidjs.Liquid;
+    /**
+     * The matrix parameters map used for substitutions.
+     */
+    matrix: LiquidSubstitutionsStrings;
+    /**
+     * The logger instance for output and diagnostics.
+     */
+    log: Logger;
 }
 /**
  * Liquid drop that resolves `matrix` parameter values for templates.
@@ -94,16 +140,16 @@ export declare class XpmLiquidPropertiesDrop extends Drop {
  * actions or build configurations from a single template definition. Each
  * expanded instance receives a specific combination of matrix values.
  *
- * Implements the same Drop pattern as {@link XpmLiquidPropertiesDrop} but
+ * Implements the same Drop pattern as {@link LiquidPropertiesDrop} but
  * for matrix-scoped variables. When a template accesses `matrix.arch`, the
- * engine calls {@link XpmLiquidMatrixDrop.liquidMethodMissing} which resolves
+ * engine calls {@link LiquidMatrixDrop.liquidMethodMissing} which resolves
  * the parameter value and recursively evaluates any nested Liquid syntax.
  *
  * Matrix parameters are isolated per template instance, ensuring that each
  * generated action or configuration has access only to its specific matrix
  * combination.
  */
-export declare class XpmLiquidMatrixDrop extends Drop {
+export declare class LiquidMatrixDrop extends liquidjs.Drop {
     /**
      * The logger instance for output and diagnostics.
      */
@@ -111,23 +157,19 @@ export declare class XpmLiquidMatrixDrop extends Drop {
     /**
      * The matrix parameters map used for substitutions.
      */
-    protected _matrix: XpmLiquidSubstitutionsStrings;
+    protected _matrix: LiquidSubstitutionsStrings;
     /**
      * The Liquid engine used to render nested substitutions.
      */
-    protected _engine: Liquid;
+    protected _engine: liquidjs.Liquid;
     /**
      * Constructs a matrix drop.
      *
-     * @param log - The logger instance for output and diagnostics.
      * @param engine - The Liquid engine used to render nested substitutions.
      * @param matrix - The matrix parameters map used for substitutions.
+     * @param log - The logger instance for output and diagnostics.
      */
-    constructor({ log, engine, matrix, }: {
-        log: Logger;
-        engine: Liquid;
-        matrix: XpmLiquidSubstitutionsStrings;
-    });
+    constructor({ engine, matrix, log }: LiquidMatrixDropConstructorParameters);
     /**
      * Resolves a missing matrix parameter and performs nested substitutions.
      *
@@ -139,7 +181,7 @@ export declare class XpmLiquidMatrixDrop extends Drop {
      * Resolution process:
      *
      * <ol>
-     * <li>Validate the parameter exists, throw <code>XpmInputError</code> if
+     * <li>Validate the parameter exists, throw <code>InputError</code> if
      * not.</li>
      * <li>Retrieve the parameter value (string, array, or object).</li>
      * <li>If object, return as-is for Liquid to access nested properties.</li>
@@ -149,7 +191,7 @@ export declare class XpmLiquidMatrixDrop extends Drop {
      * <li>Return the final resolved value.</li>
      * </ol>
      *
-     * This mirrors the behavior of {@link XpmLiquidPropertiesDrop} but operates
+     * This mirrors the behavior of {@link LiquidPropertiesDrop} but operates
      * on matrix parameters instead of properties. Matrix values can reference
      * other substitution variables, enabling complex template expansions.
      *
@@ -157,9 +199,9 @@ export declare class XpmLiquidMatrixDrop extends Drop {
      * @param context - The Liquid rendering context.
      * @returns The resolved matrix parameter value.
      *
-     * @throws {@link XpmInputError}
+     * @throws {@link InputError}
      * If the matrix parameter is not defined.
      */
-    liquidMethodMissing(key: string, context: Context): Promise<any>;
+    liquidMethodMissing(key: string, context: liquidjs.Context): Promise<any>;
 }
 //# sourceMappingURL=liquid-drop.d.ts.map
