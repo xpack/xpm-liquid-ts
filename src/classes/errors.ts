@@ -54,9 +54,9 @@ export class PrerequisitesError extends Error {}
  * Error indicating a configuration issue.
  *
  * @remarks
- * This error is thrown when configuration files, such as `package.json`, 
- * contain invalid values, missing required fields, circular references, or 
- * other issues that prevent proper initialization or execution. Use this error 
+ * This error is thrown when configuration files, such as `package.json`,
+ * contain invalid values, missing required fields, circular references, or
+ * other issues that prevent proper initialization or execution. Use this error
  * whenthe problem is related to the content of configuration files rather than
  * user input or output generation.
  */

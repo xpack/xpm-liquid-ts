@@ -40,16 +40,51 @@ import { JsonSyntaxError, OutputError, ConfigurationError } from './errors.js'
 
 // ============================================================================
 
+/**
+ * Configuration parameters for constructing an `xpm init` template.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link InitTemplateBase} or its derived classes. All
+ * properties are mandatory except for the optional <code>process</code>
+ * parameter, which defaults to the global Node.js process object when
+ * not specified.
+ *
+ * The parameters provide the template with access to the <b>xpm</b>
+ * context, file system paths, property definitions, and the process
+ * environment necessary for template operations.
+ */
 export interface InitTemplateConstructorParameters {
+  /**
+   * The <b>xpm</b> context containing configuration and logging utilities.
+   */
   context: Context
+
+  /**
+   * The absolute path to the module folder.
+   */
   __dirname: string
+
+  /**
+   * The absolute path to the templates folder.
+   */
   templatesPath: string
+
+  /**
+   * Definitions of all properties supported by this template.
+   */
   propertiesDefinitions: InitTemplatePropertiesDefinitions
+
+  /**
+   * The Node.js process object (defaults to the global process).
+   * Intended for testing purposes to allow mocking of process properties
+   * and methods.
+   */
   process?: NodeJS.Process
 }
 
 /**
- * Base class for <b>xpm</b> initialisation templates.
+ * Base class for `xpm init` templates.
  *
  * @remarks
  * This abstract class provides the foundation for template-based project
@@ -120,7 +155,7 @@ export abstract class InitTemplateBase {
   // Constructor.
 
   /**
-   * Constructs an <b>xpm</b> initialisation template instance.
+   * Constructs an `xpm init` template instance.
    *
    * @param context - The <b>xpm</b> context containing configuration and
    *    logging.
