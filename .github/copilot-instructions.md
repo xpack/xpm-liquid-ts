@@ -29,6 +29,7 @@
 - Use `@param` and `@returns` tags appropriately in TSDoc comments; place `@param` tags immediately after the summary and before `@returns`
 - Use `@throws {@link ExceptionName}` for exceptions and place the descriptions on the next line; place these tags after `@returns`
 - Precede `@throws` tags with an empty line, and place the description on the next line
+- Do not documnent exceptions thrown by assertions
 - Do not add `@public` or `@internal` tags 
 - When generating lists in TSDoc `@remarks` comments, use html `<ol>` and `<li>` tags for ordered lists, and `<ul>` and `<li>` tags for unordered lists. 
 - inside html lists, do not use markdown syntax for bold or italics, use `<b>`, `<i>` html tags instead
