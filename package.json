@@ -36,7 +36,6 @@
   "homepage": "https://xpack.github.io/xpm-lib-ts/",
   "dependencies": {
     "@xpack/logger": "^6.0.0",
-    "del": "^8.0.1",
     "liquidjs": "^10.24.0",
     "semver": "^7.7.3"
   },
