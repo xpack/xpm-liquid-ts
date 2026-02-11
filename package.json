@@ -77,7 +77,7 @@
     "postversion": "git push origin --all && git push origin --tags",
     "npm-pack": "npm pack",
     "git-log": "git log --pretty='%cd * %h %s' --date=short",
-    "prepare": "npm run compile && npm run lint",
+    "prepare": "del-cli dist && npm run prettier && npm run lint && npm run compile",
     "pretest": "npm run compile && npm run lint",
     "test-ci": "tap run --reporter=terse",
     "test": "tap run --disable-coverage",
