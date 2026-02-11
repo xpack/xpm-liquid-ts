@@ -28,6 +28,34 @@ import { InputError } from './errors.js'
 // https://liquidjs.com/
 
 /**
+ * Configuration parameters for constructing a properties drop instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link LiquidPropertiesDrop}. All properties are mandatory.
+ *
+ * The parameters provide the Liquid engine for nested template evaluation,
+ * the properties map for value lookups, and the logger for diagnostic
+ * output during property resolution and substitution.
+ */
+export interface LiquidPropertiesDropConstructorParameters {
+  /**
+   * The Liquid engine used to render nested substitutions.
+   */
+  engine: liquidjs.Liquid
+
+  /**
+   * The properties map used for substitutions.
+   */
+  properties: LiquidSubstitutionsStrings
+
+  /**
+   * The logger instance for output and diagnostics.
+   */
+  log: Logger
+}
+
+/**
  * Liquid drop that resolves `property` values for template substitutions.
  *
  * @remarks
@@ -79,19 +107,15 @@ export class LiquidPropertiesDrop extends liquidjs.Drop {
   /**
    * Constructs a properties drop.
    *
-   * @param log - The logger instance for output and diagnostics.
    * @param engine - The Liquid engine used to render nested substitutions.
    * @param properties - The properties map used for substitutions.
+   * @param log - The logger instance for output and diagnostics.
    */
   constructor({
-    log,
     engine,
     properties,
-  }: {
-    log: Logger
-    engine: liquidjs.Liquid
-    properties: LiquidSubstitutionsStrings
-  }) {
+    log,
+  }: LiquidPropertiesDropConstructorParameters) {
     super()
 
     log.trace(`${LiquidPropertiesDrop.name}()`)
@@ -183,6 +207,34 @@ export class LiquidPropertiesDrop extends liquidjs.Drop {
 // ============================================================================
 
 /**
+ * Configuration parameters for constructing a matrix drop instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link LiquidMatrixDrop}. All properties are mandatory.
+ *
+ * The parameters provide the Liquid engine for nested template evaluation,
+ * the matrix parameters map for value lookups, and the logger for diagnostic
+ * output during matrix parameter resolution and substitution.
+ */
+export interface LiquidMatrixDropConstructorParameters {
+  /**
+   * The Liquid engine used to render nested substitutions.
+   */
+  engine: liquidjs.Liquid
+
+  /**
+   * The matrix parameters map used for substitutions.
+   */
+  matrix: LiquidSubstitutionsStrings
+
+  /**
+   * The logger instance for output and diagnostics.
+   */
+  log: Logger
+}
+
+/**
  * Liquid drop that resolves `matrix` parameter values for templates.
  *
  * @remarks
@@ -227,19 +279,11 @@ export class LiquidMatrixDrop extends liquidjs.Drop {
   /**
    * Constructs a matrix drop.
    *
-   * @param log - The logger instance for output and diagnostics.
    * @param engine - The Liquid engine used to render nested substitutions.
    * @param matrix - The matrix parameters map used for substitutions.
+   * @param log - The logger instance for output and diagnostics.
    */
-  constructor({
-    log,
-    engine,
-    matrix,
-  }: {
-    log: Logger
-    engine: liquidjs.Liquid
-    matrix: LiquidSubstitutionsStrings
-  }) {
+  constructor({ engine, matrix, log }: LiquidMatrixDropConstructorParameters) {
     super()
 
     log.trace(`${LiquidMatrixDrop.name}()`)

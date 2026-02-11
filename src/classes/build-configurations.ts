@@ -48,6 +48,43 @@ import { ConfigurationError, InputError } from './errors.js'
 // ============================================================================
 
 /**
+ * Configuration parameters for constructing a build configurations collection.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link BuildConfigurations}. Most properties are mandatory
+ * except for the optional <code>jsonBuildConfigurations</code>, which can
+ * be undefined if there are no build configurations defined in the package.
+ *
+ * The parameters provide the collection with access to the Liquid templating
+ * engine, substitution variables hierarchy, build configuration definitions
+ * from the package manifest, and the logger for diagnostic output during
+ * configuration processing.
+ */
+export interface BuildConfigurationsConstructorParameters {
+  /**
+   * The Liquid templating engine for variable substitution.
+   */
+  engine: LiquidEngine
+
+  /**
+   * The variables available for substitution in configuration definitions.
+   */
+  substitutionsVariables: LiquidSubstitutionsVariables
+
+  /**
+   * The JSON build configurations definitions, or undefined if no build
+   * configurations are defined.
+   */
+  jsonBuildConfigurations: JsonBuildConfigurations | undefined
+
+  /**
+   * The logger instance for output and diagnostics.
+   */
+  log: Logger
+}
+
+/**
  * A collection of <b>xpm</b> build configurations.
  *
  * @remarks
@@ -300,23 +337,18 @@ export class BuildConfigurations {
    * initialisation requires calling
    * {@link BuildConfigurations.initialise}.
    *
-   * @param log - The logger instance for output and diagnostics.
    * @param engine - The Liquid templating engine for variable substitution.
    * @param substitutionsVariables - The variables available for substitution.
    * @param jsonBuildConfigurations - The JSON build configurations definitions,
    * or undefined if no build configurations are defined.
+   * @param log - The logger instance for output and diagnostics.
    */
   constructor({
-    log,
     engine,
     substitutionsVariables,
     jsonBuildConfigurations,
-  }: {
-    log: Logger
-    engine: LiquidEngine
-    substitutionsVariables: LiquidSubstitutionsVariables
-    jsonBuildConfigurations: JsonBuildConfigurations | undefined
-  }) {
+    log,
+  }: BuildConfigurationsConstructorParameters) {
     assert(log, 'log is required')
     assert(engine, 'engine is required')
     assert(substitutionsVariables, 'substitutionsVariables is required')
@@ -938,6 +970,48 @@ export class BuildConfigurations {
 // ============================================================================
 
 /**
+ * Configuration parameters for constructing a build configuration instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link BuildConfiguration}. Most properties are mandatory
+ * except for the optional <code>templateBuildConfigurationName</code> and
+ * <code>matrixParameters</code>, which are only needed for template-generated
+ * configurations created from matrix expansion.
+ *
+ * The parameters provide the configuration with its identity (name,
+ * optional template name), the JSON configuration definition, access to
+ * the parent collection for shared resources, and optional matrix parameter
+ * values for template-generated configurations.
+ */
+export interface BuildConfigurationConstructorParameters {
+  /**
+   * The configuration name after substitution.
+   */
+  buildConfigurationName: string
+
+  /**
+   * The template configuration name, if derived from a template.
+   */
+  templateBuildConfigurationName?: string
+
+  /**
+   * The JSON configuration definition.
+   */
+  jsonBuildConfiguration: JsonBuildConfigurationContent
+
+  /**
+   * The parent configurations collection.
+   */
+  parentBuildConfigurations: BuildConfigurations
+
+  /**
+   * Optional matrix parameter values for template-generated configurations.
+   */
+  matrixParameters?: LiquidSubstitutionsStrings
+}
+
+/**
  * An individual <b>xpm</b> build configuration.
  *
  * @remarks
@@ -1429,13 +1503,7 @@ export class BuildConfiguration {
     jsonBuildConfiguration,
     parentBuildConfigurations,
     matrixParameters,
-  }: {
-    buildConfigurationName: string
-    templateBuildConfigurationName?: string
-    jsonBuildConfiguration: JsonBuildConfigurationContent
-    parentBuildConfigurations: BuildConfigurations
-    matrixParameters?: LiquidSubstitutionsStrings
-  }) {
+  }: BuildConfigurationConstructorParameters) {
     assert(buildConfigurationName, 'buildConfigurationName is required')
     assert(jsonBuildConfiguration, 'jsonBuildConfiguration is required')
     assert(parentBuildConfigurations, 'parentBuildConfigurations is required')

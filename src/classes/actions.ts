@@ -42,6 +42,54 @@ import { LiquidEngine } from './liquid-engine.js'
 // ============================================================================
 
 /**
+ * Configuration parameters for constructing an actions collection instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link Actions}. Most properties are mandatory except for
+ * the optional <code>inheritedActionsMap</code> and
+ * <code>buildConfiguration</code> parameters.
+ *
+ * The parameters provide the actions collection with access to the Liquid
+ * templating engine, substitution variables hierarchy, action definitions
+ * from the package manifest, optional inherited actions from a parent
+ * package, optional build configuration context, and the logger for
+ * diagnostic output.
+ */
+export interface ActionsConstructorParameters {
+  /**
+   * The Liquid templating engine for variable substitution.
+   */
+  engine: LiquidEngine
+
+  /**
+   * The variables available for substitution in action definitions.
+   */
+  substitutionsVariables: LiquidSubstitutionsVariables
+
+  /**
+   * The JSON object containing action definitions, or undefined if there are
+   * no actions.
+   */
+  jsonActions: JsonActions | undefined
+
+  /**
+   * Optional map of actions inherited from a parent package.
+   */
+  inheritedActionsMap?: Map<string, Action>
+
+  /**
+   * Optional build configuration this actions collection belongs to.
+   */
+  buildConfiguration?: BuildConfiguration
+
+  /**
+   * The logger instance for output and diagnostics.
+   */
+  log: Logger
+}
+
+/**
  * A collection of <b>xpm</b> actions for a build configuration or
  * the entire package.
  *
@@ -326,30 +374,15 @@ export class Actions {
    * requires calling the `Actions.initialise()` method.
    *
    * @param log - The logger instance for output and diagnostics.
-   * @param engine - The Liquid templating engine for variable substitution.
-   * @param substitutionsVariables - The variables available for substitution.
-   * @param jsonActions - The JSON object containing action definitions, or
-   * undefined if there are no actions.
-   * @param inheritedActionsMap - Optional map of actions inherited from a
-   * parent package.
-   * @param buildConfiguration - Optional build configuration this actions
-   * collection belongs to.
    */
   constructor({
-    log,
     engine,
     substitutionsVariables,
     jsonActions,
     inheritedActionsMap,
     buildConfiguration,
-  }: {
-    log: Logger
-    engine: LiquidEngine
-    substitutionsVariables: LiquidSubstitutionsVariables
-    jsonActions: JsonActions | undefined
-    inheritedActionsMap?: Map<string, Action>
-    buildConfiguration?: BuildConfiguration
-  }) {
+    log,
+  }: ActionsConstructorParameters) {
     assert(log, 'log is required')
     assert(engine, 'engine is required')
     assert(substitutionsVariables, 'substitutionsVariables is required')
@@ -871,6 +904,41 @@ export class Actions {
 // ============================================================================
 
 /**
+ * Configuration parameters for constructing an action instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link Action}. Most properties are mandatory except for
+ * the optional <code>matrixParameters</code>, which is only needed for
+ * template-generated actions that were created from matrix expansion.
+ *
+ * The parameters provide the action with its identity (name), command
+ * definitions, access to the parent collection for shared resources, and
+ * optional matrix parameter values for template-generated actions.
+ */
+export interface ActionConstructorParameters {
+  /**
+   * The name of the action.
+   */
+  actionName: string
+
+  /**
+   * The JSON definition of the action commands.
+   */
+  jsonAction: JsonActionContent
+
+  /**
+   * The parent actions collection this action belongs to.
+   */
+  parentActions: Actions
+
+  /**
+   * Optional matrix parameter values for template-generated actions.
+   */
+  matrixParameters?: LiquidSubstitutionsStrings
+}
+
+/**
  * An individual <b>xpm</b> action containing commands to be executed.
  *
  * @remarks
@@ -1069,12 +1137,7 @@ export class Action {
     jsonAction,
     parentActions,
     matrixParameters,
-  }: {
-    actionName: string
-    jsonAction: JsonActionContent
-    parentActions: Actions
-    matrixParameters?: LiquidSubstitutionsStrings
-  }) {
+  }: ActionConstructorParameters) {
     assert(actionName, 'actionName is required')
     // assert(jsonAction) // Can be an empty string.
     assert(parentActions, 'parentActions is required')

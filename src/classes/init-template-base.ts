@@ -46,8 +46,8 @@ import { JsonSyntaxError, OutputError, ConfigurationError } from './errors.js'
  * @remarks
  * This interface defines the required configuration for creating an
  * instance of {@link InitTemplateBase} or its derived classes. All
- * properties are mandatory except for the optional <code>process</code>
- * parameter, which defaults to the global Node.js process object when
+ * properties are mandatory except for the optional `process` parameter,
+ * parameter, which defaults to the global Node.js `process` object when
  * not specified.
  *
  * The parameters provide the template with access to the <b>xpm</b>
@@ -76,7 +76,7 @@ export interface InitTemplateConstructorParameters {
   propertiesDefinitions: InitTemplatePropertiesDefinitions
 
   /**
-   * The Node.js process object (defaults to the global process).
+   * The Node.js process object (defaults to the global `process`).
    * Intended for testing purposes to allow mocking of process properties
    * and methods.
    */

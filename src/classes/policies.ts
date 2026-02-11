@@ -22,6 +22,28 @@ import semver from 'semver'
 // ============================================================================
 
 /**
+ * Configuration parameters for constructing a policies instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link Policies}. Both properties are mandatory.
+ *
+ * The parameters provide the minimum <b>xpm</b> version for policy
+ * evaluation and the logger for diagnostic output.
+ */
+export interface PoliciesConstructorParameters {
+  /**
+   * The minimum <b>xpm</b> version to evaluate.
+   */
+  minVersion: string
+
+  /**
+   * The logger instance for output and diagnostics.
+   */
+  log: Logger
+}
+
+/**
  * Computes feature policy flags based on a minimum <b>xpm</b> version.
  *
  * @remarks
@@ -151,10 +173,10 @@ export class Policies {
    * get the behavior that was current at that version, while packages
    * without a valid minimum version default to the most modern behavior.
    *
-   * @param log - The logger instance for output and diagnostics.
    * @param minVersion - The minimum <b>xpm</b> version to evaluate.
+   * @param log - The logger instance for output and diagnostics.
    */
-  constructor({ log, minVersion }: { log: Logger; minVersion: string }) {
+  constructor({ minVersion, log }: PoliciesConstructorParameters) {
     log.trace(`${Policies.name}({minVersion: ${minVersion})`)
 
     if (semver.valid(minVersion) !== null) {

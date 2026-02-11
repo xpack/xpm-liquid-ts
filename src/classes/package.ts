@@ -36,6 +36,29 @@ import {
 // ============================================================================
 
 /**
+ * Configuration parameters for constructing a package instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link Package}. Both properties are mandatory.
+ *
+ * The parameters provide the absolute path to the package folder containing
+ * (or that will contain) the <code>package.json</code> file, and the logger
+ * for diagnostic output during package operations.
+ */
+export interface PackageConstructorParameters {
+  /**
+   * The absolute path to the package folder.
+   */
+  packageFolderPath: string
+
+  /**
+   * The logger instance for output and diagnostics.
+   */
+  log: Logger
+}
+
+/**
  * Provides access to package metadata and xpm-specific validation.
  *
  * @remarks
@@ -158,16 +181,10 @@ export class Package {
   /**
    * Constructs a package helper bound to a specific folder.
    *
-   * @param log - The logger instance for output and diagnostics.
    * @param packageFolderPath - The absolute path to the package folder.
+   * @param log - The logger instance for output and diagnostics.
    */
-  constructor({
-    log,
-    packageFolderPath,
-  }: {
-    log: Logger
-    packageFolderPath: string
-  }) {
+  constructor({ packageFolderPath, log }: PackageConstructorParameters) {
     this._log = log
     this.packageFolderPath = packageFolderPath
 

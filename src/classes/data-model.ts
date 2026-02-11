@@ -40,6 +40,30 @@ export const buildFolderRelativePathPropertyName = 'buildFolderRelativePath'
 // ============================================================================
 
 /**
+ * Configuration parameters for constructing a data model instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link DataModel}. Both properties are mandatory.
+ *
+ * The parameters provide the parsed <code>package.json</code> content
+ * containing package metadata and <b>xpm</b>-specific configuration, along
+ * with the logger for diagnostic output during data model initialization
+ * and template processing.
+ */
+export interface DataModelConstructorParameters {
+  /**
+   * The JSON package definition.
+   */
+  jsonPackage: JsonXpmPackage
+
+  /**
+   * The logger instance for output and diagnostics.
+   */
+  log: Logger
+}
+
+/**
  * Represents a lazy-loading data model for an <b>xpm</b> package.
  *
  * @remarks
@@ -259,16 +283,10 @@ export class DataModel {
    * the base context. Individual actions and configurations will extend this
    * context with their own scoped variables without modifying the original.
    *
-   * @param log - The logger instance for output and diagnostics.
    * @param jsonPackage - The JSON package definition.
+   * @param log - The logger instance for output and diagnostics.
    */
-  constructor({
-    log,
-    jsonPackage,
-  }: {
-    log: Logger
-    jsonPackage: JsonXpmPackage
-  }) {
+  constructor({ jsonPackage, log }: DataModelConstructorParameters) {
     log.trace(`${DataModel.name}()`)
 
     this._log = log

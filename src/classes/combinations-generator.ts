@@ -30,6 +30,34 @@ export type MatrixCombination = Record<string, string>
 // ============================================================================
 
 /**
+ * Configuration parameters for constructing a combinations generator instance.
+ *
+ * @remarks
+ * This interface defines the required configuration for creating an
+ * instance of {@link CombinationsGenerator}. All properties are mandatory.
+ *
+ * The parameters provide the matrix parameter names, their corresponding
+ * value arrays for Cartesian product computation, and the logger for
+ * diagnostic output during combination generation.
+ */
+export interface CombinationsGeneratorConstructorParameters {
+  /**
+   * The array of parameter names.
+   */
+  matrixKeys: string[]
+
+  /**
+   * The array of value arrays for each parameter.
+   */
+  matrixValues: string[][]
+
+  /**
+   * The logger instance for output and diagnostics.
+   */
+  log: Logger
+}
+
+/**
  * Generates all possible combinations from a matrix of parameters.
  *
  * @remarks
@@ -137,11 +165,7 @@ export class CombinationsGenerator {
     matrixKeys,
     matrixValues,
     log,
-  }: {
-    matrixKeys: string[]
-    matrixValues: string[][]
-    log: Logger
-  }) {
+  }: CombinationsGeneratorConstructorParameters) {
     this.log = log
     this.matrixKeys = matrixKeys
     this.matrixValues = matrixValues
