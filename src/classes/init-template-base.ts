@@ -147,8 +147,58 @@ export abstract class InitTemplateBase {
    */
   protected _substitutionsVariables?: InitTemplateSubstitutionsVariables
 
+  /**
+   * Flag indicating whether the template is running in interactive mode.
+   *
+   * @remarks
+   * This flag determines whether the template execution involved user
+   * interaction through terminal prompts for missing mandatory property
+   * values.
+   *
+   * State management:
+   *
+   * <ol>
+   * <li>Initialised to <code>false</code> upon construction.</li>
+   * <li>Set to <code>true</code> in {@link InitTemplateBase.run} if at least
+   *    one mandatory property was missing and required interactive
+   *    prompting.</li>
+   * <li>Set to <code>false</code> if all mandatory properties were provided
+   *    via command-line options.</li>
+   * </ol>
+   *
+   * When interactive mode is activated, the context start time is reset
+   * after user input to exclude interactive time from performance metrics,
+   * ensuring accurate measurement of the template processing duration.
+   */
   protected _isInteractive = false
 
+  /**
+   * The Node.js process object for accessing runtime environment information.
+   *
+   * @remarks
+   * This reference provides access to process properties including standard
+   * I/O streams, platform information, and architecture details. It is
+   * configurable via the constructor to support testing scenarios where
+   * process properties need to be mocked or controlled.
+   *
+   * Usage within the template:
+   *
+   * <ol>
+   * <li>Platform detection via <code>process.platform</code> and
+   *    <code>process.arch</code> for
+   *    platform-specific property validation.</li>
+   * <li>TTY detection via <code>stdin.isTTY</code> and
+   *    <code>stdout.isTTY</code> to determine
+   *    whether interactive prompting is possible.</li>
+   * <li>Standard I/O access for interactive user prompts and diagnostic
+   *    output.</li>
+   * </ol>
+   *
+   * Defaults to the global Node.js <code>process</code> object when not
+   * explicitly provided in the constructor, enabling normal runtime
+   * behaviour whilst allowing test environments to inject controlled
+   * process implementations.
+   */
   protected _process: NodeJS.Process
 
   // --------------------------------------------------------------------------
@@ -760,6 +810,60 @@ export abstract class InitTemplateBase {
     }
   }
 
+  /**
+   * Validates the structure and content of property definitions.
+   *
+   * @remarks
+   * This internal method performs comprehensive validation of the property
+   * definitions object during template construction, ensuring all definitions
+   * are well-formed and internally consistent before the template is used.
+   *
+   * Validation steps:
+   *
+   * <ol>
+   * <li><b>Overall structure:</b>
+   *   <ul>
+   *   <li>Verifies that <code>propertiesDefinitions</code> is an object.</li>
+   *   <li>Ensures at least one property is defined (not empty).</li>
+   *   </ul>
+   * </li>
+   * <li><b>Common property fields:</b>
+   *   <ul>
+   *   <li><code>label</code>: Must be a non-empty string.</li>
+   *   <li><code>description</code>: Must be a non-empty string.</li>
+   *   <li><code>isMandatory</code>: Must be a boolean if present.</li>
+   *   <li><code>type</code>: Must be defined and one of: <code>select</code>,
+   *      <code>string</code>, <code>number</code>, <code>boolean</code>.</li>
+   *   </ul>
+   * </li>
+   * <li><b>Type-specific validation:</b>
+   *   <ul>
+   *   <li><b>Select properties:</b>
+   *     <ul>
+   *     <li>Must have an <code>items</code> object with at least one
+   *        entry.</li>
+   *     <li>Each item must be either a string (description) or an object with
+   *        <code>platforms</code> array and <code>message</code> string.</li>
+   *     <li>Non-mandatory properties must have a default value.</li>
+   *     <li>Default values must be non-empty strings present in the items
+   *        list.</li>
+   *     </ul>
+   *   </li>
+   *   <li><b>String properties:</b> Default value must be a non-empty string
+   *      if present.</li>
+   *   <li><b>Number properties:</b> Default value must be a number if
+   *      present.</li>
+   *   <li><b>Boolean properties:</b> Default value must be a boolean if
+   *      present.</li>
+   *   </ul>
+   * </li>
+   * </ol>
+   *
+   * This validation ensures that templates are correctly configured before
+   * use, preventing runtime errors during property processing and interactive
+   * prompting. Any validation failure triggers an assertion error with a
+   * descriptive message indicating the specific problem.
+   */
   protected _validatePropertiesDefinitions(): void {
     assert(
       isObject(this._propertiesDefinitions),

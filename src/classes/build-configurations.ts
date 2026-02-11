@@ -1938,7 +1938,7 @@ export class BuildConfiguration {
    * <li>Extract inheritance specification from the configuration:
    *   <ul>
    *   <li>Supports both the current <code>inherits</code> field and the
-   *      deprecated <code>inherit</code> field for backwards 
+   *      deprecated <code>inherit</code> field for backwards
    *      compatibility.</li>
    *   <li>Handles both string format (single parent) and array format
    *      (multiple parents).</li>
