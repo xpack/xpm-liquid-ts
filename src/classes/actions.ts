@@ -477,7 +477,7 @@ export class Actions {
       } else {
         if (this._actionsNamesSet.has(actionName)) {
           throw new ConfigurationError(
-            `action name "${actionName}" already defined.`
+            `action name "${actionName}" already defined`
           )
         } else {
           this._actionsMap.set(actionName, undefined)

@@ -426,7 +426,7 @@ export class BuildConfigurations {
         if (this._buildComfigurationsNamesSet.has(buildConfigurationName)) {
           throw new ConfigurationError(
             `build configuration name ` +
-              `"${buildConfigurationName}" already defined.`
+              `"${buildConfigurationName}" already defined`
           )
         } else {
           this._buildConfigurationsMap.set(buildConfigurationName, undefined)
@@ -519,7 +519,7 @@ export class BuildConfigurations {
     )
     if (name === undefined) {
       throw new InputError(
-        `Build configuration '${buildConfigurationName}' does not exist`
+        `build configuration "${buildConfigurationName}" does not exist`
       )
     }
     return name

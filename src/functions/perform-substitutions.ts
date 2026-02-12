@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------------
 
 import assert from 'node:assert'
-import * as util from 'node:util'
 
 import { Context } from 'liquidjs'
 
@@ -173,8 +172,9 @@ export async function performSubstitutions({
       } /* c8 ignore stop */
     } catch (error) {
       if (error instanceof Error) {
-        log.trace(util.inspect(error))
-        throw new ConfigurationError(error.message.replace(/, line:.*/g, ''))
+        log.trace(`Liquid error: ${error.message}`)
+        const cleanMessage = error.message.replace(/, line:.*/g, '')
+        throw new ConfigurationError(cleanMessage)
         /* c8 ignore next 3 - safety net, currently all are Errors */
       } else {
         throw new ConfigurationError(String(error))
