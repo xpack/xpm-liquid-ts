@@ -36,7 +36,12 @@ import {
   isBoolean,
   isNumber,
 } from '../functions/is-something.js'
-import { JsonSyntaxError, OutputError, ConfigurationError } from './errors.js'
+import {
+  JsonSyntaxError,
+  InputError,
+  OutputError,
+  ConfigurationError,
+} from './errors.js'
 
 // ============================================================================
 
@@ -518,13 +523,18 @@ export abstract class InitTemplateBase {
   async render({
     sourceFilePath,
     destinationFilePath,
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    substitutionsVariables = this._substitutionsVariables!,
+    substitutionsVariables = this._substitutionsVariables,
   }: {
     sourceFilePath: string
     destinationFilePath: string
     substitutionsVariables?: InitTemplateSubstitutionsVariables
   }): Promise<void> {
+    assert(
+      substitutionsVariables !== undefined,
+      'substitutionsVariables is required for rendering templates. ' +
+        'Ensure that run() has been called to prepare the variables.'
+    )
+
     const log = this._log
     const context = this._context
     const config = context.config
