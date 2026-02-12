@@ -644,6 +644,11 @@ export class BuildConfigurations {
         buildConfigurationName
       )
 
+      // Safety net: This fallback to empty object is defensive programming.
+      // The jsonBuildConfigurations[jsonBuildConfigurationName] should always
+      // be defined because getJsonName() throws if the configuration doesn't
+      // exist. The ?? {} provides protection against unexpected inconsistencies
+      // between the names map and the configurations object.
       const jsonBuildConfiguration: JsonBuildConfigurationContent =
         /* c8 ignore next - safety net, they are always defined */
         (this.jsonBuildConfigurations[jsonBuildConfigurationName] ??
@@ -1642,6 +1647,11 @@ export class BuildConfiguration {
         substitutedDependencies
       ) as JsonBuildConfigurationContent
 
+      // Safety net: These fallbacks to empty objects handle cases where the
+      // dependencies fields might be undefined after JSON parsing. This is
+      // unlikely because the JSON schema validation ensures these are objects
+      // when present, but provides robustness against malformed configuration
+      // or future schema changes.
       /* c8 ignore next 2 - safety net, they are always defined */
       this.dependencies = parsedDependencies.dependencies ?? {}
       this.devDependencies = parsedDependencies.devDependencies ?? {}
@@ -1774,6 +1784,11 @@ export class BuildConfiguration {
           input: stringifiedJsonBuildConfiguration,
           substitutionsVariables: {
             ...this._substitutionsVariables,
+            // Safety net: This fallback ensures matrix is always an object.
+            // matrixParameters should be defined when processing templates with
+            // matrix expansion, but this handles edge cases where
+            // initialisation
+            // order or template logic might reference matrix before it's set.
             /* c8 ignore next - safety net, they are always defined */
             matrix: this.matrixParameters ?? {},
             configuration: {

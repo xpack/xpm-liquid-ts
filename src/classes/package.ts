@@ -650,6 +650,10 @@ export class Package {
     } catch (error) {
       if (error instanceof Error) {
         log.trace(error.message)
+        // Safety net: This handles non-Error exceptions. Node.js fs operations
+        // and the Package class consistently throw Error instances, but this
+        // provides defensive handling for unexpected error types that might
+        // occur in edge cases or future code changes.
         /* c8 ignore next 3 - safety net, currently all are Errors */
       } else {
         log.trace(error)

@@ -149,6 +149,14 @@ export async function chmodRecursively({
   const actualStat = await fs.stat(inputPath)
   // log.trace(`actual ${inputPath} is ${actualStat.mode.toString(8)}`)
 
+  // Safety net: These validations verify that the chmod operation succeeded.
+  // Modern file systems reliably apply permission changes, so these checks
+  // rarely fail. However, they detect edge cases such as:
+  // 1. File system permission restrictions (immutable flags, ACLs)
+  // 2. Race conditions where file permissions change between chmod and stat
+  // 3. Platform-specific behaviours with symbolic links
+  // 4. Network file systems with delayed or denied permission propagation
+  // The warnings alert developers to unexpected permission inconsistencies.
   if (readOnly) {
     /* c8 ignore next 3 - safety net, normally it is set. */
     if ((actualStat.mode & fs.constants.S_IWUSR) !== 0) {

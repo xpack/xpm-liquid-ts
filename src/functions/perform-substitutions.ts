@@ -147,6 +147,14 @@ export async function performSubstitutions({
 
   // Iterate until all substitutions are done.
   while (current.includes('{{') || current.includes('{%')) {
+    // Safety net: This limit prevents infinite loops from circular template
+    // references. In normal operation, templates resolve in a few iterations.
+    // The check is unlikely to trigger because:
+    // 1. Templates are validated during configuration loading
+    // 2. Liquid engine throws errors for most invalid references
+    // 3. The break below catches non-changing substitutions
+    // However, this protects against edge cases like deeply nested context
+    // references or malformed template logic that the engine doesn't catch.
     /* c8 ignore next 6 lines - safety net, normally should not get there. */
     if (++count > MAX_ITERATIONS) {
       throw new ConfigurationError(
@@ -158,10 +166,17 @@ export async function performSubstitutions({
     try {
       substituted = (await engine.parseAndRender(current, context)) as string
 
+      // Safety net: This check detects when a substitution pass produces no
+      // changes despite template markers being present. This is unlikely
+      // because:
+      // 1. The while condition checks for markers ({{ or {%)
+      // 2. Liquid engine normally processes all markers or throws errors
+      // 3. Valid markers always resolve to something (even empty string)
+      // However, this catches edge cases like malformed markers that pass the
+      // simple includes() check but don't match Liquid's parser, preventing
+      // infinite loops when the iteration limit isn't reached.
       /* c8 ignore start - safety net, normally errors throw. */
       if (substituted === current) {
-        // If nothing changed, we're done.
-        // This test is just a safety net, normally should not get there.
         log.warn(
           `performSubstitutions() step ${String(count)} => (`,
           substituted,
@@ -175,6 +190,11 @@ export async function performSubstitutions({
         log.trace(`Liquid error: ${error.message}`)
         const cleanMessage = error.message.replace(/, line:.*/g, '')
         throw new ConfigurationError(cleanMessage)
+        // Safety net: This handles the unlikely case where something other than
+        // an Error is thrown. JavaScript/TypeScript allows throwing any value,
+        // but Liquid engine and Node.js fs operations consistently throw Error
+        // instances. This provides robust error handling for unexpected
+        // scenarios.
         /* c8 ignore next 3 - safety net, currently all are Errors */
       } else {
         throw new ConfigurationError(String(error))
