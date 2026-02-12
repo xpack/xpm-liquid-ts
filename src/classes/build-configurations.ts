@@ -1886,6 +1886,135 @@ export class BuildConfiguration {
   }
 
   /**
+   * Parses the inherits field from JSON configuration.
+   *
+   * @remarks
+   * This helper method extracts and normalises inheritance information from
+   * the configuration, supporting both the current <code>inherits</code>
+   * field and the deprecated <code>inherit</code> field. It handles both
+   * string and array formats.
+   *
+   * Processing steps:
+   *
+   * <ol>
+   * <li>Check for <code>inherits</code> field (current standard).</li>
+   * <li>Fall back to <code>inherit</code> field (deprecated).</li>
+   * <li>Convert single strings to single-element arrays.</li>
+   * <li>Join array elements with line breaks and split to handle
+   *    multi-line strings.</li>
+   * </ol>
+   *
+   * @param localJsonBuildConfiguration - The JSON configuration content.
+   * @returns Array of inherited configuration names.
+   */
+  private _parseInheritsField(
+    localJsonBuildConfiguration: JsonBuildConfigurationContent
+  ): string[] {
+    let jsonInherits: string[] = []
+    if (isString(localJsonBuildConfiguration.inherits)) {
+      jsonInherits = [localJsonBuildConfiguration.inherits as string]
+    } else if (Array.isArray(localJsonBuildConfiguration.inherits)) {
+      jsonInherits = localJsonBuildConfiguration.inherits as string[]
+    } else if (isString(localJsonBuildConfiguration.inherit)) {
+      jsonInherits = [localJsonBuildConfiguration.inherit as string]
+    } else if (Array.isArray(localJsonBuildConfiguration.inherit)) {
+      jsonInherits = localJsonBuildConfiguration.inherit as string[]
+    }
+
+    if (jsonInherits.length > 0) {
+      const joinedInherits = jsonInherits.join(os.EOL)
+      return joinedInherits.split(os.EOL)
+    }
+    return jsonInherits
+  }
+
+  /**
+   * Processes and merges a single inherited configuration.
+   *
+   * @remarks
+   * This helper method handles the initialisation of a single inherited
+   * configuration and merges its properties, dependencies, and actions into
+   * the current configuration.
+   *
+   * Processing steps:
+   *
+   * <ol>
+   * <li>Detect circular references by checking the inherited names set.</li>
+   * <li>Initialise the inherited configuration recursively.</li>
+   * <li>Merge properties, dependencies, and devDependencies using spread
+   *    operator (later values override earlier ones).</li>
+   * <li>Collect inherited actions into the provided map.</li>
+   * </ol>
+   *
+   * @param inheritedBuildConfigurationName - Name of the configuration to
+   * inherit from.
+   * @param inheritedActionsMap - Map to accumulate inherited actions.
+   * @returns A promise that resolves when processing is complete.
+   *
+   * @throws {@link InputError}
+   * If a circular inheritance reference is detected.
+   *
+   * @throws {@link InputError}
+   * If the inherited configuration name does not exist.
+   */
+  private async _processInheritedConfiguration(
+    inheritedBuildConfigurationName: string,
+    inheritedActionsMap: Map<string, Action>
+  ): Promise<void> {
+    if (inheritedBuildConfigurationName.trim() === '') {
+      return
+    }
+
+    if (
+      !this.parentBuildConfigurations.hasJson(inheritedBuildConfigurationName)
+    ) {
+      throw new InputError(
+        `buildConfiguration "${this.buildConfigurationName}" ` +
+          `inherits from missing "${inheritedBuildConfigurationName}"`
+      )
+    }
+
+    if (this._inheritedNamesSet.has(inheritedBuildConfigurationName)) {
+      throw new InputError(
+        `buildConfiguration "${this.buildConfigurationName}" ` +
+          `inherits from circular reference ` +
+          `"${inheritedBuildConfigurationName}"`
+      )
+    }
+
+    this._inheritedNamesSet.add(inheritedBuildConfigurationName)
+
+    const inheritedBuildConfiguration = this.parentBuildConfigurations.get(
+      inheritedBuildConfigurationName
+    )
+
+    await inheritedBuildConfiguration.initialise()
+
+    // Merge properties, dependencies, devDependencies.
+    // Later ones override earlier ones.
+    this.properties = {
+      ...this.properties,
+      ...inheritedBuildConfiguration.properties,
+    }
+
+    this.dependencies = {
+      ...this.dependencies,
+      ...inheritedBuildConfiguration.dependencies,
+    }
+
+    this.devDependencies = {
+      ...this.devDependencies,
+      ...inheritedBuildConfiguration.devDependencies,
+    }
+
+    await inheritedBuildConfiguration.actions.initialise()
+    for (const actionName of inheritedBuildConfiguration.actions.names) {
+      const action = inheritedBuildConfiguration.actions.get(actionName)
+      inheritedActionsMap.set(actionName, action)
+    }
+  }
+
+  /**
    * Processes inheritance for a build configuration.
    *
    * @remarks
@@ -1952,85 +2081,20 @@ export class BuildConfiguration {
   ): Promise<Map<string, Action>> {
     const log = this._log
 
-    // Process both the new 'inherits' and the deprecated 'inherit'.
-    let jsonInherits: string[] = []
-    if (isString(localJsonBuildConfiguration.inherits)) {
-      jsonInherits = [localJsonBuildConfiguration.inherits as string]
-    } else if (Array.isArray(localJsonBuildConfiguration.inherits)) {
-      jsonInherits = localJsonBuildConfiguration.inherits as string[]
-    } else if (isString(localJsonBuildConfiguration.inherit)) {
-      jsonInherits = [localJsonBuildConfiguration.inherit as string]
-    } else if (Array.isArray(localJsonBuildConfiguration.inherit)) {
-      jsonInherits = localJsonBuildConfiguration.inherit as string[]
-    }
-    // console.log(jsonInherits)
-
-    let inheritsNames = jsonInherits
-    if (jsonInherits.length > 0) {
-      const joinedInherits = jsonInherits.join(os.EOL)
-      inheritsNames = joinedInherits.split(os.EOL)
-    }
+    const inheritsNames = this._parseInheritsField(localJsonBuildConfiguration)
     this.inheritsNames = inheritsNames
-    // console.log(this.inheritsNames)
+
     log.trace(this.buildConfigurationName, 'inherits from', this.inheritsNames)
 
     const inheritedActionsMap: Map<string, Action> = new Map<string, Action>()
 
-    // Add inherited configuration properties.
     for (const inheritedBuildConfigurationName of inheritsNames) {
-      if (inheritedBuildConfigurationName.trim() === '') {
-        continue
-      }
-      if (
-        this.parentBuildConfigurations.hasJson(inheritedBuildConfigurationName)
-      ) {
-        if (this._inheritedNamesSet.has(inheritedBuildConfigurationName)) {
-          throw new InputError(
-            'buildConfiguration' +
-              ` '${this.buildConfigurationName}'` +
-              ' inherits from circular reference' +
-              ` '${inheritedBuildConfigurationName}'`
-          )
-        }
-        this._inheritedNamesSet.add(inheritedBuildConfigurationName)
-
-        const inheritedBuildConfiguration = this.parentBuildConfigurations.get(
-          inheritedBuildConfigurationName
-        )
-
-        await inheritedBuildConfiguration.initialise()
-
-        // Merge properties, dependencies, devDependencies.
-        // Later ones override earlier ones.
-        this.properties = {
-          ...this.properties,
-          ...inheritedBuildConfiguration.properties,
-        }
-
-        this.dependencies = {
-          ...this.dependencies,
-          ...inheritedBuildConfiguration.dependencies,
-        }
-
-        this.devDependencies = {
-          ...this.devDependencies,
-          ...inheritedBuildConfiguration.devDependencies,
-        }
-
-        await inheritedBuildConfiguration.actions.initialise()
-        for (const actionName of inheritedBuildConfiguration.actions.names) {
-          const action = inheritedBuildConfiguration.actions.get(actionName)
-          inheritedActionsMap.set(actionName, action)
-        }
-      } else {
-        throw new InputError(
-          'buildConfiguration' +
-            ` '${this.buildConfigurationName}'` +
-            ' inherits from missing' +
-            ` '${inheritedBuildConfigurationName}'`
-        )
-      }
+      await this._processInheritedConfiguration(
+        inheritedBuildConfigurationName,
+        inheritedActionsMap
+      )
     }
+
     return inheritedActionsMap
   }
 
