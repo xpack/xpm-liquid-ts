@@ -25,11 +25,12 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../src/index.js'
+import { log } from '../../common.js'
 
 // ============================================================================
 
-const log = new Logger({ level: 'info' })
 const engine = new xpm.LiquidEngine()
+// const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 

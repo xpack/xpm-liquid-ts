@@ -23,6 +23,7 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../src/index.js'
+import { log } from '../../common.js'
 
 // ============================================================================
 
@@ -30,7 +31,7 @@ import * as xpm from '../../../src/index.js'
 // const __dirname = path.dirname(__filename)
 // const fixturesFolderPath = path.join(path.dirname(__dirname), 'fixtures')
 
-const log = new Logger({ level: 'info' })
+// const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 

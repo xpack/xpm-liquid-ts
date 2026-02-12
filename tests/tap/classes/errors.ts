@@ -16,7 +16,7 @@
 // https://www.npmjs.com/package/tap
 import t from 'tap'
 
-import { Logger } from '@xpack/logger'
+// import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
