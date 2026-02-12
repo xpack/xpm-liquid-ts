@@ -28,7 +28,7 @@ const substitutionsVariables = {}
 
 // ----------------------------------------------------------------------------
 
-await t.test('path_*', async (t) => {
+await t.test('path_*', async (t): Promise<void> => {
   if (os.platform() === 'win32') {
     // For JavaScript the double backslash is enough.
     // For Liquid, it must be doubled once more.
@@ -128,7 +128,7 @@ await t.test('path_*', async (t) => {
   t.end()
 })
 
-await t.test('path_posix_*', async (t) => {
+await t.test('path_posix_*', async (t): Promise<void> => {
   t.equal(
     await performSubstitutionsTest(
       '{{ "/foo/bar/baz/asdf/quux.html" | path_posix_basename }}',
@@ -178,7 +178,7 @@ await t.test('path_posix_*', async (t) => {
   t.end()
 })
 
-await t.test('path_win32_*', async (t) => {
+await t.test('path_win32_*', async (t): Promise<void> => {
   // For JavaScript the double backslash is enough.
   // For Liquid, it must be doubled once more.
   t.equal(
@@ -232,7 +232,7 @@ await t.test('path_win32_*', async (t) => {
   t.end()
 })
 
-await t.test('util_format', async (t) => {
+await t.test('util_format', async (t): Promise<void> => {
   t.equal(
     await performSubstitutionsTest(
       '{{ "%s%d" | util_format: "abc", 42 }}',
@@ -245,7 +245,7 @@ await t.test('util_format', async (t) => {
   t.end()
 })
 
-await t.test('to_filename', async (t) => {
+await t.test('to_filename', async (t): Promise<void> => {
   t.equal(
     await performSubstitutionsTest(
       '{{ "A@#$B" | to_filename }}',
@@ -258,7 +258,7 @@ await t.test('to_filename', async (t) => {
   t.end()
 })
 
-await t.test('(join|split)_lines', async (t) => {
+await t.test('(join|split)_lines', async (t): Promise<void> => {
   const substitutionsVariables = {
     map: { a: 1, b: 2, c: 3 },
     arr: ['x', 'y', 'z'],
@@ -300,7 +300,7 @@ await t.test('(join|split)_lines', async (t) => {
   t.end()
 })
 
-await t.test('keys', async (t) => {
+await t.test('keys', async (t): Promise<void> => {
   const substitutionsVariables = {
     map: { a: 1, b: 2, c: 3 },
     arr: ['x', 'y', 'z'],

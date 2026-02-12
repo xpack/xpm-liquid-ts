@@ -69,7 +69,7 @@ class XpmInitTemplate extends xpm.InitTemplateBase {
 
 // ----------------------------------------------------------------------------
 
-await t.test('XpmInitTemplateBase asserts', async (t): Promise<void> => {
+t.test('XpmInitTemplateBase asserts', (t): void => {
   let template
 
   class XpmInitTemplate extends xpm.InitTemplateBase {
@@ -728,685 +728,682 @@ await t.test(
 
 // ----------------------------------------------------------------------------
 
-await t.test(
-  'XpmInitTemplateBase._validatePropertiesDefinitions()',
-  async (t): Promise<void> => {
-    class XpmInitTemplate extends xpm.InitTemplateBase {
-      async generate(): Promise<void> {
-        t.fail('generate() should not be called')
-      }
+t.test('XpmInitTemplateBase._validatePropertiesDefinitions()', (t): void => {
+  class XpmInitTemplate extends xpm.InitTemplateBase {
+    async generate(): Promise<void> {
+      t.fail('generate() should not be called')
     }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions =
-        42 as unknown as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'is not an object',
-        'error message is "not an object"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions =
-        {} as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'is an empty object',
-        'error message is "is an empty object"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        stringProp: {} as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'must have a string label',
-        'error message is "must have a string label"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        stringProp: {
-          label: 42 as unknown as string,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'must have a string label',
-        'error message is "must have a string label"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        stringProp: {
-          label: ' ',
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has an empty label',
-        'error message is "has an empty label"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        stringProp: {
-          label: 'string property',
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'must have a string description',
-        'error message is "must have a string description"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        stringProp: {
-          label: 'string property',
-          description: 42 as unknown as string,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'must have a string description',
-        'error message is "must have a string description"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        stringProp: {
-          label: 'string property',
-          description: ' ',
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has an empty description',
-        'error message is "has an empty description"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        stringProp: {
-          label: 'string property',
-          description: 'string description',
-          isMandatory: 'not a boolean' as unknown as boolean,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has a non boolean isMandatory value',
-        'error message is "has a non boolean isMandatory value"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        stringProp: {
-          label: 'string property',
-          description: 'string description',
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has no type defined',
-        'error message is "has no type defined"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        selectProp: {
-          label: 'select property',
-          description: 'select description',
-          type: 'select',
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        "type 'select' has no items",
-        'error message is "type \'select\' has no items"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        selectProp: {
-          label: 'select property',
-          description: 'select description',
-          type: 'select',
-          items: 42 as unknown as xpm.InitTemplateItems,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        "type 'select' has invalid items",
-        'error message is "type \'select\' has invalid items"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        selectProp: {
-          label: 'select property',
-          description: 'select description',
-          type: 'select',
-          items: {} as unknown as xpm.InitTemplateItems,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        "type 'select' has no items",
-        'error message is "type \'select\' has no items"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        selectProp: {
-          label: 'select property',
-          description: 'select description',
-          type: 'select',
-          items: {
-            option1: 42 as unknown as string,
-          } as unknown as xpm.InitTemplateItems,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has invalid item',
-        'error message is "has invalid item"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        selectProp: {
-          label: 'select property',
-          description: 'select description',
-          type: 'select',
-          items: {
-            option1: {
-              platforms: 'not an array' as unknown as string[],
-              message: 'Option 1',
-            },
-          } as unknown as xpm.InitTemplateItems,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has invalid item',
-        'error message is "has invalid item"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        selectProp: {
-          label: 'select property',
-          description: 'select description',
-          type: 'select',
-          items: {
-            option1: {
-              platforms: ['linux', 'win32'],
-              message: 42 as unknown as string,
-            },
-          } as unknown as xpm.InitTemplateItems,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has invalid item',
-        'error message is "has invalid item"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        selectProp: {
-          label: 'select property',
-          description: 'select description',
-          type: 'select',
-          items: {
-            option1: 'option 1',
-            option2: 'option 2',
-          },
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'must have a default value if not mandatory',
-        'error message is "hmust have a default value if not mandatory"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        selectProp: {
-          label: 'select property',
-          description: 'select description',
-          type: 'select',
-          items: {
-            option1: 'option 1',
-            option2: 'option 2',
-          },
-          default: 42 as unknown as string,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has a non string default value',
-        'error message is "has a non string default value"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        selectProp: {
-          label: 'select property',
-          description: 'select description',
-          type: 'select',
-          items: {
-            option1: 'option 1',
-            option2: 'option 2',
-          },
-          default: ' ',
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has an empty default value',
-        'error message is "has an empty default value"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        selectProp: {
-          label: 'select property',
-          description: 'select description',
-          type: 'select',
-          items: {
-            option1: 'option 1',
-            option2: 'option 2',
-          },
-          default: 'nonexistent option',
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has a default value not in items list',
-        'error message is "has a default value not in items list"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        stringProp: {
-          label: 'string property',
-          description: 'string description',
-          type: 'string',
-          default: 42,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has a non string default value',
-        'error message is "has a non string default value"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        stringProp: {
-          label: 'string property',
-          description: 'string description',
-          type: 'string',
-          default: ' ',
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has an empty default value',
-        'error message is "has an empty default value"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        numberProp: {
-          label: 'number property',
-          description: 'number description',
-          type: 'number',
-          default: 'not a number',
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has a non number default value',
-        'error message is "has a non number default value"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        BooleanProp: {
-          label: 'boolean property',
-          description: 'boolean description',
-          type: 'boolean',
-          default: 'not a boolean',
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has a non boolean default value',
-        'error message is "has a non boolean default value"'
-      )
-    }
-
-    try {
-      const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-        unknownProp: {
-          label: 'unknown property',
-          description: 'unknown description',
-          type: 'unknown' as xpm.InitTemplateType,
-        } as xpm.InitTemplatePropertiesDefinition,
-      } as xpm.InitTemplatePropertiesDefinitions
-
-      const template = new XpmInitTemplate({
-        context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
-        propertiesDefinitions,
-        process: mockProcess,
-      })
-      t.fail('should have thrown')
-    } catch (error) {
-      t.type(error, AssertionError, 'threw an AssertionError')
-      t.match(
-        (error as AssertionError).message,
-        'has unsupported type',
-        'error message is "has unsupported type"'
-      )
-    }
-
-    t.end()
   }
-)
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions =
+      42 as unknown as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'is not an object',
+      'error message is "not an object"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions =
+      {} as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'is an empty object',
+      'error message is "is an empty object"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      stringProp: {} as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'must have a string label',
+      'error message is "must have a string label"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      stringProp: {
+        label: 42 as unknown as string,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'must have a string label',
+      'error message is "must have a string label"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      stringProp: {
+        label: ' ',
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has an empty label',
+      'error message is "has an empty label"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      stringProp: {
+        label: 'string property',
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'must have a string description',
+      'error message is "must have a string description"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      stringProp: {
+        label: 'string property',
+        description: 42 as unknown as string,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'must have a string description',
+      'error message is "must have a string description"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      stringProp: {
+        label: 'string property',
+        description: ' ',
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has an empty description',
+      'error message is "has an empty description"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      stringProp: {
+        label: 'string property',
+        description: 'string description',
+        isMandatory: 'not a boolean' as unknown as boolean,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has a non boolean isMandatory value',
+      'error message is "has a non boolean isMandatory value"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      stringProp: {
+        label: 'string property',
+        description: 'string description',
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has no type defined',
+      'error message is "has no type defined"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      selectProp: {
+        label: 'select property',
+        description: 'select description',
+        type: 'select',
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      "type 'select' has no items",
+      'error message is "type \'select\' has no items"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      selectProp: {
+        label: 'select property',
+        description: 'select description',
+        type: 'select',
+        items: 42 as unknown as xpm.InitTemplateItems,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      "type 'select' has invalid items",
+      'error message is "type \'select\' has invalid items"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      selectProp: {
+        label: 'select property',
+        description: 'select description',
+        type: 'select',
+        items: {} as unknown as xpm.InitTemplateItems,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      "type 'select' has no items",
+      'error message is "type \'select\' has no items"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      selectProp: {
+        label: 'select property',
+        description: 'select description',
+        type: 'select',
+        items: {
+          option1: 42 as unknown as string,
+        } as unknown as xpm.InitTemplateItems,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has invalid item',
+      'error message is "has invalid item"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      selectProp: {
+        label: 'select property',
+        description: 'select description',
+        type: 'select',
+        items: {
+          option1: {
+            platforms: 'not an array' as unknown as string[],
+            message: 'Option 1',
+          },
+        } as unknown as xpm.InitTemplateItems,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has invalid item',
+      'error message is "has invalid item"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      selectProp: {
+        label: 'select property',
+        description: 'select description',
+        type: 'select',
+        items: {
+          option1: {
+            platforms: ['linux', 'win32'],
+            message: 42 as unknown as string,
+          },
+        } as unknown as xpm.InitTemplateItems,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has invalid item',
+      'error message is "has invalid item"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      selectProp: {
+        label: 'select property',
+        description: 'select description',
+        type: 'select',
+        items: {
+          option1: 'option 1',
+          option2: 'option 2',
+        },
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'must have a default value if not mandatory',
+      'error message is "hmust have a default value if not mandatory"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      selectProp: {
+        label: 'select property',
+        description: 'select description',
+        type: 'select',
+        items: {
+          option1: 'option 1',
+          option2: 'option 2',
+        },
+        default: 42 as unknown as string,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has a non string default value',
+      'error message is "has a non string default value"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      selectProp: {
+        label: 'select property',
+        description: 'select description',
+        type: 'select',
+        items: {
+          option1: 'option 1',
+          option2: 'option 2',
+        },
+        default: ' ',
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has an empty default value',
+      'error message is "has an empty default value"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      selectProp: {
+        label: 'select property',
+        description: 'select description',
+        type: 'select',
+        items: {
+          option1: 'option 1',
+          option2: 'option 2',
+        },
+        default: 'nonexistent option',
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has a default value not in items list',
+      'error message is "has a default value not in items list"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      stringProp: {
+        label: 'string property',
+        description: 'string description',
+        type: 'string',
+        default: 42,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has a non string default value',
+      'error message is "has a non string default value"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      stringProp: {
+        label: 'string property',
+        description: 'string description',
+        type: 'string',
+        default: ' ',
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has an empty default value',
+      'error message is "has an empty default value"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      numberProp: {
+        label: 'number property',
+        description: 'number description',
+        type: 'number',
+        default: 'not a number',
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has a non number default value',
+      'error message is "has a non number default value"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      BooleanProp: {
+        label: 'boolean property',
+        description: 'boolean description',
+        type: 'boolean',
+        default: 'not a boolean',
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has a non boolean default value',
+      'error message is "has a non boolean default value"'
+    )
+  }
+
+  try {
+    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+      unknownProp: {
+        label: 'unknown property',
+        description: 'unknown description',
+        type: 'unknown' as xpm.InitTemplateType,
+      } as xpm.InitTemplatePropertiesDefinition,
+    } as xpm.InitTemplatePropertiesDefinitions
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+    })
+    t.fail('should have thrown')
+  } catch (error) {
+    t.type(error, AssertionError, 'threw an AssertionError')
+    t.match(
+      (error as AssertionError).message,
+      'has unsupported type',
+      'error message is "has unsupported type"'
+    )
+  }
+
+  t.end()
+})
 
 // ----------------------------------------------------------------------------
 

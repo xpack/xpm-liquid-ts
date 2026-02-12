@@ -26,7 +26,7 @@ import { performSubstitutionsTest } from '../../common.js'
 
 // ============================================================================
 
-await t.test('xpm.LiquidPropertiesDrop', async (t) => {
+await t.test('xpm.LiquidPropertiesDrop', async (t): Promise<void> => {
   const substitutionsVariables = {
     properties: {
       one: '1',
@@ -64,7 +64,7 @@ await t.test('xpm.LiquidPropertiesDrop', async (t) => {
   t.end()
 })
 
-await t.test('xpm.LiquidPropertiesDrop arrays', async (t) => {
+await t.test('xpm.LiquidPropertiesDrop arrays', async (t): Promise<void> => {
   const substitutionsVariables = {
     properties: {
       one: ['10', '11'],
@@ -92,7 +92,7 @@ await t.test('xpm.LiquidPropertiesDrop arrays', async (t) => {
   t.end()
 })
 
-await t.test('xpm.LiquidPropertiesDrop object', async (t) => {
+await t.test('xpm.LiquidPropertiesDrop object', async (t): Promise<void> => {
   const substitutionsVariables = {
     properties: {
       map: {
@@ -119,7 +119,7 @@ await t.test('xpm.LiquidPropertiesDrop object', async (t) => {
   t.end()
 })
 
-await t.test('xpm.LiquidPropertiesDrop context', async (t) => {
+await t.test('xpm.LiquidPropertiesDrop context', async (t): Promise<void> => {
   const substitutionsVariables = {
     properties: {
       valueWithParam: 'the {{ param }} value',
@@ -142,48 +142,51 @@ await t.test('xpm.LiquidPropertiesDrop context', async (t) => {
   t.end()
 })
 
-await t.test('xpm.LiquidPropertiesDrop context missing', async (t) => {
-  const substitutionsVariables = {
-    properties: {
-      other: null,
-    },
-  }
+await t.test(
+  'xpm.LiquidPropertiesDrop context missing',
+  async (t): Promise<void> => {
+    const substitutionsVariables = {
+      properties: {
+        other: null,
+      },
+    }
 
-  try {
-    await performSubstitutionsTest(
-      '{{ properties.valueWithParam }}',
-      substitutionsVariables
-    )
-    t.fail('should have thrown')
-  } catch (error) {
-    t.throws(xpm.InputError, 'throw xpm.InputError')
-    t.match(
-      (error as Error).message,
-      'not defined',
-      `error message is "not defined"`
-    )
-  }
+    try {
+      await performSubstitutionsTest(
+        '{{ properties.valueWithParam }}',
+        substitutionsVariables
+      )
+      t.fail('should have thrown')
+    } catch (error) {
+      t.throws(xpm.InputError, 'throw xpm.InputError')
+      t.match(
+        (error as Error).message,
+        'not defined',
+        `error message is "not defined"`
+      )
+    }
 
-  try {
-    const one = await performSubstitutionsTest(
-      'a{{ properties.other }}b',
-      substitutionsVariables
-    )
-    t.fail('should have thrown')
-  } catch (error) {
-    t.throws(xpm.InputError, 'throw xpm.InputError')
-    t.match(
-      (error as Error).message,
-      'Cannot read properties',
-      `error message is "Cannot read properties"`
-    )
+    try {
+      const one = await performSubstitutionsTest(
+        'a{{ properties.other }}b',
+        substitutionsVariables
+      )
+      t.fail('should have thrown')
+    } catch (error) {
+      t.throws(xpm.InputError, 'throw xpm.InputError')
+      t.match(
+        (error as Error).message,
+        'Cannot read properties',
+        `error message is "Cannot read properties"`
+      )
+    }
+    t.end()
   }
-  t.end()
-})
+)
 
 // ----------------------------------------------------------------------------
 
-await t.test(' xpm.LiquidMatrixDrop', async (t) => {
+await t.test(' xpm.LiquidMatrixDrop', async (t): Promise<void> => {
   const substitutionsVariables = {
     matrix: {
       one: '1',
@@ -221,7 +224,7 @@ await t.test(' xpm.LiquidMatrixDrop', async (t) => {
   t.end()
 })
 
-await t.test('xpm.LiquidMatrixDrop arrays', async (t) => {
+await t.test('xpm.LiquidMatrixDrop arrays', async (t): Promise<void> => {
   const substitutionsVariables = {
     matrix: {
       one: ['10', '11'],
@@ -249,7 +252,7 @@ await t.test('xpm.LiquidMatrixDrop arrays', async (t) => {
   t.end()
 })
 
-await t.test(' xpm.LiquidMatrixDrop object', async (t) => {
+await t.test(' xpm.LiquidMatrixDrop object', async (t): Promise<void> => {
   const substitutionsVariables = {
     matrix: {
       map: {
@@ -276,7 +279,7 @@ await t.test(' xpm.LiquidMatrixDrop object', async (t) => {
   t.end()
 })
 
-await t.test(' xpm.LiquidMatrixDrop context', async (t) => {
+await t.test(' xpm.LiquidMatrixDrop context', async (t): Promise<void> => {
   const substitutionsVariables = {
     matrix: {
       valueWithParam: 'the {{ param }} value',
@@ -299,43 +302,46 @@ await t.test(' xpm.LiquidMatrixDrop context', async (t) => {
   t.end()
 })
 
-await t.test(' xpm.LiquidMatrixDrop context missing', async (t) => {
-  const substitutionsVariables = {
-    matrix: {
-      other: null,
-    },
-  }
+await t.test(
+  ' xpm.LiquidMatrixDrop context missing',
+  async (t): Promise<void> => {
+    const substitutionsVariables = {
+      matrix: {
+        other: null,
+      },
+    }
 
-  try {
-    await performSubstitutionsTest(
-      '{{ matrix.valueWithParam }}',
-      substitutionsVariables
-    )
-    t.fail('should have thrown')
-  } catch (error) {
-    t.throws(xpm.InputError, 'throw xpm.InputError')
-    t.match(
-      (error as Error).message,
-      'not defined',
-      `error message is "not defined"`
-    )
-  }
+    try {
+      await performSubstitutionsTest(
+        '{{ matrix.valueWithParam }}',
+        substitutionsVariables
+      )
+      t.fail('should have thrown')
+    } catch (error) {
+      t.throws(xpm.InputError, 'throw xpm.InputError')
+      t.match(
+        (error as Error).message,
+        'not defined',
+        `error message is "not defined"`
+      )
+    }
 
-  try {
-    const one = await performSubstitutionsTest(
-      'a{{ matrix.other }}b',
-      substitutionsVariables
-    )
-    t.fail('should have thrown')
-  } catch (error) {
-    t.throws(xpm.InputError, 'throw xpm.InputError')
-    t.match(
-      (error as Error).message,
-      'Cannot read properties',
-      `error message is "Cannot read properties"`
-    )
+    try {
+      const one = await performSubstitutionsTest(
+        'a{{ matrix.other }}b',
+        substitutionsVariables
+      )
+      t.fail('should have thrown')
+    } catch (error) {
+      t.throws(xpm.InputError, 'throw xpm.InputError')
+      t.match(
+        (error as Error).message,
+        'Cannot read properties',
+        `error message is "Cannot read properties"`
+      )
+    }
+    t.end()
   }
-  t.end()
-})
+)
 
 // ----------------------------------------------------------------------------

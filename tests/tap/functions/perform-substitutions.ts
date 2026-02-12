@@ -26,7 +26,7 @@ import { performSubstitutionsTest } from '../../common.js'
 
 // ============================================================================
 
-await t.test('performSubstitutionsTest', async (t) => {
+await t.test('performSubstitutionsTest', async (t): Promise<void> => {
   const substitutionsVariables = {
     map: {
       one: '1',
@@ -61,94 +61,103 @@ await t.test('performSubstitutionsTest', async (t) => {
   t.end()
 })
 
-await t.test('performSubstitutionsTest filters cascade', async (t) => {
-  const substitutionsVariables = {
-    configuration: {
-      name: 'Debug',
-    },
-    map: {},
+await t.test(
+  'performSubstitutionsTest filters cascade',
+  async (t): Promise<void> => {
+    const substitutionsVariables = {
+      configuration: {
+        name: 'Debug',
+      },
+      map: {},
+    }
+
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "build" | path_join: configuration.name | to_filename | downcase }}',
+        substitutionsVariables
+      ),
+      path.join('build', 'debug'),
+      'build | join'
+    )
+
+    t.end()
   }
+)
 
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "build" | path_join: configuration.name | to_filename | downcase }}',
-      substitutionsVariables
-    ),
-    path.join('build', 'debug'),
-    'build | join'
-  )
+await t.test(
+  'performSubstitutionsTest arrays original',
+  async (t): Promise<void> => {
+    const engine = new liquidjs.Liquid()
 
-  t.end()
-})
-
-await t.test('performSubstitutionsTest arrays original', async (t) => {
-  const engine = new liquidjs.Liquid()
-
-  const substitutionsVariables = {
-    name: 'n',
-    version: '0.1.2',
-    array: ['1', '2', '3'],
-    one: ['10', '11'],
-    two: ['20', '21'],
-    compound: ['{{one}}', '{{two}}'],
-  }
-
-  const context = new liquidjs.Context(substitutionsVariables)
-
-  const iteration = await engine.parseAndRender(
-    '{% for item in array %}({{ item }}){% endfor %}',
-    context
-  )
-
-  t.not(Array.isArray(iteration), 'iteration not an array')
-  t.equal(iteration, '(1)(2)(3)', 'iteration')
-
-  const array = await engine.parseAndRender('{{ array }}', context)
-
-  t.not(Array.isArray(array), 'array is concatenated')
-  t.equal(array, '123', 'array')
-
-  const temp = await engine.parseAndRender('{{ compound }}', context)
-
-  t.equal(temp, '{{one}}{{two}}', 'temp')
-
-  const compound = await engine.parseAndRender(temp, context)
-
-  t.not(Array.isArray(compound), 'compound is concatenated')
-  t.equal(compound, '10112021', 'compound')
-
-  t.end()
-})
-
-await t.test('performSubstitutionsTest arrays multi', async (t) => {
-  const substitutionsVariables = {
-    map: {
+    const substitutionsVariables = {
+      name: 'n',
+      version: '0.1.2',
+      array: ['1', '2', '3'],
       one: ['10', '11'],
-      two: '20',
-      compound: ['{{ map.one }}', '{{ map.two }}'],
-    },
+      two: ['20', '21'],
+      compound: ['{{one}}', '{{two}}'],
+    }
+
+    const context = new liquidjs.Context(substitutionsVariables)
+
+    const iteration = await engine.parseAndRender(
+      '{% for item in array %}({{ item }}){% endfor %}',
+      context
+    )
+
+    t.not(Array.isArray(iteration), 'iteration not an array')
+    t.equal(iteration, '(1)(2)(3)', 'iteration')
+
+    const array = await engine.parseAndRender('{{ array }}', context)
+
+    t.not(Array.isArray(array), 'array is concatenated')
+    t.equal(array, '123', 'array')
+
+    const temp = await engine.parseAndRender('{{ compound }}', context)
+
+    t.equal(temp, '{{one}}{{two}}', 'temp')
+
+    const compound = await engine.parseAndRender(temp, context)
+
+    t.not(Array.isArray(compound), 'compound is concatenated')
+    t.equal(compound, '10112021', 'compound')
+
+    t.end()
   }
+)
 
-  const one = await performSubstitutionsTest(
-    '{{ map.one }}',
-    substitutionsVariables
-  )
+await t.test(
+  'performSubstitutionsTest arrays multi',
+  async (t): Promise<void> => {
+    const substitutionsVariables = {
+      map: {
+        one: ['10', '11'],
+        two: '20',
+        compound: ['{{ map.one }}', '{{ map.two }}'],
+      },
+    }
 
-  t.not(Array.isArray(one), 'array one is concatenated')
-  t.equal(one, '1011', 'array one')
+    const one = await performSubstitutionsTest(
+      '{{ map.one }}',
+      substitutionsVariables
+    )
 
-  const compound = await performSubstitutionsTest(
-    '{{ map.compound }}',
-    substitutionsVariables
-  )
+    t.not(Array.isArray(one), 'array one is concatenated')
+    t.equal(one, '1011', 'array one')
 
-  t.not(Array.isArray(compound), 'compound is concatenated')
-  t.equal(compound, '101120', 'compound')
+    const compound = await performSubstitutionsTest(
+      '{{ map.compound }}',
+      substitutionsVariables
+    )
 
-  t.end()
-})
+    t.not(Array.isArray(compound), 'compound is concatenated')
+    t.equal(compound, '101120', 'compound')
 
-await t.test('performSubstitutionsTest context', async (t) => {
+    t.end()
+  }
+)
+
+await t.test('performSubstitutionsTest context', async (t): Promise<void> => {
   const substitutionsVariables = {
     package: {
       properties2: {
@@ -167,7 +176,7 @@ await t.test('performSubstitutionsTest context', async (t) => {
   t.end()
 })
 
-await t.test('performSubstitutionsTest error', async (t) => {
+await t.test('performSubstitutionsTest error', async (t): Promise<void> => {
   const substitutionsVariables = {
     map: {
       one: '1',

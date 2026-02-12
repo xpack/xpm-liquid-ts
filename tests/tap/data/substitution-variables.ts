@@ -23,9 +23,9 @@ import * as xpm from '../../../src/index.js'
 
 // ============================================================================
 
-t.test('substitution variables', (t) => {
+t.test('substitution variables', (t): void => {
   const sv = xpm.liquidSubstitutionsVariablesBase
-  sv.env
+
   t.equal(
     Object.keys(sv.env).length,
     Object.keys(process.env).length,

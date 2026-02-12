@@ -33,7 +33,7 @@ const engine = new xpm.LiquidEngine()
 
 // ----------------------------------------------------------------------------
 
-await t.test('BuildConfigurations undefined', async (t) => {
+await t.test('BuildConfigurations undefined', async (t): Promise<void> => {
   const buildConfigurations = new xpm.BuildConfigurations({
     log,
     engine,
@@ -68,7 +68,7 @@ await t.test('BuildConfigurations undefined', async (t) => {
   t.end()
 })
 
-await t.test('BuildConfigurations', async (t) => {
+await t.test('BuildConfigurations', async (t): Promise<void> => {
   const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
     configOne: {
       properties: {
@@ -192,80 +192,83 @@ await t.test('BuildConfigurations', async (t) => {
   t.end()
 })
 
-await t.test('BuildConfigurations buildFolderRelativePath', async (t) => {
-  const substitutionsVariables = {
-    ...xpm.liquidSubstitutionsVariablesBase,
-    properties: {
-      buildFolderRelativePath:
-        "{{ 'topBuild' | path_join: configuration.name | to_filename | downcase }}",
-    },
-  }
-
-  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
-    configOne: {
-      properties: {
-        p1: 'v1',
-      },
-    },
-    configTwo: {
+await t.test(
+  'BuildConfigurations buildFolderRelativePath',
+  async (t): Promise<void> => {
+    const substitutionsVariables = {
+      ...xpm.liquidSubstitutionsVariablesBase,
       properties: {
         buildFolderRelativePath:
-          "{{ 'configBuild' | path_join: configuration.name | to_filename | downcase }}",
-        p2: 'v2',
+          "{{ 'topBuild' | path_join: configuration.name | to_filename | downcase }}",
       },
-    },
-    configThree: {
-      properties: {
-        buildFolderRelativePath: '{{ undefined_variable }}',
-        p3: 'v3',
+    }
+
+    const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+      configOne: {
+        properties: {
+          p1: 'v1',
+        },
       },
-    },
-  }
-  const buildConfigurations = new xpm.BuildConfigurations({
-    log,
-    engine,
-    substitutionsVariables,
-    jsonBuildConfigurations,
-  })
+      configTwo: {
+        properties: {
+          buildFolderRelativePath:
+            "{{ 'configBuild' | path_join: configuration.name | to_filename | downcase }}",
+          p2: 'v2',
+        },
+      },
+      configThree: {
+        properties: {
+          buildFolderRelativePath: '{{ undefined_variable }}',
+          p3: 'v3',
+        },
+      },
+    }
+    const buildConfigurations = new xpm.BuildConfigurations({
+      log,
+      engine,
+      substitutionsVariables,
+      jsonBuildConfigurations,
+    })
 
-  await buildConfigurations.initialise()
-  t.equal(buildConfigurations.size, 3, 'size 3')
+    await buildConfigurations.initialise()
+    t.equal(buildConfigurations.size, 3, 'size 3')
 
-  const configOne = buildConfigurations.get('configOne')
-  await configOne.initialise()
-  const buildFolderRelativePathOne = configOne.buildFolderRelativePath
-  t.equal(
-    buildFolderRelativePathOne,
-    path.join('topbuild', 'configone'),
-    'buildFolderRelativePath configOne'
-  )
-
-  const configTwo = buildConfigurations.get('configTwo')
-  await configTwo.initialise()
-  const buildFolderRelativePathTwo = configTwo.buildFolderRelativePath
-  t.equal(
-    buildFolderRelativePathTwo,
-    path.join('configbuild', 'configtwo'),
-    'buildFolderRelativePath configTwo'
-  )
-
-  const configThree = buildConfigurations.get('configThree')
-
-  try {
-    await configThree.initialise()
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'undefined variable',
-      'throws "undefined variable"'
+    const configOne = buildConfigurations.get('configOne')
+    await configOne.initialise()
+    const buildFolderRelativePathOne = configOne.buildFolderRelativePath
+    t.equal(
+      buildFolderRelativePathOne,
+      path.join('topbuild', 'configone'),
+      'buildFolderRelativePath configOne'
     )
+
+    const configTwo = buildConfigurations.get('configTwo')
+    await configTwo.initialise()
+    const buildFolderRelativePathTwo = configTwo.buildFolderRelativePath
+    t.equal(
+      buildFolderRelativePathTwo,
+      path.join('configbuild', 'configtwo'),
+      'buildFolderRelativePath configTwo'
+    )
+
+    const configThree = buildConfigurations.get('configThree')
+
+    try {
+      await configThree.initialise()
+    } catch (error) {
+      t.throws(xpm.ConfigurationError, 'throws xpm.Error')
+      t.match(
+        (error as Error).message,
+        'undefined variable',
+        'throws "undefined variable"'
+      )
+    }
+
+    t.end()
   }
+)
 
-  t.end()
-})
-
-await t.test('BuildConfigurations inheritance', async (t) => {
+await t.test('BuildConfigurations inheritance', async (t): Promise<void> => {
   const substitutionsVariables = {
     ...xpm.liquidSubstitutionsVariablesBase,
     properties: {
@@ -493,7 +496,7 @@ await t.test('BuildConfigurations inheritance', async (t) => {
   t.end()
 })
 
-await t.test('BuildConfigurations templates', async (t) => {
+await t.test('BuildConfigurations templates', async (t): Promise<void> => {
   const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
     configOne: {
       properties: {
@@ -649,366 +652,418 @@ await t.test('BuildConfigurations templates', async (t) => {
   t.end()
 })
 
-await t.test('BuildConfigurations templates errors', async (t) => {
-  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
-    configOne: {
-      properties: {
-        p1: 'v1',
-      },
-    },
-    'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}-{{ undefined }}': {
-      matrix: {
-        alfa: ['a1', 'a2'],
-        beta: ['b1', 'b2'],
-      },
-      template: {
+await t.test(
+  'BuildConfigurations templates errors',
+  async (t): Promise<void> => {
+    const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+      configOne: {
         properties: {
-          p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+          p1: 'v1',
         },
       },
-    },
-  }
-
-  const buildConfigurations = new xpm.BuildConfigurations({
-    log,
-    engine,
-    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
-    jsonBuildConfigurations,
-  })
-  try {
-    await buildConfigurations.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'undefined variable',
-      'throws "undefined variable"'
-    )
-  }
-
-  t.end()
-})
-
-await t.test('BuildConfigurations templates matrix', async (t) => {
-  const substitutionsVariables = {
-    ...xpm.liquidSubstitutionsVariablesBase,
-    properties: {
-      alfa2: 'a2',
-    },
-  }
-
-  const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
-    configOne: {
-      properties: {
-        p1: 'v1',
-      },
-    },
-    'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: {
-        alfa: ['a1', '{{ properties.alfa2 }}'],
-        beta: ['b1', 'b2'],
-      },
-      template: {
-        properties: {
-          p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+      'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}-{{ undefined }}': {
+        matrix: {
+          alfa: ['a1', 'a2'],
+          beta: ['b1', 'b2'],
+        },
+        template: {
+          properties: {
+            p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+          },
         },
       },
-    },
+    }
+
+    const buildConfigurations = new xpm.BuildConfigurations({
+      log,
+      engine,
+      substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+      jsonBuildConfigurations,
+    })
+    try {
+      await buildConfigurations.initialise()
+      t.fail('should have thrown an error')
+    } catch (error) {
+      t.throws(xpm.ConfigurationError, 'throws xpm.Error')
+      t.match(
+        (error as Error).message,
+        'undefined variable',
+        'throws "undefined variable"'
+      )
+    }
+
+    t.end()
   }
+)
 
-  const buildConfigurations = new xpm.BuildConfigurations({
-    log,
-    engine,
-    substitutionsVariables,
-    jsonBuildConfigurations,
-  })
-
-  await buildConfigurations.initialise()
-  t.equal(buildConfigurations.size, 5, 'size 5')
-
-  const configNames = buildConfigurations.names
-  t.equal(configNames[0], 'configOne', 'configNames[0] is configOne')
-
-  t.equal(
-    configNames[1],
-    'configTwo-a1-b1',
-    'configNames[1] is configTwo-a1-b1'
-  )
-  t.equal(
-    configNames[2],
-    'configTwo-a1-b2',
-    'configNames[2] is configTwo-a1-b2'
-  )
-
-  t.end()
-})
-
-await t.test('BuildConfigurations templates matrix errors', async (t) => {
-  let jsonBuildConfigurations: xpm.JsonBuildConfigurations
-  let buildConfigurations
-
-  jsonBuildConfigurations = {
-    configOne: {
+await t.test(
+  'BuildConfigurations templates matrix',
+  async (t): Promise<void> => {
+    const substitutionsVariables = {
+      ...xpm.liquidSubstitutionsVariablesBase,
       properties: {
-        p1: 'v1',
+        alfa2: 'a2',
       },
-    },
-    'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: {
-        alfa: ['a1', '{{ undefined }}'],
-        beta: ['b1', 'b2'],
-      },
-      template: {
+    }
+
+    const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+      configOne: {
         properties: {
-          p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+          p1: 'v1',
         },
       },
-    },
-  }
-
-  buildConfigurations = new xpm.BuildConfigurations({
-    log,
-    engine,
-    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
-    jsonBuildConfigurations,
-  })
-  try {
-    await buildConfigurations.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'undefined variable',
-      'throws "undefined variable"'
-    )
-  }
-
-  jsonBuildConfigurations = {
-    configOne: {
-      properties: {
-        p1: 'v1',
-      },
-    },
-    'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: {
-        alfa: [42 as unknown as string, 'a2'],
-        beta: ['b1', 'b2'],
-      },
-      template: {
-        properties: {
-          p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+      'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
+        matrix: {
+          alfa: ['a1', '{{ properties.alfa2 }}'],
+          beta: ['b1', 'b2'],
+        },
+        template: {
+          properties: {
+            p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+          },
         },
       },
-    },
-  }
+    }
 
-  buildConfigurations = new xpm.BuildConfigurations({
-    log,
-    engine,
-    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
-    jsonBuildConfigurations,
-  })
-  try {
+    const buildConfigurations = new xpm.BuildConfigurations({
+      log,
+      engine,
+      substitutionsVariables,
+      jsonBuildConfigurations,
+    })
+
     await buildConfigurations.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'value is not a string',
-      'throws "value is not a string"'
+    t.equal(buildConfigurations.size, 5, 'size 5')
+
+    const configNames = buildConfigurations.names
+    t.equal(configNames[0], 'configOne', 'configNames[0] is configOne')
+
+    t.equal(
+      configNames[1],
+      'configTwo-a1-b1',
+      'configNames[1] is configTwo-a1-b1'
     )
-  }
-
-  jsonBuildConfigurations = {
-    configOne: {
-      properties: {
-        p1: 'v1',
-      },
-    },
-    'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: {
-        alfa: 42 as unknown as string[],
-        beta: ['b1', 'b2'],
-      },
-      template: {
-        properties: {
-          p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
-        },
-      },
-    },
-  }
-
-  buildConfigurations = new xpm.BuildConfigurations({
-    log,
-    engine,
-    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
-    jsonBuildConfigurations,
-  })
-  try {
-    await buildConfigurations.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'is not an array',
-      'throws "is not an array"'
+    t.equal(
+      configNames[2],
+      'configTwo-a1-b2',
+      'configNames[2] is configTwo-a1-b2'
     )
-  }
 
-  jsonBuildConfigurations = {
-    configOne: {
-      properties: {
-        p1: 'v1',
-      },
-    },
-    'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: {
-        alfa: ['a1', 'a2'],
-        beta: ['b1', 'b2'],
-      },
-      template: 42 as unknown as xpm.JsonBuildConfigurationContent,
-    },
+    t.end()
   }
+)
 
-  buildConfigurations = new xpm.BuildConfigurations({
-    log,
-    engine,
-    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
-    jsonBuildConfigurations,
-  })
-  try {
-    await buildConfigurations.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'template is not a JSON object',
-      'throws "template is not a JSON object"'
+await t.test(
+  'BuildConfigurations templates matrix errors',
+  async (t): Promise<void> => {
+    await t.test(
+      'BuildConfigurations template matrix error undefined variable',
+      async (t): Promise<void> => {
+        const jsonBuildConfigurations = {
+          configOne: {
+            properties: {
+              p1: 'v1',
+            },
+          },
+          'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
+            matrix: {
+              alfa: ['a1', '{{ undefined }}'],
+              beta: ['b1', 'b2'],
+            },
+            template: {
+              properties: {
+                p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+              },
+            },
+          },
+        }
+
+        const buildConfigurations = new xpm.BuildConfigurations({
+          log,
+          engine,
+          substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+          jsonBuildConfigurations,
+        })
+        try {
+          await buildConfigurations.initialise()
+          t.fail('should have thrown an error')
+        } catch (error) {
+          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
+          t.match(
+            (error as Error).message,
+            'undefined variable',
+            'throws "undefined variable"'
+          )
+        }
+
+        t.end()
+      }
     )
-  }
 
-  jsonBuildConfigurations = {
-    configOne: {
-      properties: {
-        p1: 'v1',
-      },
-    },
-    'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: 42 as unknown as xpm.JsonBuildConfigurationTemplateMatrix,
-      template: {
-        properties: {
-          p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
-        },
-      },
-    },
-  }
+    await t.test(
+      'BuildConfigurations template matrix error value is not a string',
+      async (t): Promise<void> => {
+        const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+          configOne: {
+            properties: {
+              p1: 'v1',
+            },
+          },
+          'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
+            matrix: {
+              alfa: [42 as unknown as string, 'a2'],
+              beta: ['b1', 'b2'],
+            },
+            template: {
+              properties: {
+                p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+              },
+            },
+          },
+        }
 
-  buildConfigurations = new xpm.BuildConfigurations({
-    log,
-    engine,
-    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
-    jsonBuildConfigurations,
-  })
-  try {
-    await buildConfigurations.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'matrix is not an object',
-      'throws "matrix is not an object"'
+        const buildConfigurations = new xpm.BuildConfigurations({
+          log,
+          engine,
+          substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+          jsonBuildConfigurations,
+        })
+        try {
+          await buildConfigurations.initialise()
+          t.fail('should have thrown an error')
+        } catch (error) {
+          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
+          t.match(
+            (error as Error).message,
+            'value is not a string',
+            'throws "value is not a string"'
+          )
+        }
+
+        t.end()
+      }
     )
-  }
 
-  t.end()
-})
+    await t.test(
+      'BuildConfigurations template matrix error matrix is not an array',
+      async (t): Promise<void> => {
+        const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+          configOne: {
+            properties: {
+              p1: 'v1',
+            },
+          },
+          'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
+            matrix: {
+              alfa: 42 as unknown as string[],
+              beta: ['b1', 'b2'],
+            },
+            template: {
+              properties: {
+                p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+              },
+            },
+          },
+        }
 
-await t.test('BuildConfigurations templates duplicates', async (t) => {
-  let jsonBuildConfigurations: xpm.JsonBuildConfigurations
-  let buildConfigurations
+        const buildConfigurations = new xpm.BuildConfigurations({
+          log,
+          engine,
+          substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+          jsonBuildConfigurations,
+        })
+        try {
+          await buildConfigurations.initialise()
+          t.fail('should have thrown an error')
+        } catch (error) {
+          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
+          t.match(
+            (error as Error).message,
+            'is not an array',
+            'throws "is not an array"'
+          )
+        }
 
-  jsonBuildConfigurations = {
-    'configTwo-a1-b1': {
-      properties: {
-        p1: 'v1',
-      },
-    },
-    'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: {
-        alfa: ['a1', 'a2'],
-        beta: ['b1', 'b2'],
-      },
-      template: {
-        properties: {
-          p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
-        },
-      },
-    },
-  }
-
-  buildConfigurations = new xpm.BuildConfigurations({
-    log,
-    engine,
-    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
-    jsonBuildConfigurations,
-  })
-  try {
-    await buildConfigurations.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'could not be generated',
-      'throws "could not be generated"'
+        t.end()
+      }
     )
-  }
 
-  jsonBuildConfigurations = {
-    'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-      matrix: {
-        alfa: ['a1', 'a2'],
-        beta: ['b1', 'b2'],
-      },
-      template: {
-        properties: {
-          p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
-        },
-      },
-    },
-    'configTwo-a1-b1': {
-      properties: {
-        p1: 'v1',
-      },
-    },
-  }
+    await t.test(
+      'BuildConfigurations template matrix error template is not a JSON object',
+      async (t): Promise<void> => {
+        const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+          configOne: {
+            properties: {
+              p1: 'v1',
+            },
+          },
+          'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
+            matrix: {
+              alfa: ['a1', 'a2'],
+              beta: ['b1', 'b2'],
+            },
+            template: 42 as unknown as xpm.JsonBuildConfigurationContent,
+          },
+        }
 
-  buildConfigurations = new xpm.BuildConfigurations({
-    log,
-    engine,
-    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
-    jsonBuildConfigurations,
-  })
-  try {
-    await buildConfigurations.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'already defined',
-      'throws "already defined"'
+        const buildConfigurations = new xpm.BuildConfigurations({
+          log,
+          engine,
+          substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+          jsonBuildConfigurations,
+        })
+        try {
+          await buildConfigurations.initialise()
+          t.fail('should have thrown an error')
+        } catch (error) {
+          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
+          t.match(
+            (error as Error).message,
+            'template is not a JSON object',
+            'throws "template is not a JSON object"'
+          )
+        }
+
+        t.end()
+      }
     )
-  }
 
-  t.end()
-})
+    await t.test(
+      'BuildConfigurations template matrix error matrix is not an object',
+      async (t): Promise<void> => {
+        const jsonBuildConfigurations: xpm.JsonBuildConfigurations = {
+          configOne: {
+            properties: {
+              p1: 'v1',
+            },
+          },
+          'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
+            matrix: 42 as unknown as xpm.JsonBuildConfigurationTemplateMatrix,
+            template: {
+              properties: {
+                p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+              },
+            },
+          },
+        }
+
+        const buildConfigurations = new xpm.BuildConfigurations({
+          log,
+          engine,
+          substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+          jsonBuildConfigurations,
+        })
+        try {
+          await buildConfigurations.initialise()
+          t.fail('should have thrown an error')
+        } catch (error) {
+          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
+          t.match(
+            (error as Error).message,
+            'matrix is not an object',
+            'throws "matrix is not an object"'
+          )
+        }
+        t.end()
+      }
+    )
+
+    t.end()
+  }
+)
+
+await t.test(
+  'BuildConfigurations templates duplicates',
+  async (t): Promise<void> => {
+    await t.test(
+      'BuildConfigurations templates duplicate could not be generated',
+      async (t): Promise<void> => {
+        const jsonBuildConfigurations = {
+          'configTwo-a1-b1': {
+            properties: {
+              p1: 'v1',
+            },
+          },
+          'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
+            matrix: {
+              alfa: ['a1', 'a2'],
+              beta: ['b1', 'b2'],
+            },
+            template: {
+              properties: {
+                p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+              },
+            },
+          },
+        }
+
+        const buildConfigurations = new xpm.BuildConfigurations({
+          log,
+          engine,
+          substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+          jsonBuildConfigurations,
+        })
+        try {
+          await buildConfigurations.initialise()
+          t.fail('should have thrown an error')
+        } catch (error) {
+          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
+          t.match(
+            (error as Error).message,
+            'could not be generated',
+            'throws "could not be generated"'
+          )
+        }
+        t.end()
+      }
+    )
+
+    await t.test(
+      'BuildConfigurations templates duplicate already defined',
+      async (t): Promise<void> => {
+        const jsonBuildConfigurations = {
+          'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
+            matrix: {
+              alfa: ['a1', 'a2'],
+              beta: ['b1', 'b2'],
+            },
+            template: {
+              properties: {
+                p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',
+              },
+            },
+          },
+          'configTwo-a1-b1': {
+            properties: {
+              p1: 'v1',
+            },
+          },
+        }
+
+        const buildConfigurations = new xpm.BuildConfigurations({
+          log,
+          engine,
+          substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+          jsonBuildConfigurations,
+        })
+        try {
+          await buildConfigurations.initialise()
+          t.fail('should have thrown an error')
+        } catch (error) {
+          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
+          t.match(
+            (error as Error).message,
+            'already defined',
+            'throws "already defined"'
+          )
+        }
+        t.end()
+      }
+    )
+
+    t.end()
+  }
+)
 
 // ----------------------------------------------------------------------------
 
@@ -1074,10 +1129,14 @@ await t.test('configurations', async (t): Promise<void> => {
   )
   t.equal(buildConfigurationsNames.length, 0, 'buildConfigurations has 0 names')
 
-  let initialised = await buildConfigurations.initialise()
-  t.equal(initialised, true, 'buildConfigurations.initialise() => true')
-  initialised = await buildConfigurations.initialise()
-  t.equal(initialised, false, 'buildConfigurations.initialise() again => false')
+  let isInitialised = await buildConfigurations.initialise()
+  t.equal(isInitialised, true, 'buildConfigurations.initialise() => true')
+  isInitialised = await buildConfigurations.initialise()
+  t.equal(
+    isInitialised,
+    false,
+    'buildConfigurations.initialise() again => false'
+  )
 
   buildConfigurationsNames = buildConfigurations.names
   t.equal(
@@ -1113,7 +1172,7 @@ await t.test('configurations', async (t): Promise<void> => {
     'buildConfigurations has configuration "alfa"'
   )
 
-  let buildConfiguration = buildConfigurations.get('alfa')
+  const buildConfiguration = buildConfigurations.get('alfa')
   t.ok(buildConfiguration, 'buildConfigurationsNames.get("alfa")')
 
   t.equal(
@@ -1170,10 +1229,10 @@ await t.test('configurations', async (t): Promise<void> => {
   t.ok(Array.isArray(actionsNames), 'actions.names is array')
   t.equal(actionsNames.length, 0, 'actions has 0 names')
 
-  let actionsInitialised = await actions.initialise()
-  t.equal(actionsInitialised, true, 'actions.initialise() => true')
-  actionsInitialised = await actions.initialise()
-  t.equal(actionsInitialised, false, 'actions.initialise() again => false')
+  isInitialised = await actions.initialise()
+  t.equal(isInitialised, true, 'actions.initialise() => true')
+  isInitialised = await actions.initialise()
+  t.equal(isInitialised, false, 'actions.initialise() again => false')
 
   t.equal(actions.isEmpty, false, 'actions is not empty after init')
 
@@ -1197,8 +1256,8 @@ await t.test('configurations', async (t): Promise<void> => {
     'jsonAction'
   )
 
-  initialised = await actionOne.initialise()
-  t.equal(initialised, true, 'actionOne.initialise() => true')
+  isInitialised = await actionOne.initialise()
+  t.equal(isInitialised, true, 'actionOne.initialise() => true')
 
   let commands = actionOne.commands
   // console.log(commands)
@@ -1208,7 +1267,7 @@ await t.test('configurations', async (t): Promise<void> => {
   const actionTwo = actions.get('two')
   t.ok(actionTwo, 'actions.get("two")')
 
-  await actionTwo.initialise()
+  isInitialised = await actionTwo.initialise()
   commands = actionTwo.commands
   t.equal(commands.length, 1, 'actionTwo has 1 command')
   t.equal(commands[0], 'echo 2a command', 'command is as expected')
@@ -1312,8 +1371,8 @@ await t.test('configurations inheritance', async (t): Promise<void> => {
   const buildConfigurations = xpmDataModel.buildConfigurations
   t.ok(buildConfigurations, 'has buildConfigurations')
 
-  let initialised = await buildConfigurations.initialise()
-  t.equal(initialised, true, 'buildConfigurations.initialise() => true')
+  let isInitialised = await buildConfigurations.initialise()
+  t.equal(isInitialised, true, 'buildConfigurations.initialise() => true')
 
   const buildConfigurationsNames = buildConfigurations.names
   t.equal(
@@ -1328,7 +1387,9 @@ await t.test('configurations inheritance', async (t): Promise<void> => {
   )
 
   // log.level = 'trace'
-  let buildConfiguration = buildConfigurations.get('native-cmake-gcc14-release')
+  const buildConfiguration = buildConfigurations.get(
+    'native-cmake-gcc14-release'
+  )
   // log.level = 'info'
   t.ok(
     buildConfiguration,
@@ -1380,8 +1441,8 @@ await t.test('configurations inheritance', async (t): Promise<void> => {
   const actions = buildConfiguration.actions
   t.ok(actions, 'has actions')
 
-  let actionsInitialised = await actions.initialise()
-  t.equal(actionsInitialised, true, 'actions.initialise() => true')
+  isInitialised = await actions.initialise()
+  t.equal(isInitialised, true, 'actions.initialise() => true')
 
   const actionsNames = actions.names
   // console.log(actionsNames)
@@ -1394,7 +1455,7 @@ await t.test('configurations inheritance', async (t): Promise<void> => {
   const action = await actions.get('build')
   t.ok(action, 'actions.get("build")')
 
-  await action.initialise()
+  isInitialised = await action.initialise()
   const commands = action.commands
   t.equal(commands.length, 2, 'action "build" has 2 commands')
   t.match(
@@ -1570,14 +1631,13 @@ await t.test('configurations template', async (t): Promise<void> => {
   })
 
   // -----
-
-  let actions = xpmDataModel.actions
+  const actions = xpmDataModel.actions
   t.ok(actions, 'has actions')
 
-  let actionsInitialised = await actions.initialise()
+  const actionsInitialised = await actions.initialise()
   t.equal(actionsInitialised, true, 'actions.initialise() => true')
 
-  let actionsNames = actions.names
+  const actionsNames = actions.names
   t.equal(
     actionsNames.length,
     1,
@@ -1598,8 +1658,8 @@ await t.test('configurations template', async (t): Promise<void> => {
   t.ok(buildConfigurations, 'has buildConfigurations')
 
   // -----
-  let initialised = await buildConfigurations.initialise()
-  t.equal(initialised, true, 'buildConfigurations.initialise() => true')
+  const isInitialised = await buildConfigurations.initialise()
+  t.equal(isInitialised, true, 'buildConfigurations.initialise() => true')
 
   const buildConfigurationsNames = buildConfigurations.names
   // console.log(buildConfigurationsNames)
@@ -1640,65 +1700,80 @@ await t.test('configurations template', async (t): Promise<void> => {
     'buildConfigurations names[22] is "bravo"'
   )
 
-  let buildConfiguration = buildConfigurations.get('native-gcc15-dependencies')
-  t.ok(
-    buildConfiguration,
-    'buildConfigurationsNames.get("native-gcc15-dependencies")'
+  await t.test(
+    'configurations template native-gcc15-dependencies',
+    async (t): Promise<void> => {
+      const buildConfiguration = buildConfigurations.get(
+        'native-gcc15-dependencies'
+      )
+      t.ok(
+        buildConfiguration,
+        'buildConfigurationsNames.get("native-gcc15-dependencies")'
+      )
+
+      const isInitialised = await buildConfiguration.initialise()
+      const devDepGcc = buildConfiguration.devDependencies
+      t.equal(
+        (devDepGcc['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended)
+          .specifier,
+        '15.2.0-1.1',
+        'gcc specifier is "15.2.0-1.1"'
+      )
+      t.equal(
+        (devDepGcc['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended)
+          .platforms,
+        'linux-x64,linux-arm64,win32-x64',
+        'gcc platforms is "linux-x64,linux-arm64,win32-x64"'
+      )
+
+      t.end()
+    }
   )
 
-  await buildConfiguration.initialise()
-  const devDepGcc = buildConfiguration.devDependencies
-  t.equal(
-    (devDepGcc['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended).specifier,
-    '15.2.0-1.1',
-    'gcc specifier is "15.2.0-1.1"'
+  await t.test(
+    'configurations template native-cmake-gcc15-release',
+    async (t): Promise<void> => {
+      const buildConfiguration = buildConfigurations.get(
+        'native-cmake-gcc15-release'
+      )
+      t.ok(
+        buildConfiguration,
+        'buildConfigurationsNames.get("native-cmake-gcc15-release")'
+      )
+
+      await buildConfiguration.initialise()
+
+      const actions = buildConfiguration.actions
+      t.ok(actions, 'has actions')
+
+      const isInitialised = await actions.initialise()
+      t.equal(isInitialised, true, 'actions.initialise() => true')
+
+      const actionsNames = actions.names
+      // console.log(actionsNames)
+      t.equal(actionsNames.length, 6, 'actions has ' + 6 + ' names')
+
+      const devDependencies = buildConfiguration.devDependencies
+      t.equal(
+        (devDependencies['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended)
+          .specifier,
+        '15.2.0-1.1',
+        'gcc specifier is "15.2.0-1.1"'
+      )
+      t.equal(
+        (devDependencies['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended)
+          .platforms,
+        'linux-x64,linux-arm64,win32-x64',
+        'gcc platforms is "linux-x64,linux-arm64,win32-x64"'
+      )
+      t.equal(
+        devDependencies['@micro-os-plus/architecture-synthetic-posix'],
+        '4.0.3',
+        'architecture-synthetic-posix specifier is "4.0.3"'
+      )
+      t.end()
+    }
   )
-  t.equal(
-    (devDepGcc['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended).platforms,
-    'linux-x64,linux-arm64,win32-x64',
-    'gcc platforms is "linux-x64,linux-arm64,win32-x64"'
-  )
-
-  // -----
-
-  buildConfiguration = buildConfigurations.get('native-cmake-gcc15-release')
-  t.ok(
-    buildConfiguration,
-    'buildConfigurationsNames.get("native-cmake-gcc15-release")'
-  )
-
-  await buildConfiguration.initialise()
-
-  actions = buildConfiguration.actions
-  t.ok(actions, 'has actions')
-
-  actionsInitialised = await actions.initialise()
-  t.equal(actionsInitialised, true, 'actions.initialise() => true')
-
-  actionsNames = actions.names
-  // console.log(actionsNames)
-  t.equal(actionsNames.length, 6, 'actions has ' + 6 + ' names')
-
-  let devDependencies = buildConfiguration.devDependencies
-  t.equal(
-    (devDependencies['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended)
-      .specifier,
-    '15.2.0-1.1',
-    'gcc specifier is "15.2.0-1.1"'
-  )
-  t.equal(
-    (devDependencies['@xpack-dev-tools/gcc'] as xpm.JsonDependencyExtended)
-      .platforms,
-    'linux-x64,linux-arm64,win32-x64',
-    'gcc platforms is "linux-x64,linux-arm64,win32-x64"'
-  )
-  t.equal(
-    devDependencies['@micro-os-plus/architecture-synthetic-posix'],
-    '4.0.3',
-    'architecture-synthetic-posix specifier is "4.0.3"'
-  )
-
-  // -----
 
   t.end()
 })

@@ -39,7 +39,7 @@ const log = new Logger({ level: 'info' })
 
 // ----------------------------------------------------------------------------
 
-await t.test('constructor', async (t): Promise<void> => {
+t.test('constructor', (t): void => {
   const packageFolderPath = path.join(fixturesFolderPath, 'package-no-json')
   const xpmPackage = new xpm.Package({
     log,
