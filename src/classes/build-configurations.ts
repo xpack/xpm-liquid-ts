@@ -25,13 +25,10 @@ import {
   LiquidSubstitutionsStrings,
 } from '../data/substitutions-variables.js'
 import { filterPath } from '../functions/filter-paths.js'
-import {
-  isJsonObject,
-  isJsonArray,
-  isString,
-} from '../functions/is-something.js'
-import { performSubstitutions } from '../functions/perform-substitutions.js'
+import { isJsonObject, isString } from '../functions/is-something.js'
 import { getErrorMessage } from '../functions/utils.js'
+import { processMatrixForExpansion } from '../functions/matrix-expander.js'
+import { performSubstitutions } from '../functions/perform-substitutions.js'
 import {
   JsonBuildConfigurations,
   JsonBuildConfigurationTemplate,
@@ -815,56 +812,16 @@ export class BuildConfigurations {
           `template is not a JSON object`
       )
     }
+
     // Validate matrix structure and collect keys/values
-    const matrixKeys: string[] = []
-    const matrixValues: string[][] = []
-
-    for (const [matrixKey, matrixValueArray] of Object.entries(
-      jsonBuildConfigurationTemplate.matrix
-    )) {
-      if (!isJsonArray(matrixValueArray)) {
-        throw new ConfigurationError(
-          `buildConfiguration "${buildConfigurationName}" ` +
-            `matrix.${matrixKey} is not an array`
-        )
-      }
-      for (const matrixValue of matrixValueArray) {
-        if (!isString(matrixValue)) {
-          throw new ConfigurationError(
-            `buildConfiguration "${buildConfigurationName}" ` +
-              `matrix.${matrixKey} value is not a string`
-          )
-        }
-      }
-      matrixKeys.push(matrixKey)
-      const stringValue = matrixValueArray.join(os.EOL)
-      if (stringValue.includes('{{') || stringValue.includes('{%')) {
-        let substitutedValue
-        try {
-          substitutedValue = await performSubstitutions({
-            input: stringValue,
-            engine: this.engine,
-            substitutionsVariables: {
-              ...this.substitutionsVariables,
-            },
-            log: this.log,
-          })
-        } catch (error) {
-          const message =
-            getErrorMessage(error) +
-            ` in buildConfiguration "${buildConfigurationName}" ` +
-            `matrix substitution`
-          throw new ConfigurationError(message)
-        }
-
-        // console.log('substitutedValue =>', substitutedValue)
-        matrixValues.push(
-          substitutedValue.replace(new RegExp(os.EOL + '$'), '').split(os.EOL)
-        )
-      } else {
-        matrixValues.push(matrixValueArray)
-      }
-    }
+    const { matrixKeys, matrixValues } = await processMatrixForExpansion({
+      matrix: jsonBuildConfigurationTemplate.matrix,
+      templateName: buildConfigurationName,
+      templateType: 'buildConfiguration',
+      engine: this.engine,
+      substitutionsVariables: this.substitutionsVariables,
+      log: this.log,
+    })
 
     // Compute all combinations (cartesian product)
     const combinationsGenerator = new CombinationsGenerator({

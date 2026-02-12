@@ -27,6 +27,7 @@ import {
   isString,
   isJsonArray,
 } from '../functions/is-something.js'
+import { processMatrixForExpansion } from '../functions/matrix-expander.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
 import { getErrorMessage } from '../functions/utils.js'
 import {
@@ -745,52 +746,14 @@ export class Actions {
       )
     }
     // Validate matrix structure and collect keys/values
-    const matrixKeys: string[] = []
-    const matrixValues: string[][] = []
-
-    for (const [matrixKey, matrixValueArray] of Object.entries(
-      jsonActionTemplate.matrix
-    )) {
-      if (!isJsonArray(matrixValueArray)) {
-        throw new ConfigurationError(
-          `action "${actionName}" matrix.${matrixKey} is not an array`
-        )
-      }
-      for (const matrixValue of matrixValueArray) {
-        if (!isString(matrixValue)) {
-          throw new ConfigurationError(
-            `action "${actionName}" matrix.${matrixKey} value is not a string`
-          )
-        }
-      }
-      matrixKeys.push(matrixKey)
-      const stringValue = matrixValueArray.join(os.EOL)
-      if (stringValue.includes('{{') || stringValue.includes('{%')) {
-        let substitutedValue
-        try {
-          substitutedValue = await performSubstitutions({
-            input: stringValue,
-            engine: this.engine,
-            substitutionsVariables: {
-              ...this.substitutionsVariables,
-            },
-            log: this.log,
-          })
-        } catch (error) {
-          const message =
-            getErrorMessage(error) +
-            ` in action "${actionName}" matrix.${matrixKey}`
-          throw new ConfigurationError(message)
-        }
-
-        // console.log('substitutedValue =>', substitutedValue)
-        matrixValues.push(
-          substitutedValue.replace(new RegExp(os.EOL + '$'), '').split(os.EOL)
-        )
-      } else {
-        matrixValues.push(matrixValueArray)
-      }
-    }
+    const { matrixKeys, matrixValues } = await processMatrixForExpansion({
+      matrix: jsonActionTemplate.matrix,
+      templateName: actionName,
+      templateType: 'action',
+      engine: this.engine,
+      substitutionsVariables: this.substitutionsVariables,
+      log: this.log,
+    })
 
     // Compute all combinations (cartesian product)
     const combinationsGenerator = new CombinationsGenerator({
