@@ -750,13 +750,14 @@ export abstract class InitTemplateBase {
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       while (true) {
-        /* c8 ignore next 6 lines - Defensive check. */
+        /* c8 ignore start - Defensive check. */
         if (++retryCount > MAX_RETRIES) {
           throw new InputError(
             `Too many invalid attempts for property '${name}' ` +
               `(limit: ${String(MAX_RETRIES)})`
           )
         }
+        /* c8 ignore stop */
 
         const answer = (await rl.question(prompt)).trim()
         // console.log('{' + answer + '}')

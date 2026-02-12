@@ -654,10 +654,11 @@ export class Package {
         // and the Package class consistently throw Error instances, but this
         // provides defensive handling for unexpected error types that might
         // occur in edge cases or future code changes.
-        /* c8 ignore next 3 - safety net, currently all are Errors */
+        /* c8 ignore start - safety net, currently all are Errors */
       } else {
         log.trace(error)
       }
+      /* c8 ignore stop */
       return undefined
     }
     assert(jsonXpmCliPackage, 'jsonXpmCliPackage is required')

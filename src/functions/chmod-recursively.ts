@@ -158,15 +158,17 @@ export async function chmodRecursively({
   // 4. Network file systems with delayed or denied permission propagation
   // The warnings alert developers to unexpected permission inconsistencies.
   if (readOnly) {
-    /* c8 ignore next 3 - safety net, normally it is set. */
+    /* c8 ignore start - safety net, normally it is set. */
     if ((actualStat.mode & fs.constants.S_IWUSR) !== 0) {
       log.warn(`${inputPath} not set to RO`)
     }
+    /* c8 ignore stop */
   } else {
-    /* c8 ignore next 3 - safety net, normally it is not set. */
+    /* c8 ignore start - safety net, normally it is not set. */
     if ((actualStat.mode & fs.constants.S_IWUSR) === 0) {
       log.warn(`${inputPath} not set to RW`)
     }
+    /* c8 ignore stop */
   }
 
   // If RW, process the folder after changing it to RW.

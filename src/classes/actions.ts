@@ -597,9 +597,10 @@ export class Actions {
       // _jsonActionsNamesMap is populated from the jsonActions keys during
       // initialisation. The ?? '' provides protection against unexpected
       // runtime inconsistencies between the map and the object.
-      /* c8 ignore next 3 - safety net, action names are not undefined. */
+      /* c8 ignore start - safety net, action names are not undefined. */
       const jsonAction: JsonActionContent = (this.jsonActions[jsonActionName] ??
         '') as JsonActionContent
+      /* c8 ignore stop */
 
       action = new Action({
         actionName,

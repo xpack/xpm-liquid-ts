@@ -155,13 +155,14 @@ export async function performSubstitutions({
     // 3. The break below catches non-changing substitutions
     // However, this protects against edge cases like deeply nested context
     // references or malformed template logic that the engine doesn't catch.
-    /* c8 ignore next 6 lines - safety net, normally should not get there. */
+    /* c8 ignore start - safety net, normally should not get there. */
     if (++count > MAX_ITERATIONS) {
       throw new ConfigurationError(
         `Substitution limit exceeded (${String(MAX_ITERATIONS)} iterations). ` +
           `Possible circular reference in template.`
       )
     }
+    /* c8 ignore stop */
     // May throw.
     try {
       substituted = (await engine.parseAndRender(current, context)) as string
@@ -195,10 +196,11 @@ export async function performSubstitutions({
         // but Liquid engine and Node.js fs operations consistently throw Error
         // instances. This provides robust error handling for unexpected
         // scenarios.
-        /* c8 ignore next 3 - safety net, currently all are Errors */
+        /* c8 ignore start - safety net, currently all are Errors */
       } else {
         throw new ConfigurationError(String(error))
       }
+      /* c8 ignore stop */
     }
 
     log.trace(

@@ -649,10 +649,11 @@ export class BuildConfigurations {
       // be defined because getJsonName() throws if the configuration doesn't
       // exist. The ?? {} provides protection against unexpected inconsistencies
       // between the names map and the configurations object.
+      /* c8 ignore start - safety net, they are always defined */
       const jsonBuildConfiguration: JsonBuildConfigurationContent =
-        /* c8 ignore next - safety net, they are always defined */
         (this.jsonBuildConfigurations[jsonBuildConfigurationName] ??
           {}) as JsonBuildConfigurationContent
+      /* c8 ignore stop */
 
       buildConfiguration = new BuildConfiguration({
         buildConfigurationName,
@@ -1652,9 +1653,10 @@ export class BuildConfiguration {
       // unlikely because the JSON schema validation ensures these are objects
       // when present, but provides robustness against malformed configuration
       // or future schema changes.
-      /* c8 ignore next 2 - safety net, they are always defined */
+      /* c8 ignore start - safety net, they are always defined */
       this.dependencies = parsedDependencies.dependencies ?? {}
       this.devDependencies = parsedDependencies.devDependencies ?? {}
+      /* c8 ignore stop */
     }
 
     this._actions = new Actions({
@@ -1789,8 +1791,9 @@ export class BuildConfiguration {
             // matrix expansion, but this handles edge cases where
             // initialisation
             // order or template logic might reference matrix before it's set.
-            /* c8 ignore next - safety net, they are always defined */
+            /* c8 ignore start - safety net, they are always defined */
             matrix: this.matrixParameters ?? {},
+            /* c8 ignore stop */
             configuration: {
               ...this.jsonBuildConfiguration,
               name: this.buildConfigurationName,
