@@ -792,11 +792,9 @@ export class Actions {
       log: this.log,
     })
 
-    const combinations = combinationsGenerator.generate()
-    log.trace('combinations =>', combinations)
-
+    // Use generator pattern for memory efficiency
     // Expand each template actions for its combination.
-    for (const combination of combinations) {
+    for (const combination of combinationsGenerator.generate()) {
       await this._createSubstitutedAction({
         actionName,
         jsonAction: jsonActionTemplate.template,

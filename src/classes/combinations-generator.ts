@@ -62,8 +62,9 @@ export interface CombinationsGeneratorConstructorParameters {
  *
  * @remarks
  * This class computes the Cartesian product of multiple parameter arrays,
- * producing all possible combinations of parameter values. It uses a
- * recursive algorithm to systematically explore all combinations.
+ * producing all possible combinations of parameter values using a
+ * memory-efficient generator pattern. It uses a recursive algorithm to
+ * systematically explore all combinations one at a time.
  *
  * The generation process:
  *
@@ -72,8 +73,8 @@ export interface CombinationsGeneratorConstructorParameters {
  *    arrays.</li>
  * <li>Recursively iterates through each parameter, selecting one value at a
  *    time.</li>
- * <li>When all parameters have been assigned values, stores the complete
- *    combination.</li>
+ * <li>Yields complete combinations one at a time without storing them all
+ *    in memory.</li>
  * <li>Backtracks to explore other value combinations.</li>
  * </ol>
  *
@@ -84,14 +85,15 @@ export interface CombinationsGeneratorConstructorParameters {
  *   matrixValues: [['x64', 'arm'], ['speed', 'size']],
  *   log
  * });
- * const combinations = generator.generate();
- * // Results in:
- * // [
- * //   { arch: 'x64', optimize: 'speed' },
- * //   { arch: 'x64', optimize: 'size' },
- * //   { arch: 'arm', optimize: 'speed' },
- * //   { arch: 'arm', optimize: 'size' }
- * // ]
+ * for (const combo of generator.generate()) {
+ *   // Process one combination at a time without storing all in memory
+ *   // Results:
+ *   //   { arch: 'x64', optimize: 'speed' }
+ *   //   { arch: 'x64', optimize: 'size' }
+ *   //   { arch: 'arm', optimize: 'speed' }
+ *   //   { arch: 'arm', optimize: 'size' }
+ *   await processConfiguration(combo);
+ * }
  * ```
  */
 export class CombinationsGenerator {
@@ -133,19 +135,6 @@ export class CombinationsGenerator {
    */
   protected readonly matrixValues: string[][]
 
-  /**
-   * The array of generated combinations.
-   *
-   * @remarks
-   * This array accumulates all generated combinations during the recursive
-   * exploration. Each combination is a complete mapping of all parameter
-   * names to one of their possible values.
-   *
-   * The array is populated during <code>generate()</code> and returned to
-   * the caller.
-   */
-  protected readonly combinations: MatrixCombination[] = []
-
   // --------------------------------------------------------------------------
   // Constructor.
 
@@ -159,7 +148,7 @@ export class CombinationsGenerator {
    * @remarks
    * The constructor validates that the structure of keys and values is
    * correct and prepares the generator for combination generation. The
-   * actual generation is performed by calling <code>generate()</code>.
+   * actual generation is performed by calling {@link generate}.
    */
   constructor({
     matrixKeys,
@@ -181,78 +170,89 @@ export class CombinationsGenerator {
   // Public Methods.
 
   /**
-   * Generates all possible combinations from the matrix parameters.
+   * Generates combinations one at a time using a generator pattern.
    *
    * @remarks
-   * This method initiates the recursive generation process and returns the
-   * complete array of all possible combinations.
+   * This method yields combinations one at a time instead of building the
+   * entire array in memory. This is particularly useful for large matrices
+   * where storing all combinations would be impractical.
    *
-   * The generation algorithm:
+   * Memory efficiency:
    *
-   * <ol>
-   * <li>Starts the recursive process with an empty combination at index
-   *    0.</li>
-   * <li>The recursive method explores all possible value selections for
-   *    each parameter.</li>
-   * <li>Complete combinations are accumulated in the internal
-   *    <code>combinations</code> array.</li>
-   * <li>Returns the array containing all generated combinations.</li>
-   * </ol>
+   * <ul>
+   * <li>For a matrix with 10 parameters and 5 values each (9,765,625
+   *    combinations), only one combination object exists in memory at a
+   *    time, regardless of matrix size.</li>
+   * <li>No array allocation or storage required.</li>
+   * <li>Immediate processing of each combination without waiting for all to
+   *    be generated.</li>
+   * </ul>
    *
-   * @returns An array of all possible parameter combinations.
+   * Example usage:
+   * ```typescript
+   * for (const combo of generator.generate()) {
+   *   // Process one combination at a time
+   *   await processConfiguration(combo)
+   * }
+   * ```
+   *
+   * @yields Individual matrix combinations one at a time.
    */
-  generate(): MatrixCombination[] {
-    this._generateRecursively(0, {})
-
-    return this.combinations
+  *generate(): Generator<MatrixCombination> {
+    yield* this._generateRecursively(0, {})
   }
 
   // --------------------------------------------------------------------------
   // Private Methods.
 
   /**
-   * Recursively generates combinations by exploring the parameter space.
+   * Recursively generates combinations as a generator, yielding one at
+   * a time.
    *
    * @remarks
-   * This method implements the core recursive algorithm for generating the
-   * Cartesian product of parameter values.
+   * This method implements the recursive algorithm for generating the
+   * Cartesian product of parameter values using the generator pattern.
    *
    * Algorithm steps:
    *
    * <ol>
    * <li><b>Base case:</b> If all parameters have been assigned values
-   *    (<code>index === matrixKeys.length</code>), store a copy of the
+   *    (<code>index === matrixKeys.length</code>), yield a copy of the
    *    current combination and return.</li>
    * <li><b>Recursive case:</b> For the parameter at the current index:
    *   <ul>
    *   <li>Iterate through all possible values for this parameter.</li>
    *   <li>Assign each value to the combination object.</li>
-   *   <li>Recursively generate combinations for the next parameter.</li>
+   *   <li>Recursively yield combinations for the next parameter using
+   *      <code>yield*</code>.</li>
    *   <li>Remove the assigned value (backtrack) before trying the next
    *      value.</li>
    *   </ul>
    * </li>
    * </ol>
    *
-   * The backtracking ensures that the combination object is reused
-   * efficiently without creating unnecessary intermediate objects.
+   * The combination object is reused and modified during traversal, with
+   * only copies of complete combinations being yielded. This approach
+   * minimises memory allocation whilst maintaining correctness.
    *
    * @param index - The current parameter index being processed.
    * @param combination - The partial combination being built.
+   * @yields Complete combinations one at a time.
    */
-  protected _generateRecursively(
+  protected *_generateRecursively(
     index: number,
     combination: Record<string, string>
-  ): void {
+  ): Generator<MatrixCombination> {
     const log = this.log
     log.trace(
       `${CombinationsGenerator.name}.` +
-        `_generateRecursively(${String(index)},${JSON.stringify(combination)})`
+        `_generateRecursively(${String(index)},` +
+        `${JSON.stringify(combination)})`
     )
 
     if (index === this.matrixKeys.length) {
       log.trace('combination complete =>', combination)
-      this.combinations.push({ ...combination })
+      yield { ...combination }
 
       return
     }
@@ -262,7 +262,7 @@ export class CombinationsGenerator {
 
     for (const value of values) {
       combination[key] = value
-      this._generateRecursively(index + 1, combination)
+      yield* this._generateRecursively(index + 1, combination)
       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete combination[key]
     }

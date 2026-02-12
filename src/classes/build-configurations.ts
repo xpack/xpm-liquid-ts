@@ -891,11 +891,9 @@ export class BuildConfigurations {
       log: this.log,
     })
 
-    const combinations = combinationsGenerator.generate()
-    log.trace('combinations =>', combinations)
-
+    // Use generator pattern for memory efficiency
     // Expand each template build configuration for its combination.
-    for (const combination of combinations) {
+    for (const combination of combinationsGenerator.generate()) {
       await this._createSubstitutedBuildConfiguration({
         buildConfigurationName,
         jsonBuildConfiguration: jsonBuildConfigurationTemplate.template,
