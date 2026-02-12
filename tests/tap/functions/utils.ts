@@ -48,7 +48,7 @@ t.test('getErrorMessage', (t): void => {
   t.end()
 })
 
-t.test('getPlatformKey', (t): void => {
+t.test('getPlatformKey - default behaviour', (t): void => {
   const defaultKey = `${process.platform}-${process.arch}`
   t.equal(xpm.getPlatformKey(), defaultKey, 'default platform key')
 
@@ -73,6 +73,114 @@ t.test('getPlatformKey', (t): void => {
       'no change for non-x64/arm64 architectures'
     )
   }
+  t.end()
+})
+
+t.test('getPlatformKey - platform-agnostic tests', (t): void => {
+  const originalPlatform = process.platform
+  const originalArch = process.arch
+
+  // Test x64 architecture coercion.
+  Object.defineProperty(process, 'platform', {
+    value: 'linux',
+    configurable: true,
+  })
+  Object.defineProperty(process, 'arch', {
+    value: 'x64',
+    configurable: true,
+  })
+  t.equal(
+    xpm.getPlatformKey(),
+    'linux-x64',
+    'linux-x64 without forcing (mocked)'
+  )
+  t.equal(
+    xpm.getPlatformKey({ doForce32bit: true }),
+    'linux-ia32',
+    'x64 coerced to ia32 when forced (mocked)'
+  )
+
+  // Test arm64 architecture coercion.
+  Object.defineProperty(process, 'arch', {
+    value: 'arm64',
+    configurable: true,
+  })
+  t.equal(
+    xpm.getPlatformKey(),
+    'linux-arm64',
+    'linux-arm64 without forcing (mocked)'
+  )
+  t.equal(
+    xpm.getPlatformKey({ doForce32bit: true }),
+    'linux-arm',
+    'arm64 coerced to arm when forced (mocked)'
+  )
+
+  // Test other architectures remain unchanged.
+  Object.defineProperty(process, 'arch', {
+    value: 'ia32',
+    configurable: true,
+  })
+  t.equal(
+    xpm.getPlatformKey(),
+    'linux-ia32',
+    'linux-ia32 without forcing (mocked)'
+  )
+  t.equal(
+    xpm.getPlatformKey({ doForce32bit: true }),
+    'linux-ia32',
+    'ia32 unchanged when forced (mocked)'
+  )
+
+  // Test different platforms.
+  Object.defineProperty(process, 'platform', {
+    value: 'darwin',
+    configurable: true,
+  })
+  Object.defineProperty(process, 'arch', {
+    value: 'arm64',
+    configurable: true,
+  })
+  t.equal(
+    xpm.getPlatformKey(),
+    'darwin-arm64',
+    'darwin-arm64 without forcing (mocked)'
+  )
+  t.equal(
+    xpm.getPlatformKey({ doForce32bit: true }),
+    'darwin-arm',
+    'darwin arm64 coerced to arm (mocked)'
+  )
+
+  Object.defineProperty(process, 'platform', {
+    value: 'win32',
+    configurable: true,
+  })
+  Object.defineProperty(process, 'arch', {
+    value: 'x64',
+    configurable: true,
+  })
+  t.equal(
+    xpm.getPlatformKey(),
+    'win32-x64',
+    'win32-x64 without forcing (mocked)'
+  )
+  t.equal(
+    xpm.getPlatformKey({ doForce32bit: true }),
+    'win32-ia32',
+    'win32 x64 coerced to ia32 (mocked)'
+  )
+
+  // Restore original values.
+  Object.defineProperty(process, 'platform', {
+    value: originalPlatform,
+    configurable: true,
+  })
+  Object.defineProperty(process, 'arch', {
+    value: originalArch,
+    configurable: true,
+  })
+
   t.end()
 })
 

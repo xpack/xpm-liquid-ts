@@ -47,13 +47,10 @@
  * @returns A validated path.
  */
 export function filterPath(input: string): string {
-  /* c8 ignore start - windows specific code cannot be tested on 
-  other platforms */
   const fixed =
     process.platform === 'win32'
       ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
       : input.replace(/[^a-zA-Z0-9/]+/g, '-')
-  /* c8 ignore stop */
   return fixed.replace(/--/g, '-')
 }
 
