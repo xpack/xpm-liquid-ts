@@ -434,7 +434,7 @@ await t.test(
     const exitCode = await template.run()
     t.equal(exitCode, 0, 'exit code is 0')
 
-    // --------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     // Test defaults.
 
     await t.test('defaults', async (t): Promise<void> => {
@@ -537,7 +537,7 @@ await t.test(
       t.end()
     })
 
-    // --------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     // Test errors.
     const log = new Logger({ level: 'silent' }) // <---
 
@@ -1885,7 +1885,8 @@ await t.test(
         stdout: new MockStdout(),
       } as unknown as NodeJS.Process
 
-      // Update mockContext to have empty properties to avoid interference with previous test.
+      // Update mockContext to have empty properties to avoid interference
+      // with previous test.
       mockContext = {
         log: new Logger({ level: 'info' }),
         config: {
