@@ -650,9 +650,9 @@ export class BuildConfigurations {
       // exist. The ?? {} provides protection against unexpected inconsistencies
       // between the names map and the configurations object.
       /* c8 ignore start - safety net, they are always defined */
-      const jsonBuildConfiguration: JsonBuildConfigurationContent =
-        (this.jsonBuildConfigurations[jsonBuildConfigurationName] ??
-          {}) as JsonBuildConfigurationContent
+      const jsonBuildConfiguration: JsonBuildConfigurationContent = (this
+        .jsonBuildConfigurations[jsonBuildConfigurationName] ??
+        {}) as JsonBuildConfigurationContent
       /* c8 ignore stop */
 
       buildConfiguration = new BuildConfiguration({
