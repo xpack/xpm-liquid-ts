@@ -539,10 +539,11 @@ await t.test(
 
     // --------------------------------------------------------------------------
     // Test errors.
+    const log = new Logger({ level: 'silent' }) // <---
 
     await t.test('missing property', async (t): Promise<void> => {
       const mockContext = {
-        log: new Logger({ level: 'info' }),
+        log,
         config: {
           projectName: 'test-project',
           properties: {
@@ -575,7 +576,7 @@ await t.test(
 
     await t.test('platform not supported', async (t): Promise<void> => {
       const mockContext = {
-        log: new Logger({ level: 'info' }),
+        log,
         config: {
           projectName: 'test-project',
           properties: {
@@ -608,7 +609,7 @@ await t.test(
 
     await t.test('bad binary value', async (t): Promise<void> => {
       const mockContext = {
-        log: new Logger({ level: 'info' }),
+        log,
         config: {
           projectName: 'test-project',
           properties: {
@@ -641,7 +642,7 @@ await t.test(
 
     await t.test('bad number', async (t): Promise<void> => {
       const mockContext = {
-        log: new Logger({ level: 'info' }),
+        log,
         config: {
           projectName: 'test-project',
           properties: {
@@ -674,7 +675,7 @@ await t.test(
 
     await t.test('string without default', async (t): Promise<void> => {
       const mockContext = {
-        log: new Logger({ level: 'info' }),
+        log,
         config: {
           projectName: 'test-project',
           properties: {
@@ -1515,6 +1516,17 @@ await t.test(
 
     // console.log(fixturesFolderPath)
 
+    const mockContext: xpm.Context = {
+      log: new Logger({ level: 'silent' }), // <---
+      config: {
+        projectName: 'test-project',
+        properties: {
+          stringProp: 'a string',
+        },
+        cwd: process.cwd(),
+      },
+    }
+
     const template = new XpmInitTemplate({
       context: mockContext,
       __dirname: '/my/dir',
@@ -1578,6 +1590,16 @@ await t.test('XpmInitTemplateBase.render()', async (t): Promise<void> => {
   }
 
   // console.log(fixturesFolderPath)
+  const mockContext: xpm.Context = {
+    log: new Logger({ level: 'silent' }), // <---
+    config: {
+      projectName: 'test-project',
+      properties: {
+        stringProp: 'a string',
+      },
+      cwd: process.cwd(),
+    },
+  }
 
   const template = new XpmInitTemplate({
     context: mockContext,
@@ -1607,9 +1629,13 @@ class MockStdout extends Writable {
     callback: (error?: Error | null) => void
   ): void {
     const str = chunk.toString()
-    process.stdout.write(str)
+    // process.stdout.write(str)
     this.output.push(str)
     callback()
+  }
+
+  clear(): void {
+    this.output = []
   }
 }
 
