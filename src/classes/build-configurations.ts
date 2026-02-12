@@ -512,10 +512,20 @@ export class BuildConfigurations {
    * @remarks
    * For template-generated configurations, this returns the template
    * name.
+   *
+   * @throws {@link InputError}
+   * If the build configuration does not exist.
    */
   getJsonName(buildConfigurationName: string): string {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this._jsonBuildConfigurationsNamesMap.get(buildConfigurationName)!
+    const name = this._jsonBuildConfigurationsNamesMap.get(
+      buildConfigurationName
+    )
+    if (name === undefined) {
+      throw new InputError(
+        `Build configuration '${buildConfigurationName}' does not exist`
+      )
+    }
+    return name
   }
 
   /**
@@ -632,15 +642,10 @@ export class BuildConfigurations {
       buildConfigurationName
     )
     if (buildConfiguration === undefined) {
-      if (!this._jsonBuildConfigurationsNamesMap.has(buildConfigurationName)) {
-        throw new InputError(
-          `buildConfiguration "${buildConfigurationName}" ` + `does not exist`
-        )
-      }
-
-      const jsonBuildConfigurationName: string =
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this._jsonBuildConfigurationsNamesMap.get(buildConfigurationName)!
+      // This will throw InputError if the configuration doesn't exist
+      const jsonBuildConfigurationName: string = this.getJsonName(
+        buildConfigurationName
+      )
 
       const jsonBuildConfiguration: JsonBuildConfigurationContent =
         /* c8 ignore next - safety net, they are always defined */
