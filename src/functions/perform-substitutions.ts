@@ -144,9 +144,10 @@ export async function performSubstitutions({
   let substituted: string = current
   let count = 0
   const MAX_ITERATIONS = 42 // Prevent infinite loops
+  const LIQUID_SYNTAX_REGEX = /\{\{|\{%/
 
   // Iterate until all substitutions are done.
-  while (current.includes('{{') || current.includes('{%')) {
+  while (LIQUID_SYNTAX_REGEX.test(current)) {
     // Safety net: This limit prevents infinite loops from circular template
     // references. In normal operation, templates resolve in a few iterations.
     // The check is unlikely to trigger because:
