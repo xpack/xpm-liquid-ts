@@ -740,8 +740,19 @@ export abstract class InitTemplateBase {
       }
       prompt += ': '
 
+      const MAX_RETRIES = 42
+      let retryCount = 0
+
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       while (true) {
+        /* c8 ignore next 6 lines - Defensive check. */
+        if (++retryCount > MAX_RETRIES) {
+          throw new InputError(
+            `Too many invalid attempts for property '${name}' ` +
+              `(limit: ${String(MAX_RETRIES)})`
+          )
+        }
+
         const answer = (await rl.question(prompt)).trim()
         // console.log('{' + answer + '}')
         try {
