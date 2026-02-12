@@ -183,8 +183,16 @@ export class Package {
    *
    * @param packageFolderPath - The absolute path to the package folder.
    * @param log - The logger instance for output and diagnostics.
+   *
+   * @throws {@link InputError}
+   * If packageFolderPath is not provided or is not an absolute path.
    */
   constructor({ packageFolderPath, log }: PackageConstructorParameters) {
+    assert(
+      packageFolderPath && path.isAbsolute(packageFolderPath),
+      `packageFolderPath must be an absolute path, got: ${packageFolderPath}`
+    )
+
     this._log = log
     this.packageFolderPath = packageFolderPath
 
