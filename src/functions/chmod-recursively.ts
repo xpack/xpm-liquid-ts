@@ -17,6 +17,7 @@ import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 
 import { Logger } from '@xpack/logger'
+import { ConfigurationError } from '../index.js'
 
 // ============================================================================
 
@@ -71,7 +72,7 @@ const MAX_RECURSION_DEPTH = 42
  * warnings if the expected permission state is not achieved, which can
  * occur on filesystems with non-standard permission handling.
  *
- * Recursion depth is limited to {@link MAX_RECURSION_DEPTH} levels to
+ * Recursion depth is limited to `MAX_RECURSION_DEPTH` levels to
  * protect against extremely deep directory trees.
  *
  * @param inputPath - The file or folder path to process.
@@ -80,7 +81,7 @@ const MAX_RECURSION_DEPTH = 42
  * @param depth - Internal parameter tracking recursion depth.
  * @returns A promise that resolves when all permissions have been updated.
  *
- * @throws {@link Error}
+ * @throws {@link ConfigurationError}
  * If recursion depth exceeds the maximum limit.
  */
 export async function chmodRecursively({
@@ -99,7 +100,7 @@ export async function chmodRecursively({
 
   /* c8 ignore start - defensive guard for pathological directory trees. */
   if (depth > MAX_RECURSION_DEPTH) {
-    throw new Error(
+    throw new ConfigurationError(
       `Recursion depth limit exceeded ` +
         `(${String(MAX_RECURSION_DEPTH)} levels) ` +
         `whilst processing: ${inputPath}`
