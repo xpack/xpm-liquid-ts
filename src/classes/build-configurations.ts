@@ -469,6 +469,12 @@ export class BuildConfigurations {
    * @returns The number of build configurations in the collection.
    */
   get size(): number {
+    assert(
+      this._isInitialised,
+      'BuildConfigurations collection must be initialised before ' +
+        'accessing size'
+    )
+
     return this._buildConfigurationsMap.size
   }
 
@@ -481,6 +487,12 @@ export class BuildConfigurations {
    * @returns `true` if there are no build configurations, `false` otherwise.
    */
   get isEmpty(): boolean {
+    assert(
+      this._isInitialised,
+      'BuildConfigurations collection must be initialised before ' +
+        'accessing isEmpty'
+    )
+
     return this._buildConfigurationsMap.size === 0
   }
 
@@ -496,6 +508,12 @@ export class BuildConfigurations {
    * @returns An array of build configuration names.
    */
   get names(): string[] {
+    assert(
+      this._isInitialised,
+      'BuildConfigurations collection must be initialised before ' +
+        'accessing names'
+    )
+
     return this._buildConfigurationsNames
   }
 
@@ -514,6 +532,12 @@ export class BuildConfigurations {
    * If the build configuration does not exist.
    */
   getJsonName(buildConfigurationName: string): string {
+    assert(
+      this._isInitialised,
+      'BuildConfigurations collection must be initialised before ' +
+        'accessing getJsonName()'
+    )
+
     const name = this._jsonBuildConfigurationsNamesMap.get(
       buildConfigurationName
     )
@@ -522,6 +546,7 @@ export class BuildConfigurations {
         `build configuration "${buildConfigurationName}" does not exist`
       )
     }
+
     return name
   }
 
@@ -532,6 +557,12 @@ export class BuildConfigurations {
    * @returns `true` if a JSON definition exists, `false` otherwise.
    */
   hasJson(buildConfigurationName: string): boolean {
+    assert(
+      this._isInitialised,
+      'BuildConfigurations collection must be initialised before ' +
+        'accessing hasJson()'
+    )
+
     return this._jsonBuildConfigurationsNamesMap.has(buildConfigurationName)
   }
 
@@ -542,6 +573,12 @@ export class BuildConfigurations {
    * @returns The JSON build configuration definition.
    */
   getJson(buildConfigurationName: string): JsonBuildConfiguration {
+    assert(
+      this._isInitialised,
+      'BuildConfigurations collection must be initialised before ' +
+        'accessing getJson()'
+    )
+
     return this.jsonBuildConfigurations[
       this.getJsonName(buildConfigurationName)
     ]
@@ -554,6 +591,12 @@ export class BuildConfigurations {
    * @returns `true` if the configuration is hidden, `false` otherwise.
    */
   isHidden(buildConfigurationName: string): boolean {
+    assert(
+      this._isInitialised,
+      'BuildConfigurations collection must be initialised before ' +
+        'accessing isHidden()'
+    )
+
     const jsonBuildConfigurationName = this.getJsonName(buildConfigurationName)
     if (jsonBuildConfigurationName.includes('{{')) {
       const jsonBuildConfigurationTemplate: JsonBuildConfigurationTemplate =
@@ -577,6 +620,12 @@ export class BuildConfigurations {
    * @returns `true` if the configuration exists, `false` otherwise.
    */
   has(buildConfigurationName: string): boolean {
+    assert(
+      this._isInitialised,
+      'BuildConfigurations collection must be initialised before ' +
+        'accessing has()'
+    )
+
     return this._buildConfigurationsMap.has(buildConfigurationName)
   }
 
@@ -632,6 +681,12 @@ export class BuildConfigurations {
    * If a configuration with the specified name does not exist.
    */
   get(buildConfigurationName: string): BuildConfiguration {
+    assert(
+      this._isInitialised,
+      'BuildConfigurations collection must be initialised before ' +
+        'accessing get()'
+    )
+
     const log = this.log
     log.trace(`${BuildConfigurations.name}.get(${buildConfigurationName})`)
 
@@ -1691,7 +1746,10 @@ export class BuildConfiguration {
       'devDependencies => ',
       this.devDependencies
     )
-    log.trace(this.buildConfigurationName, 'actions => ', this._actions.names)
+
+    // Action names are not available at this point.
+    // log.trace(this.buildConfigurationName, 'actions => ',
+    // this._actions.names)
 
     this._isInitialised = true
     return true
@@ -1706,6 +1764,11 @@ export class BuildConfiguration {
    * @returns The actions collection.
    */
   get actions(): Actions {
+    assert(
+      this._isInitialised,
+      'BuildConfiguration must be initialised before ' + 'accessing actions'
+    )
+
     assert(this._actions !== undefined, 'Actions not initialised')
     return this._actions
   }
@@ -1717,8 +1780,13 @@ export class BuildConfiguration {
    */
   get buildFolderRelativePath(): string {
     assert(
+      this._isInitialised,
+      'BuildConfiguration must be initialised before ' +
+        'accessing buildFolderRelativePath'
+    )
+    assert(
       this._buildFolderRelativePath !== undefined,
-      'Actions not initialised'
+      'BuildConfiguration _buildFolderRelativePath not initialised'
     )
     return this._buildFolderRelativePath
   }

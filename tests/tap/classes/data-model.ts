@@ -36,7 +36,7 @@ import { log } from '../../common.js'
 
 // ----------------------------------------------------------------------------
 
-t.test('constructor', (t): void => {
+await t.test('constructor', async (t): Promise<void> => {
   const jsonNoXpack = { name: 'test', version: '1.2.3', xpack: [] }
   try {
     const dataModel = new xpm.DataModel({
@@ -91,6 +91,8 @@ t.test('constructor', (t): void => {
   )
 
   const topActions = xpmDataModel.actions
+  await topActions.initialise()
+
   t.ok(topActions, 'has topActions')
   t.equal(topActions.isEmpty, true, 'topActions is empty')
   const actionsNames = topActions.names
@@ -98,6 +100,7 @@ t.test('constructor', (t): void => {
   t.equal(actionsNames.length, 0, 'topActions has 0 names')
 
   const buildConfigurations = xpmDataModel.buildConfigurations
+  await buildConfigurations.initialise()
 
   t.ok(buildConfigurations, 'has buildConfigurations')
   t.equal(buildConfigurations.isEmpty, true, 'buildConfigurations is empty')

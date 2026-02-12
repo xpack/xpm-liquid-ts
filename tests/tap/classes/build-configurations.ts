@@ -34,6 +34,128 @@ const engine = new xpm.LiquidEngine()
 
 // ----------------------------------------------------------------------------
 
+await t.test(
+  'BuildConfigurations - uninitialised',
+  async (t): Promise<void> => {
+    const buildConfigurations = new xpm.BuildConfigurations({
+      log,
+      engine,
+      substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+      jsonBuildConfigurations: undefined,
+    })
+
+    try {
+      buildConfigurations.size
+      t.fail('size should have thrown an error')
+    } catch (error) {
+      t.throws(AssertionError, 'size throws AssertionError')
+      t.match(
+        (error as Error).message,
+        'must be initialised',
+        'size throws "must be initialised"'
+      )
+    }
+
+    try {
+      buildConfigurations.isEmpty
+      t.fail('isEmpty should have thrown an error')
+    } catch (error) {
+      t.throws(AssertionError, 'isEmpty throws AssertionError')
+      t.match(
+        (error as Error).message,
+        'must be initialised',
+        'isEmpty throws "must be initialised"'
+      )
+    }
+
+    try {
+      buildConfigurations.names
+      t.fail('names should have thrown an error')
+    } catch (error) {
+      t.throws(AssertionError, 'names throws AssertionError')
+      t.match(
+        (error as Error).message,
+        'must be initialised',
+        'names throws "must be initialised"'
+      )
+    }
+
+    try {
+      buildConfigurations.getJsonName('undefined')
+      t.fail('getJsonName() should have thrown an error')
+    } catch (error) {
+      t.throws(AssertionError, 'getJsonName() throws AssertionError')
+      t.match(
+        (error as Error).message,
+        'must be initialised',
+        'getJsonName() throws "must be initialised"'
+      )
+    }
+
+    try {
+      buildConfigurations.hasJson('undefined')
+      t.fail('hasJson() should have thrown an error')
+    } catch (error) {
+      t.throws(AssertionError, 'hasJson() throws AssertionError')
+      t.match(
+        (error as Error).message,
+        'must be initialised',
+        'hasJson() throws "must be initialised"'
+      )
+    }
+
+    try {
+      buildConfigurations.getJson('undefined')
+      t.fail('getJson() should have thrown an error')
+    } catch (error) {
+      t.throws(AssertionError, 'getJson() throws AssertionError')
+      t.match(
+        (error as Error).message,
+        'must be initialised',
+        'getJson() throws "must be initialised"'
+      )
+    }
+
+    try {
+      buildConfigurations.isHidden('undefined')
+      t.fail('isHidden() should have thrown an error')
+    } catch (error) {
+      t.throws(AssertionError, 'isHidden() throws AssertionError')
+      t.match(
+        (error as Error).message,
+        'must be initialised',
+        'isHidden() throws "must be initialised"'
+      )
+    }
+
+    try {
+      buildConfigurations.has('undefined')
+      t.fail('has() should have thrown an error')
+    } catch (error) {
+      t.throws(AssertionError, 'has() throws AssertionError')
+      t.match(
+        (error as Error).message,
+        'must be initialised',
+        'has() throws "must be initialised"'
+      )
+    }
+
+    try {
+      buildConfigurations.get('undefined')
+      t.fail('get() should have thrown an error')
+    } catch (error) {
+      t.throws(AssertionError, 'get() throws AssertionError')
+      t.match(
+        (error as Error).message,
+        'must be initialised',
+        'get() throws "must be initialised"'
+      )
+    }
+
+    t.end()
+  }
+)
+
 await t.test('BuildConfigurations undefined', async (t): Promise<void> => {
   const buildConfigurations = new xpm.BuildConfigurations({
     log,
@@ -42,14 +164,14 @@ await t.test('BuildConfigurations undefined', async (t): Promise<void> => {
     jsonBuildConfigurations: undefined,
   })
 
-  t.equal(buildConfigurations.size, 0, 'size 0')
-  t.equal(buildConfigurations.isEmpty, true, 'empty')
-  t.equal(buildConfigurations.names.length, 0, 'names.length 0')
-
   let isInitialised = await buildConfigurations.initialise()
   t.equal(isInitialised, true, 'initialise() => true')
   isInitialised = await buildConfigurations.initialise()
   t.equal(isInitialised, false, 'initialise() again => false')
+
+  t.equal(buildConfigurations.size, 0, 'size 0')
+  t.equal(buildConfigurations.isEmpty, true, 'empty')
+  t.equal(buildConfigurations.names.length, 0, 'names.length 0')
 
   try {
     const buildConfiguration = buildConfigurations.get('nonexistent')
@@ -1121,15 +1243,6 @@ await t.test('configurations', async (t): Promise<void> => {
 
   // -----
 
-  t.equal(buildConfigurations.isEmpty, true, 'buildConfigurations is empty')
-
-  let buildConfigurationsNames = buildConfigurations.names
-  t.ok(
-    Array.isArray(buildConfigurationsNames),
-    'buildConfigurations.names is array'
-  )
-  t.equal(buildConfigurationsNames.length, 0, 'buildConfigurations has 0 names')
-
   let isInitialised = await buildConfigurations.initialise()
   t.equal(isInitialised, true, 'buildConfigurations.initialise() => true')
   isInitialised = await buildConfigurations.initialise()
@@ -1139,7 +1252,7 @@ await t.test('configurations', async (t): Promise<void> => {
     'buildConfigurations.initialise() again => false'
   )
 
-  buildConfigurationsNames = buildConfigurations.names
+  const buildConfigurationsNames = buildConfigurations.names
   t.equal(
     buildConfigurationsNames.length,
     Object.keys(json.xpack!.buildConfigurations!).length,
@@ -1225,11 +1338,6 @@ await t.test('configurations', async (t): Promise<void> => {
   const actions = buildConfiguration.actions
   t.ok(actions, 'has actions')
 
-  t.equal(actions.isEmpty, true, 'actions is empty')
-  let actionsNames = actions.names
-  t.ok(Array.isArray(actionsNames), 'actions.names is array')
-  t.equal(actionsNames.length, 0, 'actions has 0 names')
-
   isInitialised = await actions.initialise()
   t.equal(isInitialised, true, 'actions.initialise() => true')
   isInitialised = await actions.initialise()
@@ -1237,7 +1345,7 @@ await t.test('configurations', async (t): Promise<void> => {
 
   t.equal(actions.isEmpty, false, 'actions is not empty after init')
 
-  actionsNames = actions.names
+  const actionsNames = actions.names
   t.equal(actionsNames.length, 2, 'actions has 2 names')
 
   // -----
@@ -1269,6 +1377,8 @@ await t.test('configurations', async (t): Promise<void> => {
   t.ok(actionTwo, 'actions.get("two")')
 
   isInitialised = await actionTwo.initialise()
+  t.equal(isInitialised, true, 'actionTwo.initialise() => true')
+
   commands = actionTwo.commands
   t.equal(commands.length, 1, 'actionTwo has 1 command')
   t.equal(commands[0], 'echo 2a command', 'command is as expected')

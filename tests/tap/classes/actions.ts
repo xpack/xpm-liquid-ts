@@ -30,6 +30,87 @@ const engine = new xpm.LiquidEngine()
 
 // ----------------------------------------------------------------------------
 
+await t.test('Actions - uninitialised', async (t): Promise<void> => {
+  const actions = new xpm.Actions({
+    log,
+    engine,
+    substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+    jsonActions: undefined,
+  })
+
+  try {
+    actions.size
+    t.fail(
+      'should have thrown an error when accessing size before initialise()'
+    )
+  } catch (error) {
+    t.throws(AssertionError, 'size throws AssertionError')
+    t.match(
+      (error as Error).message,
+      'must be initialised',
+      'size throws "must be initialised"'
+    )
+  }
+
+  try {
+    actions.isEmpty
+    t.fail(
+      'should have thrown an error when accessing isEmpty before initialise()'
+    )
+  } catch (error) {
+    t.throws(AssertionError, 'isEmpty throws AssertionError')
+    t.match(
+      (error as Error).message,
+      'must be initialised',
+      'isEmpty throws "must be initialised"'
+    )
+  }
+
+  try {
+    actions.names
+    t.fail(
+      'should have thrown an error when accessing names before initialise()'
+    )
+  } catch (error) {
+    t.throws(AssertionError, 'names throws AssertionError')
+    t.match(
+      (error as Error).message,
+      'must be initialised',
+      'names throws "must be initialised"'
+    )
+  }
+
+  try {
+    actions.has('nonexistent')
+    t.fail(
+      'should have thrown an error when accessing has() before initialise()'
+    )
+  } catch (error) {
+    t.throws(AssertionError, 'has() throws AssertionError')
+    t.match(
+      (error as Error).message,
+      'must be initialised',
+      'has() throws "must be initialised"'
+    )
+  }
+
+  try {
+    actions.get('nonexistent')
+    t.fail(
+      'should have thrown an error when accessing get() before initialise()'
+    )
+  } catch (error) {
+    t.throws(AssertionError, 'get() throws AssertionError')
+    t.match(
+      (error as Error).message,
+      'must be initialised',
+      'get() throws "must be initialised"'
+    )
+  }
+
+  t.end()
+})
+
 await t.test('Actions undefined', async (t): Promise<void> => {
   const actions = new xpm.Actions({
     log,
@@ -38,14 +119,14 @@ await t.test('Actions undefined', async (t): Promise<void> => {
     jsonActions: undefined,
   })
 
-  t.equal(actions.size, 0, 'size 0')
-  t.equal(actions.isEmpty, true, 'empty')
-  t.equal(actions.names.length, 0, 'names.length 0')
-
   let isInitialised = await actions.initialise()
   t.equal(isInitialised, true, 'initialise() => true')
   isInitialised = await actions.initialise()
   t.equal(isInitialised, false, 'initialise() again => false')
+
+  t.equal(actions.size, 0, 'size 0')
+  t.equal(actions.isEmpty, true, 'empty')
+  t.equal(actions.names.length, 0, 'names.length 0')
 
   try {
     const action = actions.get('nonexistent')
@@ -73,21 +154,6 @@ await t.test('Actions at top', async (t): Promise<void> => {
     },
   })
 
-  t.equal(actions.size, 0, 'size 0')
-  t.equal(actions.isEmpty, true, 'empty')
-  t.equal(actions.names.length, 0, 'names.length 0')
-  try {
-    const action = actions.get('nonexistent')
-    t.fail('should have thrown an error, got ' + action.actionName)
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'does not exist',
-      'throws "does not exist"'
-    )
-  }
-
   let isInitialised = await actions.initialise()
   t.equal(isInitialised, true, 'initialise() => true')
   isInitialised = await actions.initialise()
@@ -114,12 +180,12 @@ await t.test('Actions at top', async (t): Promise<void> => {
   } catch (error) {
     t.throws(
       AssertionError,
-      'one.commands throws xpm.Error before initialise()'
+      'one.commands throws xpm.AssertionError before initialise()'
     )
     t.match(
       (error as Error).message,
-      'not initialised',
-      'one.commands throws "not initialised"'
+      'must be initialised',
+      'one.commands throws "must be initialised"'
     )
   }
   isInitialised = await one.initialise()
@@ -166,7 +232,7 @@ await t.test('Actions in configuration', async (t): Promise<void> => {
 
   const buildConfiguration = buildConfigurations.get('debug')
   t.ok(buildConfiguration, 'has debug build configuration')
-
+  debugger
   await buildConfiguration.initialise()
 
   const actions = buildConfiguration.actions
@@ -219,8 +285,6 @@ await t.test('Actions inheritance', async (t): Promise<void> => {
     },
     inheritedActionsMap,
   })
-  t.equal(actions.size, 2, 'size 2')
-
   await actions.initialise()
 
   t.equal(actions.size, 3, 'size 3 after initialise()')

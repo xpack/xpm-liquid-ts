@@ -511,6 +511,11 @@ export class Actions {
    * @returns The number of actions in the collection.
    */
   get size(): number {
+    assert(
+      this._isInitialised,
+      'Actions collection must be initialised before accessing size'
+    )
+
     return this._actionsMap.size
   }
 
@@ -523,6 +528,11 @@ export class Actions {
    * @returns `true` if there are no actions, `false` otherwise.
    */
   get isEmpty(): boolean {
+    assert(
+      this._isInitialised,
+      'Actions collection must be initialised before accessing isEmpty'
+    )
+
     return this._actionsMap.size === 0
   }
 
@@ -538,6 +548,10 @@ export class Actions {
    * @returns An array of action names.
    */
   get names(): string[] {
+    assert(
+      this._isInitialised,
+      'Actions collection must be initialised before accessing names'
+    )
     return this._actionsNames
   }
 
@@ -551,6 +565,11 @@ export class Actions {
    * @returns `true` if the action exists, `false` otherwise.
    */
   has(actionName: string): boolean {
+    assert(
+      this._isInitialised,
+      'Actions collection must be initialised before accessing has()'
+    )
+
     return this._actionsMap.has(actionName)
   }
 
@@ -583,6 +602,11 @@ export class Actions {
    * If an action with that name does not exist.
    */
   get(actionName: string): Action {
+    assert(
+      this._isInitialised,
+      'Actions collection must be initialised before accessing get()'
+    )
+
     const log = this.log
     log.trace(`${Actions.name}.get(${actionName})`)
 
@@ -1214,7 +1238,12 @@ export class Action {
    * @returns The array of command strings after variable substitution.
    */
   get commands(): string[] {
-    assert(this._commands, 'Action not initialised, commands are undefined')
+    assert(
+      this._isInitialised,
+      'Action must be initialised before accessing commands'
+    )
+
+    assert(this._commands, 'Action _commands not initialised')
     return this._commands
   }
 }

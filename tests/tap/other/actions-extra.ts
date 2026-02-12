@@ -97,19 +97,14 @@ await t.test('actions', async (t): Promise<void> => {
     'properties.p1 is 1'
   )
 
-  t.equal(topActions.isEmpty, true, 'topActions is empty')
-  let actionsNames = topActions.names
-  t.ok(Array.isArray(actionsNames), 'topActions.names is array')
-  t.equal(actionsNames.length, 0, 'topActions has 0 names')
-
-  let initialised = await topActions.initialise()
-  t.equal(initialised, true, 'topActions.initialise() => true')
-  initialised = await topActions.initialise()
-  t.equal(initialised, false, 'topActions.initialise() again => false')
+  let isInitialised = await topActions.initialise()
+  t.equal(isInitialised, true, 'topActions.initialise() => true')
+  isInitialised = await topActions.initialise()
+  t.equal(isInitialised, false, 'topActions.initialise() again => false')
 
   t.equal(topActions.isEmpty, false, 'topActions is not empty after init')
 
-  actionsNames = topActions.names
+  const actionsNames = topActions.names
   t.equal(actionsNames.length, 3 + 6, 'topActions has 9 names')
 
   // -----
@@ -127,14 +122,9 @@ await t.test('actions', async (t): Promise<void> => {
     'echo {{ properties.p2 }} command',
     'jsonAction'
   )
-  // t.equal(
-  //   actionOne.#matrixParameters,
-  //   undefined,
-  //   'matrixParameters is undefined'
-  // )
 
-  initialised = await actionOne.initialise()
-  t.equal(initialised, true, 'actionOne.initialise() again => true')
+  isInitialised = await actionOne.initialise()
+  t.equal(isInitialised, true, 'actionOne.initialise() again => true')
 
   let commands = actionOne.commands
   // console.log(commands)
