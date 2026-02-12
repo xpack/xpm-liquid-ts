@@ -292,19 +292,24 @@ export abstract class InitTemplateBase {
 
     assert(config.properties, 'config.properties is required')
 
-    let isError = false
+    const validationErrors: string[] = []
     for (const [key, val] of Object.entries(config.properties)) {
       try {
         config.properties[key] = this._validatePropertyValue(key, val as string)
       } catch (error) {
         if (error instanceof Error) {
-          log.error(error.message)
+          const errorMessage = `${key}: ${error.message}`
+          log.error(errorMessage)
+          validationErrors.push(errorMessage)
         }
-        isError = true
       }
     }
-    if (isError) {
-      throw new JsonSyntaxError()
+    if (validationErrors.length > 0) {
+      throw new JsonSyntaxError(
+        validationErrors.length === 1
+          ? '1 invalid property'
+          : `${String(validationErrors.length)} invalid properties`
+      )
     }
 
     // Properties set by `--property name=value` are in `config.properties`.

@@ -548,6 +548,7 @@ await t.test(
           projectName: 'test-project',
           properties: {
             undefinedProp: 'some value',
+            undefinedProp2: 'some value', // Two of them.
           },
           cwd: process.cwd(),
         },
@@ -569,6 +570,11 @@ await t.test(
           error,
           xpm.JsonSyntaxError,
           'threw an error for missing property'
+        )
+        t.match(
+          (error as Error).message,
+          'invalid properties',
+          'error message is "invalid properties"'
         )
       }
       t.end()
@@ -603,6 +609,11 @@ await t.test(
           xpm.JsonSyntaxError,
           'threw an error for unsupported platform'
         )
+        t.match(
+          (error as Error).message,
+          'invalid property',
+          'error message is "invalid property"'
+        )
       }
       t.end()
     })
@@ -636,6 +647,11 @@ await t.test(
           xpm.JsonSyntaxError,
           'threw an error for bad binary value'
         )
+        t.match(
+          (error as Error).message,
+          'invalid property',
+          'error message is "invalid property"'
+        )
       }
       t.end()
     })
@@ -668,6 +684,11 @@ await t.test(
           error,
           xpm.JsonSyntaxError,
           'threw an error for bad number value'
+        )
+        t.match(
+          (error as Error).message,
+          'invalid property',
+          'error message is "invalid property"'
         )
       }
       t.end()
