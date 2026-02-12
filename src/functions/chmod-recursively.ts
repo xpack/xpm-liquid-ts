@@ -21,6 +21,19 @@ import { Logger } from '@xpack/logger'
 // ============================================================================
 
 /**
+ * Maximum recursion depth for file system operations.
+ *
+ * @remarks
+ * This limit protects against extremely deep directory trees that could
+ * cause stack overflow or performance issues. A limit of 1000 levels is
+ * more than sufficient for typical use cases whilst preventing pathological
+ * scenarios.
+ */
+const MAX_RECURSION_DEPTH = 42
+
+// ============================================================================
+
+/**
  * Recursively changes file permissions within a folder tree.
  *
  * @remarks
@@ -58,22 +71,41 @@ import { Logger } from '@xpack/logger'
  * warnings if the expected permission state is not achieved, which can
  * occur on filesystems with non-standard permission handling.
  *
+ * Recursion depth is limited to {@link MAX_RECURSION_DEPTH} levels to
+ * protect against extremely deep directory trees.
+ *
  * @param inputPath - The file or folder path to process.
  * @param readOnly - Whether to set permissions to read-only.
  * @param log - The logger instance for output and diagnostics.
+ * @param depth - Internal parameter tracking recursion depth.
  * @returns A promise that resolves when all permissions have been updated.
+ *
+ * @throws {@link Error}
+ * If recursion depth exceeds the maximum limit.
  */
 export async function chmodRecursively({
   inputPath,
   readOnly,
   log,
+  depth = 0,
 }: {
   inputPath: string
   readOnly: boolean
   log: Logger
+  depth?: number
 }): Promise<void> {
   assert(inputPath, 'inputPath is required')
   assert(log, 'log is required')
+
+  /* c8 ignore start - defensive guard for pathological directory trees. */
+  if (depth > MAX_RECURSION_DEPTH) {
+    throw new Error(
+      `Recursion depth limit exceeded ` +
+        `(${String(MAX_RECURSION_DEPTH)} levels) ` +
+        `whilst processing: ${inputPath}`
+    )
+  }
+  /* c8 ignore stop */
 
   const stat = await fs.lstat(inputPath)
   // log.trace(util.inspect(stat))
@@ -98,6 +130,7 @@ export async function chmodRecursively({
         inputPath: path.resolve(inputPath, dirent.name),
         readOnly,
         log,
+        depth: depth + 1,
       })
     }
   }
@@ -139,6 +172,7 @@ export async function chmodRecursively({
         inputPath: path.resolve(inputPath, dirent.name),
         readOnly,
         log,
+        depth: depth + 1,
       })
     }
   }
