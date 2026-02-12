@@ -140,7 +140,7 @@ await t.test('rewritePackageDotJson', async (t): Promise<void> => {
 t.test('isNpmPackage', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
-    packageFolderPath: '-',
+    packageFolderPath: '/tmp',
   })
 
   xpmPackage.jsonPackage = undefined
@@ -181,7 +181,7 @@ t.test('isNpmPackage', (t): void => {
 t.test('isXpmPackage', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
-    packageFolderPath: '-',
+    packageFolderPath: '/tmp',
   })
 
   xpmPackage.jsonPackage = {} as xpm.JsonXpmPackage
@@ -222,7 +222,7 @@ t.test('isXpmPackage', (t): void => {
 t.test('isBinaryXpmPackage', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
-    packageFolderPath: '-',
+    packageFolderPath: '/tmp',
   })
 
   xpmPackage.jsonPackage = {} as xpm.JsonXpmPackage
@@ -390,7 +390,7 @@ t.test('isBinaryXpmPackage', (t): void => {
 t.test('isNodeModule', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
-    packageFolderPath: '-',
+    packageFolderPath: '/tmp',
   })
 
   xpmPackage.jsonPackage = undefined
@@ -441,7 +441,7 @@ t.test('isNodeModule', (t): void => {
 t.test('isBinaryNodeModule', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
-    packageFolderPath: '-',
+    packageFolderPath: '/tmp',
   })
 
   xpmPackage.jsonPackage = undefined
@@ -509,7 +509,7 @@ t.test('isBinaryNodeModule', (t): void => {
 t.test('hasNpmScripts', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
-    packageFolderPath: '-',
+    packageFolderPath: '/tmp',
   })
 
   xpmPackage.jsonPackage = {
@@ -535,7 +535,7 @@ t.test('hasNpmScripts', (t): void => {
 t.test('hasXpmActions', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
-    packageFolderPath: '-',
+    packageFolderPath: '/tmp',
   })
 
   xpmPackage.jsonPackage = {
@@ -638,7 +638,7 @@ t.test('hasXpmActions', (t): void => {
 t.test('getMinimumXpmRequired', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
-    packageFolderPath: '-',
+    packageFolderPath: '/tmp',
   })
 
   t.equal(
@@ -677,7 +677,7 @@ t.test('getMinimumXpmRequired', (t): void => {
 await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
   const xpmPackage = new xpm.Package({
     log,
-    packageFolderPath: '-',
+    packageFolderPath: '/tmp',
   })
 
   t.equal(
@@ -795,7 +795,7 @@ await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
 t.test('parsePackageSpecifier', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
-    packageFolderPath: '-',
+    packageFolderPath: '/tmp',
   })
 
   try {
