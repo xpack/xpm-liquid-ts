@@ -144,10 +144,17 @@ export async function performSubstitutions({
   let current: string = input
   let substituted: string = current
   let count = 0
+  const MAX_ITERATIONS = 42 // Prevent infinite loops
 
   // Iterate until all substitutions are done.
   while (current.includes('{{') || current.includes('{%')) {
-    ++count
+    /* c8 ignore next 6 lines - safety net, normally should not get there. */
+    if (++count > MAX_ITERATIONS) {
+      throw new ConfigurationError(
+        `Substitution limit exceeded (${String(MAX_ITERATIONS)} iterations). ` +
+          `Possible circular reference in template.`
+      )
+    }
     // May throw.
     try {
       substituted = (await engine.parseAndRender(current, context)) as string
