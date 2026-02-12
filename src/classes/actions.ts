@@ -587,13 +587,10 @@ export class Actions {
 
     let action = this._actionsMap.get(actionName)
     if (action === undefined) {
-      if (!this._jsonActionsNamesMap.has(actionName)) {
+      const jsonActionName = this._jsonActionsNamesMap.get(actionName)
+      if (jsonActionName === undefined) {
         throw new ConfigurationError(`action "${actionName}" does not exist`)
       }
-
-      const jsonActionName: string =
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this._jsonActionsNamesMap.get(actionName)!
       /* c8 ignore next 3 - safety net, action names are not undefined. */
       const jsonAction: JsonActionContent = (this.jsonActions[jsonActionName] ??
         '') as JsonActionContent
