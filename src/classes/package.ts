@@ -25,6 +25,7 @@ import { Logger } from '@xpack/logger'
 
 import { InputError, PrerequisitesError } from './errors.js'
 import { isString } from '../functions/is-something.js'
+import { hasLiquidSyntax } from '../functions/utils.js'
 import {
   JsonBuildConfiguration,
   JsonBuildConfigurationContent,
@@ -521,10 +522,7 @@ export class Package {
         )) {
           const buildConfiguration: JsonBuildConfiguration =
             json.xpack.buildConfigurations[buildConfigurationName]
-          if (
-            buildConfigurationName.includes('{{') ||
-            buildConfigurationName.includes('{%')
-          ) {
+          if (hasLiquidSyntax(buildConfigurationName)) {
             const buildConfigurationTemplate =
               buildConfiguration as JsonBuildConfigurationTemplate
             if (

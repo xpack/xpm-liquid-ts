@@ -22,6 +22,7 @@ import { LiquidSubstitutionsVariables } from '../data/substitutions-variables.js
 import { ConfigurationError } from '../classes/errors.js'
 import { isJsonArray, isString } from './is-something.js'
 import { performSubstitutions } from './perform-substitutions.js'
+import { hasLiquidSyntax } from './utils.js'
 import { getErrorMessage } from './utils.js'
 
 // ============================================================================
@@ -130,7 +131,7 @@ export async function processMatrixForExpansion({
     matrixKeys.push(matrixKey)
     const stringValue = (validatedArray as string[]).join(os.EOL)
 
-    if (stringValue.includes('{{') || stringValue.includes('{%')) {
+    if (hasLiquidSyntax(stringValue)) {
       let substitutedValue
       try {
         substitutedValue = await performSubstitutions({

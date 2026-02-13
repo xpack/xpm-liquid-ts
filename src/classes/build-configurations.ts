@@ -26,7 +26,7 @@ import {
 } from '../data/substitutions-variables.js'
 import { filterPath } from '../functions/filter-paths.js'
 import { isJsonObject, isString } from '../functions/is-something.js'
-import { getErrorMessage } from '../functions/utils.js'
+import { getErrorMessage, hasLiquidSyntax } from '../functions/utils.js'
 import { processMatrixForExpansion } from '../functions/matrix-expander.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
 import {
@@ -416,7 +416,7 @@ export class BuildConfigurations {
       buildConfigurationName,
       jsonBuildConfiguration,
     ] of Object.entries(this.jsonBuildConfigurations)) {
-      if (buildConfigurationName.includes('{{')) {
+      if (hasLiquidSyntax(buildConfigurationName)) {
         await this._processTemplate({
           buildConfigurationName,
           jsonBuildConfigurationTemplate:
@@ -1679,10 +1679,7 @@ export class BuildConfiguration {
 
     const stringifiedDependencies = JSON.stringify(unsubstitutedDependencies)
 
-    if (
-      stringifiedDependencies.includes('{{') ||
-      stringifiedDependencies.includes('{%')
-    ) {
+    if (hasLiquidSyntax(stringifiedDependencies)) {
       let substitutedDependencies
       try {
         substitutedDependencies = await performSubstitutions({
@@ -1840,10 +1837,7 @@ export class BuildConfiguration {
     const stringifiedJsonBuildConfiguration = JSON.stringify(
       this.jsonBuildConfiguration
     )
-    if (
-      stringifiedJsonBuildConfiguration.includes('{{') ||
-      stringifiedJsonBuildConfiguration.includes('{%')
-    ) {
+    if (hasLiquidSyntax(stringifiedJsonBuildConfiguration)) {
       let substitutedJsonBuildConfiguration
       try {
         substitutedJsonBuildConfiguration = await performSubstitutions({
@@ -1932,10 +1926,7 @@ export class BuildConfiguration {
     const stringifiedJsonInherits = JSON.stringify(
       this.jsonBuildConfiguration.inherits ?? {}
     )
-    if (
-      stringifiedJsonInherits.includes('{{') ||
-      stringifiedJsonInherits.includes('{%')
-    ) {
+    if (hasLiquidSyntax(stringifiedJsonInherits)) {
       let substitutedJsonInherits
       try {
         substitutedJsonInherits = await performSubstitutions({

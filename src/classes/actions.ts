@@ -29,7 +29,7 @@ import {
 } from '../functions/is-something.js'
 import { processMatrixForExpansion } from '../functions/matrix-expander.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
-import { getErrorMessage } from '../functions/utils.js'
+import { getErrorMessage, hasLiquidSyntax } from '../functions/utils.js'
 import {
   JsonActionContent,
   JsonActions,
@@ -469,7 +469,7 @@ export class Actions {
     }
 
     for (const [actionName, jsonAction] of Object.entries(this.jsonActions)) {
-      if (actionName.includes('{{')) {
+      if (hasLiquidSyntax(actionName)) {
         await this._processTemplate({
           actionName,
           jsonActionTemplate: jsonAction as JsonActionTemplate,
@@ -1190,7 +1190,7 @@ export class Action {
       : jsonAction
 
     let substitutedCommands
-    if (inputCommands.includes('{{') || inputCommands.includes('{%')) {
+    if (hasLiquidSyntax(inputCommands)) {
       try {
         substitutedCommands = await performSubstitutions({
           input: inputCommands,
