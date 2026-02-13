@@ -12,8 +12,11 @@
 // ----------------------------------------------------------------------------
 
 import { Logger } from '@xpack/logger'
+import { ConfigurationError } from './errors.js'
 
 // ============================================================================
+
+export const CombinationsGeneratorMaxCombinationsLimit = 10000
 
 /**
  * A matrix combination mapping parameter names to their values.
@@ -55,6 +58,17 @@ export interface CombinationsGeneratorConstructorParameters {
    * The logger instance for output and diagnostics.
    */
   log: Logger
+
+  /**
+   * Optional maximum combinations limit to prevent excessive generation.
+   *
+   * @remarks
+   * This parameter allows configuring a custom limit on the total number of
+   * combinations that can be generated. If the calculated total exceeds this
+   * limit, a {@link ConfigurationError} is thrown to prevent performance
+   * issues or memory exhaustion. The default value is 10,000 combinations.
+   */
+  maxCombinations?: number
 }
 
 /**
@@ -108,7 +122,7 @@ export class CombinationsGenerator {
    * generation, enabling visibility into the recursive exploration of the
    * parameter space without impacting performance when tracing is disabled.
    */
-  protected readonly log: Logger
+  protected readonly _log: Logger
 
   /**
    * The array of parameter names.
@@ -119,7 +133,7 @@ export class CombinationsGenerator {
    * corresponds to a parameter that will appear in the generated
    * combinations.
    */
-  protected readonly matrixKeys: string[]
+  protected readonly _matrixKeys: string[]
 
   /**
    * The array of value arrays for each parameter.
@@ -133,7 +147,16 @@ export class CombinationsGenerator {
    * The Cartesian product of all these value arrays produces the complete
    * set of combinations.
    */
-  protected readonly matrixValues: string[][]
+  protected readonly _matrixValues: string[][]
+
+  /**
+   * The maximum number of combinations allowed.
+   *
+   * @remarks
+   * This limit prevents excessive generation of combinations, protecting
+   * against performance issues and memory exhaustion.
+   */
+  protected readonly _maxCombinations: number
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -153,16 +176,18 @@ export class CombinationsGenerator {
   constructor({
     matrixKeys,
     matrixValues,
+    maxCombinations = CombinationsGeneratorMaxCombinationsLimit,
     log,
   }: CombinationsGeneratorConstructorParameters) {
-    this.log = log
-    this.matrixKeys = matrixKeys
-    this.matrixValues = matrixValues
+    this._log = log
+    this._matrixKeys = matrixKeys
+    this._matrixValues = matrixValues
+    this._maxCombinations = maxCombinations
 
     log.trace(
       `${CombinationsGenerator.name}.constructor: ` +
-        `matrixKeys=${JSON.stringify(this.matrixKeys)} ` +
-        `matrixValues=${JSON.stringify(this.matrixValues)}`
+        `matrixKeys=${JSON.stringify(this._matrixKeys)} ` +
+        `matrixValues=${JSON.stringify(this._matrixValues)}`
     )
   }
 
@@ -199,6 +224,20 @@ export class CombinationsGenerator {
    * @yields Individual matrix combinations one at a time.
    */
   *generate(): Generator<MatrixCombination> {
+  // Calculate total combinations
+  const totalCombinations = this._matrixValues.reduce(
+    (product, values) => product * values.length,
+    1
+  )
+  
+  if (totalCombinations > this._maxCombinations) {
+    throw new ConfigurationError(
+      `Matrix would generate ${String(totalCombinations)} combinations, ` +
+      `exceeding limit of ${String(this._maxCombinations)}. ` +
+      `Consider using fewer parameters or values.`
+    )
+  }
+
     yield* this._generateRecursively(0, {})
   }
 
@@ -243,22 +282,22 @@ export class CombinationsGenerator {
     index: number,
     combination: Record<string, string>
   ): Generator<MatrixCombination> {
-    const log = this.log
+    const log = this._log
     log.trace(
       `${CombinationsGenerator.name}.` +
         `_generateRecursively(${String(index)},` +
         `${JSON.stringify(combination)})`
     )
 
-    if (index === this.matrixKeys.length) {
+    if (index === this._matrixKeys.length) {
       log.trace('combination complete =>', combination)
       yield { ...combination }
 
       return
     }
 
-    const key = this.matrixKeys[index]
-    const values = this.matrixValues[index]
+    const key = this._matrixKeys[index]
+    const values = this._matrixValues[index]
 
     for (const value of values) {
       combination[key] = value
