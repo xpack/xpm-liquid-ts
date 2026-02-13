@@ -14,8 +14,6 @@
 import assert from 'node:assert'
 import * as os from 'node:os'
 
-import { Liquid } from 'liquidjs'
-
 import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
@@ -222,7 +220,7 @@ export class DataModel {
    *    template evaluation across all package components.</li>
    * </ol>
    */
-  protected _engine: Liquid
+  protected _engine: LiquidEngine
 
   /**
    * The JSON package definition.
