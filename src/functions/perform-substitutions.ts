@@ -148,6 +148,12 @@ export async function performSubstitutions({
   // (typical nesting is < 10 levels) while catching pathological cases.
   // In practice, most templates resolve in 2-5 iterations.
   const MAX_SUBSTITUTION_ITERATIONS = 42 // Prevent infinite loops
+  // This limit prevents memory exhaustion from exponentially expanding
+  // templates. Set to 10MB to accommodate legitimate large outputs
+  // (e.g., generated code files, documentation) whilst catching
+  // pathological cases such as unbounded loops or recursive expansions.
+  // Typical template outputs are under 100KB.
+  const MAX_SUBSTITUTION_OUTPUT_SIZE = 10 * 1024 * 1024 // 10MB
   const LIQUID_SYNTAX_REGEX = /\{\{|\{%/
 
   // Iterate until all substitutions are done.
@@ -172,6 +178,15 @@ export async function performSubstitutions({
     // May throw.
     try {
       substituted = (await engine.parseAndRender(current, context)) as string
+
+      /* c8 ignore start - safety net. */
+      if (substituted.length > MAX_SUBSTITUTION_OUTPUT_SIZE) {
+        throw new ConfigurationError(
+          `Template expansion exceeded size limit ` +
+            `(${String(MAX_SUBSTITUTION_OUTPUT_SIZE)} bytes). ` +
+            `Output was ${String(substituted.length)} bytes.`
+        )
+      } /* c8 ignore stop */
 
       // Safety net: This check detects when a substitution pass produces no
       // changes despite template markers being present. This is unlikely
