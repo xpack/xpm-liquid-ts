@@ -11,7 +11,7 @@
 
 // ----------------------------------------------------------------------------
 
-// import * as os from 'node:os'
+import { PlatformDetector } from '../classes/platform-detector.js'
 
 // ============================================================================
 
@@ -44,13 +44,17 @@
  * user-provided identifiers, and template-generated path components.
  *
  * @param input - A path candidate.
+ * @param platformDetector - The platform detector instance to use. Defaults
+ * to a new {@link PlatformDetector} instance.
  * @returns A validated path.
  */
-export function filterPath(input: string): string {
-  const fixed =
-    process.platform === 'win32'
-      ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
-      : input.replace(/[^a-zA-Z0-9/]+/g, '-')
+export function filterPath(
+  input: string,
+  platformDetector: PlatformDetector = new PlatformDetector()
+): string {
+  const fixed = platformDetector.isWindows()
+    ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
+    : input.replace(/[^a-zA-Z0-9/]+/g, '-')
   return fixed.replace(/--/g, '-')
 }
 

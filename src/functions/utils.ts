@@ -9,6 +9,10 @@
  * be obtained from https://opensource.org/license/mit.
  */
 
+// ----------------------------------------------------------------------------
+
+import { PlatformDetector } from '../classes/platform-detector.js'
+
 // ============================================================================
 
 /**
@@ -88,23 +92,18 @@ export function getErrorMessage(error: unknown): string {
  *
  * @param doForce32bit - Whether to coerce 64-bit architectures to
  * their 32-bit equivalents.
+ * @param platformDetector - The platform detector instance to use. Defaults
+ * to a new {@link PlatformDetector} instance.
  * @returns The platform key in the form `platform-arch`.
  */
 export function getPlatformKey({
   doForce32bit = false,
+  platformDetector = new PlatformDetector(),
 }: {
   doForce32bit?: boolean
+  platformDetector?: PlatformDetector
 } = {}): string {
-  const platform = process.platform
-  let arch = process.arch
-  if (doForce32bit) {
-    // https://nodejs.org/docs/latest/api/process.html#processarch
-    if (arch === 'x64') {
-      arch = 'ia32'
-    } else if (arch === 'arm64') {
-      arch = 'arm'
-    }
-  }
+  const { platform, arch } = platformDetector.getPlatformInfo({ doForce32bit })
   const key = `${platform}-${arch}`
   return key
 }

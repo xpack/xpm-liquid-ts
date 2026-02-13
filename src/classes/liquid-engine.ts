@@ -21,6 +21,7 @@ import * as liquidjs from 'liquidjs'
 // ----------------------------------------------------------------------------
 
 import { isJsonObject } from '../functions/is-something.js'
+import { PlatformDetector } from './platform-detector.js'
 
 // ============================================================================
 
@@ -56,7 +57,12 @@ import { isJsonObject } from '../functions/is-something.js'
  */
 export class LiquidEngine extends liquidjs.Liquid {
   // --------------------------------------------------------------------------
-  // Public Members.
+  // Private Members.
+
+  /**
+   * The platform detector instance for platform-specific behaviour.
+   */
+  private readonly platformDetector: PlatformDetector
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -98,8 +104,12 @@ export class LiquidEngine extends liquidjs.Liquid {
    * <li>All filters are registered during construction for immediate
    *    availability in templates.</li>
    * </ul>
+   *
+   * @param platformDetector - The platform detector instance for
+   * platform-specific behaviour. Defaults to a new {@link PlatformDetector}
+   * instance.
    */
-  constructor() {
+  constructor(platformDetector: PlatformDetector = new PlatformDetector()) {
     super({
       strictFilters: true,
       strictVariables: true,
@@ -110,6 +120,8 @@ export class LiquidEngine extends liquidjs.Liquid {
       greedy: false,
       lenientIf: true,
     })
+
+    this.platformDetector = platformDetector
 
     // https://liquidjs.com/api/classes/liquid_.liquid.html#registerFilter
     // https://nodejs.org/dist/latest-v16.x/docs/api/path.html
@@ -191,10 +203,9 @@ export class LiquidEngine extends liquidjs.Liquid {
       (input: string): string => {
         /* c8 ignore start - windows specific code cannot be tested 
         on other platforms */
-        const fixed =
-          process.platform === 'win32'
-            ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
-            : input.replace(/[^a-zA-Z0-9/]+/g, '-')
+        const fixed = this.platformDetector.isWindows()
+          ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
+          : input.replace(/[^a-zA-Z0-9/]+/g, '-')
         /* c8 ignore stop */
 
         return fixed.replace(/--/g, '-')
