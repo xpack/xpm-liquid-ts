@@ -143,7 +143,11 @@ export async function performSubstitutions({
   let current: string = input
   let substituted: string = current
   let count = 0
-  const MAX_ITERATIONS = 42 // Prevent infinite loops
+  // This limit prevents infinite loops from circular template references.
+  // Chosen to be high enough for deeply nested legitimate templates
+  // (typical nesting is < 10 levels) while catching pathological cases.
+  // In practice, most templates resolve in 2-5 iterations.
+  const MAX_SUBSTITUTION_ITERATIONS = 42 // Prevent infinite loops
   const LIQUID_SYNTAX_REGEX = /\{\{|\{%/
 
   // Iterate until all substitutions are done.
@@ -157,9 +161,10 @@ export async function performSubstitutions({
     // However, this protects against edge cases like deeply nested context
     // references or malformed template logic that the engine doesn't catch.
     /* c8 ignore start - safety net, normally should not get there. */
-    if (++count > MAX_ITERATIONS) {
+    if (++count > MAX_SUBSTITUTION_ITERATIONS) {
       throw new ConfigurationError(
-        `Substitution limit exceeded (${String(MAX_ITERATIONS)} iterations). ` +
+        `Substitution limit exceeded ` +
+          `(${String(MAX_SUBSTITUTION_ITERATIONS)} iterations). ` +
           `Possible circular reference in template.`
       )
     }
