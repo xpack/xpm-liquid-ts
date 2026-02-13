@@ -118,7 +118,7 @@ export interface JsonActionTemplate {
   /**
    * The matrix of parameters used to generate action variants.
    */
-  matrix: Record<string, string[]>
+  matrix: JsonTemplateMatrix
   /**
    * The action template content.
    */
@@ -210,7 +210,7 @@ export interface JsonBuildConfigurationTemplate {
   /**
    * The matrix of parameters used to generate configuration variants.
    */
-  matrix: JsonBuildConfigurationTemplateMatrix
+  matrix: JsonTemplateMatrix
   /**
    * The configuration template content.
    */
@@ -218,12 +218,12 @@ export interface JsonBuildConfigurationTemplate {
 }
 
 /**
- * Represents a matrix of parameters for build configuration template
+ * Represents a matrix of parameters for template
  * expansion.
  *
  * @remarks
- * The matrix defines parameter arrays used to generate multiple build
- * configuration variants through Cartesian product expansion. Each key
+ * The matrix defines parameter arrays used to generate multiple template
+ * variants through Cartesian product expansion. Each key
  * represents a parameter name, and its value is an array of possible
  * values for that parameter.
  *
@@ -232,10 +232,10 @@ export interface JsonBuildConfigurationTemplate {
  * <ul>
  * <li>Each parameter array is combined with all others to create every
  *    possible combination.</li>
- * <li>Matrix values are accessible in configuration names and template
+ * <li>Matrix values are accessible in template names and template
  *    content via <code>\{\{ matrix.parameterName \}\}</code> Liquid
  *    syntax.</li>
- * <li>The number of generated configurations equals the product of all
+ * <li>The number of generated template variants equals the product of all
  *    array lengths.</li>
  * </ul>
  *
@@ -247,10 +247,29 @@ export interface JsonBuildConfigurationTemplate {
  * }
  * ```
  *
- * This generates 4 configurations (2 × 2): `linux-x64`, `linux-arm64`,
+ * This generates 4 template variants (2 × 2): `linux-x64`, `linux-arm64`,
  * `darwin-x64`, `darwin-arm64`.
  */
-export type JsonBuildConfigurationTemplateMatrix = Record<string, string[]>
+export type JsonTemplateMatrix = Record<string, JsonTemplateMatrixContent>
+
+/**
+ * Represents an array of string values for a single matrix parameter.
+ *
+ * @remarks
+ * Each matrix parameter defined in {@link JsonTemplateMatrix} contains an
+ * array of string values that will be used during Cartesian product
+ * expansion. All values must be strings to ensure consistent template
+ * substitution via Liquid syntax.
+ *
+ * Example for an operating system parameter:
+ * ```js
+ * ["linux", "darwin", "win32"]
+ * ```
+ *
+ * During template expansion, each value is combined with values from other
+ * matrix parameters to generate all possible combinations.
+ */
+export type JsonTemplateMatrixContent = string[]
 
 /**
  * Represents a JSON build configuration definition or a template of one.

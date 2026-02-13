@@ -774,11 +774,7 @@ export class Actions {
     }
 
     // Use TemplateExpander for matrix processing and expansion
-    const expander = new TemplateExpander<
-      typeof jsonActionTemplate.matrix,
-      JsonActionContent,
-      Action
-    >({
+    const expander = new TemplateExpander<JsonActionContent, Action>({
       engine: this.engine,
       substitutionsVariables: this.substitutionsVariables,
       log: this.log,

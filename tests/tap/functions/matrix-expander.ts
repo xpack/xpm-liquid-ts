@@ -119,7 +119,8 @@ await t.test(
     const engine = new xpm.LiquidEngine()
 
     const matrix = {
-      arch: 'x64', // Should be an array
+      // Should be an array
+      arch: 'x64' as unknown as xpm.JsonTemplateMatrixContent,
     }
 
     await t.rejects(
@@ -149,7 +150,8 @@ await t.test(
     const engine = new xpm.LiquidEngine()
 
     const matrix = {
-      arch: ['x64', 123], // Second value is not a string
+      // Second value is not a string
+      arch: ['x64', 123] as unknown as xpm.JsonTemplateMatrixContent,
     }
 
     await t.rejects(

@@ -22,6 +22,7 @@ import { getErrorMessage } from '../functions/utils.js'
 import { CombinationsGenerator } from './combinations-generator.js'
 import { ConfigurationError } from './errors.js'
 import { LiquidEngine } from './liquid-engine.js'
+import { JsonTemplateMatrix } from '../types/json.js'
 
 // ============================================================================
 
@@ -122,15 +123,13 @@ export type InstanceFactoryCallback<TTemplate, TInstance> = (
  * The class is generic to support different template and instance types
  * whilst maintaining type safety throughout the expansion process.
  *
- * @typeParam TMatrix - The type representing matrix structure (typically
- * <code>Record&lt;string, unknown&gt;</code>).
  * @typeParam TTemplate - The type of template content (e.g.,
  * <code>JsonActionContent</code> or
  * <code>JsonBuildConfigurationContent</code>).
  * @typeParam TInstance - The type of instance to create (e.g.,
  * <code>Action</code> or <code>BuildConfiguration</code>).
  */
-export class TemplateExpander<TMatrix, TTemplate, TInstance> {
+export class TemplateExpander<TTemplate, TInstance> {
   // --------------------------------------------------------------------------
   // Public Members.
 
@@ -225,7 +224,7 @@ export class TemplateExpander<TMatrix, TTemplate, TInstance> {
     instanceFactory,
   }: {
     templateName: string
-    matrix: TMatrix
+    matrix: JsonTemplateMatrix
     templateContent: TTemplate
     templateType: string
     instanceFactory: InstanceFactoryCallback<TTemplate, TInstance>
@@ -237,7 +236,7 @@ export class TemplateExpander<TMatrix, TTemplate, TInstance> {
 
     // Process matrix for expansion
     const { matrixKeys, matrixValues } = await processMatrixForExpansion({
-      matrix: matrix as Record<string, unknown>,
+      matrix,
       templateName,
       templateType: templateType as 'action' | 'buildConfiguration',
       engine: this.engine,

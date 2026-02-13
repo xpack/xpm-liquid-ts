@@ -1061,7 +1061,7 @@ await t.test(
             },
           },
           'configTwo-{{ matrix.alfa }}-{{ matrix.beta }}': {
-            matrix: 42 as unknown as xpm.JsonBuildConfigurationTemplateMatrix,
+            matrix: 42 as unknown as xpm.JsonTemplateMatrix,
             template: {
               properties: {
                 p2: 'v{{ matrix.alfa }}.{{ matrix.beta }}',

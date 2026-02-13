@@ -873,7 +873,6 @@ export class BuildConfigurations {
 
     // Use TemplateExpander for matrix processing and expansion
     const expander = new TemplateExpander<
-      typeof jsonBuildConfigurationTemplate.matrix,
       JsonBuildConfigurationContent,
       BuildConfiguration
     >({

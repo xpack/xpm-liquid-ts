@@ -39,20 +39,14 @@ await t.test(
       originalName: string
     }
 
-    type TestMatrix = Record<string, unknown>
-
-    const expander = new xpm.TemplateExpander<
-      TestMatrix,
-      TestTemplate,
-      TestInstance
-    >({
+    const expander = new xpm.TemplateExpander<TestTemplate, TestInstance>({
       log,
       engine,
       substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     })
 
     const templateName = 'test-{{ matrix.arch }}'
-    const matrix: TestMatrix = {
+    const matrix = {
       arch: ['x64', 'arm64'],
     }
     const templateContent: TestTemplate = { value: 'test-content' }
@@ -110,20 +104,14 @@ await t.test(
       combination: Record<string, string>
     }
 
-    type TestMatrix = Record<string, unknown>
-
-    const expander = new xpm.TemplateExpander<
-      TestMatrix,
-      unknown,
-      TestInstance
-    >({
+    const expander = new xpm.TemplateExpander<unknown, TestInstance>({
       log,
       engine,
       substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     })
 
     const templateName = 'build-{{ matrix.platform }}-{{ matrix.arch }}'
-    const matrix: TestMatrix = {
+    const matrix = {
       platform: ['linux', 'darwin'],
       arch: ['x64', 'arm64'],
     }
@@ -170,20 +158,14 @@ await t.test(
       name: string
     }
 
-    type TestMatrix = Record<string, unknown>
-
-    const expander = new xpm.TemplateExpander<
-      TestMatrix,
-      unknown,
-      TestInstance
-    >({
+    const expander = new xpm.TemplateExpander<unknown, TestInstance>({
       log,
       engine,
       substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     })
 
     const templateName = '{{ matrix.os }}-{{ matrix.arch }}-{{ matrix.config }}'
-    const matrix: TestMatrix = {
+    const matrix = {
       os: ['linux', 'darwin'],
       arch: ['x64', 'arm64'],
       config: ['debug', 'release'],
@@ -215,13 +197,7 @@ await t.test(
       combination: Record<string, string>
     }
 
-    type TestMatrix = Record<string, unknown>
-
-    const expander = new xpm.TemplateExpander<
-      TestMatrix,
-      unknown,
-      TestInstance
-    >({
+    const expander = new xpm.TemplateExpander<unknown, TestInstance>({
       log,
       engine,
       substitutionsVariables: {
@@ -233,7 +209,7 @@ await t.test(
     })
 
     const templateName = '{{ configuration.name }}-{{ matrix.variant }}'
-    const matrix: TestMatrix = {
+    const matrix = {
       variant: ['{{ "alpha" | upcase }}', 'beta'],
     }
 
@@ -270,20 +246,14 @@ await t.test(
       name: string
     }
 
-    type TestMatrix = Record<string, unknown>
-
-    const expander = new xpm.TemplateExpander<
-      TestMatrix,
-      unknown,
-      TestInstance
-    >({
+    const expander = new xpm.TemplateExpander<unknown, TestInstance>({
       log,
       engine,
       substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     })
 
     const templateName = 'variant-{{ matrix.type }}'
-    const matrix: TestMatrix = {
+    const matrix = {
       type: ['a', 'b', 'c', 'd'],
     }
 
@@ -312,13 +282,7 @@ await t.test(
       name: string
     }
 
-    type TestMatrix = Record<string, unknown>
-
-    const expander = new xpm.TemplateExpander<
-      TestMatrix,
-      unknown,
-      TestInstance
-    >({
+    const expander = new xpm.TemplateExpander<unknown, TestInstance>({
       log,
       engine,
       substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
@@ -326,7 +290,7 @@ await t.test(
 
     const templateName =
       '{{ matrix.prefix | upcase }}-{{ matrix.arch }}-{{ matrix.suffix | downcase }}'
-    const matrix: TestMatrix = {
+    const matrix = {
       prefix: ['test'],
       arch: ['x64'],
       suffix: ['DEBUG'],
@@ -354,27 +318,22 @@ await t.test(
       name: string
     }
 
-    type TestMatrix = Record<string, unknown>
-
-    const expander = new xpm.TemplateExpander<
-      TestMatrix,
-      unknown,
-      TestInstance
-    >({
+    const expander = new xpm.TemplateExpander<unknown, TestInstance>({
       log,
       engine,
       substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     })
 
-    const templateName = 'test-{{ matrix.arch }}'
-    const invalidMatrix: TestMatrix = {
+    const templateName = 'test-{{ matrix.platform }}'
+    const invalidMatrix = {
       arch: 'not-an-array', // Should be an array
     }
 
     try {
       await expander.expandTemplate({
         templateName,
-        matrix: invalidMatrix,
+        // Force invalid type
+        matrix: invalidMatrix as unknown as xpm.JsonTemplateMatrix,
         templateContent: {},
         templateType: 'action',
         instanceFactory: (expandedName) => ({ name: expandedName }),
@@ -384,8 +343,8 @@ await t.test(
       t.ok(error instanceof xpm.ConfigurationError, 'throws ConfigurationError')
       t.match(
         (error as Error).message,
-        /is not an array/i,
-        'error mentions is not an array'
+        'is not an array',
+        'error message is "is not an array"'
       )
     }
 
@@ -400,20 +359,14 @@ await t.test(
       name: string
     }
 
-    type TestMatrix = Record<string, unknown>
-
-    const expander = new xpm.TemplateExpander<
-      TestMatrix,
-      unknown,
-      TestInstance
-    >({
+    const expander = new xpm.TemplateExpander<unknown, TestInstance>({
       log,
       engine,
       substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     })
 
     const templateName = 'test-{{ matrix.arch | invalid_filter }}'
-    const matrix: TestMatrix = {
+    const matrix = {
       arch: ['x64'],
     }
 
@@ -430,8 +383,8 @@ await t.test(
       t.ok(error instanceof xpm.ConfigurationError, 'throws ConfigurationError')
       t.match(
         (error as Error).message,
-        /substitution/i,
-        'error mentions substitution'
+        'substitution',
+        'error message is "substitution"'
       )
     }
 
@@ -446,33 +399,34 @@ await t.test(
       name: string
     }
 
-    type TestMatrix = Record<string, unknown>
-
-    const expander = new xpm.TemplateExpander<
-      TestMatrix,
-      unknown,
-      TestInstance
-    >({
+    const expander = new xpm.TemplateExpander<unknown, TestInstance>({
       log,
       engine,
       substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
     })
 
-    const templateName = 'test-{{ matrix.arch }}'
-    const matrix: TestMatrix = {
+    const templateName = 'simple-{{ matrix.param }}'
+    const matrix = {
       arch: [], // Empty array
     }
 
-    const instances = await expander.expandTemplate({
-      templateName,
-      matrix,
-      templateContent: {},
-      templateType: 'action',
-      instanceFactory: (expandedName) => ({ name: expandedName }),
-    })
-
-    t.equal(instances.size, 0, 'created 0 instances for empty matrix')
-    t.equal(instances.size, 0, 'map is empty')
+    try {
+      const instances = await expander.expandTemplate({
+        templateName,
+        matrix,
+        templateContent: {},
+        templateType: 'action',
+        instanceFactory: (expandedName) => ({ name: expandedName }),
+      })
+      t.fail('should have thrown an error')
+    } catch (error) {
+      t.ok(error instanceof xpm.ConfigurationError, 'throws ConfigurationError')
+      t.match(
+        (error as Error).message,
+        'cannot be empty',
+        'error message is "cannot be empty"'
+      )
+    }
 
     t.end()
   }
@@ -483,16 +437,14 @@ await t.test('TemplateExpander - preserves order', async (t): Promise<void> => {
     name: string
   }
 
-  type TestMatrix = Record<string, unknown>
-
-  const expander = new xpm.TemplateExpander<TestMatrix, unknown, TestInstance>({
+  const expander = new xpm.TemplateExpander<unknown, TestInstance>({
     log,
     engine,
     substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
   })
 
   const templateName = '{{ matrix.a }}-{{ matrix.b }}'
-  const matrix: TestMatrix = {
+  const matrix = {
     a: ['1', '2'],
     b: ['x', 'y'],
   }

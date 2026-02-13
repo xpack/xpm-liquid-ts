@@ -24,6 +24,7 @@ import { isJsonArray, isString } from './is-something.js'
 import { performSubstitutions } from './perform-substitutions.js'
 import { hasLiquidSyntax } from './utils.js'
 import { getErrorMessage } from './utils.js'
+import { JsonTemplateMatrix } from '../types/json.js'
 
 // ============================================================================
 
@@ -98,7 +99,7 @@ export async function processMatrixForExpansion({
   substitutionsVariables,
   log,
 }: {
-  matrix: Record<string, unknown>
+  matrix: JsonTemplateMatrix
   templateName: string
   templateType: 'action' | 'buildConfiguration'
   engine: LiquidEngine
@@ -113,6 +114,13 @@ export async function processMatrixForExpansion({
       throw new ConfigurationError(
         `${templateType} "${templateName}" ` +
           `matrix.${matrixKey} is not an array`
+      )
+    }
+
+    if (matrixValueArray.length === 0) {
+      throw new ConfigurationError(
+        `${templateType} "${templateName}" ` +
+          `matrix.${matrixKey} cannot be empty`
       )
     }
 
