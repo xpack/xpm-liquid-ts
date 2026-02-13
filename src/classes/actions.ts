@@ -27,7 +27,6 @@ import {
   isString,
   isJsonArray,
 } from '../functions/is-something.js'
-import { processMatrixForExpansion } from '../functions/matrix-expander.js'
 import { performSubstitutions } from '../functions/perform-substitutions.js'
 import { getErrorMessage, hasLiquidSyntax } from '../functions/utils.js'
 import {
@@ -36,9 +35,9 @@ import {
   JsonActionTemplate,
 } from '../types/json.js'
 import { BuildConfiguration } from './build-configurations.js'
-import { CombinationsGenerator } from './combinations-generator.js'
 import { ConfigurationError } from './errors.js'
 import { LiquidEngine } from './liquid-engine.js'
+import { TemplateExpander } from './template-expander.js'
 
 // ============================================================================
 
@@ -710,20 +709,19 @@ export class Actions {
    * Expands a template action into multiple concrete actions.
    *
    * @remarks
-   * This method computes the Cartesian product of all matrix parameter values
-   * and creates a separate action for each combination, substituting matrix
-   * values into both the action name and command templates.
+   * This method uses the {@link TemplateExpander} to compute the Cartesian
+   * product of all matrix parameter values and creates a separate action for
+   * each combination, substituting matrix values into both the action name
+   * and command templates.
    *
    * Processing steps:
    *
    * <ol>
-   * <li>Validates matrix structure (object with array values).</li>
-   * <li>Validates template format (string or array).</li>
-   * <li>Performs Liquid substitutions on matrix values if they contain
-   *   template syntax.</li>
-   * <li>Recursively generates all combinations using Cartesian product.</li>
-   * <li>Creates an action instance for each combination with matrix
-   *   parameters available for later substitution.</li>
+   * <li>Validates matrix and template structure.</li>
+   * <li>Delegates to <code>TemplateExpander</code> for matrix processing and
+   *    name expansion.</li>
+   * <li>Creates action instances via factory callback for each
+   *    combination.</li>
    * </ol>
    *
    * Matrix variables are scoped to individual actions and accessible via
@@ -749,8 +747,7 @@ export class Actions {
     const log = this.log
     log.trace(`${Actions.name}.#expandTemplateActions(${actionName})`)
 
-    const newActionsMap = new Map<string, Action>()
-
+    // Validate template structure
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (jsonActionTemplate.matrix == undefined) {
       throw new ConfigurationError(`action "${actionName}" has no matrix`)
@@ -775,117 +772,35 @@ export class Actions {
         `action "${actionName}" template is not a string or array`
       )
     }
-    // Validate matrix structure and collect keys/values
-    const { matrixKeys, matrixValues } = await processMatrixForExpansion({
-      matrix: jsonActionTemplate.matrix,
-      templateName: actionName,
-      templateType: 'action',
+
+    // Use TemplateExpander for matrix processing and expansion
+    const expander = new TemplateExpander<
+      typeof jsonActionTemplate.matrix,
+      JsonActionContent,
+      Action
+    >({
       engine: this.engine,
       substitutionsVariables: this.substitutionsVariables,
       log: this.log,
     })
 
-    // Compute all combinations (cartesian product)
-    const combinationsGenerator = new CombinationsGenerator({
-      matrixKeys,
-      matrixValues,
-      log: this.log,
+    return await expander.expandTemplate({
+      templateName: actionName,
+      matrix: jsonActionTemplate.matrix,
+      templateContent: jsonActionTemplate.template,
+      templateType: 'action',
+      instanceFactory: (
+        expandedName: string,
+        combination: Record<string, string>,
+        templateContent: JsonActionContent
+      ) =>
+        new Action({
+          actionName: expandedName,
+          jsonAction: templateContent,
+          parentActions: this,
+          matrixParameters: { ...combination },
+        }),
     })
-
-    // Use generator pattern for memory efficiency
-    // Expand each template actions for its combination.
-    for (const combination of combinationsGenerator.generate()) {
-      await this._createSubstitutedAction({
-        actionName,
-        jsonAction: jsonActionTemplate.template,
-        combination,
-        newActionsMap,
-      })
-    }
-
-    return newActionsMap
-  }
-
-  /**
-   * Creates a substituted action from a template and matrix combination.
-   *
-   * @remarks
-   * This helper method is called for each combination generated from a
-   * template action's matrix parameters. It performs the actual name
-   * substitution and creates the concrete action instance.
-   *
-   * Processing steps:
-   *
-   * <ol>
-   * <li>Performs Liquid substitution on the template action name using the
-   *    specific matrix combination values.</li>
-   * <li>Creates a new <code>Action</code> instance with:
-   *   <ul>
-   *   <li>The substituted concrete action name.</li>
-   *   <li>The action's command template (not yet evaluated).</li>
-   *   <li>Reference to this parent actions collection.</li>
-   *   <li>The matrix parameter values for later command substitution.</li>
-   *   </ul>
-   * </li>
-   * <li>Stores the new action instance in the provided map.</li>
-   * </ol>
-   *
-   * The matrix parameters are preserved in the action instance and will be
-   * used later when the action is initialised to substitute matrix
-   * references in the command templates.
-   *
-   * @param combination - The matrix parameter combination for this action
-   * (e.g., <code>\{ arch: 'x64', platform: 'linux' \}</code>).
-   * @param actionName - The template action name containing Liquid variables
-   * (e.g., <code>test-\{\{ matrix.arch \}\}</code>).
-   * @param jsonAction - The action's command template definition.
-   * @param newActionsMap - The map to store the newly created action.
-   * @returns A promise that resolves when the action has been created and
-   * stored.
-   *
-   * @throws {@link ConfigurationError}
-   * If the action name substitution fails.
-   */
-  protected async _createSubstitutedAction({
-    actionName,
-    jsonAction,
-    combination,
-    newActionsMap,
-  }: {
-    combination: Record<string, string>
-    actionName: string
-    jsonAction: JsonActionContent
-    newActionsMap: Map<string, Action>
-  }): Promise<void> {
-    // console.log(combination)
-
-    let substitutedActionName
-    try {
-      substitutedActionName = await performSubstitutions({
-        input: actionName,
-        engine: this.engine,
-        substitutionsVariables: {
-          ...this.substitutionsVariables,
-          matrix: combination,
-        },
-        log: this.log,
-      })
-    } catch (error) {
-      const message =
-        getErrorMessage(error) + ` in action "${actionName}" name substitution`
-      throw new ConfigurationError(message)
-    }
-
-    // console.log(substitutedActionName)
-
-    const newAction = new Action({
-      actionName: substitutedActionName,
-      jsonAction,
-      parentActions: this,
-      matrixParameters: { ...combination },
-    })
-
-    newActionsMap.set(substitutedActionName, newAction)
   }
 }
 

@@ -69,6 +69,7 @@ export * from './classes/liquid-engine.js'
 export * from './classes/data-model.js'
 export * from './classes/package.js'
 export * from './classes/policies.js'
+export * from './classes/template-expander.js'
 
 export * from './data/substitutions-variables.js'
 
