@@ -70,8 +70,6 @@ await t.test('Package - no package.json', async (t): Promise<void> => {
     },
     'throws InputError for missing package.json'
   )
-
-  t.end()
 })
 
 await t.test('Package - bad package.json', async (t): Promise<void> => {
@@ -92,8 +90,6 @@ await t.test('Package - bad package.json', async (t): Promise<void> => {
     },
     'throws InputError for invalid package.json'
   )
-
-  t.end()
 })
 
 await t.test('Package - rewritePackageDotJson', async (t): Promise<void> => {
@@ -128,8 +124,6 @@ await t.test('Package - rewritePackageDotJson', async (t): Promise<void> => {
   t.equal(xpmPackage.isXpmPackage(), true, 'is xpm package after rewrite')
 
   await fs.rm(temporaryFolderPath, { recursive: true, force: true })
-
-  t.end()
 })
 
 t.test('Package - isNpmPackage', (t): void => {
@@ -772,8 +766,6 @@ await t.test('Package - checkMinimumXpmRequired', async (t): Promise<void> => {
     },
     'throws PrerequisitesError when version requirement not met'
   )
-
-  t.end()
 })
 
 t.test('Package - parsePackageSpecifier', (t): void => {

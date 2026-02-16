@@ -97,8 +97,6 @@ await t.test(
       { name: 'AssertionError', message: /must be initialised/ },
       'get() throws AssertionError with "must be initialised"'
     )
-
-    t.end()
   }
 )
 
@@ -127,8 +125,6 @@ await t.test('BuildConfigurations - undefined', async (t): Promise<void> => {
     },
     'throws ConfigurationError with "does not exist"'
   )
-
-  t.end()
 })
 
 await t.test(
@@ -251,8 +247,6 @@ await t.test(
       },
       'throws xpm.ConfigurationError with "undefined variable"'
     )
-
-    t.end()
   }
 )
 
@@ -325,8 +319,6 @@ await t.test(
       },
       'throws xpm.ConfigurationError with "undefined variable"'
     )
-
-    t.end()
   }
 )
 
@@ -545,8 +537,6 @@ await t.test('BuildConfigurations - inheritance', async (t): Promise<void> => {
     '^3.2.1',
     'devDependencies package10a'
   )
-
-  t.end()
 })
 
 await t.test('BuildConfigurations - templates', async (t): Promise<void> => {
@@ -699,8 +689,6 @@ await t.test('BuildConfigurations - templates', async (t): Promise<void> => {
     },
     'throws xpm.ConfigurationError with "undefined variable"'
   )
-
-  t.end()
 })
 
 await t.test(
@@ -739,8 +727,6 @@ await t.test(
       },
       'throws ConfigurationError for undefined variable'
     )
-
-    t.end()
   }
 )
 
@@ -796,8 +782,6 @@ await t.test(
       'configTwo-a1-b2',
       'configNames[2] is configTwo-a1-b2'
     )
-
-    t.end()
   }
 )
 
@@ -840,8 +824,6 @@ await t.test(
           },
           'throws xpm.ConfigurationError with "undefined variable"'
         )
-
-        t.end()
       }
     )
 
@@ -881,8 +863,6 @@ await t.test(
           },
           'throws ConfigurationError when matrix value is not a string'
         )
-
-        t.end()
       }
     )
 
@@ -922,8 +902,6 @@ await t.test(
           },
           'throws ConfigurationError when matrix value is not an array'
         )
-
-        t.end()
       }
     )
 
@@ -959,8 +937,6 @@ await t.test(
           },
           'throws ConfigurationError when template is not a JSON object'
         )
-
-        t.end()
       }
     )
 
@@ -997,11 +973,8 @@ await t.test(
           },
           'throws ConfigurationError when matrix is not an object'
         )
-        t.end()
       }
     )
-
-    t.end()
   }
 )
 
@@ -1044,7 +1017,6 @@ await t.test(
           },
           'throws ConfigurationError for duplicate that could not be generated'
         )
-        t.end()
       }
     )
 
@@ -1084,11 +1056,8 @@ await t.test(
           },
           'throws ConfigurationError for duplicate already defined'
         )
-        t.end()
       }
     )
-
-    t.end()
   }
 )
 
@@ -1294,8 +1263,6 @@ await t.test(
     t.equal(commands[0], 'echo 2a command', 'command is as expected')
 
     // -----
-
-    t.end()
   }
 )
 
@@ -1497,8 +1464,6 @@ await t.test(
     )
 
     // -----
-
-    t.end()
   }
 )
 
@@ -1760,8 +1725,6 @@ await t.test(
           'linux-x64,linux-arm64,win32-x64',
           'gcc platforms is "linux-x64,linux-arm64,win32-x64"'
         )
-
-        t.end()
       }
     )
 
@@ -1812,11 +1775,8 @@ await t.test(
           '4.0.3',
           'architecture-synthetic-posix specifier is "4.0.3"'
         )
-        t.end()
       }
     )
-
-    t.end()
   }
 )
 

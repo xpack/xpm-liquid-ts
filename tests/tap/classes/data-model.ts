@@ -105,8 +105,6 @@ await t.test('DataModel - constructor', async (t): Promise<void> => {
     'buildConfigurations.names is array'
   )
   t.equal(buildConfigurationsNames.length, 0, 'buildConfigurations has 0 names')
-
-  t.end()
 })
 
 // ----------------------------------------------------------------------------

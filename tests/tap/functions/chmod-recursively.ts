@@ -92,8 +92,6 @@ await t.test(
 
     mode = (await fs.lstat(file1LinkPath)).mode
     t.not(mode & fs.constants.S_IWUSR, 0, 'file1-symlink.md is not read-only')
-
-    t.end()
   }
 )
 

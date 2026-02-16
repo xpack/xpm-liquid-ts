@@ -37,8 +37,6 @@ await t.test(
 
     const combinations = [...generator.generate()]
     t.equal(combinations.length, 0, 'empty matrix produces no combinations')
-
-    t.end()
   }
 )
 
@@ -54,8 +52,6 @@ await t.test(
     const combinations = [...generator.generate()]
     t.equal(combinations.length, 1, 'produces one combination')
     t.same(combinations[0], { arch: 'x64' }, 'correct combination')
-
-    t.end()
   }
 )
 
@@ -73,8 +69,6 @@ await t.test(
     t.same(combinations[0], { arch: 'x64' }, 'first combination')
     t.same(combinations[1], { arch: 'arm64' }, 'second combination')
     t.same(combinations[2], { arch: 'ia32' }, 'third combination')
-
-    t.end()
   }
 )
 
@@ -112,8 +106,6 @@ await t.test(
       { arch: 'arm64', optimise: 'size' },
       'fourth combination'
     )
-
-    t.end()
   }
 )
 
@@ -151,8 +143,6 @@ await t.test(
       t.ok('arch' in combo, 'combination has arch')
       t.ok('buildType' in combo, 'combination has buildType')
     }
-
-    t.end()
   }
 )
 
@@ -167,8 +157,6 @@ await t.test(
 
     const combinations = [...generator.generate()]
     t.equal(combinations.length, 0, 'produces zero combinations')
-
-    t.end()
   }
 )
 
@@ -183,8 +171,6 @@ await t.test(
 
     const combinations = [...generator.generate()]
     t.equal(combinations.length, 0, 'produces zero combinations')
-
-    t.end()
   }
 )
 
@@ -212,8 +198,6 @@ await t.test(
     }
 
     t.equal(count, 4, 'iterated over four combinations')
-
-    t.end()
   }
 )
 
@@ -233,8 +217,6 @@ await t.test(
 
     // Verify second combination is unaffected
     t.equal(combinations[1].arch, 'arm64', 'combinations are independent')
-
-    t.end()
   }
 )
 
@@ -264,8 +246,6 @@ await t.test(
       },
       'throws ConfigurationError when exceeding default limit'
     )
-
-    t.end()
   }
 )
 
@@ -297,8 +277,6 @@ await t.test(
       },
       'throws ConfigurationError when exceeding custom limit'
     )
-
-    t.end()
   }
 )
 
@@ -317,8 +295,6 @@ await t.test(
 
     const combinations = [...generator.generate()]
     t.equal(combinations.length, 4, 'generates all combinations within limit')
-
-    t.end()
   }
 )
 
@@ -349,8 +325,6 @@ await t.test(
 
     const expectedCount = 4 * 4 * 4 * 4 * 4 // 5 params × 4 values each
     t.equal(count, expectedCount, 'generates correct number (4^5 = 1024)')
-
-    t.end()
   }
 )
 
@@ -382,8 +356,6 @@ await t.test(
       expected,
       'combinations match expected Cartesian product'
     )
-
-    t.end()
   }
 )
 

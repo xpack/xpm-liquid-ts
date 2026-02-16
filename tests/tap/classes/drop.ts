@@ -62,8 +62,6 @@ await t.test(
       '012',
       'indirect => 1'
     )
-
-    t.end()
   }
 )
 
@@ -91,8 +89,6 @@ await t.test('LiquidPropertiesDrop - arrays', async (t): Promise<void> => {
 
   t.not(Array.isArray(compound), 'compound is concatenated')
   t.equal(compound, '101120', 'compound ')
-
-  t.end()
 })
 
 await t.test('LiquidPropertiesDrop - object', async (t): Promise<void> => {
@@ -118,8 +114,6 @@ await t.test('LiquidPropertiesDrop - object', async (t): Promise<void> => {
   )
 
   t.equal(subst, '2', 'subst')
-
-  t.end()
 })
 
 await t.test('LiquidPropertiesDrop - context', async (t): Promise<void> => {
@@ -141,8 +135,6 @@ await t.test('LiquidPropertiesDrop - context', async (t): Promise<void> => {
     substitutionsVariables
   )
   t.equal(two, 'the one value the two value', 'substituted')
-
-  t.end()
 })
 
 await t.test(
@@ -179,7 +171,6 @@ await t.test(
       },
       'throws TemplateError when accessing null property'
     )
-    t.end()
   }
 )
 
@@ -221,8 +212,6 @@ await t.test(
       '012',
       'indirect => 1'
     )
-
-    t.end()
   }
 )
 
@@ -250,8 +239,6 @@ await t.test('LiquidMatrixDrop - arrays', async (t): Promise<void> => {
 
   t.not(Array.isArray(compound), 'compound is concatenated')
   t.equal(compound, '101120', 'compound ')
-
-  t.end()
 })
 
 await t.test('LiquidMatrixDrop - object', async (t): Promise<void> => {
@@ -277,8 +264,6 @@ await t.test('LiquidMatrixDrop - object', async (t): Promise<void> => {
   )
 
   t.equal(subst, '2', 'subst')
-
-  t.end()
 })
 
 await t.test('LiquidMatrixDrop - context', async (t): Promise<void> => {
@@ -300,8 +285,6 @@ await t.test('LiquidMatrixDrop - context', async (t): Promise<void> => {
     substitutionsVariables
   )
   t.equal(two, 'the one value the two value', 'substituted')
-
-  t.end()
 })
 
 await t.test('LiquidMatrixDrop - context missing', async (t): Promise<void> => {
@@ -336,7 +319,6 @@ await t.test('LiquidMatrixDrop - context missing', async (t): Promise<void> => {
     },
     'throws TemplateError when accessing null matrix value'
   )
-  t.end()
 })
 
 // ----------------------------------------------------------------------------

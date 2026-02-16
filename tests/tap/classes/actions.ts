@@ -67,8 +67,6 @@ await t.test('Actions - uninitialised', async (t): Promise<void> => {
     { name: 'AssertionError', message: /must be initialised/ },
     'get() throws AssertionError with "must be initialised"'
   )
-
-  t.end()
 })
 
 await t.test('Actions - undefined', async (t): Promise<void> => {
@@ -96,8 +94,6 @@ await t.test('Actions - undefined', async (t): Promise<void> => {
     },
     'throws ConfigurationError with "does not exist"'
   )
-
-  t.end()
 })
 
 await t.test('Actions - at top level', async (t): Promise<void> => {
@@ -157,8 +153,6 @@ await t.test('Actions - at top level', async (t): Promise<void> => {
   t.equal(twoCommands.length, 2, 'two.commands.length is 2')
   t.equal(twoCommands[0], 'echo "two-1"', 'two.commands[0] is correct')
   t.equal(twoCommands[1], 'echo "two-2"', 'two.commands[1] is correct')
-
-  t.end()
 })
 
 await t.test('Actions - in configuration', async (t): Promise<void> => {
@@ -201,8 +195,6 @@ await t.test('Actions - in configuration', async (t): Promise<void> => {
   const commands = actionOne.commands
   t.equal(Array.isArray(commands), true, 'actionOne.commands is array')
   t.equal(commands.length, 1, 'actionOne.commands.length is 1')
-
-  t.end()
 })
 
 await t.test('Actions - inheritance', async (t): Promise<void> => {
@@ -250,8 +242,6 @@ await t.test('Actions - inheritance', async (t): Promise<void> => {
   t.equal(twoCommands.length, 2, 'two.commands.length is 2')
   t.equal(twoCommands[0], 'echo "two-1"', 'two.commands[0] is correct')
   t.equal(twoCommands[1], 'echo "two-2"', 'two.commands[1] is correct')
-
-  t.end()
 })
 
 await t.test('Actions - template', async (t): Promise<void> => {
@@ -340,8 +330,6 @@ await t.test('Actions - template', async (t): Promise<void> => {
     'echo "four-b-2-2"',
     'four-b-2 commands[1] is correct'
   )
-
-  t.end()
 })
 
 await t.test(
@@ -370,8 +358,6 @@ await t.test(
       },
       'throws ConfigurationError for duplicate action from template'
     )
-
-    t.end()
   }
 )
 
@@ -401,8 +387,6 @@ await t.test(
       },
       'throws ConfigurationError when template duplicates existing action'
     )
-
-    t.end()
   }
 )
 
@@ -430,7 +414,6 @@ await t.test('Actions - template errors', async (t): Promise<void> => {
         },
         'throws ConfigurationError when template has no matrix'
       )
-      t.end()
     }
   )
 
@@ -458,7 +441,6 @@ await t.test('Actions - template errors', async (t): Promise<void> => {
         },
         'throws xpm.ConfigurationError with "matrix is not an object"'
       )
-      t.end()
     }
   )
 
@@ -487,7 +469,6 @@ await t.test('Actions - template errors', async (t): Promise<void> => {
         },
         'throws xpm.ConfigurationError with "has no template"'
       )
-      t.end()
     }
   )
 
@@ -517,7 +498,6 @@ await t.test('Actions - template errors', async (t): Promise<void> => {
         },
         'throws xpm.ConfigurationError with "template is not a string"'
       )
-      t.end()
     }
   )
 
@@ -547,7 +527,6 @@ await t.test('Actions - template errors', async (t): Promise<void> => {
         },
         'throws xpm.ConfigurationError with "is not an array"'
       )
-      t.end()
     }
   )
 
@@ -577,7 +556,6 @@ await t.test('Actions - template errors', async (t): Promise<void> => {
         },
         'throws xpm.ConfigurationError with "value is not a string"'
       )
-      t.end()
     }
   )
 
@@ -607,7 +585,6 @@ await t.test('Actions - template errors', async (t): Promise<void> => {
         },
         'throws xpm.ConfigurationError with "undefined variable"'
       )
-      t.end()
     }
   )
 
@@ -637,11 +614,8 @@ await t.test('Actions - template errors', async (t): Promise<void> => {
         },
         'throws xpm.ConfigurationError with "name substitution"'
       )
-      t.end()
     }
   )
-
-  t.end()
 })
 
 await t.test('Action - errors', async (t): Promise<void> => {
@@ -666,8 +640,6 @@ await t.test('Action - errors', async (t): Promise<void> => {
     },
     'throws xpm.ConfigurationError with "commands substitution"'
   )
-
-  t.end()
 })
 
 // ----------------------------------------------------------------------------
