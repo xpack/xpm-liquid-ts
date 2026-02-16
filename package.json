@@ -82,7 +82,7 @@
     "test": "tap run --disable-coverage",
     "test-coverage": "tap run",
     "test-all": "tap run --reporter=tap --disable-coverage",
-    "test-one": "tap run --reporter=tap --coverage-map=tests/coverage-map.js tests/tap/classes/init-template-base.ts",
+    "test-one": "tap run --reporter=tap --coverage-map=tests/coverage-map.js tests/tap/*/package/*.ts",
     "test-tap-config-list": "tap config list",
     "dev-cycle": "npm run fix && npm run compile && npm run test",
     "clean": "del-cli --force dist .tap",
