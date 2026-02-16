@@ -91,8 +91,6 @@ await t.test(
       { arch: 'arm64' },
       'combination is arm64'
     )
-
-    t.end()
   }
 )
 
@@ -146,8 +144,6 @@ await t.test(
       { platform: 'darwin', arch: 'arm64' },
       'darwin-arm64 combination correct'
     )
-
-    t.end()
   }
 )
 
@@ -184,8 +180,6 @@ await t.test(
     t.ok(instances.has('linux-x64-release'), 'has linux-x64-release')
     t.ok(instances.has('linux-arm64-debug'), 'has linux-arm64-debug')
     t.ok(instances.has('darwin-arm64-release'), 'has darwin-arm64-release')
-
-    t.end()
   }
 )
 
@@ -234,8 +228,6 @@ await t.test(
       'ALPHA',
       'variant processed with Liquid'
     )
-
-    t.end()
   }
 )
 
@@ -270,8 +262,6 @@ await t.test(
     t.ok(instances.has('variant-b'), 'has variant-b')
     t.ok(instances.has('variant-c'), 'has variant-c')
     t.ok(instances.has('variant-d'), 'has variant-d')
-
-    t.end()
   }
 )
 
@@ -306,8 +296,6 @@ await t.test(
 
     t.equal(instances.size, 1, 'created 1 instance')
     t.ok(instances.has('TEST-x64-debug'), 'has TEST-x64-debug')
-
-    t.end()
   }
 )
 
@@ -345,8 +333,6 @@ await t.test(
       },
       'throws ConfigurationError with "is not an array"'
     )
-
-    t.end()
   }
 )
 
@@ -383,8 +369,6 @@ await t.test(
       },
       'throws ConfigurationError with "substitution"'
     )
-
-    t.end()
   }
 )
 
@@ -421,8 +405,6 @@ await t.test(
       },
       'throws ConfigurationError with \"cannot be empty\"'
     )
-
-    t.end()
   }
 )
 
@@ -458,8 +440,6 @@ await t.test('TemplateExpander - preserves order', async (t): Promise<void> => {
     ['1-x', '1-y', '2-x', '2-y'],
     'names in correct Cartesian product order'
   )
-
-  t.end()
 })
 
 // ----------------------------------------------------------------------------

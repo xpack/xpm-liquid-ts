@@ -28,8 +28,6 @@ await t.test(
     const info = detector.getPlatformInfo()
     t.equal(info.platform, process.platform, 'platform matches process')
     t.equal(info.arch, process.arch, 'arch matches process')
-
-    t.end()
   }
 )
 
@@ -50,8 +48,6 @@ await t.test(
       const info = detector.getPlatformInfo({ doForce32bit: true })
       t.equal(info.arch, process.arch, 'other architectures unchanged')
     }
-
-    t.end()
   }
 )
 
@@ -62,8 +58,6 @@ await t.test(
 
     const isWin = detector.isWindows()
     t.equal(isWin, process.platform === 'win32', 'matches process.platform')
-
-    t.end()
   }
 )
 
@@ -86,8 +80,6 @@ await t.test(
     t.equal(infoForced.arch, 'ia32', 'x64 coerced to ia32')
 
     t.equal(detector.isWindows(), false, 'isWindows() returns false')
-
-    t.end()
   }
 )
 
@@ -110,8 +102,6 @@ await t.test(
     t.equal(infoForced.arch, 'arm', 'arm64 coerced to arm')
 
     t.equal(detector.isWindows(), false, 'isWindows() returns false')
-
-    t.end()
   }
 )
 
@@ -134,8 +124,6 @@ await t.test(
     t.equal(infoForced.arch, 'ia32', 'x64 coerced to ia32')
 
     t.equal(detector.isWindows(), true, 'isWindows() returns true')
-
-    t.end()
   }
 )
 
@@ -154,8 +142,6 @@ await t.test(
 
     const infoForced = detector.getPlatformInfo({ doForce32bit: true })
     t.equal(infoForced.arch, 'ia32', 'ia32 remains ia32 when forced')
-
-    t.end()
   }
 )
 
@@ -174,8 +160,6 @@ await t.test(
 
     const infoForced = detector.getPlatformInfo({ doForce32bit: true })
     t.equal(infoForced.arch, 'arm', 'arm remains arm when forced')
-
-    t.end()
   }
 )
 
@@ -199,8 +183,6 @@ await t.test(
       'ppc64',
       'unusual arch unchanged when forced (not x64/arm64)'
     )
-
-    t.end()
   }
 )
 
@@ -221,8 +203,6 @@ await t.test(
     const infoForced1 = detector.getPlatformInfo({ doForce32bit: true })
     const infoForced2 = detector.getPlatformInfo({ doForce32bit: true })
     t.same(infoForced1, infoForced2, 'multiple forced calls return same result')
-
-    t.end()
   }
 )
 
@@ -239,8 +219,6 @@ await t.test(
     const info = detector.getPlatformInfo({})
     t.equal(info.platform, 'linux', 'platform preserved')
     t.equal(info.arch, 'x64', 'arch not coerced with empty options')
-
-    t.end()
   }
 )
 
@@ -256,8 +234,6 @@ await t.test(
 
     const info = detector.getPlatformInfo({ doForce32bit: false })
     t.equal(info.arch, 'x64', 'arch not coerced when explicitly false')
-
-    t.end()
   }
 )
 
@@ -291,8 +267,6 @@ await t.test(
         )
       }
     }
-
-    t.end()
   }
 )
 
@@ -323,8 +297,6 @@ await t.test(
         `${input} coerced to ${expected} when doForce32bit=true`
       )
     }
-
-    t.end()
   }
 )
 

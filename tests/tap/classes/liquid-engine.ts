@@ -124,8 +124,6 @@ await t.test('LiquidEngine - path_* filters', async (t): Promise<void> => {
       'path_relative'
     )
   }
-
-  t.end()
 })
 
 await t.test(
@@ -176,8 +174,6 @@ await t.test(
       '../../impl/bbb',
       'path_posix_relative'
     )
-
-    t.end()
   }
 )
 
@@ -233,8 +229,6 @@ await t.test(
       '..\\..\\impl\\bbb',
       'path_win32_relative'
     )
-
-    t.end()
   }
 )
 
@@ -247,8 +241,6 @@ await t.test('LiquidEngine - util_format filter', async (t): Promise<void> => {
     'abc42',
     'util_format'
   )
-
-  t.end()
 })
 
 await t.test('LiquidEngine - to_filename filter', async (t): Promise<void> => {
@@ -260,8 +252,6 @@ await t.test('LiquidEngine - to_filename filter', async (t): Promise<void> => {
     'A-B',
     'to_filename'
   )
-
-  t.end()
 })
 
 await t.test(
@@ -304,8 +294,6 @@ await t.test(
       substitutionsVariables
     )
     t.equal(subst, '3', 'as split_lines size 3')
-
-    t.end()
   }
 )
 
@@ -339,8 +327,6 @@ await t.test('LiquidEngine - keys filter', async (t): Promise<void> => {
     '42',
     'number keys'
   )
-
-  t.end()
 })
 
 // // ----------------------------------------------------------------------------
