@@ -185,7 +185,7 @@ export class CombinationsGenerator {
    * @remarks
    * The constructor validates that the structure of keys and values is
    * correct and prepares the generator for combination generation. The
-   * actual generation is performed by calling {@link generate}.
+   * actual generation is performed by calling `*generate`.
    */
   constructor({
     matrixKeys,
@@ -235,7 +235,7 @@ export class CombinationsGenerator {
    * }
    * ```
    *
-   * @yields Individual matrix combinations one at a time.
+   * <b>Yields:</b> Individual matrix combinations one at a time.
    */
   *generate(): Generator<MatrixCombination> {
     // Empty matrix produces no combinations
@@ -295,7 +295,8 @@ export class CombinationsGenerator {
    *
    * @param index - The current parameter index being processed.
    * @param combination - The partial combination being built.
-   * @yields Complete combinations one at a time.
+   *
+   * <b>Yields:</b> Complete combinations one at a time.
    */
   protected *_generateRecursively(
     index: number,
