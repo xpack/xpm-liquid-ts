@@ -414,17 +414,14 @@ await t.test(
       },
     })
 
-    try {
-      await actions.initialise()
-      t.fail('should have thrown an error')
-    } catch (error) {
-      t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-      t.match(
-        (error as Error).message,
-        'duplicate action',
-        'throws "duplicate action"'
-      )
-    }
+    await t.rejects(
+      async () => await actions.initialise(),
+      {
+        constructor: xpm.ConfigurationError,
+        message: /duplicate action/,
+      },
+      'throws ConfigurationError for duplicate action from template'
+    )
 
     t.end()
   }
@@ -448,17 +445,14 @@ await t.test(
       },
     })
 
-    try {
-      await actions.initialise()
-      t.fail('should have thrown an error')
-    } catch (error) {
-      t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-      t.match(
-        (error as Error).message,
-        'already defined',
-        'throws "already defined"'
-      )
-    }
+    await t.rejects(
+      async () => await actions.initialise(),
+      {
+        constructor: xpm.ConfigurationError,
+        message: /already defined/,
+      },
+      'throws ConfigurationError when template duplicates existing action'
+    )
 
     t.end()
   }
@@ -478,17 +472,14 @@ await t.test('Actions template errors', async (t): Promise<void> => {
       },
     })
 
-    try {
-      await actions.initialise()
-      t.fail('should have thrown an error')
-    } catch (error) {
-      t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-      t.match(
-        (error as Error).message,
-        'has no matrix',
-        'throws "has no matrix"'
-      )
-    }
+    await t.rejects(
+      async () => await actions.initialise(),
+      {
+        constructor: xpm.ConfigurationError,
+        message: /has no matrix/,
+      },
+      'throws ConfigurationError when template has no matrix'
+    )
     t.end()
   })
 

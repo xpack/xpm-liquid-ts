@@ -62,17 +62,14 @@ await t.test('no package.json', async (t): Promise<void> => {
   const jsonPackage = await xpmPackage.readPackageDotJson()
   t.equal(jsonPackage, undefined, 'no package.json')
 
-  try {
-    await xpmPackage.readPackageDotJson({ withThrow: true })
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.type(error, xpm.InputError, 'throws xpm.InputError')
-    t.match(
-      (error as Error).message,
-      'no package.json in folder',
-      'error message is "no package.json"'
-    )
-  }
+  await t.rejects(
+    async () => await xpmPackage.readPackageDotJson({ withThrow: true }),
+    {
+      constructor: xpm.InputError,
+      message: /no package\.json in folder/,
+    },
+    'throws InputError for missing package.json'
+  )
 
   t.end()
 })
@@ -87,17 +84,14 @@ await t.test('bad package.json', async (t): Promise<void> => {
   const jsonPackage = await xpmPackage.readPackageDotJson()
   t.equal(jsonPackage, undefined, 'bad package.json')
 
-  try {
-    await xpmPackage.readPackageDotJson({ withThrow: true })
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.type(error, xpm.InputError, 'throws xpm.InputError')
-    t.match(
-      (error as Error).message,
-      'invalid package.json in folder',
-      'error message is "invalid package.json"    '
-    )
-  }
+  await t.rejects(
+    async () => await xpmPackage.readPackageDotJson({ withThrow: true }),
+    {
+      constructor: xpm.InputError,
+      message: /invalid package\.json in folder/,
+    },
+    'throws InputError for invalid package.json'
+  )
 
   t.end()
 })
@@ -766,29 +760,27 @@ await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
     'with package.json same version, check passed'
   )
 
-  try {
-    xpmPackage.jsonPackage = {
-      name: 'n',
-      version: '1.0.0',
-      xpack: {
-        minimumXpmRequired: '1.2.4',
-      },
-    } as unknown as xpm.JsonXpmPackage
+  xpmPackage.jsonPackage = {
+    name: 'n',
+    version: '1.0.0',
+    xpack: {
+      minimumXpmRequired: '1.2.4',
+    },
+  } as unknown as xpm.JsonXpmPackage
 
-    packageFolderPath = path.join(fixturesFolderPath, 'package-version')
+  packageFolderPath = path.join(fixturesFolderPath, 'package-version')
 
-    await xpmPackage.checkMinimumXpmRequired({
-      xpmRootFolderPath: packageFolderPath,
-    })
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.type(error, xpm.PrerequisitesError, 'throws XpmPrerequisitesError')
-    t.match(
-      (error as Error).message,
-      'please upgrade',
-      'error message is "please upgrade"'
-    )
-  }
+  await t.rejects(
+    async () =>
+      await xpmPackage.checkMinimumXpmRequired({
+        xpmRootFolderPath: packageFolderPath,
+      }),
+    {
+      constructor: xpm.PrerequisitesError,
+      message: /please upgrade/,
+    },
+    'throws PrerequisitesError when version requirement not met'
+  )
 
   t.end()
 })

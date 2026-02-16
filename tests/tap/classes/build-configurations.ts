@@ -557,30 +557,24 @@ await t.test('BuildConfigurations inheritance', async (t): Promise<void> => {
   )
 
   const configFour = buildConfigurations.get('configFour')
-  try {
-    await configFour.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(AssertionError, 'throws AssertionError')
-    t.match(
-      (error as Error).message,
-      'inherits from missing',
-      'throws "inherits from missing"'
-    )
-  }
+  await t.rejects(
+    async () => await configFour.initialise(),
+    {
+      constructor: xpm.ConfigurationError,
+      message: /inherits from missing/,
+    },
+    'throws ConfigurationError for inheriting from missing configuration'
+  )
 
   const configFive = buildConfigurations.get('configFive')
-  try {
-    await configFive.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'circular reference',
-      'throws "circular reference"'
-    )
-  }
+  await t.rejects(
+    async () => await configFive.initialise(),
+    {
+      constructor: xpm.ConfigurationError,
+      message: /circular reference/,
+    },
+    'throws ConfigurationError for circular reference in inheritance'
+  )
 
   const configSeven = buildConfigurations.get('configSeven')
   await configSeven.initialise()
@@ -588,17 +582,14 @@ await t.test('BuildConfigurations inheritance', async (t): Promise<void> => {
   t.equal(configSeven.properties.p1, 'v1.1', 'inherited properties.p1 is v1.1')
 
   const configEight = buildConfigurations.get('configEight')
-  try {
-    await configEight.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'undefined variable',
-      'throws "undefined variable"'
-    )
-  }
+  await t.rejects(
+    async () => await configEight.initialise(),
+    {
+      constructor: xpm.ConfigurationError,
+      message: /undefined variable/,
+    },
+    'throws ConfigurationError for undefined variable in templates'
+  )
 
   const configNine = buildConfigurations.get('configNine')
   await configNine.initialise()
@@ -803,17 +794,14 @@ await t.test(
       substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
       jsonBuildConfigurations,
     })
-    try {
-      await buildConfigurations.initialise()
-      t.fail('should have thrown an error')
-    } catch (error) {
-      t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-      t.match(
-        (error as Error).message,
-        'undefined variable',
-        'throws "undefined variable"'
-      )
-    }
+    await t.rejects(
+      async () => await buildConfigurations.initialise(),
+      {
+        constructor: xpm.ConfigurationError,
+        message: /undefined variable/,
+      },
+      'throws ConfigurationError for undefined variable'
+    )
 
     t.end()
   }
@@ -951,17 +939,14 @@ await t.test(
           substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
           jsonBuildConfigurations,
         })
-        try {
-          await buildConfigurations.initialise()
-          t.fail('should have thrown an error')
-        } catch (error) {
-          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-          t.match(
-            (error as Error).message,
-            'value is not a string',
-            'throws "value is not a string"'
-          )
-        }
+        await t.rejects(
+          async () => await buildConfigurations.initialise(),
+          {
+            constructor: xpm.ConfigurationError,
+            message: /value is not a string/,
+          },
+          'throws ConfigurationError when matrix value is not a string'
+        )
 
         t.end()
       }
@@ -995,17 +980,14 @@ await t.test(
           substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
           jsonBuildConfigurations,
         })
-        try {
-          await buildConfigurations.initialise()
-          t.fail('should have thrown an error')
-        } catch (error) {
-          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-          t.match(
-            (error as Error).message,
-            'is not an array',
-            'throws "is not an array"'
-          )
-        }
+        await t.rejects(
+          async () => await buildConfigurations.initialise(),
+          {
+            constructor: xpm.ConfigurationError,
+            message: /is not an array/,
+          },
+          'throws ConfigurationError when matrix value is not an array'
+        )
 
         t.end()
       }
@@ -1035,17 +1017,14 @@ await t.test(
           substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
           jsonBuildConfigurations,
         })
-        try {
-          await buildConfigurations.initialise()
-          t.fail('should have thrown an error')
-        } catch (error) {
-          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-          t.match(
-            (error as Error).message,
-            'template is not a JSON object',
-            'throws "template is not a JSON object"'
-          )
-        }
+        await t.rejects(
+          async () => await buildConfigurations.initialise(),
+          {
+            constructor: xpm.ConfigurationError,
+            message: /template is not a JSON object/,
+          },
+          'throws ConfigurationError when template is not a JSON object'
+        )
 
         t.end()
       }
@@ -1076,17 +1055,14 @@ await t.test(
           substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
           jsonBuildConfigurations,
         })
-        try {
-          await buildConfigurations.initialise()
-          t.fail('should have thrown an error')
-        } catch (error) {
-          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-          t.match(
-            (error as Error).message,
-            'matrix is not an object',
-            'throws "matrix is not an object"'
-          )
-        }
+        await t.rejects(
+          async () => await buildConfigurations.initialise(),
+          {
+            constructor: xpm.ConfigurationError,
+            message: /matrix is not an object/,
+          },
+          'throws ConfigurationError when matrix is not an object'
+        )
         t.end()
       }
     )
@@ -1126,17 +1102,14 @@ await t.test(
           substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
           jsonBuildConfigurations,
         })
-        try {
-          await buildConfigurations.initialise()
-          t.fail('should have thrown an error')
-        } catch (error) {
-          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-          t.match(
-            (error as Error).message,
-            'could not be generated',
-            'throws "could not be generated"'
-          )
-        }
+        await t.rejects(
+          async () => await buildConfigurations.initialise(),
+          {
+            constructor: xpm.ConfigurationError,
+            message: /could not be generated/,
+          },
+          'throws ConfigurationError for duplicate that could not be generated'
+        )
         t.end()
       }
     )
@@ -1169,17 +1142,14 @@ await t.test(
           substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
           jsonBuildConfigurations,
         })
-        try {
-          await buildConfigurations.initialise()
-          t.fail('should have thrown an error')
-        } catch (error) {
-          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-          t.match(
-            (error as Error).message,
-            'already defined',
-            'throws "already defined"'
-          )
-        }
+        await t.rejects(
+          async () => await buildConfigurations.initialise(),
+          {
+            constructor: xpm.ConfigurationError,
+            message: /already defined/,
+          },
+          'throws ConfigurationError for duplicate already defined'
+        )
         t.end()
       }
     )

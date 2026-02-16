@@ -251,20 +251,19 @@ await t.test(
       log,
     })
 
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      for (const _combo of generator.generate()) {
-        // Should throw before first iteration
-      }
-      t.fail('should have thrown ConfigurationError')
-    } catch (error) {
-      t.throws(xpm.ConfigurationError, 'throws ConfigurationError')
-      t.match(
-        (error as Error).message,
-        'exceeding limit',
-        'error message contains "exceeding limit"'
-      )
-    }
+    await t.rejects(
+      async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for (const _combo of generator.generate()) {
+          // Should throw before first iteration
+        }
+      },
+      {
+        constructor: xpm.ConfigurationError,
+        message: /exceeding limit/,
+      },
+      'throws ConfigurationError when exceeding default limit'
+    )
 
     t.end()
   }
@@ -285,20 +284,19 @@ await t.test(
       log,
     })
 
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      for (const _combo of generator.generate()) {
-        // Should throw before first iteration
-      }
-      t.fail('should have thrown ConfigurationError')
-    } catch (error) {
-      t.throws(xpm.ConfigurationError, 'throws ConfigurationError')
-      t.match(
-        (error as Error).message,
-        'exceeding limit',
-        'error message contains "exceeding limit"'
-      )
-    }
+    await t.rejects(
+      async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for (const _combo of generator.generate()) {
+          // Should throw before first iteration
+        }
+      },
+      {
+        constructor: xpm.ConfigurationError,
+        message: /exceeding limit/,
+      },
+      'throws ConfigurationError when exceeding custom limit'
+    )
 
     t.end()
   }

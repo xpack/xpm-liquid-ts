@@ -151,35 +151,31 @@ await t.test(
       },
     }
 
-    try {
-      await performSubstitutionsTest(
-        '{{ properties.valueWithParam }}',
-        substitutionsVariables
-      )
-      t.fail('should have thrown')
-    } catch (error) {
-      t.throws(xpm.InputError, 'throw xpm.InputError')
-      t.match(
-        (error as Error).message,
-        'not defined',
-        `error message is "not defined"`
-      )
-    }
+    await t.rejects(
+      async () =>
+        await performSubstitutionsTest(
+          '{{ properties.valueWithParam }}',
+          substitutionsVariables
+        ),
+      {
+        constructor: xpm.TemplateError,
+        message: /not defined/,
+      },
+      'throws TemplateError for undefined property with parameter'
+    )
 
-    try {
-      const one = await performSubstitutionsTest(
-        'a{{ properties.other }}b',
-        substitutionsVariables
-      )
-      t.fail('should have thrown')
-    } catch (error) {
-      t.throws(xpm.InputError, 'throw xpm.InputError')
-      t.match(
-        (error as Error).message,
-        'Cannot read properties',
-        `error message is "Cannot read properties"`
-      )
-    }
+    await t.rejects(
+      async () =>
+        await performSubstitutionsTest(
+          'a{{ properties.other }}b',
+          substitutionsVariables
+        ),
+      {
+        constructor: xpm.TemplateError,
+        message: /Cannot read properties/,
+      },
+      'throws TemplateError when accessing null property'
+    )
     t.end()
   }
 )
@@ -311,35 +307,31 @@ await t.test(
       },
     }
 
-    try {
-      await performSubstitutionsTest(
-        '{{ matrix.valueWithParam }}',
-        substitutionsVariables
-      )
-      t.fail('should have thrown')
-    } catch (error) {
-      t.throws(xpm.InputError, 'throw xpm.InputError')
-      t.match(
-        (error as Error).message,
-        'not defined',
-        `error message is "not defined"`
-      )
-    }
+    await t.rejects(
+      async () =>
+        await performSubstitutionsTest(
+          '{{ matrix.valueWithParam }}',
+          substitutionsVariables
+        ),
+      {
+        constructor: xpm.TemplateError,
+        message: /not defined/,
+      },
+      'throws TemplateError for undefined matrix key with parameter'
+    )
 
-    try {
-      const one = await performSubstitutionsTest(
-        'a{{ matrix.other }}b',
-        substitutionsVariables
-      )
-      t.fail('should have thrown')
-    } catch (error) {
-      t.throws(xpm.InputError, 'throw xpm.InputError')
-      t.match(
-        (error as Error).message,
-        'Cannot read properties',
-        `error message is "Cannot read properties"`
-      )
-    }
+    await t.rejects(
+      async () =>
+        await performSubstitutionsTest(
+          'a{{ matrix.other }}b',
+          substitutionsVariables
+        ),
+      {
+        constructor: xpm.TemplateError,
+        message: /Cannot read properties/,
+      },
+      'throws TemplateError when accessing null matrix value'
+    )
     t.end()
   }
 )

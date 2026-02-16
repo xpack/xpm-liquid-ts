@@ -184,20 +184,15 @@ await t.test('performSubstitutionsTest error', async (t): Promise<void> => {
     },
   }
 
-  try {
-    const subs = await performSubstitutionsTest(
-      '0{{ map.two }}2',
-      substitutionsVariables
-    )
-    t.fail('should have thrown an error, got ' + subs)
-  } catch (error) {
-    t.throws(xpm.InputError, 'throw xpm.InputError')
-    t.match(
-      (error as Error).message,
-      'undefined variable',
-      `error message is "undefined variable"`
-    )
-  }
+  await t.rejects(
+    async () =>
+      await performSubstitutionsTest('0{{ map.two }}2', substitutionsVariables),
+    {
+      constructor: xpm.TemplateError,
+      message: /undefined variable/,
+    },
+    'throws TemplateError for undefined variable'
+  )
 
   t.end()
 })
