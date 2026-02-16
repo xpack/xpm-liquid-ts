@@ -23,6 +23,8 @@ export declare function chmodRecursively(input: {
     inputPath: string;
     readOnly: boolean;
     log: Logger;
+    depth?: number;
+    maxDepth?: number;
 }): Promise<void>;
 ```
 
@@ -46,7 +48,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-{ inputPath, readOnly, log, }
+{ inputPath, readOnly, log, depth, maxDepth, }
 
 
 </td><td>
@@ -65,7 +67,7 @@ input
 
 </td><td>
 
-{ inputPath: string; readOnly: boolean; log: Logger; }
+{ inputPath: string; readOnly: boolean; log: Logger; depth?: number; maxDepth?: number; }
 
 
 </td><td>
@@ -80,6 +82,10 @@ Promise&lt;void&gt;
 
 A promise that resolves when all permissions have been updated.
 
+## Exceptions
+
+[ConfigurationError](/xpm-lib-ts/docs/api/xpm-lib/classes/configurationerror) If recursion depth exceeds the maximum limit.
+
 ## Remarks
 
 This function modifies file system permissions recursively, handling both files and directories with special logic to avoid permission conflicts.
@@ -93,6 +99,8 @@ Permission modes applied:
 <ul> <li><b>Read-only:</b> Removes all write bits (user, group, other) using bitwise AND with negated <code>S\_IWUSR</code> \| <code>S\_IWGRP</code> \| <code>S\_IWOTH</code>.</li> <li><b>Read-write:</b> Adds only user write bit using bitwise OR with <code>S\_IWUSR</code>, preserving existing group and other permissions.</li> </ul>
 
 The function validates the result after each chmod operation and logs warnings if the expected permission state is not achieved, which can occur on filesystems with non-standard permission handling.
+
+Recursion depth is limited to `CHMOD_RECURSIVELY_MAX_DEPTH` levels to protect against extremely deep directory trees.
 
 <hr/>
 

@@ -68,7 +68,7 @@ Description
 
 </td><td>
 
-[JsonBuildConfigurationTemplateMatrix](./xpm-lib.jsonbuildconfigurationtemplatematrix.md)
+[JsonTemplateMatrix](./xpm-lib.jsontemplatematrix.md)
 
 
 </td><td>

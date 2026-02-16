@@ -1,4 +1,5 @@
 import * as liquidjs from 'liquidjs';
+import { PlatformDetector } from './platform-detector.js';
 /**
  * Liquid engine configured for <b>xpm</b> templates.
  *
@@ -30,6 +31,10 @@ import * as liquidjs from 'liquidjs';
  * template tags.
  */
 export declare class LiquidEngine extends liquidjs.Liquid {
+    /**
+     * The platform detector instance for platform-specific behaviour.
+     */
+    private readonly platformDetector;
     /**
      * Constructs a Liquid engine instance with xpm-specific settings and
      * filters.
@@ -67,7 +72,11 @@ export declare class LiquidEngine extends liquidjs.Liquid {
      * <li>All filters are registered during construction for immediate
      *    availability in templates.</li>
      * </ul>
+     *
+     * @param platformDetector - The platform detector instance for
+     * platform-specific behaviour. Defaults to a new {@link PlatformDetector}
+     * instance.
      */
-    constructor();
+    constructor(platformDetector?: PlatformDetector);
 }
 //# sourceMappingURL=liquid-engine.d.ts.map

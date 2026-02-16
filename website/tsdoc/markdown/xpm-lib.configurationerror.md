@@ -15,5 +15,5 @@ export declare class ConfigurationError extends Error
 
 ## Remarks
 
-This error is thrown when configuration files, such as `package.json`<!-- -->, contain invalid values, missing required fields, circular references, or other issues that prevent proper initialization or execution. Use this error whenthe problem is related to the content of configuration files rather than user input or output generation.
+This error is thrown when configuration files, such as `package.json`<!-- -->, contain invalid values, missing required fields, circular references, or other issues that prevent proper initialisation or execution. Use this error when the problem is related to the content of configuration files rather than user input or output generation.
 

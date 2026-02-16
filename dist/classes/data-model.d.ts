@@ -1,8 +1,8 @@
-import { Liquid } from 'liquidjs';
 import { Logger } from '@xpack/logger';
 import { LiquidSubstitutionsVariables } from '../data/substitutions-variables.js';
 import { Actions } from './actions.js';
 import { BuildConfigurations } from './build-configurations.js';
+import { LiquidEngine } from './liquid-engine.js';
 import { JsonXpmPackage } from '../types/json.js';
 export declare const buildFolderRelativePathPropertyName = "buildFolderRelativePath";
 export interface DataModelConstructorParameters {
@@ -14,7 +14,7 @@ export declare class DataModel {
     readonly actions: Actions;
     readonly buildConfigurations: BuildConfigurations;
     protected _log: Logger;
-    protected _engine: Liquid;
+    protected _engine: LiquidEngine;
     protected _jsonPackage: JsonXpmPackage;
     constructor({ jsonPackage, log }: DataModelConstructorParameters);
 }

@@ -14,11 +14,11 @@ export declare class CombinationsGenerator
 
 ## Remarks
 
-This class computes the Cartesian product of multiple parameter arrays, producing all possible combinations of parameter values. It uses a recursive algorithm to systematically explore all combinations.
+This class computes the Cartesian product of multiple parameter arrays, producing all possible combinations of parameter values using a memory-efficient generator pattern. It uses a recursive algorithm to systematically explore all combinations one at a time.
 
 The generation process:
 
-<ol> <li>Takes arrays of parameter names (keys) and their corresponding value arrays.</li> <li>Recursively iterates through each parameter, selecting one value at a time.</li> <li>When all parameters have been assigned values, stores the complete combination.</li> <li>Backtracks to explore other value combinations.</li> </ol>
+<ol> <li>Takes arrays of parameter names (keys) and their corresponding value arrays.</li> <li>Recursively iterates through each parameter, selecting one value at a time.</li> <li>Yields complete combinations one at a time without storing them all in memory.</li> <li>Backtracks to explore other value combinations.</li> </ol>
 
 Example usage:
 
@@ -28,14 +28,15 @@ const generator = new CombinationsGenerator({
   matrixValues: [['x64', 'arm'], ['speed', 'size']],
   log
 });
-const combinations = generator.generate();
-// Results in:
-// [
-//   { arch: 'x64', optimize: 'speed' },
-//   { arch: 'x64', optimize: 'size' },
-//   { arch: 'arm', optimize: 'speed' },
-//   { arch: 'arm', optimize: 'size' }
-// ]
+for (const combo of generator.generate()) {
+  // Process one combination at a time without storing all in memory
+  // Results:
+  //   { arch: 'x64', optimize: 'speed' }
+  //   { arch: 'x64', optimize: 'size' }
+  //   { arch: 'arm', optimize: 'speed' }
+  //   { arch: 'arm', optimize: 'size' }
+  await processConfiguration(combo);
+}
 ```
 
 ## Constructors
@@ -58,7 +59,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)({ matrixKeys, matrixValues, log, }, input)](./xpm-lib.combinationsgenerator._constructor_.md)
+[(constructor)({ matrixKeys, matrixValues, maxCombinations, log, }, input)](./xpm-lib.combinationsgenerator._constructor_.md)
 
 
 </td><td>
@@ -97,30 +98,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[combinations](./xpm-lib.combinationsgenerator.combinations.md)
-
-
-</td><td>
-
-`protected`
-
-`readonly`
-
-
-</td><td>
-
-[MatrixCombination](./xpm-lib.matrixcombination.md)<!-- -->\[\]
-
-
-</td><td>
-
-The array of generated combinations.
-
-
-</td></tr>
-<tr><td>
-
-[log](./xpm-lib.combinationsgenerator.log.md)
+[\_log](./xpm-lib.combinationsgenerator._log.md)
 
 
 </td><td>
@@ -143,7 +121,7 @@ The logger instance for output and diagnostics.
 </td></tr>
 <tr><td>
 
-[matrixKeys](./xpm-lib.combinationsgenerator.matrixkeys.md)
+[\_matrixKeys](./xpm-lib.combinationsgenerator._matrixkeys.md)
 
 
 </td><td>
@@ -166,7 +144,7 @@ The array of parameter names.
 </td></tr>
 <tr><td>
 
-[matrixValues](./xpm-lib.combinationsgenerator.matrixvalues.md)
+[\_matrixValues](./xpm-lib.combinationsgenerator._matrixvalues.md)
 
 
 </td><td>
@@ -184,6 +162,29 @@ string\[\]\[\]
 </td><td>
 
 The array of value arrays for each parameter.
+
+
+</td></tr>
+<tr><td>
+
+[\_maxCombinations](./xpm-lib.combinationsgenerator._maxcombinations.md)
+
+
+</td><td>
+
+`protected`
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+The maximum number of combinations allowed.
 
 
 </td></tr>
@@ -219,7 +220,7 @@ Description
 
 </td><td>
 
-Recursively generates combinations by exploring the parameter space.
+Recursively generates combinations as a generator, yielding one at a time.
 
 
 </td></tr>
@@ -233,7 +234,7 @@ Recursively generates combinations by exploring the parameter space.
 
 </td><td>
 
-Generates all possible combinations from the matrix parameters.
+Generates combinations one at a time using a generator pattern.
 
 
 </td></tr>

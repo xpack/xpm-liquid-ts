@@ -20,10 +20,12 @@ Performs substitutions on an input string using Liquid.
 
 ```typescript
 export declare function performSubstitutions(input: {
-    log: Logger;
     engine: LiquidEngine;
     input: string;
     substitutionsVariables: LiquidSubstitutionsVariables;
+    log: Logger;
+    maxIterations?: number;
+    maxOutputSize?: number;
 }): Promise<string>;
 ```
 
@@ -47,7 +49,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-{ log, engine, input, substitutionsVariables, }
+{ engine, input, substitutionsVariables, log, maxIterations, maxOutputSize, }
 
 
 </td><td>
@@ -66,7 +68,7 @@ input
 
 </td><td>
 
-{ log: Logger; engine: [LiquidEngine](/xpm-lib-ts/docs/api/xpm-lib/classes/liquidengine)<!-- -->; input: string; substitutionsVariables: [LiquidSubstitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/interfaces/liquidsubstitutionsvariables)<!-- -->; }
+{ engine: [LiquidEngine](/xpm-lib-ts/docs/api/xpm-lib/classes/liquidengine)<!-- -->; input: string; substitutionsVariables: [LiquidSubstitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/interfaces/liquidsubstitutionsvariables)<!-- -->; log: Logger; maxIterations?: number; maxOutputSize?: number; }
 
 
 </td><td>

@@ -1,3 +1,4 @@
+import { PlatformDetector } from '../classes/platform-detector.js';
 /**
  * Replaces non-alphanumeric characters with dashes to make paths
  * comply with file system names.
@@ -27,9 +28,11 @@
  * user-provided identifiers, and template-generated path components.
  *
  * @param input - A path candidate.
+ * @param platformDetector - The platform detector instance to use. Defaults
+ * to a new {@link PlatformDetector} instance.
  * @returns A validated path.
  */
-export declare function filterPath(input: string): string;
+export declare function filterPath(input: string, platformDetector?: PlatformDetector): string;
 /**
  * Replaces non-alphanumeric characters with dashes to make paths
  * comply with POSIX file system names.

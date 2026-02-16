@@ -108,6 +108,25 @@ The array of value arrays for each parameter.
 
 
 </td></tr>
+<tr><td>
+
+[maxCombinations?](/xpm-lib-ts/docs/api/xpm-lib/interfaces/combinationsgeneratorconstructorparameters/maxcombinations)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Optional maximum combinations limit to prevent excessive generation.
+
+
+</td></tr>
 </tbody></table>
 
 <hr/>

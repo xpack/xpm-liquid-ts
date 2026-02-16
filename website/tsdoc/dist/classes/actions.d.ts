@@ -444,20 +444,19 @@ export declare class Actions {
      * Expands a template action into multiple concrete actions.
      *
      * @remarks
-     * This method computes the Cartesian product of all matrix parameter values
-     * and creates a separate action for each combination, substituting matrix
-     * values into both the action name and command templates.
+     * This method uses the {@link TemplateExpander} to compute the Cartesian
+     * product of all matrix parameter values and creates a separate action for
+     * each combination, substituting matrix values into both the action name
+     * and command templates.
      *
      * Processing steps:
      *
      * <ol>
-     * <li>Validates matrix structure (object with array values).</li>
-     * <li>Validates template format (string or array).</li>
-     * <li>Performs Liquid substitutions on matrix values if they contain
-     *   template syntax.</li>
-     * <li>Recursively generates all combinations using Cartesian product.</li>
-     * <li>Creates an action instance for each combination with matrix
-     *   parameters available for later substitution.</li>
+     * <li>Validates matrix and template structure.</li>
+     * <li>Delegates to <code>TemplateExpander</code> for matrix processing and
+     *    name expansion.</li>
+     * <li>Creates action instances via factory callback for each
+     *    combination.</li>
      * </ol>
      *
      * Matrix variables are scoped to individual actions and accessible via
@@ -477,52 +476,6 @@ export declare class Actions {
         actionName: string;
         jsonActionTemplate: JsonActionTemplate;
     }): Promise<Map<string, Action>>;
-    /**
-     * Creates a substituted action from a template and matrix combination.
-     *
-     * @remarks
-     * This helper method is called for each combination generated from a
-     * template action's matrix parameters. It performs the actual name
-     * substitution and creates the concrete action instance.
-     *
-     * Processing steps:
-     *
-     * <ol>
-     * <li>Performs Liquid substitution on the template action name using the
-     *    specific matrix combination values.</li>
-     * <li>Creates a new <code>Action</code> instance with:
-     *   <ul>
-     *   <li>The substituted concrete action name.</li>
-     *   <li>The action's command template (not yet evaluated).</li>
-     *   <li>Reference to this parent actions collection.</li>
-     *   <li>The matrix parameter values for later command substitution.</li>
-     *   </ul>
-     * </li>
-     * <li>Stores the new action instance in the provided map.</li>
-     * </ol>
-     *
-     * The matrix parameters are preserved in the action instance and will be
-     * used later when the action is initialised to substitute matrix
-     * references in the command templates.
-     *
-     * @param combination - The matrix parameter combination for this action
-     * (e.g., <code>\{ arch: 'x64', platform: 'linux' \}</code>).
-     * @param actionName - The template action name containing Liquid variables
-     * (e.g., <code>test-\{\{ matrix.arch \}\}</code>).
-     * @param jsonAction - The action's command template definition.
-     * @param newActionsMap - The map to store the newly created action.
-     * @returns A promise that resolves when the action has been created and
-     * stored.
-     *
-     * @throws {@link ConfigurationError}
-     * If the action name substitution fails.
-     */
-    protected _createSubstitutedAction({ actionName, jsonAction, combination, newActionsMap, }: {
-        combination: Record<string, string>;
-        actionName: string;
-        jsonAction: JsonActionContent;
-        newActionsMap: Map<string, Action>;
-    }): Promise<void>;
 }
 /**
  * Configuration parameters for constructing an action instance.

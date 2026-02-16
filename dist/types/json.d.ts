@@ -11,7 +11,7 @@ export interface JsonDependencyExtended {
 }
 export type JsonActionContent = string | string[];
 export interface JsonActionTemplate {
-    matrix: Record<string, string[]>;
+    matrix: JsonTemplateMatrix;
     template: JsonActionContent;
 }
 export type JsonAction = JsonActionContent | JsonActionTemplate;
@@ -27,10 +27,11 @@ export interface JsonBuildConfigurationContent {
     [key: string]: JsonPropertyValue;
 }
 export interface JsonBuildConfigurationTemplate {
-    matrix: JsonBuildConfigurationTemplateMatrix;
+    matrix: JsonTemplateMatrix;
     template: JsonBuildConfigurationContent;
 }
-export type JsonBuildConfigurationTemplateMatrix = Record<string, string[]>;
+export type JsonTemplateMatrix = Record<string, JsonTemplateMatrixContent>;
+export type JsonTemplateMatrixContent = string[];
 export type JsonBuildConfiguration = JsonBuildConfigurationContent | JsonBuildConfigurationTemplate;
 export type JsonBuildConfigurations = Record<string, JsonBuildConfiguration>;
 export interface JsonXpack {

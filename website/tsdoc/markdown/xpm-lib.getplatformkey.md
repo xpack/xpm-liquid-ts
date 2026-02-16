@@ -11,6 +11,7 @@ Builds a unique key using the current platform and architecture.
 ```typescript
 export declare function getPlatformKey(input?: {
     doForce32bit?: boolean;
+    platformDetector?: PlatformDetector;
 }): string;
 ```
 
@@ -34,7 +35,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-{ doForce32bit, }
+{ doForce32bit, platformDetector, }
 
 
 </td><td>
@@ -55,7 +56,7 @@ input
 
 </td><td>
 
-{ doForce32bit?: boolean; }
+{ doForce32bit?: boolean; platformDetector?: [PlatformDetector](./xpm-lib.platformdetector.md)<!-- -->; }
 
 
 </td><td>

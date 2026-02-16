@@ -1,6 +1,7 @@
 export * from './functions/chmod-recursively.js';
 export * from './functions/filter-paths.js';
 export * from './functions/is-something.js';
+export * from './functions/matrix-expander.js';
 export * from './functions/perform-substitutions.js';
 export * from './functions/utils.js';
 export * from './classes/errors.js';
@@ -12,7 +13,9 @@ export * from './classes/liquid-drop.js';
 export * from './classes/liquid-engine.js';
 export * from './classes/data-model.js';
 export * from './classes/package.js';
+export * from './classes/platform-detector.js';
 export * from './classes/policies.js';
+export * from './classes/template-expander.js';
 export * from './data/substitutions-variables.js';
 export * from './types/json.js';
 export * from './types/xpm-init-template.js';

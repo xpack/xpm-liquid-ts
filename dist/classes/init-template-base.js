@@ -5,7 +5,7 @@ import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 import { Liquid } from 'liquidjs';
 import { isString, isObject, isBoolean, isNumber, } from '../functions/is-something.js';
-import { JsonSyntaxError, OutputError, ConfigurationError } from './errors.js';
+import { JsonSyntaxError, InputError, OutputError, ConfigurationError, } from './errors.js';
 export class InitTemplateBase {
     _context;
     _log;
@@ -49,20 +49,23 @@ export class InitTemplateBase {
         const context = this._context;
         const config = context.config;
         assert(config.properties, 'config.properties is required');
-        let isError = false;
+        const validationErrors = [];
         for (const [key, val] of Object.entries(config.properties)) {
             try {
                 config.properties[key] = this._validatePropertyValue(key, val);
             }
             catch (error) {
                 if (error instanceof Error) {
-                    log.error(error.message);
+                    const errorMessage = `${key}: ${error.message}`;
+                    log.error(errorMessage);
+                    validationErrors.push(errorMessage);
                 }
-                isError = true;
             }
         }
-        if (isError) {
-            throw new JsonSyntaxError();
+        if (validationErrors.length > 0) {
+            throw new JsonSyntaxError(validationErrors.length === 1
+                ? '1 invalid property'
+                : `${String(validationErrors.length)} invalid properties`);
         }
         const mustAsk = Object.keys(this._propertiesDefinitions).some((key) => {
             return (this._propertiesDefinitions[key].isMandatory &&
@@ -128,6 +131,8 @@ export class InitTemplateBase {
         log.info(`Folder '${destinationFolderPath}' copied.`);
     }
     async render({ sourceFilePath, destinationFilePath, substitutionsVariables = this._substitutionsVariables, }) {
+        assert(substitutionsVariables !== undefined, 'substitutionsVariables is required for rendering templates. ' +
+            'Ensure that run() has been called to prepare the variables.');
         const log = this._log;
         const context = this._context;
         const config = context.config;
@@ -241,7 +246,13 @@ export class InitTemplateBase {
                 prompt += ` [${String(definition.default)}]`;
             }
             prompt += ': ';
+            const MAX_RETRIES = 42;
+            let retryCount = 0;
             while (true) {
+                if (++retryCount > MAX_RETRIES) {
+                    throw new InputError(`Too many invalid attempts for property '${name}' ` +
+                        `(limit: ${String(MAX_RETRIES)})`);
+                }
                 const answer = (await rl.question(prompt)).trim();
                 try {
                     const value = this._validatePropertyValue(name, answer);

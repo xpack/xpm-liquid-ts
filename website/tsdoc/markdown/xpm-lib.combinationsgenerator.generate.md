@@ -4,24 +4,32 @@
 
 ## CombinationsGenerator.generate() method
 
-Generates all possible combinations from the matrix parameters.
+Generates combinations one at a time using a generator pattern.
 
 **Signature:**
 
 ```typescript
-generate(): MatrixCombination[];
+generate(): Generator<MatrixCombination>;
 ```
 **Returns:**
 
-[MatrixCombination](./xpm-lib.matrixcombination.md)<!-- -->\[\]
-
-An array of all possible parameter combinations.
+Generator&lt;[MatrixCombination](./xpm-lib.matrixcombination.md)<!-- -->&gt;
 
 ## Remarks
 
-This method initiates the recursive generation process and returns the complete array of all possible combinations.
+This method yields combinations one at a time instead of building the entire array in memory. This is particularly useful for large matrices where storing all combinations would be impractical.
 
-The generation algorithm:
+Memory efficiency:
 
-<ol> <li>Starts the recursive process with an empty combination at index 0.</li> <li>The recursive method explores all possible value selections for each parameter.</li> <li>Complete combinations are accumulated in the internal <code>combinations</code> array.</li> <li>Returns the array containing all generated combinations.</li> </ol>
+<ul> <li>For a matrix with 10 parameters and 5 values each (9,765,625 combinations), only one combination object exists in memory at a time, regardless of matrix size.</li> <li>No array allocation or storage required.</li> <li>Immediate processing of each combination without waiting for all to be generated.</li> </ul>
+
+Example usage:
+
+```typescript
+for (const combo of generator.generate()) {
+  // Process one combination at a time
+  await processConfiguration(combo)
+}
+```
+<b>Yields:</b> Individual matrix combinations one at a time.
 

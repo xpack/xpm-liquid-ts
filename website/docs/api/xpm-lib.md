@@ -199,6 +199,17 @@ Provides access to package metadata and xpm-specific validation.
 </td></tr>
 <tr><td>
 
+[PlatformDetector](/xpm-lib-ts/docs/api/xpm-lib/classes/platformdetector)
+
+
+</td><td>
+
+Platform detection service for runtime environment identification.
+
+
+</td></tr>
+<tr><td>
+
 [Policies](/xpm-lib-ts/docs/api/xpm-lib/classes/policies)
 
 
@@ -216,6 +227,28 @@ Computes feature policy flags based on a minimum <b>xpm</b> version.
 </td><td>
 
 Error indicating that required prerequisites are not met.
+
+
+</td></tr>
+<tr><td>
+
+[TemplateError](/xpm-lib-ts/docs/api/xpm-lib/classes/templateerror)
+
+
+</td><td>
+
+Error indicating a template evaluation failure.
+
+
+</td></tr>
+<tr><td>
+
+[TemplateExpander](/xpm-lib-ts/docs/api/xpm-lib/classes/templateexpander)
+
+
+</td><td>
+
+A generic template expansion engine for matrix-based template processing.
 
 
 </td></tr>
@@ -262,7 +295,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[chmodRecursively({ inputPath, readOnly, log, }, input)](/xpm-lib-ts/docs/api/xpm-lib/functions/chmodrecursively)
+[chmodRecursively({ inputPath, readOnly, log, depth, maxDepth, }, input)](/xpm-lib-ts/docs/api/xpm-lib/functions/chmodrecursively)
 
 
 </td><td>
@@ -273,7 +306,7 @@ Recursively changes file permissions within a folder tree.
 </td></tr>
 <tr><td>
 
-[filterPath(input)](/xpm-lib-ts/docs/api/xpm-lib/functions/filterpath)
+[filterPath(input, platformDetector)](/xpm-lib-ts/docs/api/xpm-lib/functions/filterpath)
 
 
 </td><td>
@@ -317,12 +350,23 @@ Extracts an error message string from an unknown error value.
 </td></tr>
 <tr><td>
 
-[getPlatformKey({ doForce32bit, }, input)](/xpm-lib-ts/docs/api/xpm-lib/functions/getplatformkey)
+[getPlatformKey({ doForce32bit, platformDetector, }, input)](/xpm-lib-ts/docs/api/xpm-lib/functions/getplatformkey)
 
 
 </td><td>
 
 Builds a unique key using the current platform and architecture.
+
+
+</td></tr>
+<tr><td>
+
+[hasLiquidSyntax(value)](/xpm-lib-ts/docs/api/xpm-lib/functions/hasliquidsyntax)
+
+
+</td><td>
+
+Checks whether a string contains Liquid template syntax.
 
 
 </td></tr>
@@ -416,12 +460,23 @@ Determines whether a value is a string.
 </td></tr>
 <tr><td>
 
-[performSubstitutions({ log, engine, input, substitutionsVariables, }, input)](/xpm-lib-ts/docs/api/xpm-lib/functions/performsubstitutions)
+[performSubstitutions({ engine, input, substitutionsVariables, log, maxIterations, maxOutputSize, }, input)](/xpm-lib-ts/docs/api/xpm-lib/functions/performsubstitutions)
 
 
 </td><td>
 
 Performs substitutions on an input string using Liquid.
+
+
+</td></tr>
+<tr><td>
+
+[processMatrixForExpansion({ matrix, templateName, templateType, engine, substitutionsVariables, log, }, input)](/xpm-lib-ts/docs/api/xpm-lib/functions/processmatrixforexpansion)
+
+
+</td><td>
+
+Validates and processes a matrix object for template expansion.
 
 
 </td></tr>
@@ -728,12 +783,56 @@ Configuration parameters for constructing a package instance.
 </td></tr>
 <tr><td>
 
+[PlatformInfo](/xpm-lib-ts/docs/api/xpm-lib/interfaces/platforminfo)
+
+
+</td><td>
+
+Platform information structure for runtime environment detection.
+
+
+</td></tr>
+<tr><td>
+
+[PlatformInfoOptions](/xpm-lib-ts/docs/api/xpm-lib/interfaces/platforminfooptions)
+
+
+</td><td>
+
+Options for platform information retrieval.
+
+
+</td></tr>
+<tr><td>
+
 [PoliciesConstructorParameters](/xpm-lib-ts/docs/api/xpm-lib/interfaces/policiesconstructorparameters)
 
 
 </td><td>
 
 Configuration parameters for constructing a policies instance.
+
+
+</td></tr>
+<tr><td>
+
+[ProcessedMatrix](/xpm-lib-ts/docs/api/xpm-lib/interfaces/processedmatrix)
+
+
+</td><td>
+
+Result of matrix validation and processing.
+
+
+</td></tr>
+<tr><td>
+
+[TemplateExpanderConstructorParameters](/xpm-lib-ts/docs/api/xpm-lib/interfaces/templateexpanderconstructorparameters)
+
+
+</td><td>
+
+Configuration parameters for constructing a template expander instance.
 
 
 </td></tr>
@@ -760,6 +859,17 @@ Description
 </td><td>
 
 The property name used for the build folder relative path.
+
+
+</td></tr>
+<tr><td>
+
+[COMBINATIONS\_GENERATOR\_MAX\_COMBINATIONS\_LIMIT](/xpm-lib-ts/docs/api/xpm-lib/variables/combinations_generator_max_combinations_limit)
+
+
+</td><td>
+
+The default maximum number of combinations that can be generated.
 
 
 </td></tr>
@@ -846,6 +956,17 @@ Represents the supported property types for `xpm init` template properties.
 </td></tr>
 <tr><td>
 
+[InstanceFactoryCallback](/xpm-lib-ts/docs/api/xpm-lib/typealiases/instancefactorycallback)
+
+
+</td><td>
+
+Callback function type for creating instances from template expansions.
+
+
+</td></tr>
+<tr><td>
+
 [JsonAction](/xpm-lib-ts/docs/api/xpm-lib/typealiases/jsonaction)
 
 
@@ -912,17 +1033,6 @@ Represents a JSON map of build configuration definitions.
 </td></tr>
 <tr><td>
 
-[JsonBuildConfigurationTemplateMatrix](/xpm-lib-ts/docs/api/xpm-lib/typealiases/jsonbuildconfigurationtemplatematrix)
-
-
-</td><td>
-
-Represents a matrix of parameters for build configuration template expansion.
-
-
-</td></tr>
-<tr><td>
-
 [JsonDependencies](/xpm-lib-ts/docs/api/xpm-lib/typealiases/jsondependencies)
 
 
@@ -973,6 +1083,28 @@ Represents a JSON property value.
 </td><td>
 
 Represents a JSON map of npm scripts.
+
+
+</td></tr>
+<tr><td>
+
+[JsonTemplateMatrix](/xpm-lib-ts/docs/api/xpm-lib/typealiases/jsontemplatematrix)
+
+
+</td><td>
+
+Represents a matrix of parameters for template expansion.
+
+
+</td></tr>
+<tr><td>
+
+[JsonTemplateMatrixContent](/xpm-lib-ts/docs/api/xpm-lib/typealiases/jsontemplatematrixcontent)
+
+
+</td><td>
+
+Represents an array of string values for a single matrix parameter.
 
 
 </td></tr>

@@ -2,13 +2,13 @@ import assert from 'node:assert';
 import * as path from 'node:path';
 import * as os from 'node:os';
 import { filterPath } from '../functions/filter-paths.js';
-import { isJsonObject, isJsonArray, isString, } from '../functions/is-something.js';
+import { isJsonObject, isString } from '../functions/is-something.js';
+import { getErrorMessage, hasLiquidSyntax } from '../functions/utils.js';
 import { performSubstitutions } from '../functions/perform-substitutions.js';
-import { getErrorMessage } from '../functions/utils.js';
 import { Actions } from './actions.js';
-import { CombinationsGenerator } from './combinations-generator.js';
 import { buildFolderRelativePathPropertyName } from './data-model.js';
-import { ConfigurationError, InputError } from './errors.js';
+import { ConfigurationError } from './errors.js';
+import { TemplateExpander } from './template-expander.js';
 export class BuildConfigurations {
     log;
     engine;
@@ -37,7 +37,7 @@ export class BuildConfigurations {
         }
         log.trace(`${BuildConfigurations.name}.initialise()`);
         for (const [buildConfigurationName, jsonBuildConfiguration,] of Object.entries(this.jsonBuildConfigurations)) {
-            if (buildConfigurationName.includes('{{')) {
+            if (hasLiquidSyntax(buildConfigurationName)) {
                 await this._processTemplate({
                     buildConfigurationName,
                     jsonBuildConfigurationTemplate: jsonBuildConfiguration,
@@ -46,7 +46,7 @@ export class BuildConfigurations {
             else {
                 if (this._buildComfigurationsNamesSet.has(buildConfigurationName)) {
                     throw new ConfigurationError(`build configuration name ` +
-                        `"${buildConfigurationName}" already defined.`);
+                        `"${buildConfigurationName}" already defined`);
                 }
                 else {
                     this._buildConfigurationsMap.set(buildConfigurationName, undefined);
@@ -62,24 +62,42 @@ export class BuildConfigurations {
         return true;
     }
     get size() {
+        assert(this._isInitialised, 'BuildConfigurations collection must be initialised before ' +
+            'accessing size');
         return this._buildConfigurationsMap.size;
     }
     get isEmpty() {
+        assert(this._isInitialised, 'BuildConfigurations collection must be initialised before ' +
+            'accessing isEmpty');
         return this._buildConfigurationsMap.size === 0;
     }
     get names() {
+        assert(this._isInitialised, 'BuildConfigurations collection must be initialised before ' +
+            'accessing names');
         return this._buildConfigurationsNames;
     }
     getJsonName(buildConfigurationName) {
-        return this._jsonBuildConfigurationsNamesMap.get(buildConfigurationName);
+        assert(this._isInitialised, 'BuildConfigurations collection must be initialised before ' +
+            'accessing getJsonName()');
+        const name = this._jsonBuildConfigurationsNamesMap.get(buildConfigurationName);
+        if (name === undefined) {
+            throw new ConfigurationError(`build configuration "${buildConfigurationName}" does not exist`);
+        }
+        return name;
     }
     hasJson(buildConfigurationName) {
+        assert(this._isInitialised, 'BuildConfigurations collection must be initialised before ' +
+            'accessing hasJson()');
         return this._jsonBuildConfigurationsNamesMap.has(buildConfigurationName);
     }
     getJson(buildConfigurationName) {
+        assert(this._isInitialised, 'BuildConfigurations collection must be initialised before ' +
+            'accessing getJson()');
         return this.jsonBuildConfigurations[this.getJsonName(buildConfigurationName)];
     }
     isHidden(buildConfigurationName) {
+        assert(this._isInitialised, 'BuildConfigurations collection must be initialised before ' +
+            'accessing isHidden()');
         const jsonBuildConfigurationName = this.getJsonName(buildConfigurationName);
         if (jsonBuildConfigurationName.includes('{{')) {
             const jsonBuildConfigurationTemplate = this.jsonBuildConfigurations[jsonBuildConfigurationName];
@@ -90,18 +108,20 @@ export class BuildConfigurations {
         return jsonBuildConfigurationContent.hidden ?? false;
     }
     has(buildConfigurationName) {
+        assert(this._isInitialised, 'BuildConfigurations collection must be initialised before ' +
+            'accessing has()');
         return this._buildConfigurationsMap.has(buildConfigurationName);
     }
     get(buildConfigurationName) {
+        assert(this._isInitialised, 'BuildConfigurations collection must be initialised before ' +
+            'accessing get()');
         const log = this.log;
         log.trace(`${BuildConfigurations.name}.get(${buildConfigurationName})`);
         let buildConfiguration = this._buildConfigurationsMap.get(buildConfigurationName);
         if (buildConfiguration === undefined) {
-            if (!this._jsonBuildConfigurationsNamesMap.has(buildConfigurationName)) {
-                throw new InputError(`buildConfiguration "${buildConfigurationName}" ` + `does not exist`);
-            }
-            const jsonBuildConfigurationName = this._jsonBuildConfigurationsNamesMap.get(buildConfigurationName);
-            const jsonBuildConfiguration = (this.jsonBuildConfigurations[jsonBuildConfigurationName] ??
+            const jsonBuildConfigurationName = this.getJsonName(buildConfigurationName);
+            const jsonBuildConfiguration = (this
+                .jsonBuildConfigurations[jsonBuildConfigurationName] ??
                 {});
             buildConfiguration = new BuildConfiguration({
                 buildConfigurationName,
@@ -141,7 +161,6 @@ export class BuildConfigurations {
         const log = this.log;
         log.trace(`${BuildConfigurations.name}.` +
             `#expandTemplateBuildConfigurations(${buildConfigurationName})`);
-        const newBuildConfigurationsMap = new Map();
         if (!isJsonObject(jsonBuildConfigurationTemplate.matrix)) {
             throw new ConfigurationError(`buildConfiguration "${buildConfigurationName}" ` +
                 `matrix is not an object`);
@@ -150,89 +169,24 @@ export class BuildConfigurations {
             throw new ConfigurationError(`buildConfiguration "${buildConfigurationName}" ` +
                 `template is not a JSON object`);
         }
-        const matrixKeys = [];
-        const matrixValues = [];
-        for (const [matrixKey, matrixValueArray] of Object.entries(jsonBuildConfigurationTemplate.matrix)) {
-            if (!isJsonArray(matrixValueArray)) {
-                throw new ConfigurationError(`buildConfiguration "${buildConfigurationName}" ` +
-                    `matrix.${matrixKey} is not an array`);
-            }
-            for (const matrixValue of matrixValueArray) {
-                if (!isString(matrixValue)) {
-                    throw new ConfigurationError(`buildConfiguration "${buildConfigurationName}" ` +
-                        `matrix.${matrixKey} value is not a string`);
-                }
-            }
-            matrixKeys.push(matrixKey);
-            const stringValue = matrixValueArray.join(os.EOL);
-            if (stringValue.includes('{{') || stringValue.includes('{%')) {
-                let substitutedValue;
-                try {
-                    substitutedValue = await performSubstitutions({
-                        input: stringValue,
-                        engine: this.engine,
-                        substitutionsVariables: {
-                            ...this.substitutionsVariables,
-                        },
-                        log: this.log,
-                    });
-                }
-                catch (error) {
-                    const message = getErrorMessage(error) +
-                        ` in buildConfiguration "${buildConfigurationName}" ` +
-                        `matrix substitution`;
-                    throw new ConfigurationError(message);
-                }
-                matrixValues.push(substitutedValue.replace(new RegExp(os.EOL + '$'), '').split(os.EOL));
-            }
-            else {
-                matrixValues.push(matrixValueArray);
-            }
-        }
-        const combinationsGenerator = new CombinationsGenerator({
-            matrixKeys,
-            matrixValues,
+        const expander = new TemplateExpander({
+            engine: this.engine,
+            substitutionsVariables: this.substitutionsVariables,
             log: this.log,
         });
-        const combinations = combinationsGenerator.generate();
-        log.trace('combinations =>', combinations);
-        for (const combination of combinations) {
-            await this._createSubstitutedBuildConfiguration({
-                buildConfigurationName,
-                jsonBuildConfiguration: jsonBuildConfigurationTemplate.template,
-                combination,
-                newBuildConfigurationsMap,
-            });
-        }
-        return newBuildConfigurationsMap;
-    }
-    async _createSubstitutedBuildConfiguration({ buildConfigurationName, jsonBuildConfiguration, combination, newBuildConfigurationsMap, }) {
-        let substitutedBuildConfigurationName;
-        try {
-            substitutedBuildConfigurationName = await performSubstitutions({
-                input: buildConfigurationName,
-                engine: this.engine,
-                substitutionsVariables: {
-                    ...this.substitutionsVariables,
-                    matrix: combination,
-                },
-                log: this.log,
-            });
-        }
-        catch (error) {
-            const message = getErrorMessage(error) +
-                ` in buildConfiguration "${buildConfigurationName}" ` +
-                `name substitution`;
-            throw new ConfigurationError(message);
-        }
-        const newBuildConfiguration = new BuildConfiguration({
-            buildConfigurationName: substitutedBuildConfigurationName,
-            templateBuildConfigurationName: buildConfigurationName,
-            jsonBuildConfiguration,
-            parentBuildConfigurations: this,
-            matrixParameters: { ...combination },
+        return await expander.expandTemplate({
+            templateName: buildConfigurationName,
+            matrix: jsonBuildConfigurationTemplate.matrix,
+            templateContent: jsonBuildConfigurationTemplate.template,
+            templateType: 'buildConfiguration',
+            instanceFactory: (expandedName, combination, templateContent, originalTemplateName) => new BuildConfiguration({
+                buildConfigurationName: expandedName,
+                templateBuildConfigurationName: originalTemplateName,
+                jsonBuildConfiguration: templateContent,
+                parentBuildConfigurations: this,
+                matrixParameters: { ...combination },
+            }),
         });
-        newBuildConfigurationsMap.set(substitutedBuildConfigurationName, newBuildConfiguration);
     }
 }
 export class BuildConfiguration {
@@ -329,8 +283,7 @@ export class BuildConfiguration {
             devDependencies: this.devDependencies,
         };
         const stringifiedDependencies = JSON.stringify(unsubstitutedDependencies);
-        if (stringifiedDependencies.includes('{{') ||
-            stringifiedDependencies.includes('{%')) {
+        if (hasLiquidSyntax(stringifiedDependencies)) {
             let substitutedDependencies;
             try {
                 substitutedDependencies = await performSubstitutions({
@@ -364,24 +317,25 @@ export class BuildConfiguration {
         log.trace(this.buildConfigurationName, 'properties => ', this.properties);
         log.trace(this.buildConfigurationName, 'dependencies => ', this.dependencies);
         log.trace(this.buildConfigurationName, 'devDependencies => ', this.devDependencies);
-        log.trace(this.buildConfigurationName, 'actions => ', this._actions.names);
         this._isInitialised = true;
         return true;
     }
     get actions() {
+        assert(this._isInitialised, 'BuildConfiguration must be initialised before ' + 'accessing actions');
         assert(this._actions !== undefined, 'Actions not initialised');
         return this._actions;
     }
     get buildFolderRelativePath() {
-        assert(this._buildFolderRelativePath !== undefined, 'Actions not initialised');
+        assert(this._isInitialised, 'BuildConfiguration must be initialised before ' +
+            'accessing buildFolderRelativePath');
+        assert(this._buildFolderRelativePath !== undefined, 'BuildConfiguration _buildFolderRelativePath not initialised');
         return this._buildFolderRelativePath;
     }
     async _substituteTemplate() {
         const log = this._log;
         let localJsonBuildConfiguration;
         const stringifiedJsonBuildConfiguration = JSON.stringify(this.jsonBuildConfiguration);
-        if (stringifiedJsonBuildConfiguration.includes('{{') ||
-            stringifiedJsonBuildConfiguration.includes('{%')) {
+        if (hasLiquidSyntax(stringifiedJsonBuildConfiguration)) {
             let substitutedJsonBuildConfiguration;
             try {
                 substitutedJsonBuildConfiguration = await performSubstitutions({
@@ -414,8 +368,7 @@ export class BuildConfiguration {
         const log = this._log;
         let localJsonBuildConfiguration;
         const stringifiedJsonInherits = JSON.stringify(this.jsonBuildConfiguration.inherits ?? {});
-        if (stringifiedJsonInherits.includes('{{') ||
-            stringifiedJsonInherits.includes('{%')) {
+        if (hasLiquidSyntax(stringifiedJsonInherits)) {
             let substitutedJsonInherits;
             try {
                 substitutedJsonInherits = await performSubstitutions({
@@ -446,8 +399,7 @@ export class BuildConfiguration {
         }
         return localJsonBuildConfiguration;
     }
-    async _processInherits(localJsonBuildConfiguration) {
-        const log = this._log;
+    _parseInheritsField(localJsonBuildConfiguration) {
         let jsonInherits = [];
         if (isString(localJsonBuildConfiguration.inherits)) {
             jsonInherits = [localJsonBuildConfiguration.inherits];
@@ -461,52 +413,54 @@ export class BuildConfiguration {
         else if (Array.isArray(localJsonBuildConfiguration.inherit)) {
             jsonInherits = localJsonBuildConfiguration.inherit;
         }
-        let inheritsNames = jsonInherits;
         if (jsonInherits.length > 0) {
             const joinedInherits = jsonInherits.join(os.EOL);
-            inheritsNames = joinedInherits.split(os.EOL);
+            return joinedInherits.split(os.EOL);
         }
+        return jsonInherits;
+    }
+    async _processInheritedConfiguration(inheritedBuildConfigurationName, inheritedActionsMap) {
+        if (inheritedBuildConfigurationName.trim() === '') {
+            return;
+        }
+        if (!this.parentBuildConfigurations.hasJson(inheritedBuildConfigurationName)) {
+            throw new ConfigurationError(`buildConfiguration "${this.buildConfigurationName}" ` +
+                `inherits from missing "${inheritedBuildConfigurationName}"`);
+        }
+        if (this._inheritedNamesSet.has(inheritedBuildConfigurationName)) {
+            throw new ConfigurationError(`buildConfiguration "${this.buildConfigurationName}" ` +
+                `inherits from circular reference ` +
+                `"${inheritedBuildConfigurationName}"`);
+        }
+        this._inheritedNamesSet.add(inheritedBuildConfigurationName);
+        const inheritedBuildConfiguration = this.parentBuildConfigurations.get(inheritedBuildConfigurationName);
+        await inheritedBuildConfiguration.initialise();
+        this.properties = {
+            ...this.properties,
+            ...inheritedBuildConfiguration.properties,
+        };
+        this.dependencies = {
+            ...this.dependencies,
+            ...inheritedBuildConfiguration.dependencies,
+        };
+        this.devDependencies = {
+            ...this.devDependencies,
+            ...inheritedBuildConfiguration.devDependencies,
+        };
+        await inheritedBuildConfiguration.actions.initialise();
+        for (const actionName of inheritedBuildConfiguration.actions.names) {
+            const action = inheritedBuildConfiguration.actions.get(actionName);
+            inheritedActionsMap.set(actionName, action);
+        }
+    }
+    async _processInherits(localJsonBuildConfiguration) {
+        const log = this._log;
+        const inheritsNames = this._parseInheritsField(localJsonBuildConfiguration);
         this.inheritsNames = inheritsNames;
         log.trace(this.buildConfigurationName, 'inherits from', this.inheritsNames);
         const inheritedActionsMap = new Map();
         for (const inheritedBuildConfigurationName of inheritsNames) {
-            if (inheritedBuildConfigurationName.trim() === '') {
-                continue;
-            }
-            if (this.parentBuildConfigurations.hasJson(inheritedBuildConfigurationName)) {
-                if (this._inheritedNamesSet.has(inheritedBuildConfigurationName)) {
-                    throw new InputError('buildConfiguration' +
-                        ` '${this.buildConfigurationName}'` +
-                        ' inherits from circular reference' +
-                        ` '${inheritedBuildConfigurationName}'`);
-                }
-                this._inheritedNamesSet.add(inheritedBuildConfigurationName);
-                const inheritedBuildConfiguration = this.parentBuildConfigurations.get(inheritedBuildConfigurationName);
-                await inheritedBuildConfiguration.initialise();
-                this.properties = {
-                    ...this.properties,
-                    ...inheritedBuildConfiguration.properties,
-                };
-                this.dependencies = {
-                    ...this.dependencies,
-                    ...inheritedBuildConfiguration.dependencies,
-                };
-                this.devDependencies = {
-                    ...this.devDependencies,
-                    ...inheritedBuildConfiguration.devDependencies,
-                };
-                await inheritedBuildConfiguration.actions.initialise();
-                for (const actionName of inheritedBuildConfiguration.actions.names) {
-                    const action = inheritedBuildConfiguration.actions.get(actionName);
-                    inheritedActionsMap.set(actionName, action);
-                }
-            }
-            else {
-                throw new InputError('buildConfiguration' +
-                    ` '${this.buildConfigurationName}'` +
-                    ' inherits from missing' +
-                    ` '${inheritedBuildConfigurationName}'`);
-            }
+            await this._processInheritedConfiguration(inheritedBuildConfigurationName, inheritedActionsMap);
         }
         return inheritedActionsMap;
     }

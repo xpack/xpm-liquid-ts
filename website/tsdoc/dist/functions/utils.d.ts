@@ -1,3 +1,4 @@
+import { PlatformDetector } from '../classes/platform-detector.js';
 /**
  * Extracts an error message string from an unknown error value.
  *
@@ -67,9 +68,47 @@ export declare function getErrorMessage(error: unknown): string;
  *
  * @param doForce32bit - Whether to coerce 64-bit architectures to
  * their 32-bit equivalents.
+ * @param platformDetector - The platform detector instance to use. Defaults
+ * to a new {@link PlatformDetector} instance.
  * @returns The platform key in the form `platform-arch`.
  */
-export declare function getPlatformKey({ doForce32bit, }?: {
+export declare function getPlatformKey({ doForce32bit, platformDetector, }?: {
     doForce32bit?: boolean;
+    platformDetector?: PlatformDetector;
 }): string;
+/**
+ * Checks whether a string contains Liquid template syntax.
+ *
+ * @remarks
+ * This utility function detects the presence of Liquid template markers
+ * in a string, indicating that the string requires template processing.
+ *
+ * Liquid syntax patterns detected:
+ *
+ * <ol>
+ * <li><b>Variable output:</b> <code>\{\{</code> marks the start of a variable
+ *    interpolation (e.g., <code>\{\{ package.name \}\}</code>).</li>
+ * <li><b>Control flow:</b> <code>\{%</code> marks the start of a tag
+ *    for logic or iteration (e.g., <code>\{% if condition %\}</code>,
+ *    <code>\{% for item in array %\}</code>).</li>
+ * </ol>
+ *
+ * The function uses a regular expression to efficiently scan the string
+ * for these markers without needing to check for both patterns separately.
+ * This is more efficient than calling <code>includes()</code> twice and
+ * provides a single point of maintenance for Liquid syntax detection logic.
+ *
+ * Common usage:
+ *
+ * <ul>
+ * <li>Determine whether to process a value through the Liquid engine.</li>
+ * <li>Skip unnecessary template evaluation for static strings.</li>
+ * <li>Validate configuration values for template content.</li>
+ * </ul>
+ *
+ * @param value - The string to check for Liquid syntax.
+ * @returns <code>true</code> if the string contains Liquid syntax markers,
+ * <code>false</code> otherwise.
+ */
+export declare function hasLiquidSyntax(value: string): boolean;
 //# sourceMappingURL=utils.d.ts.map

@@ -1,6 +1,6 @@
 import * as liquidjs from 'liquidjs';
 import { isJsonObject } from '../functions/is-something.js';
-import { InputError } from './errors.js';
+import { TemplateError } from './errors.js';
 export class LiquidPropertiesDrop extends liquidjs.Drop {
     _log;
     _properties;
@@ -14,7 +14,7 @@ export class LiquidPropertiesDrop extends liquidjs.Drop {
     }
     async liquidMethodMissing(key, context) {
         if (this._properties[key] === undefined) {
-            throw new InputError(`"properties.${key}" not defined`);
+            throw new TemplateError(`"properties.${key}" not defined`);
         }
         const log = this._log;
         const value = this._properties[key];
@@ -47,7 +47,7 @@ export class LiquidMatrixDrop extends liquidjs.Drop {
     }
     async liquidMethodMissing(key, context) {
         if (this._matrix[key] === undefined) {
-            throw new InputError(`"matrix.${key}" not defined`);
+            throw new TemplateError(`"matrix.${key}" not defined`);
         }
         const log = this._log;
         const value = this._matrix[key];

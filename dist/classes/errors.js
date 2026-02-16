@@ -4,6 +4,8 @@ export class PrerequisitesError extends Error {
 }
 export class ConfigurationError extends Error {
 }
+export class TemplateError extends Error {
+}
 export class InputError extends Error {
 }
 export class OutputError extends Error {

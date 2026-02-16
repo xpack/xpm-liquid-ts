@@ -37,14 +37,23 @@ import { Logger } from '@xpack/logger';
  * warnings if the expected permission state is not achieved, which can
  * occur on filesystems with non-standard permission handling.
  *
+ * Recursion depth is limited to `CHMOD_RECURSIVELY_MAX_DEPTH` levels to
+ * protect against extremely deep directory trees.
+ *
  * @param inputPath - The file or folder path to process.
  * @param readOnly - Whether to set permissions to read-only.
  * @param log - The logger instance for output and diagnostics.
+ * @param depth - Internal parameter tracking recursion depth.
  * @returns A promise that resolves when all permissions have been updated.
+ *
+ * @throws {@link ConfigurationError}
+ * If recursion depth exceeds the maximum limit.
  */
-export declare function chmodRecursively({ inputPath, readOnly, log, }: {
+export declare function chmodRecursively({ inputPath, readOnly, log, depth, maxDepth, }: {
     inputPath: string;
     readOnly: boolean;
     log: Logger;
+    depth?: number;
+    maxDepth?: number;
 }): Promise<void>;
 //# sourceMappingURL=chmod-recursively.d.ts.map

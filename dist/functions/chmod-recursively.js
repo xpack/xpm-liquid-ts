@@ -1,9 +1,17 @@
 import assert from 'node:assert';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
-export async function chmodRecursively({ inputPath, readOnly, log, }) {
+import { ConfigurationError } from '../index.js';
+const CHMOD_RECURSIVELY_MAX_DEPTH = 42;
+export async function chmodRecursively({ inputPath, readOnly, log, depth = 0, maxDepth = CHMOD_RECURSIVELY_MAX_DEPTH, }) {
     assert(inputPath, 'inputPath is required');
     assert(log, 'log is required');
+    assert(maxDepth > 0, 'maxDepth must be a positive integer');
+    if (depth > maxDepth) {
+        throw new ConfigurationError(`Recursion depth limit exceeded ` +
+            `(${String(maxDepth)} levels) ` +
+            `whilst processing: ${inputPath}`);
+    }
     const stat = await fs.lstat(inputPath);
     if (stat.isSymbolicLink()) {
         log.trace(inputPath, 'is a symbolic link, skipping');
@@ -19,6 +27,7 @@ export async function chmodRecursively({ inputPath, readOnly, log, }) {
                 inputPath: path.resolve(inputPath, dirent.name),
                 readOnly,
                 log,
+                depth: depth + 1,
             });
         }
     }
@@ -49,6 +58,7 @@ export async function chmodRecursively({ inputPath, readOnly, log, }) {
                 inputPath: path.resolve(inputPath, dirent.name),
                 readOnly,
                 log,
+                depth: depth + 1,
             });
         }
     }

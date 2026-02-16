@@ -360,6 +360,9 @@ export declare class BuildConfigurations {
      * @remarks
      * For template-generated configurations, this returns the template
      * name.
+     *
+     * @throws {@link InputError}
+     * If the build configuration does not exist.
      */
     getJsonName(buildConfigurationName: string): string;
     /**
@@ -488,20 +491,19 @@ export declare class BuildConfigurations {
      * Expands a template build configuration into multiple configurations.
      *
      * @remarks
-     * This method computes the Cartesian product of matrix parameter
-     * values and creates a configuration for each combination, substituting
-     * matrix values into both the configuration name and content.
+     * This method uses the {@link TemplateExpander} to compute the Cartesian
+     * product of matrix parameter values and creates a configuration for each
+     * combination, substituting matrix values into both the configuration name
+     * and content.
      *
      * Processing steps:
      *
      * <ol>
-     * <li>Validates matrix structure (object with array values).</li>
-     * <li>Validates template format (must be a JSON object).</li>
-     * <li>Performs Liquid substitutions on matrix values if they contain
-     *    template syntax.</li>
-     * <li>Recursively generates all combinations using Cartesian product.</li>
-     * <li>Creates a configuration instance for each combination with matrix
-     *    parameters stored for later full evaluation.</li>
+     * <li>Validates matrix and template structure.</li>
+     * <li>Delegates to <code>TemplateExpander</code> for matrix processing and
+     *    name expansion.</li>
+     * <li>Creates configuration instances via factory callback for each
+     *    combination.</li>
      * </ol>
      *
      * Matrix variables are scoped to individual configurations and accessible
@@ -522,46 +524,6 @@ export declare class BuildConfigurations {
         buildConfigurationName: string;
         jsonBuildConfigurationTemplate: JsonBuildConfigurationTemplate;
     }): Promise<Map<string, BuildConfiguration>>;
-    /**
-     * Creates a substituted build configuration from a template combination.
-     *
-     * @remarks
-     * This helper method is invoked during template expansion for each matrix
-     * combination to generate concrete build configuration instances from the
-     * template definition.
-     *
-     * Processing steps:
-     *
-     * <ol>
-     * <li>Perform Liquid substitutions on the template build configuration name
-     *    using the matrix combination values.</li>
-     * <li>Create a new <code>BuildConfiguration</code> instance with the
-     *    substituted name and matrix parameters.</li>
-     * <li>Register the new configuration in the provided map for subsequent
-     *    collection integration.</li>
-     * </ol>
-     *
-     * @param buildConfigurationName - The template build configuration name
-     * containing Liquid variables (e.g.,
-     * <code>release-\{\{ matrix.arch \}\}</code>).
-     * @param jsonBuildConfiguration - The JSON configuration content from the
-     * template definition.
-     * @param combination - The matrix parameter values for this specific
-     * combination (e.g., <code>\{ arch: 'x64', optimize: 'speed' \}</code>).
-     * @param newBuildConfigurationsMap - The map to populate with the generated
-     * configuration instance.
-     * @returns A promise that resolves when the configuration has been created
-     * and registered.
-     *
-     * @throws {@link ConfigurationError}
-     * If substitutions fail during build configuration name expansion.
-     */
-    protected _createSubstitutedBuildConfiguration({ buildConfigurationName, jsonBuildConfiguration, combination, newBuildConfigurationsMap, }: {
-        buildConfigurationName: string;
-        jsonBuildConfiguration: JsonBuildConfigurationContent;
-        combination: Record<string, string>;
-        newBuildConfigurationsMap: Map<string, BuildConfiguration>;
-    }): Promise<void>;
 }
 /**
  * Configuration parameters for constructing a build configuration instance.
@@ -1198,6 +1160,59 @@ export declare class BuildConfiguration {
      * If Liquid template substitution fails on the inherits field.
      */
     protected _substituteInherits(): Promise<JsonBuildConfigurationContent>;
+    /**
+     * Parses the inherits field from JSON configuration.
+     *
+     * @remarks
+     * This helper method extracts and normalises inheritance information from
+     * the configuration, supporting both the current <code>inherits</code>
+     * field and the deprecated <code>inherit</code> field. It handles both
+     * string and array formats.
+     *
+     * Processing steps:
+     *
+     * <ol>
+     * <li>Check for <code>inherits</code> field (current standard).</li>
+     * <li>Fall back to <code>inherit</code> field (deprecated).</li>
+     * <li>Convert single strings to single-element arrays.</li>
+     * <li>Join array elements with line breaks and split to handle
+     *    multi-line strings.</li>
+     * </ol>
+     *
+     * @param localJsonBuildConfiguration - The JSON configuration content.
+     * @returns Array of inherited configuration names.
+     */
+    private _parseInheritsField;
+    /**
+     * Processes and merges a single inherited configuration.
+     *
+     * @remarks
+     * This helper method handles the initialisation of a single inherited
+     * configuration and merges its properties, dependencies, and actions into
+     * the current configuration.
+     *
+     * Processing steps:
+     *
+     * <ol>
+     * <li>Detect circular references by checking the inherited names set.</li>
+     * <li>Initialise the inherited configuration recursively.</li>
+     * <li>Merge properties, dependencies, and devDependencies using spread
+     *    operator (later values override earlier ones).</li>
+     * <li>Collect inherited actions into the provided map.</li>
+     * </ol>
+     *
+     * @param inheritedBuildConfigurationName - Name of the configuration to
+     * inherit from.
+     * @param inheritedActionsMap - Map to accumulate inherited actions.
+     * @returns A promise that resolves when processing is complete.
+     *
+     * @throws {@link InputError}
+     * If a circular inheritance reference is detected.
+     *
+     * @throws {@link InputError}
+     * If the inherited configuration name does not exist.
+     */
+    private _processInheritedConfiguration;
     /**
      * Processes inheritance for a build configuration.
      *

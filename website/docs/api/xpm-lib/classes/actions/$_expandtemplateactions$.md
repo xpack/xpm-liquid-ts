@@ -85,11 +85,11 @@ A promise that resolves to a map of expanded action names to their corresponding
 
 ## Remarks
 
-This method computes the Cartesian product of all matrix parameter values and creates a separate action for each combination, substituting matrix values into both the action name and command templates.
+This method uses the [TemplateExpander](/xpm-lib-ts/docs/api/xpm-lib/classes/templateexpander) to compute the Cartesian product of all matrix parameter values and creates a separate action for each combination, substituting matrix values into both the action name and command templates.
 
 Processing steps:
 
-<ol> <li>Validates matrix structure (object with array values).</li> <li>Validates template format (string or array).</li> <li>Performs Liquid substitutions on matrix values if they contain template syntax.</li> <li>Recursively generates all combinations using Cartesian product.</li> <li>Creates an action instance for each combination with matrix parameters available for later substitution.</li> </ol>
+<ol> <li>Validates matrix and template structure.</li> <li>Delegates to <code>TemplateExpander</code> for matrix processing and name expansion.</li> <li>Creates action instances via factory callback for each combination.</li> </ol>
 
 Matrix variables are scoped to individual actions and accessible via the `matrix` namespace during action command evaluation.
 

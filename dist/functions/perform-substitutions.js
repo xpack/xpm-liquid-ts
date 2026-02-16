@@ -1,10 +1,15 @@
 import assert from 'node:assert';
-import * as util from 'node:util';
 import { Context } from 'liquidjs';
-import { ConfigurationError } from '../classes/errors.js';
+import { TemplateError } from '../classes/errors.js';
 import { LiquidPropertiesDrop, LiquidMatrixDrop, } from '../classes/liquid-drop.js';
-export async function performSubstitutions({ log, engine, input, substitutionsVariables, }) {
+const PERFORM_SUBSTITUTION_MAX_ITERATIONS = 42;
+const PERFORM_SUBSTITUTION_MAX_OUTPUT_SIZE = 42 * 1024;
+export async function performSubstitutions({ engine, input, substitutionsVariables, log, maxIterations = PERFORM_SUBSTITUTION_MAX_ITERATIONS, maxOutputSize = PERFORM_SUBSTITUTION_MAX_OUTPUT_SIZE, }) {
+    assert(engine, 'engine is required');
     assert(substitutionsVariables, 'substitutionsVariables is required');
+    assert(log, 'log is required');
+    assert(maxIterations > 0, 'maxIterations must be a positive integer');
+    assert(maxOutputSize > 0, 'maxOutputSize must be a positive integer');
     if (input.trim() === '') {
         return input;
     }
@@ -34,10 +39,20 @@ export async function performSubstitutions({ log, engine, input, substitutionsVa
     let current = input;
     let substituted = current;
     let count = 0;
-    while (current.includes('{{') || current.includes('{%')) {
-        ++count;
+    const LIQUID_SYNTAX_REGEX = /\{\{|\{%/;
+    while (LIQUID_SYNTAX_REGEX.test(current)) {
+        if (++count > maxIterations) {
+            throw new TemplateError(`Substitution limit exceeded ` +
+                `(${String(maxIterations)} iterations). ` +
+                `Possible circular reference in template.`);
+        }
         try {
             substituted = (await engine.parseAndRender(current, context));
+            if (substituted.length > maxOutputSize) {
+                throw new TemplateError(`Template expansion exceeded size limit ` +
+                    `(${String(maxOutputSize)} bytes). ` +
+                    `Output was ${String(substituted.length)} bytes.`);
+            }
             if (substituted === current) {
                 log.warn(`performSubstitutions() step ${String(count)} => (`, substituted, ') did not change');
                 break;
@@ -45,11 +60,12 @@ export async function performSubstitutions({ log, engine, input, substitutionsVa
         }
         catch (error) {
             if (error instanceof Error) {
-                log.trace(util.inspect(error));
-                throw new ConfigurationError(error.message.replace(/, line:.*/g, ''));
+                log.trace(`Liquid error: ${error.message}`);
+                const cleanMessage = error.message.replace(/, line:.*/g, '');
+                throw new TemplateError(cleanMessage);
             }
             else {
-                throw new ConfigurationError(String(error));
+                throw new TemplateError(String(error));
             }
         }
         log.trace(`performSubstitutions() step ${String(count)} => (`, substituted, ')');

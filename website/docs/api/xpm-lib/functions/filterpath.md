@@ -19,7 +19,7 @@ Replaces non-alphanumeric characters with dashes to make paths comply with file 
 ## Signature
 
 ```typescript
-export declare function filterPath(input: string): string;
+export declare function filterPath(input: string, platformDetector?: PlatformDetector): string;
 ```
 
 ## Parameters
@@ -53,6 +53,22 @@ string
 </td><td>
 
 A path candidate.
+
+
+</td></tr>
+<tr><td>
+
+platformDetector
+
+
+</td><td>
+
+[PlatformDetector](/xpm-lib-ts/docs/api/xpm-lib/classes/platformdetector)
+
+
+</td><td>
+
+_(Optional)_ The platform detector instance to use. Defaults to a new [PlatformDetector](/xpm-lib-ts/docs/api/xpm-lib/classes/platformdetector) instance.
 
 
 </td></tr>

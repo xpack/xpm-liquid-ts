@@ -52,10 +52,12 @@ import { LiquidSubstitutionsVariables } from '../data/substitutions-variables.js
  * @throws {@link ConfigurationError}
  * If Liquid rendering fails.
  */
-export declare function performSubstitutions({ log, engine, input, substitutionsVariables, }: {
-    log: Logger;
+export declare function performSubstitutions({ engine, input, substitutionsVariables, log, maxIterations, maxOutputSize, }: {
     engine: LiquidEngine;
     input: string;
     substitutionsVariables: LiquidSubstitutionsVariables;
+    log: Logger;
+    maxIterations?: number;
+    maxOutputSize?: number;
 }): Promise<string>;
 //# sourceMappingURL=perform-substitutions.d.ts.map

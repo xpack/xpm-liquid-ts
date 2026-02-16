@@ -134,6 +134,9 @@ export declare class Package {
      *
      * @param packageFolderPath - The absolute path to the package folder.
      * @param log - The logger instance for output and diagnostics.
+     *
+     * @throws {@link InputError}
+     * If packageFolderPath is not provided or is not an absolute path.
      */
     constructor({ packageFolderPath, log }: PackageConstructorParameters);
     /**

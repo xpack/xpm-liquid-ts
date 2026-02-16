@@ -38,12 +38,6 @@ export declare class BuildConfigurations {
         buildConfigurationName: string;
         jsonBuildConfigurationTemplate: JsonBuildConfigurationTemplate;
     }): Promise<Map<string, BuildConfiguration>>;
-    protected _createSubstitutedBuildConfiguration({ buildConfigurationName, jsonBuildConfiguration, combination, newBuildConfigurationsMap, }: {
-        buildConfigurationName: string;
-        jsonBuildConfiguration: JsonBuildConfigurationContent;
-        combination: Record<string, string>;
-        newBuildConfigurationsMap: Map<string, BuildConfiguration>;
-    }): Promise<void>;
 }
 export interface BuildConfigurationConstructorParameters {
     buildConfigurationName: string;
@@ -76,6 +70,8 @@ export declare class BuildConfiguration {
     get buildFolderRelativePath(): string;
     protected _substituteTemplate(): Promise<JsonBuildConfigurationContent>;
     protected _substituteInherits(): Promise<JsonBuildConfigurationContent>;
+    private _parseInheritsField;
+    private _processInheritedConfiguration;
     protected _processInherits(localJsonBuildConfiguration: JsonBuildConfigurationContent): Promise<Map<string, Action>>;
     protected _getBuildFolderRelativePath(): Promise<string>;
 }

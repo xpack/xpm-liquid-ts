@@ -19,7 +19,7 @@ The Liquid engine used for substitutions.
 ## Signature
 
 ```typescript
-protected _engine: Liquid;
+protected _engine: LiquidEngine;
 ```
 
 ## Remarks

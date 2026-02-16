@@ -2,13 +2,15 @@ import assert from 'node:assert';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import semver from 'semver';
-import { InputError, PrerequisitesError } from './errors.js';
+import { ConfigurationError, InputError, PrerequisitesError } from './errors.js';
 import { isString } from '../functions/is-something.js';
+import { hasLiquidSyntax } from '../functions/utils.js';
 export class Package {
     packageFolderPath;
     jsonPackage;
     _log;
     constructor({ packageFolderPath, log }) {
+        assert(packageFolderPath && path.isAbsolute(packageFolderPath), `packageFolderPath must be an absolute path, got: ${packageFolderPath}`);
         this._log = log;
         this.packageFolderPath = packageFolderPath;
         log.trace(`${Package.name}(${packageFolderPath})`);
@@ -90,21 +92,21 @@ export class Package {
         }
         if (jsonPackage?.xpack.executables ?? jsonPackage?.xpack.bin) {
             if (!jsonPackage.xpack.binaries) {
-                throw new InputError("doesn't look like a proper binary xpm package, " +
+                throw new ConfigurationError("doesn't look like a proper binary xpm package, " +
                     'package.json has no "xpack.binaries"');
             }
             if (!jsonPackage.xpack.binaries.platforms) {
-                throw new InputError("doesn't look like a proper binary xpm package, " +
+                throw new ConfigurationError("doesn't look like a proper binary xpm package, " +
                     'package.json has no "xpack.binaries.platforms"');
             }
             return true;
         }
         if (jsonPackage?.xpack.binaries) {
             if (!jsonPackage.xpack.binaries.platforms) {
-                throw new InputError("doesn't look like a proper binary xpm package, " +
+                throw new ConfigurationError("doesn't look like a proper binary xpm package, " +
                     'package.json has no "xpack.binaries.platforms"');
             }
-            throw new InputError("doesn't look like a proper binary xpm package, " +
+            throw new ConfigurationError("doesn't look like a proper binary xpm package, " +
                 'package.json has no "xpack.executables"');
         }
         return false;
@@ -148,8 +150,7 @@ export class Package {
                 Object.keys(json.xpack.buildConfigurations).length > 0) {
                 for (const buildConfigurationName of Object.keys(json.xpack.buildConfigurations)) {
                     const buildConfiguration = json.xpack.buildConfigurations[buildConfigurationName];
-                    if (buildConfigurationName.includes('{{') ||
-                        buildConfigurationName.includes('{%')) {
+                    if (hasLiquidSyntax(buildConfigurationName)) {
                         const buildConfigurationTemplate = buildConfiguration;
                         if (buildConfigurationTemplate.template.actions !== undefined &&
                             Object.keys(buildConfigurationTemplate.template.actions).length >

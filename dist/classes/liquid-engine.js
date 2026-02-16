@@ -3,8 +3,10 @@ import * as path from 'node:path';
 import * as util from 'node:util';
 import * as liquidjs from 'liquidjs';
 import { isJsonObject } from '../functions/is-something.js';
+import { PlatformDetector } from './platform-detector.js';
 export class LiquidEngine extends liquidjs.Liquid {
-    constructor() {
+    platformDetector;
+    constructor(platformDetector = new PlatformDetector()) {
         super({
             strictFilters: true,
             strictVariables: true,
@@ -15,6 +17,7 @@ export class LiquidEngine extends liquidjs.Liquid {
             greedy: false,
             lenientIf: true,
         });
+        this.platformDetector = platformDetector;
         this.registerFilter('path_basename', (p, ...arg) => path.basename(p, ...arg));
         this.registerFilter('path_dirname', (p) => path.dirname(p));
         this.registerFilter('path_normalize', (p) => path.normalize(p));
@@ -34,7 +37,7 @@ export class LiquidEngine extends liquidjs.Liquid {
             return util.format(format, ...args);
         });
         this.registerFilter('to_filename', (input) => {
-            const fixed = process.platform === 'win32'
+            const fixed = this.platformDetector.isWindows()
                 ? input.replace(/[^a-zA-Z0-9\\:]+/g, '-')
                 : input.replace(/[^a-zA-Z0-9/]+/g, '-');
             return fixed.replace(/--/g, '-');

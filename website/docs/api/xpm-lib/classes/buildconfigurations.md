@@ -369,22 +369,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[\_createSubstitutedBuildConfiguration({ buildConfigurationName, jsonBuildConfiguration, combination, newBuildConfigurationsMap, }, input)](/xpm-lib-ts/docs/api/xpm-lib/classes/buildconfigurations/_createsubstitutedbuildconfiguration)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-Creates a substituted build configuration from a template combination.
-
-
-</td></tr>
-<tr><td>
-
 [\_expandTemplateBuildConfigurations({ buildConfigurationName, jsonBuildConfigurationTemplate, }, input)](/xpm-lib-ts/docs/api/xpm-lib/classes/buildconfigurations/_expandtemplatebuildconfigurations)
 
 

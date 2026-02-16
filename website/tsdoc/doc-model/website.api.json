@@ -780,105 +780,8 @@
             },
             {
               "kind": "Method",
-              "canonicalReference": "@xpack/xpm-lib!Actions#_createSubstitutedAction:member(1)",
-              "docComment": "/**\n * Creates a substituted action from a template and matrix combination.\n *\n * @remarks\n *\n * This helper method is called for each combination generated from a template action's matrix parameters. It performs the actual name substitution and creates the concrete action instance.\n *\n * Processing steps:\n *\n * <ol> <li>Performs Liquid substitution on the template action name using the specific matrix combination values.</li> <li>Creates a new <code>Action</code> instance with: <ul> <li>The substituted concrete action name.</li> <li>The action's command template (not yet evaluated).</li> <li>Reference to this parent actions collection.</li> <li>The matrix parameter values for later command substitution.</li> </ul> </li> <li>Stores the new action instance in the provided map.</li> </ol>\n *\n * The matrix parameters are preserved in the action instance and will be used later when the action is initialised to substitute matrix references in the command templates.\n *\n * @param combination - The matrix parameter combination for this action (e.g., <code>\\{ arch: 'x64', platform: 'linux' \\}</code>).\n *\n * @param actionName - The template action name containing Liquid variables (e.g., <code>test-\\{\\{ matrix.arch \\}\\}</code>).\n *\n * @param jsonAction - The action's command template definition.\n *\n * @param newActionsMap - The map to store the newly created action.\n *\n * @returns A promise that resolves when the action has been created and stored.\n *\n * @throws\n *\n * {@link ConfigurationError} If the action name substitution fails.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected _createSubstitutedAction(input: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "{\n        combination: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Record",
-                  "canonicalReference": "!Record:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": "<string, string>;\n        actionName: string;\n        jsonAction: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "JsonActionContent",
-                  "canonicalReference": "@xpack/xpm-lib!JsonActionContent:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";\n        newActionsMap: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Map",
-                  "canonicalReference": "!Map:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "<string, "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Action",
-                  "canonicalReference": "@xpack/xpm-lib!Action:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ">;\n    }"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Promise",
-                  "canonicalReference": "!Promise:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "<void>"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 11,
-                "endIndex": 13
-              },
-              "releaseTag": "Public",
-              "isProtected": true,
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "{ actionName, jsonAction, combination, newActionsMap, }",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 0,
-                    "endIndex": 0
-                  },
-                  "isOptional": false
-                },
-                {
-                  "parameterName": "input",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 10
-                  },
-                  "isOptional": false
-                }
-              ],
-              "isOptional": false,
-              "isAbstract": false,
-              "name": "_createSubstitutedAction"
-            },
-            {
-              "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!Actions#_expandTemplateActions:member(1)",
-              "docComment": "/**\n * Expands a template action into multiple concrete actions.\n *\n * @remarks\n *\n * This method computes the Cartesian product of all matrix parameter values and creates a separate action for each combination, substituting matrix values into both the action name and command templates.\n *\n * Processing steps:\n *\n * <ol> <li>Validates matrix structure (object with array values).</li> <li>Validates template format (string or array).</li> <li>Performs Liquid substitutions on matrix values if they contain template syntax.</li> <li>Recursively generates all combinations using Cartesian product.</li> <li>Creates an action instance for each combination with matrix parameters available for later substitution.</li> </ol>\n *\n * Matrix variables are scoped to individual actions and accessible via the `matrix` namespace during action command evaluation.\n *\n * @param actionName - The template action name containing Liquid variables.\n *\n * @param jsonActionTemplate - The JSON action template definition containing matrix parameters and a template.\n *\n * @returns A promise that resolves to a map of expanded action names to their corresponding action instances.\n *\n * @throws\n *\n * {@link ConfigurationError} If the matrix structure is invalid, template format is incorrect, or substitution fails.\n */\n",
+              "docComment": "/**\n * Expands a template action into multiple concrete actions.\n *\n * @remarks\n *\n * This method uses the {@link TemplateExpander} to compute the Cartesian product of all matrix parameter values and creates a separate action for each combination, substituting matrix values into both the action name and command templates.\n *\n * Processing steps:\n *\n * <ol> <li>Validates matrix and template structure.</li> <li>Delegates to <code>TemplateExpander</code> for matrix processing and name expansion.</li> <li>Creates action instances via factory callback for each combination.</li> </ol>\n *\n * Matrix variables are scoped to individual actions and accessible via the `matrix` namespace during action command evaluation.\n *\n * @param actionName - The template action name containing Liquid variables.\n *\n * @param jsonActionTemplate - The JSON action template definition containing matrix parameters and a template.\n *\n * @returns A promise that resolves to a map of expanded action names to their corresponding action instances.\n *\n * @throws\n *\n * {@link ConfigurationError} If the matrix structure is invalid, template format is incorrect, or substitution fails.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -2893,105 +2796,8 @@
             },
             {
               "kind": "Method",
-              "canonicalReference": "@xpack/xpm-lib!BuildConfigurations#_createSubstitutedBuildConfiguration:member(1)",
-              "docComment": "/**\n * Creates a substituted build configuration from a template combination.\n *\n * @remarks\n *\n * This helper method is invoked during template expansion for each matrix combination to generate concrete build configuration instances from the template definition.\n *\n * Processing steps:\n *\n * <ol> <li>Perform Liquid substitutions on the template build configuration name using the matrix combination values.</li> <li>Create a new <code>BuildConfiguration</code> instance with the substituted name and matrix parameters.</li> <li>Register the new configuration in the provided map for subsequent collection integration.</li> </ol>\n *\n * @param buildConfigurationName - The template build configuration name containing Liquid variables (e.g., <code>release-\\{\\{ matrix.arch \\}\\}</code>).\n *\n * @param jsonBuildConfiguration - The JSON configuration content from the template definition.\n *\n * @param combination - The matrix parameter values for this specific combination (e.g., <code>\\{ arch: 'x64', optimize: 'speed' \\}</code>).\n *\n * @param newBuildConfigurationsMap - The map to populate with the generated configuration instance.\n *\n * @returns A promise that resolves when the configuration has been created and registered.\n *\n * @throws\n *\n * {@link ConfigurationError} If substitutions fail during build configuration name expansion.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected _createSubstitutedBuildConfiguration(input: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "{\n        buildConfigurationName: string;\n        jsonBuildConfiguration: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "JsonBuildConfigurationContent",
-                  "canonicalReference": "@xpack/xpm-lib!JsonBuildConfigurationContent:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";\n        combination: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Record",
-                  "canonicalReference": "!Record:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": "<string, string>;\n        newBuildConfigurationsMap: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Map",
-                  "canonicalReference": "!Map:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "<string, "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "BuildConfiguration",
-                  "canonicalReference": "@xpack/xpm-lib!BuildConfiguration:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ">;\n    }"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Promise",
-                  "canonicalReference": "!Promise:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "<void>"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 11,
-                "endIndex": 13
-              },
-              "releaseTag": "Public",
-              "isProtected": true,
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "{ buildConfigurationName, jsonBuildConfiguration, combination, newBuildConfigurationsMap, }",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 0,
-                    "endIndex": 0
-                  },
-                  "isOptional": false
-                },
-                {
-                  "parameterName": "input",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 10
-                  },
-                  "isOptional": false
-                }
-              ],
-              "isOptional": false,
-              "isAbstract": false,
-              "name": "_createSubstitutedBuildConfiguration"
-            },
-            {
-              "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!BuildConfigurations#_expandTemplateBuildConfigurations:member(1)",
-              "docComment": "/**\n * Expands a template build configuration into multiple configurations.\n *\n * @remarks\n *\n * This method computes the Cartesian product of matrix parameter values and creates a configuration for each combination, substituting matrix values into both the configuration name and content.\n *\n * Processing steps:\n *\n * <ol> <li>Validates matrix structure (object with array values).</li> <li>Validates template format (must be a JSON object).</li> <li>Performs Liquid substitutions on matrix values if they contain template syntax.</li> <li>Recursively generates all combinations using Cartesian product.</li> <li>Creates a configuration instance for each combination with matrix parameters stored for later full evaluation.</li> </ol>\n *\n * Matrix variables are scoped to individual configurations and accessible via the `matrix` namespace during property, dependency, and action evaluation.\n *\n * @param buildConfigurationName - The template configuration name containing Liquid variables.\n *\n * @param jsonBuildConfigurationTemplate - The template definition containing matrix parameters and a configuration template.\n *\n * @returns A promise that resolves to a map of expanded configuration names to their corresponding instances.\n *\n * @throws\n *\n * {@link ConfigurationError} If the matrix structure is invalid or substitution fails.\n */\n",
+              "docComment": "/**\n * Expands a template build configuration into multiple configurations.\n *\n * @remarks\n *\n * This method uses the {@link TemplateExpander} to compute the Cartesian product of matrix parameter values and creates a configuration for each combination, substituting matrix values into both the configuration name and content.\n *\n * Processing steps:\n *\n * <ol> <li>Validates matrix and template structure.</li> <li>Delegates to <code>TemplateExpander</code> for matrix processing and name expansion.</li> <li>Creates configuration instances via factory callback for each combination.</li> </ol>\n *\n * Matrix variables are scoped to individual configurations and accessible via the `matrix` namespace during property, dependency, and action evaluation.\n *\n * @param buildConfigurationName - The template configuration name containing Liquid variables.\n *\n * @param jsonBuildConfigurationTemplate - The template definition containing matrix parameters and a configuration template.\n *\n * @returns A promise that resolves to a map of expanded configuration names to their corresponding instances.\n *\n * @throws\n *\n * {@link ConfigurationError} If the matrix structure is invalid or substitution fails.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3384,7 +3190,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!BuildConfigurations#getJsonName:member(1)",
-              "docComment": "/**\n * Retrieves the JSON configuration name for a build configuration.\n *\n * @remarks\n *\n * For template-generated configurations, this returns the template name.\n *\n * @param buildConfigurationName - The build configuration name to resolve.\n *\n * @returns The JSON configuration name associated with the given build configuration name.\n */\n",
+              "docComment": "/**\n * Retrieves the JSON configuration name for a build configuration.\n *\n * @remarks\n *\n * For template-generated configurations, this returns the template name.\n *\n * @param buildConfigurationName - The build configuration name to resolve.\n *\n * @returns The JSON configuration name associated with the given build configuration name.\n *\n * @throws\n *\n * {@link InputError} If the build configuration does not exist.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3959,7 +3765,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@xpack/xpm-lib!chmodRecursively:function(1)",
-          "docComment": "/**\n * Recursively changes file permissions within a folder tree.\n *\n * @remarks\n *\n * This function modifies file system permissions recursively, handling both files and directories with special logic to avoid permission conflicts.\n *\n * Processing strategy:\n *\n * <ol> <li><b>Symbolic links:</b> Ignored because links permissions cannot be reliably changed across platforms.</li> <li><b>Read-only mode:</b> Process folder contents first (recursively), then set the folder itself to read-only. This prevents permission denied errors when trying to access a read-only folder's contents.</li> <li><b>Read-write mode:</b> Set folder to read-write first, then process contents recursively. This ensures the folder is writable before attempting to modify nested items.</li> </ol>\n *\n * Permission modes applied:\n *\n * <ul> <li><b>Read-only:</b> Removes all write bits (user, group, other) using bitwise AND with negated <code>S_IWUSR</code> | <code>S_IWGRP</code> | <code>S_IWOTH</code>.</li> <li><b>Read-write:</b> Adds only user write bit using bitwise OR with <code>S_IWUSR</code>, preserving existing group and other permissions.</li> </ul>\n *\n * The function validates the result after each chmod operation and logs warnings if the expected permission state is not achieved, which can occur on filesystems with non-standard permission handling.\n *\n * @param inputPath - The file or folder path to process.\n *\n * @param readOnly - Whether to set permissions to read-only.\n *\n * @param log - The logger instance for output and diagnostics.\n *\n * @returns A promise that resolves when all permissions have been updated.\n */\n",
+          "docComment": "/**\n * Recursively changes file permissions within a folder tree.\n *\n * @remarks\n *\n * This function modifies file system permissions recursively, handling both files and directories with special logic to avoid permission conflicts.\n *\n * Processing strategy:\n *\n * <ol> <li><b>Symbolic links:</b> Ignored because links permissions cannot be reliably changed across platforms.</li> <li><b>Read-only mode:</b> Process folder contents first (recursively), then set the folder itself to read-only. This prevents permission denied errors when trying to access a read-only folder's contents.</li> <li><b>Read-write mode:</b> Set folder to read-write first, then process contents recursively. This ensures the folder is writable before attempting to modify nested items.</li> </ol>\n *\n * Permission modes applied:\n *\n * <ul> <li><b>Read-only:</b> Removes all write bits (user, group, other) using bitwise AND with negated <code>S_IWUSR</code> | <code>S_IWGRP</code> | <code>S_IWOTH</code>.</li> <li><b>Read-write:</b> Adds only user write bit using bitwise OR with <code>S_IWUSR</code>, preserving existing group and other permissions.</li> </ul>\n *\n * The function validates the result after each chmod operation and logs warnings if the expected permission state is not achieved, which can occur on filesystems with non-standard permission handling.\n *\n * Recursion depth is limited to `CHMOD_RECURSIVELY_MAX_DEPTH` levels to protect against extremely deep directory trees.\n *\n * @param inputPath - The file or folder path to process.\n *\n * @param readOnly - Whether to set permissions to read-only.\n *\n * @param log - The logger instance for output and diagnostics.\n *\n * @param depth - Internal parameter tracking recursion depth.\n *\n * @returns A promise that resolves when all permissions have been updated.\n *\n * @throws\n *\n * {@link ConfigurationError} If recursion depth exceeds the maximum limit.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3976,7 +3782,7 @@
             },
             {
               "kind": "Content",
-              "text": ";\n}"
+              "text": ";\n    depth?: number;\n    maxDepth?: number;\n}"
             },
             {
               "kind": "Content",
@@ -4005,7 +3811,7 @@
           "overloadIndex": 1,
           "parameters": [
             {
-              "parameterName": "{ inputPath, readOnly, log, }",
+              "parameterName": "{ inputPath, readOnly, log, depth, maxDepth, }",
               "parameterTypeTokenRange": {
                 "startIndex": 0,
                 "endIndex": 0
@@ -4024,9 +3830,32 @@
           "name": "chmodRecursively"
         },
         {
+          "kind": "Variable",
+          "canonicalReference": "@xpack/xpm-lib!COMBINATIONS_GENERATOR_MAX_COMBINATIONS_LIMIT:var",
+          "docComment": "/**\n * The default maximum number of combinations that can be generated.\n *\n * @remarks\n *\n * This constant defines the default limit for the total number of combinations that a {@link CombinationsGenerator} instance can produce. The limit exists to prevent performance issues and memory exhaustion when working with large matrices.\n *\n * This value can be overridden by providing a custom `maxCombinations` parameter when constructing a {@link CombinationsGenerator} instance.\n *\n * The limit is intentionally low (42 * 10).\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "COMBINATIONS_GENERATOR_MAX_COMBINATIONS_LIMIT: "
+            },
+            {
+              "kind": "Content",
+              "text": "number"
+            }
+          ],
+          "fileUrlPath": "../src/classes/combinations-generator.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "COMBINATIONS_GENERATOR_MAX_COMBINATIONS_LIMIT",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
           "kind": "Class",
           "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator:class",
-          "docComment": "/**\n * Generates all possible combinations from a matrix of parameters.\n *\n * @remarks\n *\n * This class computes the Cartesian product of multiple parameter arrays, producing all possible combinations of parameter values. It uses a recursive algorithm to systematically explore all combinations.\n *\n * The generation process:\n *\n * <ol> <li>Takes arrays of parameter names (keys) and their corresponding value arrays.</li> <li>Recursively iterates through each parameter, selecting one value at a time.</li> <li>When all parameters have been assigned values, stores the complete combination.</li> <li>Backtracks to explore other value combinations.</li> </ol>\n *\n * Example usage:\n * ```typescript\n * const generator = new CombinationsGenerator({\n *   matrixKeys: ['arch', 'optimize'],\n *   matrixValues: [['x64', 'arm'], ['speed', 'size']],\n *   log\n * });\n * const combinations = generator.generate();\n * // Results in:\n * // [\n * //   { arch: 'x64', optimize: 'speed' },\n * //   { arch: 'x64', optimize: 'size' },\n * //   { arch: 'arm', optimize: 'speed' },\n * //   { arch: 'arm', optimize: 'size' }\n * // ]\n * ```\n *\n */\n",
+          "docComment": "/**\n * Generates all possible combinations from a matrix of parameters.\n *\n * @remarks\n *\n * This class computes the Cartesian product of multiple parameter arrays, producing all possible combinations of parameter values using a memory-efficient generator pattern. It uses a recursive algorithm to systematically explore all combinations one at a time.\n *\n * The generation process:\n *\n * <ol> <li>Takes arrays of parameter names (keys) and their corresponding value arrays.</li> <li>Recursively iterates through each parameter, selecting one value at a time.</li> <li>Yields complete combinations one at a time without storing them all in memory.</li> <li>Backtracks to explore other value combinations.</li> </ol>\n *\n * Example usage:\n * ```typescript\n * const generator = new CombinationsGenerator({\n *   matrixKeys: ['arch', 'optimize'],\n *   matrixValues: [['x64', 'arm'], ['speed', 'size']],\n *   log\n * });\n * for (const combo of generator.generate()) {\n *   // Process one combination at a time without storing all in memory\n *   // Results:\n *   //   { arch: 'x64', optimize: 'speed' }\n *   //   { arch: 'x64', optimize: 'size' }\n *   //   { arch: 'arm', optimize: 'speed' }\n *   //   { arch: 'arm', optimize: 'size' }\n *   await processConfiguration(combo);\n * }\n * ```\n *\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4042,7 +3871,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator#_generateRecursively:member(1)",
-              "docComment": "/**\n * Recursively generates combinations by exploring the parameter space.\n *\n * @remarks\n *\n * This method implements the core recursive algorithm for generating the Cartesian product of parameter values.\n *\n * Algorithm steps:\n *\n * <ol> <li><b>Base case:</b> If all parameters have been assigned values (<code>index === matrixKeys.length</code>), store a copy of the current combination and return.</li> <li><b>Recursive case:</b> For the parameter at the current index: <ul> <li>Iterate through all possible values for this parameter.</li> <li>Assign each value to the combination object.</li> <li>Recursively generate combinations for the next parameter.</li> <li>Remove the assigned value (backtrack) before trying the next value.</li> </ul> </li> </ol>\n *\n * The backtracking ensures that the combination object is reused efficiently without creating unnecessary intermediate objects.\n *\n * @param index - The current parameter index being processed.\n *\n * @param combination - The partial combination being built.\n */\n",
+              "docComment": "/**\n * Recursively generates combinations as a generator, yielding one at a time.\n *\n * @remarks\n *\n * This method implements the recursive algorithm for generating the Cartesian product of parameter values using the generator pattern.\n *\n * Algorithm steps:\n *\n * <ol> <li><b>Base case:</b> If all parameters have been assigned values (<code>index === matrixKeys.length</code>), yield a copy of the current combination and return.</li> <li><b>Recursive case:</b> For the parameter at the current index: <ul> <li>Iterate through all possible values for this parameter.</li> <li>Assign each value to the combination object.</li> <li>Recursively yield combinations for the next parameter using <code>yield*</code>.</li> <li>Remove the assigned value (backtrack) before trying the next value.</li> </ul> </li> </ol>\n *\n * The combination object is reused and modified during traversal, with only copies of complete combinations being yielded. This approach minimises memory allocation whilst maintaining correctness.\n *\n * @param index - The current parameter index being processed.\n *\n * @param combination - The partial combination being built.\n *\n * <b>Yields:</b> Complete combinations one at a time.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4070,8 +3899,22 @@
                   "text": "): "
                 },
                 {
+                  "kind": "Reference",
+                  "text": "Generator",
+                  "canonicalReference": "!Generator:interface"
+                },
+                {
                   "kind": "Content",
-                  "text": "void"
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MatrixCombination",
+                  "canonicalReference": "@xpack/xpm-lib!MatrixCombination:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">"
                 },
                 {
                   "kind": "Content",
@@ -4081,7 +3924,7 @@
               "isStatic": false,
               "returnTypeTokenRange": {
                 "startIndex": 6,
-                "endIndex": 7
+                "endIndex": 10
               },
               "releaseTag": "Public",
               "isProtected": true,
@@ -4109,9 +3952,130 @@
               "name": "_generateRecursively"
             },
             {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator#_log:member",
+              "docComment": "/**\n * The logger instance for output and diagnostics.\n *\n * @remarks\n *\n * This logger provides trace-level diagnostics during combination generation, enabling visibility into the recursive exploration of the parameter space without impacting performance when tracing is disabled.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected readonly _log: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Logger",
+                  "canonicalReference": "@xpack/logger!Logger:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_log",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator#_matrixKeys:member",
+              "docComment": "/**\n * The array of parameter names.\n *\n * @remarks\n *\n * This array contains the names of all matrix parameters in the order they should be processed during combination generation. Each key corresponds to a parameter that will appear in the generated combinations.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected readonly _matrixKeys: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_matrixKeys",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator#_matrixValues:member",
+              "docComment": "/**\n * The array of value arrays for each parameter.\n *\n * @remarks\n *\n * This two-dimensional array contains the possible values for each parameter. The outer array corresponds one-to-one with <code>matrixKeys</code>, where <code>matrixValues[i]</code> contains all possible values for the parameter <code>matrixKeys[i]</code>.\n *\n * The Cartesian product of all these value arrays produces the complete set of combinations.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected readonly _matrixValues: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string[][]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_matrixValues",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator#_maxCombinations:member",
+              "docComment": "/**\n * The maximum number of combinations allowed.\n *\n * @remarks\n *\n * This limit prevents excessive generation of combinations, protecting against performance issues and memory exhaustion.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected readonly _maxCombinations: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_maxCombinations",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
               "kind": "Constructor",
               "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator:constructor(1)",
-              "docComment": "/**\n * Constructs a combinations generator instance.\n *\n * @remarks\n *\n * The constructor validates that the structure of keys and values is correct and prepares the generator for combination generation. The actual generation is performed by calling <code>generate()</code>.\n *\n * @param matrixKeys - The array of parameter names.\n *\n * @param matrixValues - The array of value arrays for each parameter.\n *\n * @param log - The logger instance for output and diagnostics.\n */\n",
+              "docComment": "/**\n * Constructs a combinations generator instance.\n *\n * @remarks\n *\n * The constructor validates that the structure of keys and values is correct and prepares the generator for combination generation. The actual generation is performed by calling `*generate`.\n *\n * @param matrixKeys - The array of parameter names.\n *\n * @param matrixValues - The array of value arrays for each parameter.\n *\n * @param log - The logger instance for output and diagnostics.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4132,7 +4096,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "{ matrixKeys, matrixValues, log, }",
+                  "parameterName": "{ matrixKeys, matrixValues, maxCombinations, log, }",
                   "parameterTypeTokenRange": {
                     "startIndex": 0,
                     "endIndex": 0
@@ -4150,44 +4114,9 @@
               ]
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator#combinations:member",
-              "docComment": "/**\n * The array of generated combinations.\n *\n * @remarks\n *\n * This array accumulates all generated combinations during the recursive exploration. Each combination is a complete mapping of all parameter names to one of their possible values.\n *\n * The array is populated during <code>generate()</code> and returned to the caller.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly combinations: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "MatrixCombination",
-                  "canonicalReference": "@xpack/xpm-lib!MatrixCombination:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": "[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "combinations",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 3
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator#generate:member(1)",
-              "docComment": "/**\n * Generates all possible combinations from the matrix parameters.\n *\n * @remarks\n *\n * This method initiates the recursive generation process and returns the complete array of all possible combinations.\n *\n * The generation algorithm:\n *\n * <ol> <li>Starts the recursive process with an empty combination at index 0.</li> <li>The recursive method explores all possible value selections for each parameter.</li> <li>Complete combinations are accumulated in the internal <code>combinations</code> array.</li> <li>Returns the array containing all generated combinations.</li> </ol>\n *\n * @returns An array of all possible parameter combinations.\n */\n",
+              "docComment": "/**\n * Generates combinations one at a time using a generator pattern.\n *\n * @remarks\n *\n * This method yields combinations one at a time instead of building the entire array in memory. This is particularly useful for large matrices where storing all combinations would be impractical.\n *\n * Memory efficiency:\n *\n * <ul> <li>For a matrix with 10 parameters and 5 values each (9,765,625 combinations), only one combination object exists in memory at a time, regardless of matrix size.</li> <li>No array allocation or storage required.</li> <li>Immediate processing of each combination without waiting for all to be generated.</li> </ul>\n *\n * Example usage:\n * ```typescript\n * for (const combo of generator.generate()) {\n *   // Process one combination at a time\n *   await processConfiguration(combo)\n * }\n * ```\n *\n * <b>Yields:</b> Individual matrix combinations one at a time.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4195,12 +4124,21 @@
                 },
                 {
                   "kind": "Reference",
+                  "text": "Generator",
+                  "canonicalReference": "!Generator:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
                   "text": "MatrixCombination",
                   "canonicalReference": "@xpack/xpm-lib!MatrixCombination:type"
                 },
                 {
                   "kind": "Content",
-                  "text": "[]"
+                  "text": ">"
                 },
                 {
                   "kind": "Content",
@@ -4210,7 +4148,7 @@
               "isStatic": false,
               "returnTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 3
+                "endIndex": 5
               },
               "releaseTag": "Public",
               "isProtected": false,
@@ -4219,97 +4157,6 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "generate"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator#log:member",
-              "docComment": "/**\n * The logger instance for output and diagnostics.\n *\n * @remarks\n *\n * This logger provides trace-level diagnostics during combination generation, enabling visibility into the recursive exploration of the parameter space without impacting performance when tracing is disabled.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly log: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Logger",
-                  "canonicalReference": "@xpack/logger!Logger:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "log",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator#matrixKeys:member",
-              "docComment": "/**\n * The array of parameter names.\n *\n * @remarks\n *\n * This array contains the names of all matrix parameters in the order they should be processed during combination generation. Each key corresponds to a parameter that will appear in the generated combinations.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly matrixKeys: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "matrixKeys",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!CombinationsGenerator#matrixValues:member",
-              "docComment": "/**\n * The array of value arrays for each parameter.\n *\n * @remarks\n *\n * This two-dimensional array contains the possible values for each parameter. The outer array corresponds one-to-one with <code>matrixKeys</code>, where <code>matrixValues[i]</code> contains all possible values for the parameter <code>matrixKeys[i]</code>.\n *\n * The Cartesian product of all these value arrays produces the complete set of combinations.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly matrixValues: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string[][]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "matrixValues",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
             }
           ],
           "implementsTokenRanges": []
@@ -4406,6 +4253,33 @@
               "isOptional": false,
               "releaseTag": "Public",
               "name": "matrixValues",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!CombinationsGeneratorConstructorParameters#maxCombinations:member",
+              "docComment": "/**\n * Optional maximum combinations limit to prevent excessive generation.\n *\n * @remarks\n *\n * This parameter allows configuring a custom limit on the total number of combinations that can be generated. If the calculated total exceeds this limit, a {@link ConfigurationError} is thrown to prevent performance issues or memory exhaustion. The default value is 10,000 combinations.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "maxCombinations?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "maxCombinations",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -4619,7 +4493,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@xpack/xpm-lib!ConfigurationError:class",
-          "docComment": "/**\n * Error indicating a configuration issue.\n *\n * @remarks\n *\n * This error is thrown when configuration files, such as `package.json`, contain invalid values, missing required fields, circular references, or other issues that prevent proper initialization or execution. Use this error whenthe problem is related to the content of configuration files rather than user input or output generation.\n */\n",
+          "docComment": "/**\n * Error indicating a configuration issue.\n *\n * @remarks\n *\n * This error is thrown when configuration files, such as `package.json`, contain invalid values, missing required fields, circular references, or other issues that prevent proper initialisation or execution. Use this error when the problem is related to the content of configuration files rather than user input or output generation.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4792,8 +4666,8 @@
                 },
                 {
                   "kind": "Reference",
-                  "text": "Liquid",
-                  "canonicalReference": "liquidjs!Liquid:class"
+                  "text": "LiquidEngine",
+                  "canonicalReference": "@xpack/xpm-lib!LiquidEngine:class"
                 },
                 {
                   "kind": "Content",
@@ -5088,7 +4962,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@xpack/xpm-lib!filterPath:function(1)",
-          "docComment": "/**\n * Replaces non-alphanumeric characters with dashes to make paths comply with file system names.\n *\n * @remarks\n *\n * This function sanitizes strings to be safely used as file or folder names by removing or replacing problematic characters that could cause issues across different file systems.\n *\n * Platform-specific processing:\n *\n * <ul> <li><b>Windows:</b> Preserves backslashes (<code>\\\\</code>) and colons (<code>:</code>) for drive letters and path separators (e.g., <code>C:\\\\path\\\\to\\\\file</code>). Replaces all other non-alphanumeric characters with dashes.</li> <li><b>POSIX (Linux, macOS):</b> Preserves forward slashes (<code>/</code>) for path separators. Replaces all other non-alphanumeric characters with dashes.</li> </ul>\n *\n * Post-processing: After character replacement, consecutive dashes are collapsed to a single dash to avoid excessive dashes from adjacent special characters (e.g., \"foo--bar\" becomes \"foo-bar\").\n *\n * Common use cases include sanitizing build configuration names, user-provided identifiers, and template-generated path components.\n *\n * @param input - A path candidate.\n *\n * @returns A validated path.\n */\n",
+          "docComment": "/**\n * Replaces non-alphanumeric characters with dashes to make paths comply with file system names.\n *\n * @remarks\n *\n * This function sanitizes strings to be safely used as file or folder names by removing or replacing problematic characters that could cause issues across different file systems.\n *\n * Platform-specific processing:\n *\n * <ul> <li><b>Windows:</b> Preserves backslashes (<code>\\\\</code>) and colons (<code>:</code>) for drive letters and path separators (e.g., <code>C:\\\\path\\\\to\\\\file</code>). Replaces all other non-alphanumeric characters with dashes.</li> <li><b>POSIX (Linux, macOS):</b> Preserves forward slashes (<code>/</code>) for path separators. Replaces all other non-alphanumeric characters with dashes.</li> </ul>\n *\n * Post-processing: After character replacement, consecutive dashes are collapsed to a single dash to avoid excessive dashes from adjacent special characters (e.g., \"foo--bar\" becomes \"foo-bar\").\n *\n * Common use cases include sanitizing build configuration names, user-provided identifiers, and template-generated path components.\n *\n * @param input - A path candidate.\n *\n * @param platformDetector - The platform detector instance to use. Defaults to a new {@link PlatformDetector} instance.\n *\n * @returns A validated path.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -5097,6 +4971,15 @@
             {
               "kind": "Content",
               "text": "string"
+            },
+            {
+              "kind": "Content",
+              "text": ", platformDetector?: "
+            },
+            {
+              "kind": "Reference",
+              "text": "PlatformDetector",
+              "canonicalReference": "@xpack/xpm-lib!PlatformDetector:class"
             },
             {
               "kind": "Content",
@@ -5113,8 +4996,8 @@
           ],
           "fileUrlPath": "../src/functions/filter-paths.ts",
           "returnTypeTokenRange": {
-            "startIndex": 3,
-            "endIndex": 4
+            "startIndex": 5,
+            "endIndex": 6
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
@@ -5126,6 +5009,14 @@
                 "endIndex": 2
               },
               "isOptional": false
+            },
+            {
+              "parameterName": "platformDetector",
+              "parameterTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "isOptional": true
             }
           ],
           "name": "filterPath"
@@ -5268,7 +5159,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@xpack/xpm-lib!getPlatformKey:function(1)",
-          "docComment": "/**\n * Builds a unique key using the current platform and architecture.\n *\n * @remarks\n *\n * Generates a platform identifier string used for matching binary packages to the current system or for platform-specific configuration.\n *\n * Platform key format: `<platform>-<arch>`\n *\n * Examples:\n *\n * <ul> <li><code>darwin-x64</code> (macOS on Intel)</li> <li><code>darwin-arm64</code> (macOS on Apple Silicon)</li> <li><code>linux-x64</code> (Linux on 64-bit Intel/AMD)</li> <li><code>win32-x64</code> (Windows on 64-bit)</li> </ul>\n *\n * Architecture coercion rules (when doForce32bit is true):\n *\n * <ul> <li><b>x64 → ia32:</b> Coerces 64-bit Intel/AMD architecture to 32-bit on all platforms.</li> <li><b>arm64 → arm:</b> Coerces 64-bit ARM architecture to 32-bit on all platforms.</li> </ul>\n *\n * This coercion is useful for backward compatibility scenarios where only 32-bit binaries are available but can run on 64-bit systems. The platform key matches the naming conventions used in binary xPack distributions.\n *\n * @param doForce32bit - Whether to coerce 64-bit architectures to their 32-bit equivalents.\n *\n * @returns The platform key in the form `platform-arch`.\n */\n",
+          "docComment": "/**\n * Builds a unique key using the current platform and architecture.\n *\n * @remarks\n *\n * Generates a platform identifier string used for matching binary packages to the current system or for platform-specific configuration.\n *\n * Platform key format: `<platform>-<arch>`\n *\n * Examples:\n *\n * <ul> <li><code>darwin-x64</code> (macOS on Intel)</li> <li><code>darwin-arm64</code> (macOS on Apple Silicon)</li> <li><code>linux-x64</code> (Linux on 64-bit Intel/AMD)</li> <li><code>win32-x64</code> (Windows on 64-bit)</li> </ul>\n *\n * Architecture coercion rules (when doForce32bit is true):\n *\n * <ul> <li><b>x64 → ia32:</b> Coerces 64-bit Intel/AMD architecture to 32-bit on all platforms.</li> <li><b>arm64 → arm:</b> Coerces 64-bit ARM architecture to 32-bit on all platforms.</li> </ul>\n *\n * This coercion is useful for backward compatibility scenarios where only 32-bit binaries are available but can run on 64-bit systems. The platform key matches the naming conventions used in binary xPack distributions.\n *\n * @param doForce32bit - Whether to coerce 64-bit architectures to their 32-bit equivalents.\n *\n * @param platformDetector - The platform detector instance to use. Defaults to a new {@link PlatformDetector} instance.\n *\n * @returns The platform key in the form `platform-arch`.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -5276,7 +5167,16 @@
             },
             {
               "kind": "Content",
-              "text": "{\n    doForce32bit?: boolean;\n}"
+              "text": "{\n    doForce32bit?: boolean;\n    platformDetector?: "
+            },
+            {
+              "kind": "Reference",
+              "text": "PlatformDetector",
+              "canonicalReference": "@xpack/xpm-lib!PlatformDetector:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n}"
             },
             {
               "kind": "Content",
@@ -5293,14 +5193,14 @@
           ],
           "fileUrlPath": "../src/functions/utils.ts",
           "returnTypeTokenRange": {
-            "startIndex": 3,
-            "endIndex": 4
+            "startIndex": 5,
+            "endIndex": 6
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
           "parameters": [
             {
-              "parameterName": "{ doForce32bit, }",
+              "parameterName": "{ doForce32bit, platformDetector, }",
               "parameterTypeTokenRange": {
                 "startIndex": 0,
                 "endIndex": 0
@@ -5311,12 +5211,57 @@
               "parameterName": "input",
               "parameterTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 2
+                "endIndex": 4
               },
               "isOptional": true
             }
           ],
           "name": "getPlatformKey"
+        },
+        {
+          "kind": "Function",
+          "canonicalReference": "@xpack/xpm-lib!hasLiquidSyntax:function(1)",
+          "docComment": "/**\n * Checks whether a string contains Liquid template syntax.\n *\n * @remarks\n *\n * This utility function detects the presence of Liquid template markers in a string, indicating that the string requires template processing.\n *\n * Liquid syntax patterns detected:\n *\n * <ol> <li><b>Variable output:</b> <code>\\{\\{</code> marks the start of a variable interpolation (e.g., <code>\\{\\{ package.name \\}\\}</code>).</li> <li><b>Control flow:</b> <code>\\{%</code> marks the start of a tag for logic or iteration (e.g., <code>\\{% if condition %\\}</code>, <code>\\{% for item in array %\\}</code>).</li> </ol>\n *\n * The function uses a regular expression to efficiently scan the string for these markers without needing to check for both patterns separately. This is more efficient than calling <code>includes()</code> twice and provides a single point of maintenance for Liquid syntax detection logic.\n *\n * Common usage:\n *\n * <ul> <li>Determine whether to process a value through the Liquid engine.</li> <li>Skip unnecessary template evaluation for static strings.</li> <li>Validate configuration values for template content.</li> </ul>\n *\n * @param value - The string to check for Liquid syntax.\n *\n * @returns <code>true</code> if the string contains Liquid syntax markers, <code>false</code> otherwise.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare function hasLiquidSyntax(value: "
+            },
+            {
+              "kind": "Content",
+              "text": "string"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Content",
+              "text": "boolean"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "../src/functions/utils.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 3,
+            "endIndex": 4
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "value",
+              "parameterTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isOptional": false
+            }
+          ],
+          "name": "hasLiquidSyntax"
         },
         {
           "kind": "Class",
@@ -6831,6 +6776,65 @@
           "implementsTokenRanges": []
         },
         {
+          "kind": "TypeAlias",
+          "canonicalReference": "@xpack/xpm-lib!InstanceFactoryCallback:type",
+          "docComment": "/**\n * Callback function type for creating instances from template expansions.\n *\n * @remarks\n *\n * This function is invoked for each combination generated during template expansion. It receives the expanded name, matrix combination parameters, and the template content, and must return a new instance of type <code>TInstance</code>.\n *\n * The callback is responsible for:\n *\n * <ol> <li>Creating the appropriate instance type (e.g., <code>Action</code> or <code>BuildConfiguration</code>).</li> <li>Passing the expanded name to the instance constructor.</li> <li>Storing the matrix parameters for later template evaluation.</li> <li>Associating the template content with the instance.</li> </ol>\n *\n * @param expandedName - The name after Liquid substitution with matrix parameters (e.g., <code>test-x64</code> from <code>test-\\{\\{ matrix.arch \\}\\}</code>).\n *\n * @param combination - The matrix parameter values for this combination (e.g., <code>\\{ arch: 'x64', platform: 'linux' \\}</code>).\n *\n * @param templateContent - The template content to associate with the instance.\n *\n * @param originalTemplateName - The original template name before expansion (e.g., <code>test-\\{\\{ matrix.arch \\}\\}</code>).\n *\n * @typeParam TTemplate - The type of the template content (e.g., <code>JsonActionContent</code> or <code>JsonBuildConfigurationContent</code>).\n *\n * @typeParam TInstance - The type of instance to create (e.g., <code>Action</code> or <code>BuildConfiguration</code>).\n *\n * @returns The newly created instance.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type InstanceFactoryCallback<TTemplate, TInstance> = "
+            },
+            {
+              "kind": "Content",
+              "text": "(expandedName: string, combination: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Record",
+              "canonicalReference": "!Record:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<string, string>, templateContent: TTemplate, originalTemplateName: string) => TInstance"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "../src/classes/template-expander.ts",
+          "releaseTag": "Public",
+          "name": "InstanceFactoryCallback",
+          "typeParameters": [
+            {
+              "typeParameterName": "TTemplate",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              }
+            },
+            {
+              "typeParameterName": "TInstance",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              }
+            }
+          ],
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
           "kind": "Function",
           "canonicalReference": "@xpack/xpm-lib!isBoolean:function(1)",
           "docComment": "/**\n * Determines whether a value is a boolean.\n *\n * @remarks\n *\n * Tests for primitive boolean values (`true` or `false`). Useful when validating configuration options or parsing JSON where boolean flags need to be distinguished from truthy/falsy values.\n *\n * Only returns `true` for the primitive boolean values `true` and `false`, not for boolean objects created with `new Boolean()`.\n *\n * Note: This does not check for truthy or falsy values - it only returns `true` for actual boolean primitives. Use standard JavaScript truthiness checks for conditional logic.\n *\n * @param value - The value to test.\n *\n * @returns `true` if the value is a boolean, `false` otherwise.\n */\n",
@@ -7318,12 +7322,8 @@
                 },
                 {
                   "kind": "Reference",
-                  "text": "Record",
-                  "canonicalReference": "!Record:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": "<string, string[]>"
+                  "text": "JsonTemplateMatrix",
+                  "canonicalReference": "@xpack/xpm-lib!JsonTemplateMatrix:type"
                 },
                 {
                   "kind": "Content",
@@ -7336,7 +7336,7 @@
               "name": "matrix",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 3
+                "endIndex": 2
               }
             },
             {
@@ -7764,8 +7764,8 @@
                 },
                 {
                   "kind": "Reference",
-                  "text": "JsonBuildConfigurationTemplateMatrix",
-                  "canonicalReference": "@xpack/xpm-lib!JsonBuildConfigurationTemplateMatrix:type"
+                  "text": "JsonTemplateMatrix",
+                  "canonicalReference": "@xpack/xpm-lib!JsonTemplateMatrix:type"
                 },
                 {
                   "kind": "Content",
@@ -7811,37 +7811,6 @@
             }
           ],
           "extendsTokenRanges": []
-        },
-        {
-          "kind": "TypeAlias",
-          "canonicalReference": "@xpack/xpm-lib!JsonBuildConfigurationTemplateMatrix:type",
-          "docComment": "/**\n * Represents a matrix of parameters for build configuration template expansion.\n *\n * @remarks\n *\n * The matrix defines parameter arrays used to generate multiple build configuration variants through Cartesian product expansion. Each key represents a parameter name, and its value is an array of possible values for that parameter.\n *\n * Matrix expansion rules:\n *\n * <ul> <li>Each parameter array is combined with all others to create every possible combination.</li> <li>Matrix values are accessible in configuration names and template content via <code>\\{\\{ matrix.parameterName \\}\\}</code> Liquid syntax.</li> <li>The number of generated configurations equals the product of all array lengths.</li> </ul>\n *\n * Example:\n * ```js\n * {\n *   \"os\": [\"linux\", \"darwin\"],\n *   \"arch\": [\"x64\", \"arm64\"]\n * }\n * ```\n *\n * This generates 4 configurations (2 × 2): `linux-x64`, `linux-arm64`, `darwin-x64`, `darwin-arm64`.\n */\n",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export type JsonBuildConfigurationTemplateMatrix = "
-            },
-            {
-              "kind": "Reference",
-              "text": "Record",
-              "canonicalReference": "!Record:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<string, string[]>"
-            },
-            {
-              "kind": "Content",
-              "text": ";"
-            }
-          ],
-          "fileUrlPath": "../src/types/json.ts",
-          "releaseTag": "Public",
-          "name": "JsonBuildConfigurationTemplateMatrix",
-          "typeTokenRange": {
-            "startIndex": 1,
-            "endIndex": 3
-          }
         },
         {
           "kind": "TypeAlias",
@@ -8471,6 +8440,72 @@
             "endIndex": 2
           },
           "implementsTokenRanges": []
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@xpack/xpm-lib!JsonTemplateMatrix:type",
+          "docComment": "/**\n * Represents a matrix of parameters for template expansion.\n *\n * @remarks\n *\n * The matrix defines parameter arrays used to generate multiple template variants through Cartesian product expansion. Each key represents a parameter name, and its value is an array of possible values for that parameter.\n *\n * Matrix expansion rules:\n *\n * <ul> <li>Each parameter array is combined with all others to create every possible combination.</li> <li>Matrix values are accessible in template names and template content via <code>\\{\\{ matrix.parameterName \\}\\}</code> Liquid syntax.</li> <li>The number of generated template variants equals the product of all array lengths.</li> </ul>\n *\n * Example:\n * ```js\n * {\n *   \"os\": [\"linux\", \"darwin\"],\n *   \"arch\": [\"x64\", \"arm64\"]\n * }\n * ```\n *\n * This generates 4 template variants (2 × 2): `linux-x64`, `linux-arm64`, `darwin-x64`, `darwin-arm64`.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type JsonTemplateMatrix = "
+            },
+            {
+              "kind": "Reference",
+              "text": "Record",
+              "canonicalReference": "!Record:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<string, "
+            },
+            {
+              "kind": "Reference",
+              "text": "JsonTemplateMatrixContent",
+              "canonicalReference": "@xpack/xpm-lib!JsonTemplateMatrixContent:type"
+            },
+            {
+              "kind": "Content",
+              "text": ">"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "../src/types/json.ts",
+          "releaseTag": "Public",
+          "name": "JsonTemplateMatrix",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 5
+          }
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@xpack/xpm-lib!JsonTemplateMatrixContent:type",
+          "docComment": "/**\n * Represents an array of string values for a single matrix parameter.\n *\n * @remarks\n *\n * Each matrix parameter defined in {@link JsonTemplateMatrix} contains an array of string values that will be used during Cartesian product expansion. All values must be strings to ensure consistent template substitution via Liquid syntax.\n *\n * Example for an operating system parameter:\n * ```js\n * [\"linux\", \"darwin\", \"win32\"]\n * ```\n *\n * During template expansion, each value is combined with values from other matrix parameters to generate all possible combinations.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type JsonTemplateMatrixContent = "
+            },
+            {
+              "kind": "Content",
+              "text": "string[]"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "../src/types/json.ts",
+          "releaseTag": "Public",
+          "name": "JsonTemplateMatrixContent",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
         },
         {
           "kind": "Interface",
@@ -9157,17 +9192,35 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@xpack/xpm-lib!LiquidEngine:constructor(1)",
-              "docComment": "/**\n * Constructs a Liquid engine instance with xpm-specific settings and filters.\n *\n * @remarks\n *\n * The constructor configures strict parsing options and registers filters for path handling, formatting, and list operations.\n *\n * Configuration options:\n *\n * <ul> <li><b>strictFilters:</b> Throw errors for undefined filters rather than silently ignoring them.</li> <li><b>strictVariables:</b> Throw errors for undefined variables rather than rendering empty strings.</li> <li><b>trimTagLeft/Right:</b> Preserve whitespace around template tags.</li> <li><b>trimOutputLeft/Right:</b> Preserve whitespace around output expressions.</li> <li><b>greedy:</b> Use non-greedy matching for better template compatibility.</li> <li><b>lenientIf:</b> Allow flexible truthiness in conditional expressions.</li> </ul>\n *\n * Filter registration:\n *\n * <ul> <li><b>Platform-aware path filters (default, posix, win32):</b> delegate to Node.js path module for consistent cross-platform behavior.</li> <li><b>Custom filters (to_filename, join_lines, split_lines, keys):</b> provide template-specific functionality not available in standard Liquid.</li> <li>All filters are registered during construction for immediate availability in templates.</li> </ul>\n */\n",
+              "docComment": "/**\n * Constructs a Liquid engine instance with xpm-specific settings and filters.\n *\n * @remarks\n *\n * The constructor configures strict parsing options and registers filters for path handling, formatting, and list operations.\n *\n * Configuration options:\n *\n * <ul> <li><b>strictFilters:</b> Throw errors for undefined filters rather than silently ignoring them.</li> <li><b>strictVariables:</b> Throw errors for undefined variables rather than rendering empty strings.</li> <li><b>trimTagLeft/Right:</b> Preserve whitespace around template tags.</li> <li><b>trimOutputLeft/Right:</b> Preserve whitespace around output expressions.</li> <li><b>greedy:</b> Use non-greedy matching for better template compatibility.</li> <li><b>lenientIf:</b> Allow flexible truthiness in conditional expressions.</li> </ul>\n *\n * Filter registration:\n *\n * <ul> <li><b>Platform-aware path filters (default, posix, win32):</b> delegate to Node.js path module for consistent cross-platform behavior.</li> <li><b>Custom filters (to_filename, join_lines, split_lines, keys):</b> provide template-specific functionality not available in standard Liquid.</li> <li>All filters are registered during construction for immediate availability in templates.</li> </ul>\n *\n * @param platformDetector - The platform detector instance for platform-specific behaviour. Defaults to a new {@link PlatformDetector} instance.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor();"
+                  "text": "constructor(platformDetector?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "PlatformDetector",
+                  "canonicalReference": "@xpack/xpm-lib!PlatformDetector:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
                 }
               ],
               "releaseTag": "Public",
               "isProtected": false,
               "overloadIndex": 1,
-              "parameters": []
+              "parameters": [
+                {
+                  "parameterName": "platformDetector",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": true
+                }
+              ]
             }
           ],
           "extendsTokenRange": {
@@ -10265,7 +10318,7 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@xpack/xpm-lib!Package:constructor(1)",
-              "docComment": "/**\n * Constructs a package helper bound to a specific folder.\n *\n * @param packageFolderPath - The absolute path to the package folder.\n *\n * @param log - The logger instance for output and diagnostics.\n */\n",
+              "docComment": "/**\n * Constructs a package helper bound to a specific folder.\n *\n * @param packageFolderPath - The absolute path to the package folder.\n *\n * @param log - The logger instance for output and diagnostics.\n *\n * @throws\n *\n * {@link InputError} If packageFolderPath is not provided or is not an absolute path.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10941,16 +10994,7 @@
             },
             {
               "kind": "Content",
-              "text": "{\n    log: "
-            },
-            {
-              "kind": "Reference",
-              "text": "Logger",
-              "canonicalReference": "@xpack/logger!Logger:class"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n    engine: "
+              "text": "{\n    engine: "
             },
             {
               "kind": "Reference",
@@ -10968,7 +11012,16 @@
             },
             {
               "kind": "Content",
-              "text": ";\n}"
+              "text": ";\n    log: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Logger",
+              "canonicalReference": "@xpack/logger!Logger:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    maxIterations?: number;\n    maxOutputSize?: number;\n}"
             },
             {
               "kind": "Content",
@@ -10997,7 +11050,7 @@
           "overloadIndex": 1,
           "parameters": [
             {
-              "parameterName": "{ log, engine, input, substitutionsVariables, }",
+              "parameterName": "{ engine, input, substitutionsVariables, log, maxIterations, maxOutputSize, }",
               "parameterTypeTokenRange": {
                 "startIndex": 0,
                 "endIndex": 0
@@ -11014,6 +11067,256 @@
             }
           ],
           "name": "performSubstitutions"
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@xpack/xpm-lib!PlatformDetector:class",
+          "docComment": "/**\n * Platform detection service for runtime environment identification.\n *\n * @remarks\n *\n * This class encapsulates platform and architecture detection logic, providing a mockable abstraction over Node.js process properties. It enables testable platform-specific behaviour without requiring execution on multiple operating systems or architectures.\n *\n * Key features:\n *\n * <ol> <li><b>Dependency injection:</b> Accepts a custom process object via constructor, enabling test environments to inject mock process implementations.</li> <li><b>Architecture coercion:</b> Provides optional 64-bit to 32-bit architecture mapping for backward compatibility scenarios.</li> <li><b>Consistent interface:</b> Returns standardised {@link PlatformInfo} objects for use throughout the xPack library.</li> </ol>\n *\n * This abstraction eliminates direct <code>process.platform</code> and <code>process.arch</code> access in business logic, making platform-specific code paths testable via mocked platform information.\n *\n * @example\n *\n * Default usage with actual runtime platform:\n * ```typescript\n * const detector = new PlatformDetector()\n * const info = detector.getPlatformInfo()\n * console.log(info.platform) // 'darwin', 'linux', or 'win32'\n * console.log(info.arch)     // 'x64', 'arm64', etc.\n * ```\n *\n * @example\n *\n * Testing with mocked platform:\n * ```typescript\n * const mockProcess = {\n *   platform: 'darwin',\n *   arch: 'arm64'\n * } as NodeJS.Process\n *\n * const detector = new PlatformDetector(mockProcess)\n * const info = detector.getPlatformInfo({ doForce32bit: true })\n * // info.platform === 'darwin'\n * // info.arch === 'arm' (coerced from arm64)\n * ```\n *\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class PlatformDetector "
+            }
+          ],
+          "fileUrlPath": "../src/classes/platform-detector.ts",
+          "releaseTag": "Public",
+          "isAbstract": false,
+          "name": "PlatformDetector",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@xpack/xpm-lib!PlatformDetector:constructor(1)",
+              "docComment": "/**\n * Constructs a platform detector instance.\n *\n * @remarks\n *\n * This constructor accepts an optional process object parameter, enabling dependency injection for testing scenarios. When no process object is provided, the global Node.js <code>process</code> is used automatically.\n *\n * The injected process object must implement the <code>platform</code> and <code>arch</code> properties from the <code>NodeJS.Process</code> interface.\n *\n * @param _process - The Node.js process object providing platform and architecture information. Defaults to the global <code>process</code> object.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(_process?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "NodeJS.Process",
+                  "canonicalReference": "!\"\\\"node:process\\\"\".__global.NodeJS.Process:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "_process",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": true
+                }
+              ]
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!PlatformDetector#getPlatformInfo:member(1)",
+              "docComment": "/**\n * Retrieves current platform and architecture information.\n *\n * @remarks\n *\n * This method returns a {@link PlatformInfo} object containing the operating system platform and CPU architecture. When the <code>doForce32bit</code> option is enabled, 64-bit architectures are coerced to their 32-bit equivalents.\n *\n * Architecture coercion rules (when <code>doForce32bit</code> is <code>true</code>):\n *\n * <ul> <li><b>x64 → ia32:</b> Coerces 64-bit Intel/AMD to 32-bit.</li> <li><b>arm64 → arm:</b> Coerces 64-bit ARM to 32-bit.</li> </ul>\n *\n * This coercion is useful for backward compatibility scenarios where only 32-bit binaries are available but can run on 64-bit systems via compatibility layers.\n *\n * The platform identifier is never modified and always reflects the actual operating system (<code>darwin</code>, <code>linux</code>, <code>win32</code>).\n *\n * @param options - Configuration options controlling platform information retrieval.\n *\n * @returns Platform and architecture information.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "getPlatformInfo(options?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "PlatformInfoOptions",
+                  "canonicalReference": "@xpack/xpm-lib!PlatformInfoOptions:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "PlatformInfo",
+                  "canonicalReference": "@xpack/xpm-lib!PlatformInfo:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "options",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "getPlatformInfo"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!PlatformDetector#isWindows:member(1)",
+              "docComment": "/**\n * Checks whether the current platform is Windows.\n *\n * @remarks\n *\n * This convenience method provides a simple boolean check for Windows platform detection, commonly used for path handling and command formatting decisions.\n *\n * Equivalent to checking <code>platform === 'win32'</code>.\n *\n * @returns <code>true</code> if running on Windows, <code>false</code> otherwise.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "isWindows(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "isWindows"
+            }
+          ],
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@xpack/xpm-lib!PlatformInfo:interface",
+          "docComment": "/**\n * Platform information structure for runtime environment detection.\n *\n * @remarks\n *\n * This interface encapsulates operating system and architecture information used throughout the xPack library for platform-specific behaviour, path filtering, and binary distribution selection.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface PlatformInfo "
+            }
+          ],
+          "fileUrlPath": "../src/classes/platform-detector.ts",
+          "releaseTag": "Public",
+          "name": "PlatformInfo",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!PlatformInfo#arch:member",
+              "docComment": "/**\n * The CPU architecture identifier.\n *\n * @remarks\n *\n * Common values include:\n *\n * <ul> <li><code>x64</code> (64-bit Intel/AMD)</li> <li><code>arm64</code> (64-bit ARM)</li> <li><code>ia32</code> (32-bit Intel/AMD)</li> <li><code>arm</code> (32-bit ARM)</li> </ul>\n *\n * Corresponds to <code>process.arch</code> from Node.js.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "arch: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "arch",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!PlatformInfo#platform:member",
+              "docComment": "/**\n * The operating system platform identifier.\n *\n * @remarks\n *\n * Common values include:\n *\n * <ul> <li><code>darwin</code> (macOS)</li> <li><code>linux</code> (Linux)</li> <li><code>win32</code> (Windows)</li> </ul>\n *\n * Corresponds to <code>process.platform</code> from Node.js.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "platform: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "platform",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "extendsTokenRanges": []
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@xpack/xpm-lib!PlatformInfoOptions:interface",
+          "docComment": "/**\n * Options for platform information retrieval.\n *\n * @remarks\n *\n * This interface defines configuration options that control how platform information is retrieved and processed, particularly for architecture coercion scenarios.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface PlatformInfoOptions "
+            }
+          ],
+          "fileUrlPath": "../src/classes/platform-detector.ts",
+          "releaseTag": "Public",
+          "name": "PlatformInfoOptions",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!PlatformInfoOptions#doForce32bit:member",
+              "docComment": "/**\n * Whether to coerce 64-bit architectures to their 32-bit equivalents.\n *\n * @remarks\n *\n * When <code>true</code>, applies the following architecture mappings:\n *\n * <ul> <li><code>x64 → ia32</code></li> <li><code>arm64 → arm</code></li> </ul>\n *\n * This is useful for backward compatibility scenarios where only 32-bit binaries are available but can run on 64-bit systems.\n *\n * @defaultValue `false`\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "doForce32bit?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "doForce32bit",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "extendsTokenRanges": []
         },
         {
           "kind": "Class",
@@ -11328,6 +11631,649 @@
             "endIndex": 2
           },
           "implementsTokenRanges": []
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@xpack/xpm-lib!ProcessedMatrix:interface",
+          "docComment": "/**\n * Result of matrix validation and processing.\n *\n * @remarks\n *\n * This interface encapsulates the processed matrix data ready for Cartesian product generation.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface ProcessedMatrix "
+            }
+          ],
+          "fileUrlPath": "../src/functions/matrix-expander.ts",
+          "releaseTag": "Public",
+          "name": "ProcessedMatrix",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!ProcessedMatrix#matrixKeys:member",
+              "docComment": "/**\n * Array of matrix parameter names.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "matrixKeys: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "matrixKeys",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!ProcessedMatrix#matrixValues:member",
+              "docComment": "/**\n * Array of value arrays for each parameter.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "matrixValues: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string[][]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "matrixValues",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "extendsTokenRanges": []
+        },
+        {
+          "kind": "Function",
+          "canonicalReference": "@xpack/xpm-lib!processMatrixForExpansion:function(1)",
+          "docComment": "/**\n * Validates and processes a matrix object for template expansion.\n *\n * @remarks\n *\n * This function extracts common matrix processing logic used by both actions and build configurations template expansion. It validates the matrix structure, performs Liquid substitutions on matrix values if needed, and prepares the data for Cartesian product generation.\n *\n * Processing steps:\n *\n * <ol> <li>Validates that each matrix property is an array of strings.</li> <li>For each matrix parameter: <ul> <li>Collects the parameter name (key).</li> <li>Joins array values with line breaks for substitution.</li> <li>If values contain Liquid syntax, performs substitutions.</li> <li>Splits the result back into individual values.</li> </ul> </li> <li>Returns processed matrix keys and values ready for combination generation.</li> </ol>\n *\n * Matrix value substitution enables dynamic matrix generation where matrix values themselves can reference other substitution variables, enabling flexible configuration without hardcoding platform-specific or environment-specific values.\n *\n * @param matrix - The matrix object from JSON template.\n *\n * @param templateName - The template name for error messages.\n *\n * @param templateType - The template type ('action' or 'buildConfiguration') for error messages.\n *\n * @param engine - The Liquid engine for substitutions.\n *\n * @param substitutionsVariables - The variables available for substitution.\n *\n * @param log - The logger instance for diagnostics.\n *\n * @returns The processed matrix keys and values.\n *\n * @throws\n *\n * {@link ConfigurationError} If the matrix structure is invalid or substitution fails.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare function processMatrixForExpansion(input: "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    matrix: "
+            },
+            {
+              "kind": "Reference",
+              "text": "JsonTemplateMatrix",
+              "canonicalReference": "@xpack/xpm-lib!JsonTemplateMatrix:type"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    templateName: string;\n    templateType: 'action' | 'buildConfiguration';\n    engine: "
+            },
+            {
+              "kind": "Reference",
+              "text": "LiquidEngine",
+              "canonicalReference": "@xpack/xpm-lib!LiquidEngine:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    substitutionsVariables: "
+            },
+            {
+              "kind": "Reference",
+              "text": "LiquidSubstitutionsVariables",
+              "canonicalReference": "@xpack/xpm-lib!LiquidSubstitutionsVariables:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    log: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Logger",
+              "canonicalReference": "@xpack/logger!Logger:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n}"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Reference",
+              "text": "Promise",
+              "canonicalReference": "!Promise:interface"
+            },
+            {
+              "kind": "Content",
+              "text": "<"
+            },
+            {
+              "kind": "Reference",
+              "text": "ProcessedMatrix",
+              "canonicalReference": "@xpack/xpm-lib!ProcessedMatrix:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ">"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "../src/functions/matrix-expander.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 11,
+            "endIndex": 15
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "{ matrix, templateName, templateType, engine, substitutionsVariables, log, }",
+              "parameterTypeTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "isOptional": false
+            },
+            {
+              "parameterName": "input",
+              "parameterTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 10
+              },
+              "isOptional": false
+            }
+          ],
+          "name": "processMatrixForExpansion"
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@xpack/xpm-lib!TemplateError:class",
+          "docComment": "/**\n * Error indicating a template evaluation failure.\n *\n * @remarks\n *\n * This error is thrown when Liquid template rendering fails during output generation. Common scenarios include undefined variables in templates, invalid filter usage, template syntax errors caught during evaluation, circular template references, or template size limit exceeded. This differs from {@link ConfigurationError} which indicates issues in the template configuration structure itself, and {@link OutputError} which indicates file system or broader output failures.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class TemplateError extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "Error",
+              "canonicalReference": "!Error:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "fileUrlPath": "../src/classes/errors.ts",
+          "releaseTag": "Public",
+          "isAbstract": false,
+          "name": "TemplateError",
+          "preserveMemberOrder": false,
+          "members": [],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@xpack/xpm-lib!TemplateExpander:class",
+          "docComment": "/**\n * A generic template expansion engine for matrix-based template processing.\n *\n * @remarks\n *\n * This class provides shared functionality for expanding template names and creating multiple instances from a single template definition with matrix parameters. It eliminates code duplication between {@link Actions} and {@link BuildConfigurations} classes by extracting the common template expansion logic.\n *\n * Template expansion process:\n *\n * <ol> <li><b>Matrix processing:</b> Validates matrix structure and performs Liquid substitutions on matrix values.</li> <li><b>Combination generation:</b> Computes the Cartesian product of all matrix parameter values.</li> <li><b>Name expansion:</b> For each combination, substitutes matrix values into the template name.</li> <li><b>Instance creation:</b> Invokes the factory callback to create instances with expanded names and matrix parameters.</li> </ol>\n *\n * The class is generic to support different template and instance types whilst maintaining type safety throughout the expansion process.\n *\n * @typeParam TTemplate - The type of template content (e.g., <code>JsonActionContent</code> or <code>JsonBuildConfigurationContent</code>).\n *\n * @typeParam TInstance - The type of instance to create (e.g., <code>Action</code> or <code>BuildConfiguration</code>).\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class TemplateExpander<TTemplate, TInstance> "
+            }
+          ],
+          "fileUrlPath": "../src/classes/template-expander.ts",
+          "releaseTag": "Public",
+          "typeParameters": [
+            {
+              "typeParameterName": "TTemplate",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              }
+            },
+            {
+              "typeParameterName": "TInstance",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              }
+            }
+          ],
+          "isAbstract": false,
+          "name": "TemplateExpander",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!TemplateExpander#_expandName:member(1)",
+              "docComment": "/**\n * Expands a template name with matrix parameter substitutions.\n *\n * @remarks\n *\n * This helper method performs Liquid template substitution on the template name using the specific matrix combination values. It wraps the substitution operation with error handling to provide context about which template failed.\n *\n * The method adds the matrix parameters to the substitution variables hierarchy under the <code>matrix</code> namespace, making them accessible in Liquid templates via syntax like <code>\\{\\{ matrix.arch \\}\\}</code>.\n *\n * @param templateName - The template name containing Liquid variables.\n *\n * @param combination - The matrix parameter values for this combination.\n *\n * @param templateType - A descriptive name for the template type, used in error messages.\n *\n * @returns A promise that resolves to the expanded name after substitution.\n *\n * @throws\n *\n * {@link ConfigurationError} If Liquid substitution fails, with context about the template name.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _expandName(input: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "{\n        templateName: string;\n        combination: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Record",
+                  "canonicalReference": "!Record:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string, string>;\n        templateType: string;\n    }"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 7
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "{ templateName, combination, templateType, }",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 0,
+                    "endIndex": 0
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "input",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_expandName"
+            },
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@xpack/xpm-lib!TemplateExpander:constructor(1)",
+              "docComment": "/**\n * Constructs a template expander instance.\n *\n * @param engine - The Liquid templating engine for variable substitution.\n *\n * @param substitutionsVariables - The variables available for substitution in templates.\n *\n * @param log - The logger instance for output and diagnostics.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(input: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "TemplateExpanderConstructorParameters",
+                  "canonicalReference": "@xpack/xpm-lib!TemplateExpanderConstructorParameters:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "{ engine, substitutionsVariables, log, }",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 0,
+                    "endIndex": 0
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "input",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ]
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!TemplateExpander#engine:member",
+              "docComment": "/**\n * The Liquid templating engine for variable substitution.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly engine: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "LiquidEngine",
+                  "canonicalReference": "@xpack/xpm-lib!LiquidEngine:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "engine",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!TemplateExpander#expandTemplate:member(1)",
+              "docComment": "/**\n * Expands a template into multiple instances based on matrix parameters.\n *\n * @remarks\n *\n * This method orchestrates the template expansion process by validating the matrix, generating all parameter combinations, expanding the template name for each combination, and creating instances via the factory callback.\n *\n * Processing steps:\n *\n * <ol> <li>Processes the matrix to extract and validate parameter keys and values.</li> <li>Generates all combinations using the Cartesian product.</li> <li>For each combination: <ol> <li>Performs Liquid substitution on the template name with matrix parameters.</li> <li>Invokes the factory callback to create an instance.</li> <li>Stores the instance in the result map.</li> </ol> </li> </ol>\n *\n * The factory callback is responsible for creating the appropriate instance type and associating it with the expanded name and matrix parameters.\n *\n * @param templateName - The template name containing Liquid variables (e.g., <code>test-\\{\\{ matrix.arch \\}\\}</code>).\n *\n * @param matrix - The matrix object containing parameter definitions.\n *\n * @param templateContent - The template content to pass to the factory.\n *\n * @param templateType - A descriptive name for the template type (e.g., \"action\" or \"buildConfiguration\"), used in error messages.\n *\n * @param instanceFactory - A callback function that creates instances from expanded names and matrix combinations.\n *\n * @returns A promise that resolves to a map of expanded names to their corresponding instances.\n *\n * @throws\n *\n * {@link ConfigurationError} If the matrix structure is invalid, template name substitution fails, or the factory callback throws an error.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "expandTemplate(input: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "{\n        templateName: string;\n        matrix: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "JsonTemplateMatrix",
+                  "canonicalReference": "@xpack/xpm-lib!JsonTemplateMatrix:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";\n        templateContent: TTemplate;\n        templateType: string;\n        instanceFactory: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "InstanceFactoryCallback",
+                  "canonicalReference": "@xpack/xpm-lib!InstanceFactoryCallback:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<TTemplate, TInstance>;\n    }"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Map",
+                  "canonicalReference": "!Map:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string, TInstance>>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 7,
+                "endIndex": 11
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "{ templateName, matrix, templateContent, templateType, instanceFactory, }",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 0,
+                    "endIndex": 0
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "input",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 6
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "expandTemplate"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!TemplateExpander#log:member",
+              "docComment": "/**\n * The logger instance for output and diagnostics.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly log: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Logger",
+                  "canonicalReference": "@xpack/logger!Logger:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "log",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!TemplateExpander#substitutionsVariables:member",
+              "docComment": "/**\n * The variables available for substitution in templates.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly substitutionsVariables: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "LiquidSubstitutionsVariables",
+                  "canonicalReference": "@xpack/xpm-lib!LiquidSubstitutionsVariables:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "substitutionsVariables",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            }
+          ],
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@xpack/xpm-lib!TemplateExpanderConstructorParameters:interface",
+          "docComment": "/**\n * Configuration parameters for constructing a template expander instance.\n *\n * @remarks\n *\n * This interface defines the required configuration for creating an instance of {@link TemplateExpander}. All properties are mandatory.\n *\n * The parameters provide the Liquid templating engine, substitution variables hierarchy, and logger for diagnostic output during template expansion operations.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface TemplateExpanderConstructorParameters "
+            }
+          ],
+          "fileUrlPath": "../src/classes/template-expander.ts",
+          "releaseTag": "Public",
+          "name": "TemplateExpanderConstructorParameters",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!TemplateExpanderConstructorParameters#engine:member",
+              "docComment": "/**\n * The Liquid templating engine for variable substitution.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "engine: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "LiquidEngine",
+                  "canonicalReference": "@xpack/xpm-lib!LiquidEngine:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "engine",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!TemplateExpanderConstructorParameters#log:member",
+              "docComment": "/**\n * The logger instance for output and diagnostics.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "log: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Logger",
+                  "canonicalReference": "@xpack/logger!Logger:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "log",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!TemplateExpanderConstructorParameters#substitutionsVariables:member",
+              "docComment": "/**\n * The variables available for substitution in templates.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "substitutionsVariables: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "LiquidSubstitutionsVariables",
+                  "canonicalReference": "@xpack/xpm-lib!LiquidSubstitutionsVariables:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "substitutionsVariables",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "extendsTokenRanges": []
         }
       ]
     }

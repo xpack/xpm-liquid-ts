@@ -9,5 +9,5 @@ The matrix of parameters used to generate configuration variants.
 **Signature:**
 
 ```typescript
-matrix: JsonBuildConfigurationTemplateMatrix;
+matrix: JsonTemplateMatrix;
 ```

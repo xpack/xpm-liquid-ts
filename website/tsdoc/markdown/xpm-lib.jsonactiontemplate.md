@@ -63,7 +63,7 @@ Description
 
 </td><td>
 
-Record&lt;string, string\[\]&gt;
+[JsonTemplateMatrix](./xpm-lib.jsontemplatematrix.md)
 
 
 </td><td>

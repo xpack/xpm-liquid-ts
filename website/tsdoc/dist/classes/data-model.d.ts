@@ -1,8 +1,8 @@
-import { Liquid } from 'liquidjs';
 import { Logger } from '@xpack/logger';
 import { LiquidSubstitutionsVariables } from '../data/substitutions-variables.js';
 import { Actions } from './actions.js';
 import { BuildConfigurations } from './build-configurations.js';
+import { LiquidEngine } from './liquid-engine.js';
 import { JsonXpmPackage } from '../types/json.js';
 /**
  * The property name used for the build folder relative path.
@@ -179,7 +179,7 @@ export declare class DataModel {
      *    template evaluation across all package components.</li>
      * </ol>
      */
-    protected _engine: Liquid;
+    protected _engine: LiquidEngine;
     /**
      * The JSON package definition.
      *

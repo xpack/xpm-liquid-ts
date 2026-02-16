@@ -392,22 +392,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[\_createSubstitutedAction({ actionName, jsonAction, combination, newActionsMap, }, input)](/xpm-lib-ts/docs/api/xpm-lib/classes/actions/_createsubstitutedaction)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-Creates a substituted action from a template and matrix combination.
-
-
-</td></tr>
-<tr><td>
-
 [\_expandTemplateActions({ actionName, jsonActionTemplate, }, input)](/xpm-lib-ts/docs/api/xpm-lib/classes/actions/_expandtemplateactions)
 
 

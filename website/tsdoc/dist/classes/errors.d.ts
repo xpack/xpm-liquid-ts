@@ -30,11 +30,25 @@ export declare class PrerequisitesError extends Error {
  * @remarks
  * This error is thrown when configuration files, such as `package.json`,
  * contain invalid values, missing required fields, circular references, or
- * other issues that prevent proper initialization or execution. Use this error
- * whenthe problem is related to the content of configuration files rather than
- * user input or output generation.
+ * other issues that prevent proper initialisation or execution. Use this error
+ * when the problem is related to the content of configuration files rather
+ * than user input or output generation.
  */
 export declare class ConfigurationError extends Error {
+}
+/**
+ * Error indicating a template evaluation failure.
+ *
+ * @remarks
+ * This error is thrown when Liquid template rendering fails during output
+ * generation. Common scenarios include undefined variables in templates,
+ * invalid filter usage, template syntax errors caught during evaluation,
+ * circular template references, or template size limit exceeded. This differs
+ * from {@link ConfigurationError} which indicates issues in the template
+ * configuration structure itself, and {@link OutputError} which indicates
+ * file system or broader output failures.
+ */
+export declare class TemplateError extends Error {
 }
 /**
  * Error indicating that user input is invalid.

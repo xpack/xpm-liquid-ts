@@ -85,11 +85,11 @@ A promise that resolves to a map of expanded configuration names to their corres
 
 ## Remarks
 
-This method computes the Cartesian product of matrix parameter values and creates a configuration for each combination, substituting matrix values into both the configuration name and content.
+This method uses the [TemplateExpander](/xpm-lib-ts/docs/api/xpm-lib/classes/templateexpander) to compute the Cartesian product of matrix parameter values and creates a configuration for each combination, substituting matrix values into both the configuration name and content.
 
 Processing steps:
 
-<ol> <li>Validates matrix structure (object with array values).</li> <li>Validates template format (must be a JSON object).</li> <li>Performs Liquid substitutions on matrix values if they contain template syntax.</li> <li>Recursively generates all combinations using Cartesian product.</li> <li>Creates a configuration instance for each combination with matrix parameters stored for later full evaluation.</li> </ol>
+<ol> <li>Validates matrix and template structure.</li> <li>Delegates to <code>TemplateExpander</code> for matrix processing and name expansion.</li> <li>Creates configuration instances via factory callback for each combination.</li> </ol>
 
 Matrix variables are scoped to individual configurations and accessible via the `matrix` namespace during property, dependency, and action evaluation.
 

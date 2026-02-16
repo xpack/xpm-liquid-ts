@@ -19,8 +19,44 @@ Constructs a Liquid engine instance with xpm-specific settings and filters.
 ## Signature
 
 ```typescript
-constructor();
+constructor(platformDetector?: PlatformDetector);
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+platformDetector
+
+
+</td><td>
+
+[PlatformDetector](/xpm-lib-ts/docs/api/xpm-lib/classes/platformdetector)
+
+
+</td><td>
+
+_(Optional)_ The platform detector instance for platform-specific behaviour. Defaults to a new [PlatformDetector](/xpm-lib-ts/docs/api/xpm-lib/classes/platformdetector) instance.
+
+
+</td></tr>
+</tbody></table>
 
 ## Remarks
 

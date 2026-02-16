@@ -4,12 +4,12 @@
 
 ## CombinationsGenerator.\_generateRecursively() method
 
-Recursively generates combinations by exploring the parameter space.
+Recursively generates combinations as a generator, yielding one at a time.
 
 **Signature:**
 
 ```typescript
-protected _generateRecursively(index: number, combination: Record<string, string>): void;
+protected _generateRecursively(index: number, combination: Record<string, string>): Generator<MatrixCombination>;
 ```
 
 ## Parameters
@@ -60,21 +60,23 @@ Record&lt;string, string&gt;
 
 The partial combination being built.
 
+<b>Yields:</b> Complete combinations one at a time.
+
 
 </td></tr>
 </tbody></table>
 
 **Returns:**
 
-void
+Generator&lt;[MatrixCombination](./xpm-lib.matrixcombination.md)<!-- -->&gt;
 
 ## Remarks
 
-This method implements the core recursive algorithm for generating the Cartesian product of parameter values.
+This method implements the recursive algorithm for generating the Cartesian product of parameter values using the generator pattern.
 
 Algorithm steps:
 
-<ol> <li><b>Base case:</b> If all parameters have been assigned values (<code>index === matrixKeys.length</code>), store a copy of the current combination and return.</li> <li><b>Recursive case:</b> For the parameter at the current index: <ul> <li>Iterate through all possible values for this parameter.</li> <li>Assign each value to the combination object.</li> <li>Recursively generate combinations for the next parameter.</li> <li>Remove the assigned value (backtrack) before trying the next value.</li> </ul> </li> </ol>
+<ol> <li><b>Base case:</b> If all parameters have been assigned values (<code>index === matrixKeys.length</code>), yield a copy of the current combination and return.</li> <li><b>Recursive case:</b> For the parameter at the current index: <ul> <li>Iterate through all possible values for this parameter.</li> <li>Assign each value to the combination object.</li> <li>Recursively yield combinations for the next parameter using <code>yield\*</code>.</li> <li>Remove the assigned value (backtrack) before trying the next value.</li> </ul> </li> </ol>
 
-The backtracking ensures that the combination object is reused efficiently without creating unnecessary intermediate objects.
+The combination object is reused and modified during traversal, with only copies of complete combinations being yielded. This approach minimises memory allocation whilst maintaining correctness.
 

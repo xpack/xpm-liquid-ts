@@ -54,6 +54,10 @@ string
 
 The JSON configuration name associated with the given build configuration name.
 
+## Exceptions
+
+[InputError](./xpm-lib.inputerror.md) If the build configuration does not exist.
+
 ## Remarks
 
 For template-generated configurations, this returns the template name.

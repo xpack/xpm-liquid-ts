@@ -37,12 +37,6 @@ export declare class Actions {
         actionName: string;
         jsonActionTemplate: JsonActionTemplate;
     }): Promise<Map<string, Action>>;
-    protected _createSubstitutedAction({ actionName, jsonAction, combination, newActionsMap, }: {
-        combination: Record<string, string>;
-        actionName: string;
-        jsonAction: JsonActionContent;
-        newActionsMap: Map<string, Action>;
-    }): Promise<void>;
 }
 export interface ActionConstructorParameters {
     actionName: string;

@@ -60,3 +60,7 @@ input
 </td></tr>
 </tbody></table>
 
+## Exceptions
+
+[InputError](./xpm-lib.inputerror.md) If packageFolderPath is not provided or is not an absolute path.
+

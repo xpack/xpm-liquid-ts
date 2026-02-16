@@ -2,9 +2,9 @@ import assert from 'node:assert';
 import * as os from 'node:os';
 import { isJsonObject, isString, isJsonArray, } from '../functions/is-something.js';
 import { performSubstitutions } from '../functions/perform-substitutions.js';
-import { getErrorMessage } from '../functions/utils.js';
-import { CombinationsGenerator } from './combinations-generator.js';
+import { getErrorMessage, hasLiquidSyntax } from '../functions/utils.js';
 import { ConfigurationError } from './errors.js';
+import { TemplateExpander } from './template-expander.js';
 export class Actions {
     log;
     engine;
@@ -64,7 +64,7 @@ export class Actions {
             log.trace(`${Actions.name}.initialise()`);
         }
         for (const [actionName, jsonAction] of Object.entries(this.jsonActions)) {
-            if (actionName.includes('{{')) {
+            if (hasLiquidSyntax(actionName)) {
                 await this._processTemplate({
                     actionName,
                     jsonActionTemplate: jsonAction,
@@ -72,7 +72,7 @@ export class Actions {
             }
             else {
                 if (this._actionsNamesSet.has(actionName)) {
-                    throw new ConfigurationError(`action name "${actionName}" already defined.`);
+                    throw new ConfigurationError(`action name "${actionName}" already defined`);
                 }
                 else {
                     this._actionsMap.set(actionName, undefined);
@@ -88,26 +88,31 @@ export class Actions {
         return true;
     }
     get size() {
+        assert(this._isInitialised, 'Actions collection must be initialised before accessing size');
         return this._actionsMap.size;
     }
     get isEmpty() {
+        assert(this._isInitialised, 'Actions collection must be initialised before accessing isEmpty');
         return this._actionsMap.size === 0;
     }
     get names() {
+        assert(this._isInitialised, 'Actions collection must be initialised before accessing names');
         return this._actionsNames;
     }
     has(actionName) {
+        assert(this._isInitialised, 'Actions collection must be initialised before accessing has()');
         return this._actionsMap.has(actionName);
     }
     get(actionName) {
+        assert(this._isInitialised, 'Actions collection must be initialised before accessing get()');
         const log = this.log;
         log.trace(`${Actions.name}.get(${actionName})`);
         let action = this._actionsMap.get(actionName);
         if (action === undefined) {
-            if (!this._jsonActionsNamesMap.has(actionName)) {
+            const jsonActionName = this._jsonActionsNamesMap.get(actionName);
+            if (jsonActionName === undefined) {
                 throw new ConfigurationError(`action "${actionName}" does not exist`);
             }
-            const jsonActionName = this._jsonActionsNamesMap.get(actionName);
             const jsonAction = (this.jsonActions[jsonActionName] ??
                 '');
             action = new Action({
@@ -145,7 +150,6 @@ export class Actions {
     async _expandTemplateActions({ actionName, jsonActionTemplate, }) {
         const log = this.log;
         log.trace(`${Actions.name}.#expandTemplateActions(${actionName})`);
-        const newActionsMap = new Map();
         if (jsonActionTemplate.matrix == undefined) {
             throw new ConfigurationError(`action "${actionName}" has no matrix`);
         }
@@ -159,83 +163,23 @@ export class Actions {
             !isJsonArray(jsonActionTemplate.template)) {
             throw new ConfigurationError(`action "${actionName}" template is not a string or array`);
         }
-        const matrixKeys = [];
-        const matrixValues = [];
-        for (const [matrixKey, matrixValueArray] of Object.entries(jsonActionTemplate.matrix)) {
-            if (!isJsonArray(matrixValueArray)) {
-                throw new ConfigurationError(`action "${actionName}" matrix.${matrixKey} is not an array`);
-            }
-            for (const matrixValue of matrixValueArray) {
-                if (!isString(matrixValue)) {
-                    throw new ConfigurationError(`action "${actionName}" matrix.${matrixKey} value is not a string`);
-                }
-            }
-            matrixKeys.push(matrixKey);
-            const stringValue = matrixValueArray.join(os.EOL);
-            if (stringValue.includes('{{') || stringValue.includes('{%')) {
-                let substitutedValue;
-                try {
-                    substitutedValue = await performSubstitutions({
-                        input: stringValue,
-                        engine: this.engine,
-                        substitutionsVariables: {
-                            ...this.substitutionsVariables,
-                        },
-                        log: this.log,
-                    });
-                }
-                catch (error) {
-                    const message = getErrorMessage(error) +
-                        ` in action "${actionName}" matrix.${matrixKey}`;
-                    throw new ConfigurationError(message);
-                }
-                matrixValues.push(substitutedValue.replace(new RegExp(os.EOL + '$'), '').split(os.EOL));
-            }
-            else {
-                matrixValues.push(matrixValueArray);
-            }
-        }
-        const combinationsGenerator = new CombinationsGenerator({
-            matrixKeys,
-            matrixValues,
+        const expander = new TemplateExpander({
+            engine: this.engine,
+            substitutionsVariables: this.substitutionsVariables,
             log: this.log,
         });
-        const combinations = combinationsGenerator.generate();
-        log.trace('combinations =>', combinations);
-        for (const combination of combinations) {
-            await this._createSubstitutedAction({
-                actionName,
-                jsonAction: jsonActionTemplate.template,
-                combination,
-                newActionsMap,
-            });
-        }
-        return newActionsMap;
-    }
-    async _createSubstitutedAction({ actionName, jsonAction, combination, newActionsMap, }) {
-        let substitutedActionName;
-        try {
-            substitutedActionName = await performSubstitutions({
-                input: actionName,
-                engine: this.engine,
-                substitutionsVariables: {
-                    ...this.substitutionsVariables,
-                    matrix: combination,
-                },
-                log: this.log,
-            });
-        }
-        catch (error) {
-            const message = getErrorMessage(error) + ` in action "${actionName}" name substitution`;
-            throw new ConfigurationError(message);
-        }
-        const newAction = new Action({
-            actionName: substitutedActionName,
-            jsonAction,
-            parentActions: this,
-            matrixParameters: { ...combination },
+        return await expander.expandTemplate({
+            templateName: actionName,
+            matrix: jsonActionTemplate.matrix,
+            templateContent: jsonActionTemplate.template,
+            templateType: 'action',
+            instanceFactory: (expandedName, combination, templateContent) => new Action({
+                actionName: expandedName,
+                jsonAction: templateContent,
+                parentActions: this,
+                matrixParameters: { ...combination },
+            }),
         });
-        newActionsMap.set(substitutedActionName, newAction);
     }
 }
 export class Action {
@@ -269,7 +213,7 @@ export class Action {
             ? jsonAction.join(os.EOL)
             : jsonAction;
         let substitutedCommands;
-        if (inputCommands.includes('{{') || inputCommands.includes('{%')) {
+        if (hasLiquidSyntax(inputCommands)) {
             try {
                 substitutedCommands = await performSubstitutions({
                     input: inputCommands,
@@ -299,7 +243,8 @@ export class Action {
         return true;
     }
     get commands() {
-        assert(this._commands, 'Action not initialised, commands are undefined');
+        assert(this._isInitialised, 'Action must be initialised before accessing commands');
+        assert(this._commands, 'Action _commands not initialised');
         return this._commands;
     }
 }

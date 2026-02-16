@@ -19,7 +19,7 @@ The matrix of parameters used to generate action variants.
 ## Signature
 
 ```typescript
-matrix: Record<string, string[]>;
+matrix: JsonTemplateMatrix;
 ```
 <hr/>
 

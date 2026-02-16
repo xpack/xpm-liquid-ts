@@ -42,7 +42,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-{ matrixKeys, matrixValues, log, }
+{ matrixKeys, matrixValues, maxCombinations, log, }
 
 
 </td><td>
@@ -72,7 +72,7 @@ input
 
 ## Remarks
 
-The constructor validates that the structure of keys and values is correct and prepares the generator for combination generation. The actual generation is performed by calling <code>generate()</code>.
+The constructor validates that the structure of keys and values is correct and prepares the generator for combination generation. The actual generation is performed by calling `*generate`<!-- -->.
 
 <hr/>
 
