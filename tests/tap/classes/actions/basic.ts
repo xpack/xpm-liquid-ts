@@ -21,7 +21,7 @@ import t from 'tap'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../../src/index.js'
-import { log } from '../../../common.js'
+import { log, testIdempotentInitialisation } from '../../../helpers/index.js'
 
 // ============================================================================
 
@@ -77,10 +77,7 @@ await t.test('Actions - undefined', async (t): Promise<void> => {
     jsonActions: undefined,
   })
 
-  let isInitialised = await actions.initialise()
-  t.equal(isInitialised, true, 'initialise() => true')
-  isInitialised = await actions.initialise()
-  t.equal(isInitialised, false, 'initialise() again => false')
+  await testIdempotentInitialisation(t, actions, 'actions')
 
   t.equal(actions.size, 0, 'size 0')
   t.equal(actions.isEmpty, true, 'empty')
@@ -107,10 +104,7 @@ await t.test('Actions - at top level', async (t): Promise<void> => {
     },
   })
 
-  let isInitialised = await actions.initialise()
-  t.equal(isInitialised, true, 'initialise() => true')
-  isInitialised = await actions.initialise()
-  t.equal(isInitialised, false, 'initialise() again => false')
+  await testIdempotentInitialisation(t, actions, 'actions')
 
   t.equal(actions.size, 2, 'size 2')
   t.equal(actions.isEmpty, false, 'not empty after initialise()')
@@ -132,10 +126,7 @@ await t.test('Actions - at top level', async (t): Promise<void> => {
     { name: 'AssertionError', message: /must be initialised/ },
     'one.commands throws AssertionError with "must be initialised"'
   )
-  isInitialised = await one.initialise()
-  t.equal(isInitialised, true, 'one.initialise() => true')
-  isInitialised = await one.initialise()
-  t.equal(isInitialised, false, 'one.initialise() again => false')
+  await testIdempotentInitialisation(t, one, 'one')
 
   const oneCommands = one.commands
   t.equal(Array.isArray(oneCommands), true, 'one.commands is array')
@@ -145,8 +136,7 @@ await t.test('Actions - at top level', async (t): Promise<void> => {
   const two = actions.get('two')
   t.equal(two.actionName, 'two', 'actionName is "two"')
   t.equal(two.parentActions, actions, 'parentActions is actions')
-  isInitialised = await two.initialise()
-  t.equal(isInitialised, true, 'two.initialise() => true')
+  await testIdempotentInitialisation(t, two, 'two')
 
   const twoCommands = two.commands
   t.equal(Array.isArray(twoCommands), true, 'two.commands is array')
@@ -180,17 +170,12 @@ await t.test('Actions - in configuration', async (t): Promise<void> => {
   const actions = buildConfiguration.actions
   t.ok(actions, 'has actions')
 
-  let isInitialised = await actions.initialise()
-  t.equal(isInitialised, true, 'actions.initialise() => true')
-
-  isInitialised = await actions.initialise()
-  t.equal(isInitialised, false, 'actions.initialise() again => false')
+  await testIdempotentInitialisation(t, actions, 'actions')
 
   const actionOne = actions.get('one')
   t.ok(actionOne, 'has action one')
 
-  isInitialised = await actionOne.initialise()
-  t.equal(isInitialised, true, 'actionOne.initialise() => true')
+  await testIdempotentInitialisation(t, actionOne, 'actionOne')
 
   const commands = actionOne.commands
   t.equal(Array.isArray(commands), true, 'actionOne.commands is array')

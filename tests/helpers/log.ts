@@ -10,33 +10,12 @@
  */
 // ----------------------------------------------------------------------------
 
-import { Logger } from '@xpack/logger'
-
 // ----------------------------------------------------------------------------
 
-import * as xpm from '../src/index.js'
+import { Logger } from '@xpack/logger';
 
 // ============================================================================
 
-export const log = new Logger({ level: 'info' })
-
-const engine = new xpm.LiquidEngine()
-
-// ----------------------------------------------------------------------------
-
-export async function performSubstitutionsTest(
-  input: string,
-  substitutionsVariables: Record<string, unknown>
-): Promise<string> {
-  return await xpm.performSubstitutions({
-    log,
-    engine,
-    input,
-    substitutionsVariables: {
-      ...xpm.liquidSubstitutionsVariablesBase,
-      ...substitutionsVariables,
-    },
-  })
-}
+export const log = new Logger({ level: 'info' });
 
 // ----------------------------------------------------------------------------

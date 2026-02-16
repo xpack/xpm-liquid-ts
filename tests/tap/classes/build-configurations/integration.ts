@@ -25,7 +25,7 @@ import t from 'tap'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../../src/index.js'
-import { log } from '../../../common.js'
+import { log, testIdempotentInitialisation } from '../../../helpers/index.js'
 
 // ============================================================================
 
@@ -89,13 +89,10 @@ await t.test(
 
     // -----
 
-    let isInitialised = await buildConfigurations.initialise()
-    t.equal(isInitialised, true, 'buildConfigurations.initialise() => true')
-    isInitialised = await buildConfigurations.initialise()
-    t.equal(
-      isInitialised,
-      false,
-      'buildConfigurations.initialise() again => false'
+    await testIdempotentInitialisation(
+      t,
+      buildConfigurations,
+      'buildConfigurations'
     )
 
     const buildConfigurationsNames = buildConfigurations.names
@@ -188,10 +185,7 @@ await t.test(
     const actions = buildConfiguration.actions
     t.ok(actions, 'has actions')
 
-    isInitialised = await actions.initialise()
-    t.equal(isInitialised, true, 'actions.initialise() => true')
-    isInitialised = await actions.initialise()
-    t.equal(isInitialised, false, 'actions.initialise() again => false')
+    await testIdempotentInitialisation(t, actions, 'actions')
 
     t.equal(actions.isEmpty, false, 'actions is not empty after init')
 
@@ -215,8 +209,7 @@ await t.test(
       'jsonAction'
     )
 
-    isInitialised = await actionOne.initialise()
-    t.equal(isInitialised, true, 'actionOne.initialise() => true')
+    await testIdempotentInitialisation(t, actionOne, 'actionOne')
 
     let commands = actionOne.commands
     // console.log(commands)
@@ -226,8 +219,7 @@ await t.test(
     const actionTwo = actions.get('two')
     t.ok(actionTwo, 'actions.get("two")')
 
-    isInitialised = await actionTwo.initialise()
-    t.equal(isInitialised, true, 'actionTwo.initialise() => true')
+    await testIdempotentInitialisation(t, actionTwo, 'actionTwo')
 
     commands = actionTwo.commands
     t.equal(commands.length, 1, 'actionTwo has 1 command')

@@ -25,7 +25,7 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../../src/index.js'
-import { log } from '../../../common.js'
+import { log, testIdempotentInitialisation } from '../../../helpers/index.js'
 
 // ============================================================================
 
@@ -351,8 +351,11 @@ await t.test(
     const buildConfigurations = xpmDataModel.buildConfigurations
     t.ok(buildConfigurations, 'has buildConfigurations')
 
-    let isInitialised = await buildConfigurations.initialise()
-    t.equal(isInitialised, true, 'buildConfigurations.initialise() => true')
+    await testIdempotentInitialisation(
+      t,
+      buildConfigurations,
+      'buildConfigurations'
+    )
 
     const buildConfigurationsNames = buildConfigurations.names
     t.equal(
@@ -421,8 +424,7 @@ await t.test(
     const actions = buildConfiguration.actions
     t.ok(actions, 'has actions')
 
-    isInitialised = await actions.initialise()
-    t.equal(isInitialised, true, 'actions.initialise() => true')
+    await testIdempotentInitialisation(t, actions, 'actions')
 
     const actionsNames = actions.names
     // console.log(actionsNames)
@@ -435,7 +437,7 @@ await t.test(
     const action = await actions.get('build')
     t.ok(action, 'actions.get("build")')
 
-    isInitialised = await action.initialise()
+    await testIdempotentInitialisation(t, action, 'action')
     const commands = action.commands
     t.equal(commands.length, 2, 'action "build" has 2 commands')
     t.match(

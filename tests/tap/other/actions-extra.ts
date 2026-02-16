@@ -23,7 +23,7 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../src/index.js'
-import { log } from '../../common.js'
+import { log, testIdempotentInitialisation } from '../../helpers/index.js'
 
 // ============================================================================
 
@@ -100,10 +100,7 @@ await t.test(
       'properties.p1 is 1'
     )
 
-    let isInitialised = await topActions.initialise()
-    t.equal(isInitialised, true, 'topActions.initialise() => true')
-    isInitialised = await topActions.initialise()
-    t.equal(isInitialised, false, 'topActions.initialise() again => false')
+    await testIdempotentInitialisation(t, topActions, 'topActions')
 
     t.equal(topActions.isEmpty, false, 'topActions is not empty after init')
 
@@ -126,8 +123,7 @@ await t.test(
       'jsonAction'
     )
 
-    isInitialised = await actionOne.initialise()
-    t.equal(isInitialised, true, 'actionOne.initialise() again => true')
+    await testIdempotentInitialisation(t, actionOne, 'actionOne')
 
     let commands = actionOne.commands
     // console.log(commands)

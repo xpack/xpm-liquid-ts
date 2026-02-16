@@ -24,7 +24,7 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../src/index.js'
-import { log } from '../../common.js'
+import { log } from '../../helpers/index.js'
 
 // ============================================================================
 

@@ -22,7 +22,7 @@ import t from 'tap'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../src/index.js'
-import { performSubstitutionsTest } from '../../common.js'
+import { performSubstitutionsHelper } from '../../helpers/index.js'
 
 // ============================================================================
 
@@ -37,17 +37,17 @@ await t.test(
     }
 
     t.equal(
-      await performSubstitutionsTest('', substitutionsVariables),
+      await performSubstitutionsHelper('', substitutionsVariables),
       '',
       'empty remains empty'
     )
     t.equal(
-      await performSubstitutionsTest('abc', substitutionsVariables),
+      await performSubstitutionsHelper('abc', substitutionsVariables),
       'abc',
       'no changes'
     )
     t.equal(
-      await performSubstitutionsTest(
+      await performSubstitutionsHelper(
         '0{{ properties.one }}2',
         substitutionsVariables
       ),
@@ -55,7 +55,7 @@ await t.test(
       'one => 1'
     )
     t.equal(
-      await performSubstitutionsTest(
+      await performSubstitutionsHelper(
         '0{{ properties.indirect }}2',
         substitutionsVariables
       ),
@@ -74,7 +74,7 @@ await t.test('LiquidPropertiesDrop - arrays', async (t): Promise<void> => {
     },
   }
 
-  const one = await performSubstitutionsTest(
+  const one = await performSubstitutionsHelper(
     '{{ properties.one }}',
     substitutionsVariables
   )
@@ -82,7 +82,7 @@ await t.test('LiquidPropertiesDrop - arrays', async (t): Promise<void> => {
   t.not(Array.isArray(one), 'array one is concatenated')
   t.equal(one, '1011', 'array one ')
 
-  const compound = await performSubstitutionsTest(
+  const compound = await performSubstitutionsHelper(
     '{{ properties.compound }}',
     substitutionsVariables
   )
@@ -101,14 +101,14 @@ await t.test('LiquidPropertiesDrop - object', async (t): Promise<void> => {
     },
   }
 
-  const one = await performSubstitutionsTest(
+  const one = await performSubstitutionsHelper(
     '{{ properties.map.one }}',
     substitutionsVariables
   )
 
   t.equal(one, '1', 'array one')
 
-  const subst = await performSubstitutionsTest(
+  const subst = await performSubstitutionsHelper(
     '{{ properties.map | keys | size }}',
     substitutionsVariables
   )
@@ -123,13 +123,13 @@ await t.test('LiquidPropertiesDrop - context', async (t): Promise<void> => {
     },
   }
 
-  const one = await performSubstitutionsTest(
+  const one = await performSubstitutionsHelper(
     "{% assign param = 'substituted' %}{{ properties.valueWithParam }}",
     substitutionsVariables
   )
   t.equal(one, 'the substituted value', 'substituted')
 
-  const two = await performSubstitutionsTest(
+  const two = await performSubstitutionsHelper(
     "{% assign param = 'one' %}{{ properties.valueWithParam }}" +
       " {% assign param = 'two' %}{{ properties.valueWithParam }}",
     substitutionsVariables
@@ -148,7 +148,7 @@ await t.test(
 
     await t.rejects(
       async () =>
-        await performSubstitutionsTest(
+        await performSubstitutionsHelper(
           '{{ properties.valueWithParam }}',
           substitutionsVariables
         ),
@@ -161,7 +161,7 @@ await t.test(
 
     await t.rejects(
       async () =>
-        await performSubstitutionsTest(
+        await performSubstitutionsHelper(
           'a{{ properties.other }}b',
           substitutionsVariables
         ),
@@ -187,17 +187,17 @@ await t.test(
     }
 
     t.equal(
-      await performSubstitutionsTest('', substitutionsVariables),
+      await performSubstitutionsHelper('', substitutionsVariables),
       '',
       'empty remains empty'
     )
     t.equal(
-      await performSubstitutionsTest('abc', substitutionsVariables),
+      await performSubstitutionsHelper('abc', substitutionsVariables),
       'abc',
       'no changes'
     )
     t.equal(
-      await performSubstitutionsTest(
+      await performSubstitutionsHelper(
         '0{{ matrix.one }}2',
         substitutionsVariables
       ),
@@ -205,7 +205,7 @@ await t.test(
       'one => 1'
     )
     t.equal(
-      await performSubstitutionsTest(
+      await performSubstitutionsHelper(
         '0{{ matrix.indirect }}2',
         substitutionsVariables
       ),
@@ -224,7 +224,7 @@ await t.test('LiquidMatrixDrop - arrays', async (t): Promise<void> => {
     },
   }
 
-  const one = await performSubstitutionsTest(
+  const one = await performSubstitutionsHelper(
     '{{ matrix.one }}',
     substitutionsVariables
   )
@@ -232,7 +232,7 @@ await t.test('LiquidMatrixDrop - arrays', async (t): Promise<void> => {
   t.not(Array.isArray(one), 'array one is concatenated')
   t.equal(one, '1011', 'array one ')
 
-  const compound = await performSubstitutionsTest(
+  const compound = await performSubstitutionsHelper(
     '{{ matrix.compound }}',
     substitutionsVariables
   )
@@ -251,14 +251,14 @@ await t.test('LiquidMatrixDrop - object', async (t): Promise<void> => {
     },
   }
 
-  const one = await performSubstitutionsTest(
+  const one = await performSubstitutionsHelper(
     '{{ matrix.map.one }}',
     substitutionsVariables
   )
 
   t.equal(one, '1', 'array one')
 
-  const subst = await performSubstitutionsTest(
+  const subst = await performSubstitutionsHelper(
     '{{ matrix.map | keys | size }}',
     substitutionsVariables
   )
@@ -273,13 +273,13 @@ await t.test('LiquidMatrixDrop - context', async (t): Promise<void> => {
     },
   }
 
-  const one = await performSubstitutionsTest(
+  const one = await performSubstitutionsHelper(
     "{% assign param = 'substituted' %}{{ matrix.valueWithParam }}",
     substitutionsVariables
   )
   t.equal(one, 'the substituted value', 'substituted')
 
-  const two = await performSubstitutionsTest(
+  const two = await performSubstitutionsHelper(
     "{% assign param = 'one' %}{{ matrix.valueWithParam }}" +
       " {% assign param = 'two' %}{{ matrix.valueWithParam }}",
     substitutionsVariables
@@ -296,7 +296,7 @@ await t.test('LiquidMatrixDrop - context missing', async (t): Promise<void> => {
 
   await t.rejects(
     async () =>
-      await performSubstitutionsTest(
+      await performSubstitutionsHelper(
         '{{ matrix.valueWithParam }}',
         substitutionsVariables
       ),
@@ -309,7 +309,7 @@ await t.test('LiquidMatrixDrop - context missing', async (t): Promise<void> => {
 
   await t.rejects(
     async () =>
-      await performSubstitutionsTest(
+      await performSubstitutionsHelper(
         'a{{ matrix.other }}b',
         substitutionsVariables
       ),

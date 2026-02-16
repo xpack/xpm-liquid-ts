@@ -22,7 +22,7 @@ import * as liquidjs from 'liquidjs'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../src/index.js'
-import { performSubstitutionsTest } from '../../common.js'
+import { performSubstitutionsHelper } from '../../helpers/index.js'
 
 // ============================================================================
 
@@ -37,22 +37,25 @@ await t.test(
     }
 
     t.equal(
-      await performSubstitutionsTest('', substitutionsVariables),
+      await performSubstitutionsHelper('', substitutionsVariables),
       '',
       'empty remains empty'
     )
     t.equal(
-      await performSubstitutionsTest('abc', substitutionsVariables),
+      await performSubstitutionsHelper('abc', substitutionsVariables),
       'abc',
       'no changes'
     )
     t.equal(
-      await performSubstitutionsTest('0{{ map.one }}2', substitutionsVariables),
+      await performSubstitutionsHelper(
+        '0{{ map.one }}2',
+        substitutionsVariables
+      ),
       '012',
       'one => 1'
     )
     t.equal(
-      await performSubstitutionsTest(
+      await performSubstitutionsHelper(
         '0{{ map.indirect }}2',
         substitutionsVariables
       ),
@@ -75,7 +78,7 @@ await t.test(
     }
 
     t.equal(
-      await performSubstitutionsTest(
+      await performSubstitutionsHelper(
         '{{ "build" | path_join: configuration.name | to_filename | downcase }}',
         substitutionsVariables
       ),
@@ -140,7 +143,7 @@ await t.test(
       },
     }
 
-    const one = await performSubstitutionsTest(
+    const one = await performSubstitutionsHelper(
       '{{ map.one }}',
       substitutionsVariables
     )
@@ -148,7 +151,7 @@ await t.test(
     t.not(Array.isArray(one), 'array one is concatenated')
     t.equal(one, '1011', 'array one')
 
-    const compound = await performSubstitutionsTest(
+    const compound = await performSubstitutionsHelper(
       '{{ map.compound }}',
       substitutionsVariables
     )
@@ -171,7 +174,7 @@ await t.test(
       },
     }
 
-    const one = await performSubstitutionsTest(
+    const one = await performSubstitutionsHelper(
       "{% assign param = 'substituted' %}" +
         '{{ package.properties2.valueWithParam }}',
       substitutionsVariables
@@ -194,7 +197,7 @@ await t.test(
 
     await t.rejects(
       async () =>
-        await performSubstitutionsTest(
+        await performSubstitutionsHelper(
           '0{{ map.two }}2',
           substitutionsVariables
         ),
@@ -255,28 +258,28 @@ await t.test(
       },
     }
 
-    let substituted = await performSubstitutionsTest(
+    let substituted = await performSubstitutionsHelper(
       '{{ properties.p2 }}',
       substitutionsVariables
     )
     // console.log(substituted)
     t.equal(substituted, '12', 'properties.p2 is 12')
 
-    substituted = await performSubstitutionsTest(
+    substituted = await performSubstitutionsHelper(
       '{{ properties.p3 }}',
       substitutionsVariables
     )
     // console.log('p3', substituted)
     t.equal(substituted, '1' + os.EOL + '2', 'properties.p3 is 1\\n2')
 
-    substituted = await performSubstitutionsTest(
+    substituted = await performSubstitutionsHelper(
       '{% for item in properties.p3 %}({{ item }}){% endfor %}',
       substitutionsVariables
     )
     // console.log('for', substituted)
     t.equal(substituted, '(1' + os.EOL + '2)', 'for properties.p3 is (1\\n2)')
 
-    substituted = await performSubstitutionsTest(
+    substituted = await performSubstitutionsHelper(
       // '{% for item in properties.p3 | split_lines %}({{ item }}){% endfor %}',
       '{% assign x = properties.p3 | split_lines %}{% for item in x %}({{ item }}){% endfor %}',
       substitutionsVariables
@@ -284,14 +287,14 @@ await t.test(
     // console.log('assign for', substituted)
     t.equal(substituted, '(1)(2)', 'assign for properties.p3 is (1)(2)')
 
-    substituted = await performSubstitutionsTest(
+    substituted = await performSubstitutionsHelper(
       '{{ properties.p1 | join_lines }}',
       substitutionsVariables
     )
     // console.log('p1 as array', substituted)
     t.equal(substituted, '1' + os.EOL + '2', 'properties.p1 as array')
 
-    substituted = await performSubstitutionsTest(
+    substituted = await performSubstitutionsHelper(
       '{{ properties.native-gcc-versions }}',
       substitutionsVariables
     )
@@ -302,7 +305,7 @@ await t.test(
       'properties.native-gcc-versions is 15\\n14'
     )
 
-    substituted = await performSubstitutionsTest(
+    substituted = await performSubstitutionsHelper(
       '{{ properties.native-gcc-versions0 }}',
       substitutionsVariables
     )
@@ -313,7 +316,7 @@ await t.test(
       'properties.native-gcc-versions0 is x\\n15\\n14'
     )
 
-    substituted = await performSubstitutionsTest(
+    substituted = await performSubstitutionsHelper(
       '{{ properties.native-gcc-versions2 }}',
       substitutionsVariables
     )
@@ -324,7 +327,7 @@ await t.test(
       'properties.native-gcc-versions2 is 15\\n14'
     )
 
-    substituted = await performSubstitutionsTest(
+    substituted = await performSubstitutionsHelper(
       '{{ properties.native-gcc-releases2 | find: "version", properties.v14 | map: "specifier" }}',
       substitutionsVariables
     )

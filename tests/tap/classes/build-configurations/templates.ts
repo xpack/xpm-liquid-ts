@@ -25,7 +25,7 @@ import t from 'tap'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../../src/index.js'
-import { log } from '../../../common.js'
+import { log, testIdempotentInitialisation } from '../../../helpers/index.js'
 
 // ============================================================================
 
@@ -406,8 +406,7 @@ await t.test(
     const actions = xpmDataModel.actions
     t.ok(actions, 'has actions')
 
-    const actionsInitialised = await actions.initialise()
-    t.equal(actionsInitialised, true, 'actions.initialise() => true')
+    await testIdempotentInitialisation(t, actions, 'actions')
 
     const actionsNames = actions.names
     t.equal(
@@ -430,8 +429,11 @@ await t.test(
     t.ok(buildConfigurations, 'has buildConfigurations')
 
     // -----
-    const isInitialised = await buildConfigurations.initialise()
-    t.equal(isInitialised, true, 'buildConfigurations.initialise() => true')
+    await testIdempotentInitialisation(
+      t,
+      buildConfigurations,
+      'buildConfigurations'
+    )
 
     const buildConfigurationsNames = buildConfigurations.names
     // console.log(buildConfigurationsNames)
@@ -516,8 +518,7 @@ await t.test(
         const actions = buildConfiguration.actions
         t.ok(actions, 'has actions')
 
-        const isInitialised = await actions.initialise()
-        t.equal(isInitialised, true, 'actions.initialise() => true')
+        await testIdempotentInitialisation(t, actions, 'actions')
 
         const actionsNames = actions.names
         // console.log(actionsNames)

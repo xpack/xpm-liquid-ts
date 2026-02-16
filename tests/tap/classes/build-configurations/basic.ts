@@ -25,7 +25,7 @@ import t from 'tap'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../../src/index.js'
-import { log } from '../../../common.js'
+import { log, testIdempotentInitialisation } from '../../../helpers/index.js'
 
 // ============================================================================
 
@@ -108,10 +108,11 @@ await t.test('BuildConfigurations - undefined', async (t): Promise<void> => {
     jsonBuildConfigurations: undefined,
   })
 
-  let isInitialised = await buildConfigurations.initialise()
-  t.equal(isInitialised, true, 'initialise() => true')
-  isInitialised = await buildConfigurations.initialise()
-  t.equal(isInitialised, false, 'initialise() again => false')
+  await testIdempotentInitialisation(
+    t,
+    buildConfigurations,
+    'buildConfigurations'
+  )
 
   t.equal(buildConfigurations.size, 0, 'size 0')
   t.equal(buildConfigurations.isEmpty, true, 'empty')
@@ -198,10 +199,7 @@ await t.test(
       'buildConfigurationName configOne'
     )
 
-    isInitialised = await configOne.initialise()
-    t.equal(isInitialised, true, 'configOne initialise() => true')
-    isInitialised = await configOne.initialise()
-    t.equal(isInitialised, false, 'configOne initialise() again => false')
+    await testIdempotentInitialisation(t, configOne, 'configOne')
 
     t.equal(configOne.properties.p1, 'v1', 'properties.p1 is v1')
 
