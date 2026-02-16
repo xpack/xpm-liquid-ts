@@ -44,7 +44,7 @@ const testValues = [
 
 // ----------------------------------------------------------------------------
 
-t.test('isPrimitive', (t): void => {
+t.test('isPrimitive - type checking', (t): void => {
   const primitiveTypes = [
     'string',
     'number',
@@ -67,7 +67,7 @@ t.test('isPrimitive', (t): void => {
   t.end()
 })
 
-t.test('isString', (t): void => {
+t.test('isString - type checking', (t): void => {
   for (const { value, type } of testValues) {
     if (type === 'string') {
       t.ok(xpm.isString(value), `${type} is string`)
@@ -79,7 +79,7 @@ t.test('isString', (t): void => {
   t.end()
 })
 
-t.test('isObject', (t): void => {
+t.test('isObject - type checking', (t): void => {
   const objectTypes = ['null', 'object', 'empty object']
 
   for (const { value, type } of testValues) {
@@ -93,7 +93,7 @@ t.test('isObject', (t): void => {
   t.end()
 })
 
-t.test('isBoolean', (t): void => {
+t.test('isBoolean - type checking', (t): void => {
   for (const { value, type } of testValues) {
     if (type === 'boolean') {
       t.ok(xpm.isBoolean(value), `${type} is boolean`)
@@ -132,7 +132,7 @@ const jsonTestValues = [
 
 // ----------------------------------------------------------------------------
 
-t.test('isJsonObject', (t): void => {
+t.test('isJsonObject - type checking', (t): void => {
   const jsonObjectTypes = ['object', 'empty object']
 
   for (const { value, type } of jsonTestValues) {
@@ -146,7 +146,7 @@ t.test('isJsonObject', (t): void => {
   t.end()
 })
 
-t.test('isJsonArray', (t): void => {
+t.test('isJsonArray - type checking', (t): void => {
   for (const { value, type } of jsonTestValues) {
     if (type === 'array') {
       t.ok(xpm.isJsonArray(value), `${type} is JSON array`)
@@ -158,7 +158,7 @@ t.test('isJsonArray', (t): void => {
   t.end()
 })
 
-t.test('isNonEmptyJsonObject', (t): void => {
+t.test('isNonEmptyJsonObject - type checking', (t): void => {
   for (const { value, type } of jsonTestValues) {
     if (type === 'object') {
       t.ok(xpm.isNonEmptyJsonObject(value), `${type} is non-empty JSON object`)

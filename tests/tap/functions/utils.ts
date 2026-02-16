@@ -22,7 +22,7 @@ import * as xpm from '../../../src/index.js'
 
 // ============================================================================
 
-t.test('getErrorMessage', (t): void => {
+t.test('getErrorMessage - error message extraction', (t): void => {
   t.equal(
     xpm.getErrorMessage(new Error('test')),
     'test',

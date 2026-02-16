@@ -26,45 +26,48 @@ import { performSubstitutionsTest } from '../../common.js'
 
 // ============================================================================
 
-await t.test('xpm.LiquidPropertiesDrop', async (t): Promise<void> => {
-  const substitutionsVariables = {
-    properties: {
-      one: '1',
-      indirect: '{{ properties.one }}',
-    },
+await t.test(
+  'LiquidPropertiesDrop - basic functionality',
+  async (t): Promise<void> => {
+    const substitutionsVariables = {
+      properties: {
+        one: '1',
+        indirect: '{{ properties.one }}',
+      },
+    }
+
+    t.equal(
+      await performSubstitutionsTest('', substitutionsVariables),
+      '',
+      'empty remains empty'
+    )
+    t.equal(
+      await performSubstitutionsTest('abc', substitutionsVariables),
+      'abc',
+      'no changes'
+    )
+    t.equal(
+      await performSubstitutionsTest(
+        '0{{ properties.one }}2',
+        substitutionsVariables
+      ),
+      '012',
+      'one => 1'
+    )
+    t.equal(
+      await performSubstitutionsTest(
+        '0{{ properties.indirect }}2',
+        substitutionsVariables
+      ),
+      '012',
+      'indirect => 1'
+    )
+
+    t.end()
   }
+)
 
-  t.equal(
-    await performSubstitutionsTest('', substitutionsVariables),
-    '',
-    'empty remains empty'
-  )
-  t.equal(
-    await performSubstitutionsTest('abc', substitutionsVariables),
-    'abc',
-    'no changes'
-  )
-  t.equal(
-    await performSubstitutionsTest(
-      '0{{ properties.one }}2',
-      substitutionsVariables
-    ),
-    '012',
-    'one => 1'
-  )
-  t.equal(
-    await performSubstitutionsTest(
-      '0{{ properties.indirect }}2',
-      substitutionsVariables
-    ),
-    '012',
-    'indirect => 1'
-  )
-
-  t.end()
-})
-
-await t.test('xpm.LiquidPropertiesDrop arrays', async (t): Promise<void> => {
+await t.test('LiquidPropertiesDrop - arrays', async (t): Promise<void> => {
   const substitutionsVariables = {
     properties: {
       one: ['10', '11'],
@@ -92,7 +95,7 @@ await t.test('xpm.LiquidPropertiesDrop arrays', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('xpm.LiquidPropertiesDrop object', async (t): Promise<void> => {
+await t.test('LiquidPropertiesDrop - object', async (t): Promise<void> => {
   const substitutionsVariables = {
     properties: {
       map: {
@@ -119,7 +122,7 @@ await t.test('xpm.LiquidPropertiesDrop object', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('xpm.LiquidPropertiesDrop context', async (t): Promise<void> => {
+await t.test('LiquidPropertiesDrop - context', async (t): Promise<void> => {
   const substitutionsVariables = {
     properties: {
       valueWithParam: 'the {{ param }} value',
@@ -143,7 +146,7 @@ await t.test('xpm.LiquidPropertiesDrop context', async (t): Promise<void> => {
 })
 
 await t.test(
-  'xpm.LiquidPropertiesDrop context missing',
+  'LiquidPropertiesDrop - context missing',
   async (t): Promise<void> => {
     const substitutionsVariables = {
       properties: {
@@ -182,45 +185,48 @@ await t.test(
 
 // ----------------------------------------------------------------------------
 
-await t.test(' xpm.LiquidMatrixDrop', async (t): Promise<void> => {
-  const substitutionsVariables = {
-    matrix: {
-      one: '1',
-      indirect: '{{ matrix.one }}',
-    },
+await t.test(
+  'LiquidMatrixDrop - basic functionality',
+  async (t): Promise<void> => {
+    const substitutionsVariables = {
+      matrix: {
+        one: '1',
+        indirect: '{{ matrix.one }}',
+      },
+    }
+
+    t.equal(
+      await performSubstitutionsTest('', substitutionsVariables),
+      '',
+      'empty remains empty'
+    )
+    t.equal(
+      await performSubstitutionsTest('abc', substitutionsVariables),
+      'abc',
+      'no changes'
+    )
+    t.equal(
+      await performSubstitutionsTest(
+        '0{{ matrix.one }}2',
+        substitutionsVariables
+      ),
+      '012',
+      'one => 1'
+    )
+    t.equal(
+      await performSubstitutionsTest(
+        '0{{ matrix.indirect }}2',
+        substitutionsVariables
+      ),
+      '012',
+      'indirect => 1'
+    )
+
+    t.end()
   }
+)
 
-  t.equal(
-    await performSubstitutionsTest('', substitutionsVariables),
-    '',
-    'empty remains empty'
-  )
-  t.equal(
-    await performSubstitutionsTest('abc', substitutionsVariables),
-    'abc',
-    'no changes'
-  )
-  t.equal(
-    await performSubstitutionsTest(
-      '0{{ matrix.one }}2',
-      substitutionsVariables
-    ),
-    '012',
-    'one => 1'
-  )
-  t.equal(
-    await performSubstitutionsTest(
-      '0{{ matrix.indirect }}2',
-      substitutionsVariables
-    ),
-    '012',
-    'indirect => 1'
-  )
-
-  t.end()
-})
-
-await t.test('xpm.LiquidMatrixDrop arrays', async (t): Promise<void> => {
+await t.test('LiquidMatrixDrop - arrays', async (t): Promise<void> => {
   const substitutionsVariables = {
     matrix: {
       one: ['10', '11'],
@@ -248,7 +254,7 @@ await t.test('xpm.LiquidMatrixDrop arrays', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test(' xpm.LiquidMatrixDrop object', async (t): Promise<void> => {
+await t.test('LiquidMatrixDrop - object', async (t): Promise<void> => {
   const substitutionsVariables = {
     matrix: {
       map: {
@@ -275,7 +281,7 @@ await t.test(' xpm.LiquidMatrixDrop object', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test(' xpm.LiquidMatrixDrop context', async (t): Promise<void> => {
+await t.test('LiquidMatrixDrop - context', async (t): Promise<void> => {
   const substitutionsVariables = {
     matrix: {
       valueWithParam: 'the {{ param }} value',
@@ -298,42 +304,39 @@ await t.test(' xpm.LiquidMatrixDrop context', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test(
-  ' xpm.LiquidMatrixDrop context missing',
-  async (t): Promise<void> => {
-    const substitutionsVariables = {
-      matrix: {
-        other: null,
-      },
-    }
-
-    await t.rejects(
-      async () =>
-        await performSubstitutionsTest(
-          '{{ matrix.valueWithParam }}',
-          substitutionsVariables
-        ),
-      {
-        constructor: xpm.TemplateError,
-        message: /not defined/,
-      },
-      'throws TemplateError for undefined matrix key with parameter'
-    )
-
-    await t.rejects(
-      async () =>
-        await performSubstitutionsTest(
-          'a{{ matrix.other }}b',
-          substitutionsVariables
-        ),
-      {
-        constructor: xpm.TemplateError,
-        message: /Cannot read properties/,
-      },
-      'throws TemplateError when accessing null matrix value'
-    )
-    t.end()
+await t.test('LiquidMatrixDrop - context missing', async (t): Promise<void> => {
+  const substitutionsVariables = {
+    matrix: {
+      other: null,
+    },
   }
-)
+
+  await t.rejects(
+    async () =>
+      await performSubstitutionsTest(
+        '{{ matrix.valueWithParam }}',
+        substitutionsVariables
+      ),
+    {
+      constructor: xpm.TemplateError,
+      message: /not defined/,
+    },
+    'throws TemplateError for undefined matrix key with parameter'
+  )
+
+  await t.rejects(
+    async () =>
+      await performSubstitutionsTest(
+        'a{{ matrix.other }}b',
+        substitutionsVariables
+      ),
+    {
+      constructor: xpm.TemplateError,
+      message: /Cannot read properties/,
+    },
+    'throws TemplateError when accessing null matrix value'
+  )
+  t.end()
+})
 
 // ----------------------------------------------------------------------------

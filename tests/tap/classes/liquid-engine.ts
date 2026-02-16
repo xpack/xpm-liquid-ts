@@ -28,7 +28,7 @@ const substitutionsVariables = {}
 
 // ----------------------------------------------------------------------------
 
-await t.test('path_*', async (t): Promise<void> => {
+await t.test('LiquidEngine - path_* filters', async (t): Promise<void> => {
   if (os.platform() === 'win32') {
     // For JavaScript the double backslash is enough.
     // For Liquid, it must be doubled once more.
@@ -128,111 +128,117 @@ await t.test('path_*', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('path_posix_*', async (t): Promise<void> => {
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "/foo/bar/baz/asdf/quux.html" | path_posix_basename }}',
-      substitutionsVariables
-    ),
-    'quux.html',
-    'path_posix_basename'
-  )
+await t.test(
+  'LiquidEngine - path_posix_* filters',
+  async (t): Promise<void> => {
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "/foo/bar/baz/asdf/quux.html" | path_posix_basename }}',
+        substitutionsVariables
+      ),
+      'quux.html',
+      'path_posix_basename'
+    )
 
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "/foo/bar/baz/asdf/quux" | path_posix_dirname }}',
-      substitutionsVariables
-    ),
-    '/foo/bar/baz/asdf',
-    'path_posix_dirname'
-  )
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "/foo/bar/baz/asdf/quux" | path_posix_dirname }}',
+        substitutionsVariables
+      ),
+      '/foo/bar/baz/asdf',
+      'path_posix_dirname'
+    )
 
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "/foo/bar//baz/asdf/quux/.." | path_posix_normalize }}',
-      substitutionsVariables
-    ),
-    '/foo/bar/baz/asdf',
-    'path_posix_normalize'
-  )
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "/foo/bar//baz/asdf/quux/.." | path_posix_normalize }}',
+        substitutionsVariables
+      ),
+      '/foo/bar/baz/asdf',
+      'path_posix_normalize'
+    )
 
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "/foo" | path_posix_join: "bar", "baz/asdf", "quux", ".." }}',
-      substitutionsVariables
-    ),
-    '/foo/bar/baz/asdf',
-    'path_posix_join'
-  )
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "/foo" | path_posix_join: "bar", "baz/asdf", "quux", ".." }}',
+        substitutionsVariables
+      ),
+      '/foo/bar/baz/asdf',
+      'path_posix_join'
+    )
 
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "/data/orandea/test/aaa" | ' +
-        'path_posix_relative: "/data/orandea/impl/bbb" }}',
-      substitutionsVariables
-    ),
-    '../../impl/bbb',
-    'path_posix_relative'
-  )
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "/data/orandea/test/aaa" | ' +
+          'path_posix_relative: "/data/orandea/impl/bbb" }}',
+        substitutionsVariables
+      ),
+      '../../impl/bbb',
+      'path_posix_relative'
+    )
 
-  t.end()
-})
+    t.end()
+  }
+)
 
-await t.test('path_win32_*', async (t): Promise<void> => {
-  // For JavaScript the double backslash is enough.
-  // For Liquid, it must be doubled once more.
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "c:\\\\foo\\\\bar\\\\baz\\\\asdf\\\\quux.html" | ' +
-        'path_win32_basename }}',
-      substitutionsVariables
-    ),
-    'quux.html',
-    'path_win32_basename'
-  )
+await t.test(
+  'LiquidEngine - path_win32_* filters',
+  async (t): Promise<void> => {
+    // For JavaScript the double backslash is enough.
+    // For Liquid, it must be doubled once more.
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "c:\\\\foo\\\\bar\\\\baz\\\\asdf\\\\quux.html" | ' +
+          'path_win32_basename }}',
+        substitutionsVariables
+      ),
+      'quux.html',
+      'path_win32_basename'
+    )
 
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "c:\\\\foo\\\\bar\\\\baz\\\\asdf\\\\quux" | path_win32_dirname }}',
-      substitutionsVariables
-    ),
-    'c:\\foo\\bar\\baz\\asdf',
-    'path_win32_dirname'
-  )
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "c:\\\\foo\\\\bar\\\\baz\\\\asdf\\\\quux" | path_win32_dirname }}',
+        substitutionsVariables
+      ),
+      'c:\\foo\\bar\\baz\\asdf',
+      'path_win32_dirname'
+    )
 
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "c:\\\\foo\\\\bar\\\\\\\\baz\\\\asdf\\\\quux\\\\.." | ' +
-        'path_win32_normalize }}',
-      substitutionsVariables
-    ),
-    'c:\\foo\\bar\\baz\\asdf',
-    'path_win32_normalize'
-  )
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "c:\\\\foo\\\\bar\\\\\\\\baz\\\\asdf\\\\quux\\\\.." | ' +
+          'path_win32_normalize }}',
+        substitutionsVariables
+      ),
+      'c:\\foo\\bar\\baz\\asdf',
+      'path_win32_normalize'
+    )
 
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "c:\\\\foo" | path_win32_join: "bar", "baz\\\\asdf", "quux", ".." }}',
-      substitutionsVariables
-    ),
-    'c:\\foo\\bar\\baz\\asdf',
-    'path_win32_join'
-  )
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "c:\\\\foo" | path_win32_join: "bar", "baz\\\\asdf", "quux", ".." }}',
+        substitutionsVariables
+      ),
+      'c:\\foo\\bar\\baz\\asdf',
+      'path_win32_join'
+    )
 
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ "c:\\\\data\\\\orandea\\\\test\\\\aaa" | ' +
-        'path_win32_relative: "c:\\\\data\\\\orandea\\\\impl\\\\bbb" }}',
-      substitutionsVariables
-    ),
-    '..\\..\\impl\\bbb',
-    'path_win32_relative'
-  )
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ "c:\\\\data\\\\orandea\\\\test\\\\aaa" | ' +
+          'path_win32_relative: "c:\\\\data\\\\orandea\\\\impl\\\\bbb" }}',
+        substitutionsVariables
+      ),
+      '..\\..\\impl\\bbb',
+      'path_win32_relative'
+    )
 
-  t.end()
-})
+    t.end()
+  }
+)
 
-await t.test('util_format', async (t): Promise<void> => {
+await t.test('LiquidEngine - util_format filter', async (t): Promise<void> => {
   t.equal(
     await performSubstitutionsTest(
       '{{ "%s%d" | util_format: "abc", 42 }}',
@@ -245,7 +251,7 @@ await t.test('util_format', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('to_filename', async (t): Promise<void> => {
+await t.test('LiquidEngine - to_filename filter', async (t): Promise<void> => {
   t.equal(
     await performSubstitutionsTest(
       '{{ "A@#$B" | to_filename }}',
@@ -258,49 +264,52 @@ await t.test('to_filename', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('(join|split)_lines', async (t): Promise<void> => {
-  const substitutionsVariables = {
-    map: { a: 1, b: 2, c: 3 },
-    arr: ['x', 'y', 'z'],
-    n: 42,
-    s: 'line1' + os.EOL + 'line2' + os.EOL + 'line3',
-    as: ['line1' + os.EOL + 'line2', 'line3'],
+await t.test(
+  'LiquidEngine - join_lines and split_lines filters',
+  async (t): Promise<void> => {
+    const substitutionsVariables = {
+      map: { a: 1, b: 2, c: 3 },
+      arr: ['x', 'y', 'z'],
+      n: 42,
+      s: 'line1' + os.EOL + 'line2' + os.EOL + 'line3',
+      as: ['line1' + os.EOL + 'line2', 'line3'],
+    }
+
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ arr | join_lines }}',
+        substitutionsVariables
+      ),
+      substitutionsVariables.arr.join(os.EOL),
+      'arr join_lines'
+    )
+
+    t.equal(
+      await performSubstitutionsTest(
+        '{{ n | join_lines }}',
+        substitutionsVariables
+      ),
+      String(substitutionsVariables.n),
+      'n join_lines'
+    )
+
+    let subst = await performSubstitutionsTest(
+      '{{ s | split_lines | size }}',
+      substitutionsVariables
+    )
+    t.equal(subst, '3', 's split_lines size 3')
+
+    subst = await performSubstitutionsTest(
+      '{{ as | split_lines | size  }}',
+      substitutionsVariables
+    )
+    t.equal(subst, '3', 'as split_lines size 3')
+
+    t.end()
   }
+)
 
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ arr | join_lines }}',
-      substitutionsVariables
-    ),
-    substitutionsVariables.arr.join(os.EOL),
-    'arr join_lines'
-  )
-
-  t.equal(
-    await performSubstitutionsTest(
-      '{{ n | join_lines }}',
-      substitutionsVariables
-    ),
-    String(substitutionsVariables.n),
-    'n join_lines'
-  )
-
-  let subst = await performSubstitutionsTest(
-    '{{ s | split_lines | size }}',
-    substitutionsVariables
-  )
-  t.equal(subst, '3', 's split_lines size 3')
-
-  subst = await performSubstitutionsTest(
-    '{{ as | split_lines | size  }}',
-    substitutionsVariables
-  )
-  t.equal(subst, '3', 'as split_lines size 3')
-
-  t.end()
-})
-
-await t.test('keys', async (t): Promise<void> => {
+await t.test('LiquidEngine - keys filter', async (t): Promise<void> => {
   const substitutionsVariables = {
     map: { a: 1, b: 2, c: 3 },
     arr: ['x', 'y', 'z'],

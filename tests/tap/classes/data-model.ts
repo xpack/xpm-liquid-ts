@@ -36,7 +36,7 @@ import { log } from '../../common.js'
 
 // ----------------------------------------------------------------------------
 
-await t.test('constructor', async (t): Promise<void> => {
+await t.test('DataModel - constructor', async (t): Promise<void> => {
   const jsonNoXpack = { name: 'test', version: '1.2.3', xpack: [] }
   t.throws(
     () => {

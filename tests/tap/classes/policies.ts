@@ -31,7 +31,7 @@ import { log } from '../../common.js'
 
 // ----------------------------------------------------------------------------
 
-t.test('xpm.Policies', (t): void => {
+t.test('Policies - default version', (t): void => {
   const policies = new xpm.Policies({ log, minVersion: 'x.y.z' })
   t.equal(policies.minVersion, '0.0.0', 'minVersion set to default')
   t.equal(policies.shareNpmDependencies, false, 'shareNpmDependencies false')
@@ -54,7 +54,7 @@ t.test('xpm.Policies', (t): void => {
   t.end()
 })
 
-t.test('xpm.Policies 0.1.2', (t): void => {
+t.test('Policies - version 0.1.2', (t): void => {
   const policies = new xpm.Policies({ log, minVersion: '0.1.2' })
   t.equal(policies.minVersion, '0.1.2', 'minVersion set correctly')
   t.equal(policies.shareNpmDependencies, true, 'shareNpmDependencies true')
@@ -73,7 +73,7 @@ t.test('xpm.Policies 0.1.2', (t): void => {
   t.end()
 })
 
-t.test('xpm.Policies 0.14.0', (t): void => {
+t.test('Policies - version 0.14.0', (t): void => {
   const policies = new xpm.Policies({ log, minVersion: '0.14.0' })
   t.equal(policies.shareNpmDependencies, false, 'shareNpmDependencies false')
   t.equal(
@@ -91,7 +91,7 @@ t.test('xpm.Policies 0.14.0', (t): void => {
   t.end()
 })
 
-t.test('xpm.Policies 0.16.0', (t): void => {
+t.test('Policies - version 0.16.0', (t): void => {
   const policies = new xpm.Policies({ log, minVersion: '0.16.0' })
   t.equal(policies.shareNpmDependencies, false, 'shareNpmDependencies false')
   t.equal(
@@ -113,7 +113,7 @@ t.test('xpm.Policies 0.16.0', (t): void => {
   t.end()
 })
 
-t.test('xpm.Policies 0.22.0', (t): void => {
+t.test('Policies - version 0.22.0', (t): void => {
   const policies = new xpm.Policies({ log, minVersion: '0.22.0' })
   t.equal(policies.shareNpmDependencies, false, 'shareNpmDependencies false')
   t.equal(

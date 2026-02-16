@@ -69,7 +69,7 @@ class XpmInitTemplate extends xpm.InitTemplateBase {
 
 // ----------------------------------------------------------------------------
 
-t.test('XpmInitTemplateBase asserts', (t): void => {
+t.test('InitTemplateBase - constructor assertions', (t): void => {
   let template
 
   class XpmInitTemplate extends xpm.InitTemplateBase {
@@ -207,73 +207,43 @@ t.test('XpmInitTemplateBase asserts', (t): void => {
   t.end()
 })
 
-await t.test('XpmInitTemplateBase empty', async (t): Promise<void> => {
-  class XpmInitTemplate extends xpm.InitTemplateBase {
-    async generate(): Promise<void> {
-      t.ok(true, 'generate() called')
-
-      t.same(this._context, mockContext, 'context is correct')
-      t.equal(this.__dirname, '/my/dir', '__dirname is correct')
-      t.equal(this._templatesPath, '/my/templates', 'templatesPath is correct')
-      t.same(this._process, mockProcess, 'process is correct')
-
-      t.equal(
-        this._substitutionsVariables?.projectName,
-        'test-project',
-        'substitutionsVariables.projectName is correct'
-      )
-      t.equal(
-        this._substitutionsVariables?.year,
-        new Date().getFullYear().toString(),
-        'substitutionsVariables.year is correct'
-      )
-      t.equal(
-        this._substitutionsVariables?.stringProp,
-        'a string',
-        'substitutionsVariables.stringProp is correct'
-      )
-      t.equal(
-        this._substitutionsVariables?.properties.stringProp,
-        'a string',
-        'substitutionsVariables.properties.stringProp is correct'
-      )
-    }
-  }
-
-  const template = new XpmInitTemplate({
-    context: mockContext,
-    __dirname: '/my/dir',
-    templatesPath: '/my/templates',
-    propertiesDefinitions,
-    process: mockProcess,
-  })
-
-  const exitCode = await template.run()
-  t.equal(exitCode, 0, 'exit code is 0')
-
-  t.end()
-})
-
 await t.test(
-  'XpmInitTemplateBase default process',
+  'InitTemplateBase - empty configuration',
   async (t): Promise<void> => {
     class XpmInitTemplate extends xpm.InitTemplateBase {
       async generate(): Promise<void> {
         t.ok(true, 'generate() called')
 
-        t.same(this._process, process, 'process is default')
-      }
-    }
+        t.same(this._context, mockContext, 'context is correct')
+        t.equal(this.__dirname, '/my/dir', '__dirname is correct')
+        t.equal(
+          this._templatesPath,
+          '/my/templates',
+          'templatesPath is correct'
+        )
+        t.same(this._process, mockProcess, 'process is correct')
 
-    const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
-      stringProp: {
-        label: 'String Property',
-        description: 'A string property for testing',
-        type: 'string',
-        items: {},
-        isMandatory: false,
-        default: 'defaultString',
-      },
+        t.equal(
+          this._substitutionsVariables?.projectName,
+          'test-project',
+          'substitutionsVariables.projectName is correct'
+        )
+        t.equal(
+          this._substitutionsVariables?.year,
+          new Date().getFullYear().toString(),
+          'substitutionsVariables.year is correct'
+        )
+        t.equal(
+          this._substitutionsVariables?.stringProp,
+          'a string',
+          'substitutionsVariables.stringProp is correct'
+        )
+        t.equal(
+          this._substitutionsVariables?.properties.stringProp,
+          'a string',
+          'substitutionsVariables.properties.stringProp is correct'
+        )
+      }
     }
 
     const template = new XpmInitTemplate({
@@ -281,6 +251,7 @@ await t.test(
       __dirname: '/my/dir',
       templatesPath: '/my/templates',
       propertiesDefinitions,
+      process: mockProcess,
     })
 
     const exitCode = await template.run()
@@ -290,8 +261,41 @@ await t.test(
   }
 )
 
+await t.test('InitTemplateBase - default process', async (t): Promise<void> => {
+  class XpmInitTemplate extends xpm.InitTemplateBase {
+    async generate(): Promise<void> {
+      t.ok(true, 'generate() called')
+
+      t.same(this._process, process, 'process is default')
+    }
+  }
+
+  const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
+    stringProp: {
+      label: 'String Property',
+      description: 'A string property for testing',
+      type: 'string',
+      items: {},
+      isMandatory: false,
+      default: 'defaultString',
+    },
+  }
+
+  const template = new XpmInitTemplate({
+    context: mockContext,
+    __dirname: '/my/dir',
+    templatesPath: '/my/templates',
+    propertiesDefinitions,
+  })
+
+  const exitCode = await template.run()
+  t.equal(exitCode, 0, 'exit code is 0')
+
+  t.end()
+})
+
 await t.test(
-  'XpmInitTemplateBase._validatePropertyValue()',
+  'InitTemplateBase - _validatePropertyValue()',
   async (t): Promise<void> => {
     const mockProcess: NodeJS.Process = {
       env: {},
@@ -750,7 +754,7 @@ await t.test(
 
 // ----------------------------------------------------------------------------
 
-t.test('XpmInitTemplateBase._validatePropertiesDefinitions()', (t): void => {
+t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
   class XpmInitTemplate extends xpm.InitTemplateBase {
     async generate(): Promise<void> {
       t.fail('generate() should not be called')
@@ -1429,7 +1433,7 @@ t.test('XpmInitTemplateBase._validatePropertiesDefinitions()', (t): void => {
 
 // ----------------------------------------------------------------------------
 
-t.test('XpmInitTemplateBase.isPlatformSupported()', (t): void => {
+t.test('InitTemplateBase - isPlatformSupported()', (t): void => {
   const mockProcess: NodeJS.Process = {
     env: {},
     platform: 'linux',
@@ -1483,7 +1487,7 @@ t.test('XpmInitTemplateBase.isPlatformSupported()', (t): void => {
 // ----------------------------------------------------------------------------
 
 await t.test(
-  'XpmInitTemplateBase copy files/folders',
+  'InitTemplateBase - copy files and folders',
   async (t): Promise<void> => {
     class XpmInitTemplate extends xpm.InitTemplateBase {
       async generate(): Promise<void> {
@@ -1562,7 +1566,7 @@ await t.test(
 
 // ----------------------------------------------------------------------------
 
-await t.test('XpmInitTemplateBase.render()', async (t): Promise<void> => {
+await t.test('InitTemplateBase - render()', async (t): Promise<void> => {
   class XpmInitTemplate extends xpm.InitTemplateBase {
     async generate(): Promise<void> {
       t.ok(true, 'generate() called')
@@ -1682,7 +1686,7 @@ class MockStdin extends Readable {
 }
 
 await t.test(
-  'XpmInitTemplateBase.askForMoreValues() not a tty',
+  'InitTemplateBase - askForMoreValues() without TTY',
   async (t): Promise<void> => {
     class MockStdin extends Readable {
       isTTY = false
@@ -1739,7 +1743,7 @@ await t.test(
 )
 
 await t.test(
-  'XpmInitTemplateBase.askForMoreValues()',
+  'InitTemplateBase - askForMoreValues()',
   async (t): Promise<void> => {
     await t.test('string', async (t): Promise<void> => {
       let mockProcess: NodeJS.Process = {

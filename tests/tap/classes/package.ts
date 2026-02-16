@@ -40,7 +40,7 @@ const fixturesFolderPath = path.join(
 
 // ----------------------------------------------------------------------------
 
-t.test('constructor', (t): void => {
+t.test('Package - constructor', (t): void => {
   const packageFolderPath = path.join(fixturesFolderPath, 'package-no-json')
   const xpmPackage = new xpm.Package({
     log,
@@ -52,7 +52,7 @@ t.test('constructor', (t): void => {
   t.end()
 })
 
-await t.test('no package.json', async (t): Promise<void> => {
+await t.test('Package - no package.json', async (t): Promise<void> => {
   const packageFolderPath = path.join(fixturesFolderPath, 'package-no-json')
   const xpmPackage = new xpm.Package({
     log,
@@ -74,7 +74,7 @@ await t.test('no package.json', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('bad package.json', async (t): Promise<void> => {
+await t.test('Package - bad package.json', async (t): Promise<void> => {
   const packageFolderPath = path.join(fixturesFolderPath, 'package-bad-json')
   const xpmPackage = new xpm.Package({
     log,
@@ -96,7 +96,7 @@ await t.test('bad package.json', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('rewritePackageDotJson', async (t): Promise<void> => {
+await t.test('Package - rewritePackageDotJson', async (t): Promise<void> => {
   const temporaryFolderPath = await fs.mkdtemp(path.join(os.tmpdir(), 'xpm-'))
   // console.log(`Temporary folder created at ${temporaryFolderPath}`)
 
@@ -132,7 +132,7 @@ await t.test('rewritePackageDotJson', async (t): Promise<void> => {
   t.end()
 })
 
-t.test('isNpmPackage', (t): void => {
+t.test('Package - isNpmPackage', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
     packageFolderPath: '/tmp',
@@ -173,7 +173,7 @@ t.test('isNpmPackage', (t): void => {
   t.end()
 })
 
-t.test('isXpmPackage', (t): void => {
+t.test('Package - isXpmPackage', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
     packageFolderPath: '/tmp',
@@ -214,7 +214,7 @@ t.test('isXpmPackage', (t): void => {
   t.end()
 })
 
-t.test('isBinaryXpmPackage', (t): void => {
+t.test('Package - isBinaryXpmPackage', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
     packageFolderPath: '/tmp',
@@ -373,7 +373,7 @@ t.test('isBinaryXpmPackage', (t): void => {
   t.end()
 })
 
-t.test('isNodeModule', (t): void => {
+t.test('Package - isNodeModule', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
     packageFolderPath: '/tmp',
@@ -424,7 +424,7 @@ t.test('isNodeModule', (t): void => {
   t.end()
 })
 
-t.test('isBinaryNodeModule', (t): void => {
+t.test('Package - isBinaryNodeModule', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
     packageFolderPath: '/tmp',
@@ -492,7 +492,7 @@ t.test('isBinaryNodeModule', (t): void => {
   t.end()
 })
 
-t.test('hasNpmScripts', (t): void => {
+t.test('Package - hasNpmScripts', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
     packageFolderPath: '/tmp',
@@ -518,7 +518,7 @@ t.test('hasNpmScripts', (t): void => {
   t.end()
 })
 
-t.test('hasXpmActions', (t): void => {
+t.test('Package - hasXpmActions', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
     packageFolderPath: '/tmp',
@@ -621,7 +621,7 @@ t.test('hasXpmActions', (t): void => {
   t.end()
 })
 
-t.test('getMinimumXpmRequired', (t): void => {
+t.test('Package - getMinimumXpmRequired', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
     packageFolderPath: '/tmp',
@@ -660,7 +660,7 @@ t.test('getMinimumXpmRequired', (t): void => {
   t.end()
 })
 
-await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
+await t.test('Package - checkMinimumXpmRequired', async (t): Promise<void> => {
   const xpmPackage = new xpm.Package({
     log,
     packageFolderPath: '/tmp',
@@ -776,7 +776,7 @@ await t.test('checkMinimumXpmRequired', async (t): Promise<void> => {
   t.end()
 })
 
-t.test('parsePackageSpecifier', (t): void => {
+t.test('Package - parsePackageSpecifier', (t): void => {
   const xpmPackage = new xpm.Package({
     log,
     packageFolderPath: '/tmp',

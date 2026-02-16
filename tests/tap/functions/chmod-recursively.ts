@@ -41,57 +41,60 @@ const fixturesFolderPath = path.join(
 
 // ----------------------------------------------------------------------------
 
-await t.test('chmodRecursively', async (t): Promise<void> => {
-  const chmodFolderPath = path.join(fixturesFolderPath, 'chmod-recursively')
-  const file1Path = path.join(chmodFolderPath, 'file1.md')
-  const file1LinkPath = path.join(chmodFolderPath, 'file1-symlink.md')
-  const subFolderPath = path.join(chmodFolderPath, 'subfolder')
-  const subFolderLinkPath = path.join(chmodFolderPath, 'subfolder-symlink')
-  const file2Path = path.join(subFolderPath, 'file2.md')
+await t.test(
+  'chmodRecursively - basic functionality',
+  async (t): Promise<void> => {
+    const chmodFolderPath = path.join(fixturesFolderPath, 'chmod-recursively')
+    const file1Path = path.join(chmodFolderPath, 'file1.md')
+    const file1LinkPath = path.join(chmodFolderPath, 'file1-symlink.md')
+    const subFolderPath = path.join(chmodFolderPath, 'subfolder')
+    const subFolderLinkPath = path.join(chmodFolderPath, 'subfolder-symlink')
+    const file2Path = path.join(subFolderPath, 'file2.md')
 
-  await xpm.chmodRecursively({
-    inputPath: chmodFolderPath,
-    readOnly: true,
-    log,
-  })
+    await xpm.chmodRecursively({
+      inputPath: chmodFolderPath,
+      readOnly: true,
+      log,
+    })
 
-  let mode = (await fs.lstat(file1Path)).mode
-  t.equal(mode & fs.constants.S_IWUSR, 0, 'file1.md is read-only')
+    let mode = (await fs.lstat(file1Path)).mode
+    t.equal(mode & fs.constants.S_IWUSR, 0, 'file1.md is read-only')
 
-  mode = (await fs.lstat(file1LinkPath)).mode
-  t.not(mode & fs.constants.S_IWUSR, 0, 'file1-symlink.md is not read-only')
+    mode = (await fs.lstat(file1LinkPath)).mode
+    t.not(mode & fs.constants.S_IWUSR, 0, 'file1-symlink.md is not read-only')
 
-  mode = (await fs.lstat(subFolderPath)).mode
-  t.equal(mode & fs.constants.S_IWUSR, 0, 'subfolder is read-only')
+    mode = (await fs.lstat(subFolderPath)).mode
+    t.equal(mode & fs.constants.S_IWUSR, 0, 'subfolder is read-only')
 
-  mode = (await fs.lstat(subFolderLinkPath)).mode
-  t.not(mode & fs.constants.S_IWUSR, 0, 'subfolder-symlink is not read-only')
+    mode = (await fs.lstat(subFolderLinkPath)).mode
+    t.not(mode & fs.constants.S_IWUSR, 0, 'subfolder-symlink is not read-only')
 
-  mode = (await fs.lstat(file2Path)).mode
-  t.equal(mode & fs.constants.S_IWUSR, 0, 'file2.md is read-only')
+    mode = (await fs.lstat(file2Path)).mode
+    t.equal(mode & fs.constants.S_IWUSR, 0, 'file2.md is read-only')
 
-  await xpm.chmodRecursively({
-    inputPath: chmodFolderPath,
-    readOnly: false,
-    log,
-  })
+    await xpm.chmodRecursively({
+      inputPath: chmodFolderPath,
+      readOnly: false,
+      log,
+    })
 
-  mode = (await fs.lstat(file1Path)).mode
-  t.not(mode & fs.constants.S_IWUSR, 0, 'file1.md is not read-only')
+    mode = (await fs.lstat(file1Path)).mode
+    t.not(mode & fs.constants.S_IWUSR, 0, 'file1.md is not read-only')
 
-  mode = (await fs.lstat(subFolderPath)).mode
-  t.not(mode & fs.constants.S_IWUSR, 0, 'subfolder is not read-only')
+    mode = (await fs.lstat(subFolderPath)).mode
+    t.not(mode & fs.constants.S_IWUSR, 0, 'subfolder is not read-only')
 
-  mode = (await fs.lstat(subFolderLinkPath)).mode
-  t.not(mode & fs.constants.S_IWUSR, 0, 'subfolder-symlink is not read-only')
+    mode = (await fs.lstat(subFolderLinkPath)).mode
+    t.not(mode & fs.constants.S_IWUSR, 0, 'subfolder-symlink is not read-only')
 
-  mode = (await fs.lstat(file2Path)).mode
-  t.not(mode & fs.constants.S_IWUSR, 0, 'file2.md is not read-only')
+    mode = (await fs.lstat(file2Path)).mode
+    t.not(mode & fs.constants.S_IWUSR, 0, 'file2.md is not read-only')
 
-  mode = (await fs.lstat(file1LinkPath)).mode
-  t.not(mode & fs.constants.S_IWUSR, 0, 'file1-symlink.md is not read-only')
+    mode = (await fs.lstat(file1LinkPath)).mode
+    t.not(mode & fs.constants.S_IWUSR, 0, 'file1-symlink.md is not read-only')
 
-  t.end()
-})
+    t.end()
+  }
+)
 
 // ----------------------------------------------------------------------------

@@ -28,7 +28,7 @@ import * as xpm from '../../../src/index.js'
 
 // ----------------------------------------------------------------------------
 
-t.test('xpm.Errors', (t): void => {
+t.test('Errors - basic error types', (t): void => {
   let error = new xpm.ConfigurationError('Test error')
   t.equal(error.message, 'Test error', 'xpm.Error error message')
 

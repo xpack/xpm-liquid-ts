@@ -71,7 +71,7 @@ await t.test('Actions - uninitialised', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('Actions undefined', async (t): Promise<void> => {
+await t.test('Actions - undefined', async (t): Promise<void> => {
   const actions = new xpm.Actions({
     log,
     engine,
@@ -100,7 +100,7 @@ await t.test('Actions undefined', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('Actions at top', async (t): Promise<void> => {
+await t.test('Actions - at top level', async (t): Promise<void> => {
   const actions = new xpm.Actions({
     log,
     engine,
@@ -161,7 +161,7 @@ await t.test('Actions at top', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('Actions in configuration', async (t): Promise<void> => {
+await t.test('Actions - in configuration', async (t): Promise<void> => {
   const buildConfigurationsJson: xpm.JsonBuildConfigurations = {
     debug: {
       actions: {
@@ -205,7 +205,7 @@ await t.test('Actions in configuration', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('Actions inheritance', async (t): Promise<void> => {
+await t.test('Actions - inheritance', async (t): Promise<void> => {
   const inheritedActions = new xpm.Actions({
     log,
     engine,
@@ -254,7 +254,7 @@ await t.test('Actions inheritance', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('Actions template', async (t): Promise<void> => {
+await t.test('Actions - template', async (t): Promise<void> => {
   const substitutionsVariables = {
     ...xpm.liquidSubstitutionsVariablesBase,
     properties: {
@@ -406,30 +406,33 @@ await t.test(
   }
 )
 
-await t.test('Actions template errors', async (t): Promise<void> => {
-  await t.test('Actions template error no matrix', async (t): Promise<void> => {
-    const actions = new xpm.Actions({
-      log,
-      engine,
-      substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
-      jsonActions: {
-        'one-1': 'echo "one"',
-        'one-{{matrix.alfa}}': {
-          template: 42,
-        } as unknown as xpm.JsonActionTemplate,
-      },
-    })
+await t.test('Actions - template errors', async (t): Promise<void> => {
+  await t.test(
+    'Actions - template error no matrix',
+    async (t): Promise<void> => {
+      const actions = new xpm.Actions({
+        log,
+        engine,
+        substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
+        jsonActions: {
+          'one-1': 'echo "one"',
+          'one-{{matrix.alfa}}': {
+            template: 42,
+          } as unknown as xpm.JsonActionTemplate,
+        },
+      })
 
-    await t.rejects(
-      async () => await actions.initialise(),
-      {
-        constructor: xpm.ConfigurationError,
-        message: /has no matrix/,
-      },
-      'throws ConfigurationError when template has no matrix'
-    )
-    t.end()
-  })
+      await t.rejects(
+        async () => await actions.initialise(),
+        {
+          constructor: xpm.ConfigurationError,
+          message: /has no matrix/,
+        },
+        'throws ConfigurationError when template has no matrix'
+      )
+      t.end()
+    }
+  )
 
   await t.test(
     'Actions template error matrix is not an object',
@@ -641,7 +644,7 @@ await t.test('Actions template errors', async (t): Promise<void> => {
   t.end()
 })
 
-await t.test('Action errors', async (t): Promise<void> => {
+await t.test('Action - errors', async (t): Promise<void> => {
   const actions = new xpm.Actions({
     log,
     engine,
