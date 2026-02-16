@@ -349,7 +349,8 @@ await t.test(
       }
     }
 
-    t.equal(count, 1024, 'generates correct number of combinations')
+    const expectedCount = 4 * 4 * 4 * 4 * 4 // 5 params × 4 values each
+    t.equal(count, expectedCount, 'generates correct number (4^5 = 1024)')
 
     t.end()
   }
