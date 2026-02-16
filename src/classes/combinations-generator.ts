@@ -30,7 +30,7 @@ import { ConfigurationError } from './errors.js'
  *
  * The limit is intentionally low (42 * 10).
  */
-export const CombinationsGeneratorMaxCombinationsLimit = 42 * 10
+export const COMBINATIONS_GENERATOR_MAX_COMBINATIONS_LIMIT = 42 * 10
 
 /**
  * A matrix combination mapping parameter names to their values.
@@ -190,7 +190,7 @@ export class CombinationsGenerator {
   constructor({
     matrixKeys,
     matrixValues,
-    maxCombinations = CombinationsGeneratorMaxCombinationsLimit,
+    maxCombinations = COMBINATIONS_GENERATOR_MAX_COMBINATIONS_LIMIT,
     log,
   }: CombinationsGeneratorConstructorParameters) {
     this._log = log
