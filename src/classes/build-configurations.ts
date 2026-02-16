@@ -38,7 +38,7 @@ import {
 } from '../types/json.js'
 import { Actions, Action } from './actions.js'
 import { buildFolderRelativePathPropertyName } from './data-model.js'
-import { ConfigurationError, InputError } from './errors.js'
+import { ConfigurationError } from './errors.js'
 import { TemplateExpander } from './template-expander.js'
 
 // ============================================================================
@@ -541,7 +541,7 @@ export class BuildConfigurations {
       buildConfigurationName
     )
     if (name === undefined) {
-      throw new InputError(
+      throw new ConfigurationError(
         `build configuration "${buildConfigurationName}" does not exist`
       )
     }
@@ -1958,14 +1958,14 @@ export class BuildConfiguration {
     if (
       !this.parentBuildConfigurations.hasJson(inheritedBuildConfigurationName)
     ) {
-      throw new InputError(
+      throw new ConfigurationError(
         `buildConfiguration "${this.buildConfigurationName}" ` +
           `inherits from missing "${inheritedBuildConfigurationName}"`
       )
     }
 
     if (this._inheritedNamesSet.has(inheritedBuildConfigurationName)) {
-      throw new InputError(
+      throw new ConfigurationError(
         `buildConfiguration "${this.buildConfigurationName}" ` +
           `inherits from circular reference ` +
           `"${inheritedBuildConfigurationName}"`

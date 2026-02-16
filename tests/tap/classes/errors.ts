@@ -52,6 +52,13 @@ t.test('xpm.Errors', (t): void => {
   error = new xpm.OutputError('Test output error')
   t.equal(error.message, 'Test output error', 'xpm.OutputError error message')
 
+  error = new xpm.TemplateError('Test template error')
+  t.equal(
+    error.message,
+    'Test template error',
+    'xpm.TemplateError error message'
+  )
+
   t.end()
 })
 

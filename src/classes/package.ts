@@ -23,7 +23,7 @@ import { Logger } from '@xpack/logger'
 
 // ----------------------------------------------------------------------------
 
-import { InputError, PrerequisitesError } from './errors.js'
+import { ConfigurationError, InputError, PrerequisitesError } from './errors.js'
 import { isString } from '../functions/is-something.js'
 import { hasLiquidSyntax } from '../functions/utils.js'
 import {
@@ -376,7 +376,7 @@ export class Package {
       // If it has `executables` or `bin`, it must have `binaries` and
       // `binaries.platforms` too.
       if (!jsonPackage.xpack.binaries) {
-        throw new InputError(
+        throw new ConfigurationError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.binaries"'
         )
@@ -384,7 +384,7 @@ export class Package {
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!jsonPackage.xpack.binaries.platforms) {
-        throw new InputError(
+        throw new ConfigurationError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.binaries.platforms"'
         )
@@ -397,13 +397,13 @@ export class Package {
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!jsonPackage.xpack.binaries.platforms) {
-        throw new InputError(
+        throw new ConfigurationError(
           "doesn't look like a proper binary xpm package, " +
             'package.json has no "xpack.binaries.platforms"'
         )
       }
       // if (!(jsonPackage.xpack.executables ?? jsonPackage.xpack.bin)) {
-      throw new InputError(
+      throw new ConfigurationError(
         "doesn't look like a proper binary xpm package, " +
           'package.json has no "xpack.executables"'
       )

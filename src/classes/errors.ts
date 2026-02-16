@@ -63,6 +63,20 @@ export class PrerequisitesError extends Error {}
 export class ConfigurationError extends Error {}
 
 /**
+ * Error indicating a template evaluation failure.
+ *
+ * @remarks
+ * This error is thrown when Liquid template rendering fails during output
+ * generation. Common scenarios include undefined variables in templates,
+ * invalid filter usage, template syntax errors caught during evaluation,
+ * circular template references, or template size limit exceeded. This differs
+ * from {@link ConfigurationError} which indicates issues in the template
+ * configuration structure itself, and {@link OutputError} which indicates
+ * file system or broader output failures.
+ */
+export class TemplateError extends Error {}
+
+/**
  * Error indicating that user input is invalid.
  *
  * @remarks

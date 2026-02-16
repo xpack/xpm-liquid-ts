@@ -20,7 +20,7 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import { LiquidEngine } from '../classes/liquid-engine.js'
-import { ConfigurationError } from '../classes/errors.js'
+import { TemplateError } from '../classes/errors.js'
 import {
   LiquidPropertiesDrop,
   LiquidMatrixDrop,
@@ -177,7 +177,7 @@ export async function performSubstitutions({
     // references or malformed template logic that the engine doesn't catch.
     /* c8 ignore start - safety net, normally should not get there. */
     if (++count > maxIterations) {
-      throw new ConfigurationError(
+      throw new TemplateError(
         `Substitution limit exceeded ` +
           `(${String(maxIterations)} iterations). ` +
           `Possible circular reference in template.`
@@ -190,7 +190,7 @@ export async function performSubstitutions({
 
       /* c8 ignore start - safety net. */
       if (substituted.length > maxOutputSize) {
-        throw new ConfigurationError(
+        throw new TemplateError(
           `Template expansion exceeded size limit ` +
             `(${String(maxOutputSize)} bytes). ` +
             `Output was ${String(substituted.length)} bytes.`
@@ -220,7 +220,7 @@ export async function performSubstitutions({
       if (error instanceof Error) {
         log.trace(`Liquid error: ${error.message}`)
         const cleanMessage = error.message.replace(/, line:.*/g, '')
-        throw new ConfigurationError(cleanMessage)
+        throw new TemplateError(cleanMessage)
         // Safety net: This handles the unlikely case where something other than
         // an Error is thrown. JavaScript/TypeScript allows throwing any value,
         // but Liquid engine and Node.js fs operations consistently throw Error
@@ -228,7 +228,7 @@ export async function performSubstitutions({
         // scenarios.
         /* c8 ignore start - safety net, currently all are Errors */
       } else {
-        throw new ConfigurationError(String(error))
+        throw new TemplateError(String(error))
       }
       /* c8 ignore stop */
     }

@@ -21,7 +21,7 @@ import { Logger } from '@xpack/logger'
 
 import { LiquidSubstitutionsStrings } from '../data/substitutions-variables.js'
 import { isJsonObject } from '../functions/is-something.js'
-import { InputError } from './errors.js'
+import { TemplateError } from './errors.js'
 
 // ============================================================================
 
@@ -167,7 +167,7 @@ export class LiquidPropertiesDrop extends liquidjs.Drop {
     // console.log(key)
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this._properties[key] === undefined) {
-      throw new InputError(`"properties.${key}" not defined`)
+      throw new TemplateError(`"properties.${key}" not defined`)
     }
 
     const log = this._log
@@ -336,7 +336,7 @@ export class LiquidMatrixDrop extends liquidjs.Drop {
     // console.log(key)
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this._matrix[key] === undefined) {
-      throw new InputError(`"matrix.${key}" not defined`)
+      throw new TemplateError(`"matrix.${key}" not defined`)
     }
 
     const log = this._log

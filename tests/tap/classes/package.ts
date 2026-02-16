@@ -287,7 +287,7 @@ t.test('isBinaryXpmPackage', (t): void => {
     xpmPackage.isBinaryXpmPackage()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, xpm.InputError, 'throws xpm.InputError')
+    t.type(error, xpm.ConfigurationError, 'throws xpm.ConfigurationError')
     t.match(
       (error as Error).message,
       'has no "xpack.binaries"',
@@ -312,7 +312,7 @@ t.test('isBinaryXpmPackage', (t): void => {
     xpmPackage.isBinaryXpmPackage()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, xpm.InputError, 'throws xpm.InputError')
+    t.type(error, xpm.ConfigurationError, 'throws xpm.ConfigurationError')
     t.match(
       (error as Error).message,
       'has no "xpack.binaries.platforms"',
@@ -354,7 +354,7 @@ t.test('isBinaryXpmPackage', (t): void => {
     xpmPackage.isBinaryXpmPackage()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, xpm.InputError, 'throws xpm.InputError')
+    t.type(error, xpm.ConfigurationError, 'throws xpm.ConfigurationError')
     t.match(
       (error as Error).message,
       'has no "xpack.binaries.platforms"',
@@ -377,7 +377,7 @@ t.test('isBinaryXpmPackage', (t): void => {
     xpmPackage.isBinaryXpmPackage()
     t.fail('should have thrown an error')
   } catch (error) {
-    t.type(error, xpm.InputError, 'throws xpm.InputError')
+    t.type(error, xpm.ConfigurationError, 'throws xpm.ConfigurationError')
     t.match(
       (error as Error).message,
       'has no "xpack.executables"',
