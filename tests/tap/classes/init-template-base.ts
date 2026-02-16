@@ -1590,23 +1590,18 @@ await t.test('XpmInitTemplateBase.render()', async (t): Promise<void> => {
       const renderedContent = await fs.readFile(destinationFilePath, 'utf-8')
       t.match(renderedContent, 'Hello, Test!', 'rendered content is correct')
 
-      try {
-        await this.render({
-          sourceFilePath,
-          destinationFilePath,
-          substitutionsVariables: { noProjectName: 'Test', properties: {} },
-        })
-        t.fail('should have thrown for missing substitution variable')
-      } catch (error) {
-        t.type(error, xpm.OutputError, 'threw an XpmOutputError')
-        t.match(
-          (error as AssertionError).message,
-          'undefined variable',
-          'error message is "undefined variable"'
-        )
-      } finally {
-        await fs.rm(temporaryFolderPath, { recursive: true, force: true })
-      }
+      await t.rejects(
+        () =>
+          this.render({
+            sourceFilePath,
+            destinationFilePath,
+            substitutionsVariables: { noProjectName: 'Test', properties: {} },
+          }),
+        /undefined variable/,
+        'throws XpmOutputError with "undefined variable"'
+      )
+
+      await fs.rm(temporaryFolderPath, { recursive: true, force: true })
     }
   }
 
@@ -1730,17 +1725,11 @@ await t.test(
       propertiesDefinitions,
       process: mockProcess,
     })
-    try {
-      await template.run()
-      t.fail('should have thrown for not possible without a TTY')
-    } catch (error) {
-      t.type(error, xpm.JsonSyntaxError, 'threw an XpmSyntaxError')
-      t.match(
-        (error as AssertionError).message,
-        'not possible without a TTY',
-        'error message is "not possible without a TTY"'
-      )
-    }
+    await t.rejects(
+      () => template.run(),
+      /not possible without a TTY/,
+      'throws XpmSyntaxError with "not possible without a TTY"'
+    )
 
     t.end()
   }

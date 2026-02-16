@@ -139,12 +139,10 @@ await t.test('actions', async (t): Promise<void> => {
   const actionTwo = topActions.get('two')
   t.ok(actionTwo, 'topActions.get("two")')
 
-  try {
-    await actionTwo.initialise()
-    t.fail('topActions.get("two") should have failed')
-  } catch (err) {
-    t.pass('actionTwo initialisation failed as expected')
-  }
+  await t.rejects(
+    () => actionTwo.initialise(),
+    'actionTwo initialisation failed as expected'
+  )
 
   // -----
 

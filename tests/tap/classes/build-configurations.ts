@@ -301,16 +301,11 @@ await t.test('BuildConfigurations', async (t): Promise<void> => {
   )
 
   const configTwo = buildConfigurations.get('configTwo')
-  try {
-    await configTwo.initialise()
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'undefined variable',
-      'throws "undefined variable"'
-    )
-  }
+  await t.rejects(
+    () => configTwo.initialise(),
+    /undefined variable/,
+    'throws xpm.ConfigurationError with "undefined variable"'
+  )
 
   t.end()
 })
@@ -376,16 +371,11 @@ await t.test(
 
     const configThree = buildConfigurations.get('configThree')
 
-    try {
-      await configThree.initialise()
-    } catch (error) {
-      t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-      t.match(
-        (error as Error).message,
-        'undefined variable',
-        'throws "undefined variable"'
-      )
-    }
+    await t.rejects(
+      () => configThree.initialise(),
+      /undefined variable/,
+      'throws xpm.ConfigurationError with "undefined variable"'
+    )
 
     t.end()
   }
@@ -752,16 +742,11 @@ await t.test('BuildConfigurations templates', async (t): Promise<void> => {
   t.equal(configFiveA1.properties.p4, 'v4', 'configFive-a1 properties.p4 is v4')
 
   const configSixA1 = buildConfigurations.get('configSix-a1')
-  try {
-    await configSixA1.initialise()
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'undefined variable',
-      'throws "undefined variable"'
-    )
-  }
+  await t.rejects(
+    () => configSixA1.initialise(),
+    /undefined variable/,
+    'throws xpm.ConfigurationError with "undefined variable"'
+  )
 
   t.end()
 })
@@ -895,17 +880,11 @@ await t.test(
           substitutionsVariables: xpm.liquidSubstitutionsVariablesBase,
           jsonBuildConfigurations,
         })
-        try {
-          await buildConfigurations.initialise()
-          t.fail('should have thrown an error')
-        } catch (error) {
-          t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-          t.match(
-            (error as Error).message,
-            'undefined variable',
-            'throws "undefined variable"'
-          )
-        }
+        await t.rejects(
+          () => buildConfigurations.initialise(),
+          /undefined variable/,
+          'throws xpm.ConfigurationError with "undefined variable"'
+        )
 
         t.end()
       }

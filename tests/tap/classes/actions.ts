@@ -499,17 +499,11 @@ await t.test('Actions template errors', async (t): Promise<void> => {
         },
       })
 
-      try {
-        await actions.initialise()
-        t.fail('should have thrown an error')
-      } catch (error) {
-        t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-        t.match(
-          (error as Error).message,
-          'matrix is not an object',
-          'throws "matrix is not an object"'
-        )
-      }
+      await t.rejects(
+        () => actions.initialise(),
+        /matrix is not an object/,
+        'throws xpm.ConfigurationError with "matrix is not an object"'
+      )
       t.end()
     }
   )
@@ -531,17 +525,11 @@ await t.test('Actions template errors', async (t): Promise<void> => {
         },
       })
 
-      try {
-        await actions.initialise()
-        t.fail('should have thrown an error')
-      } catch (error) {
-        t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-        t.match(
-          (error as Error).message,
-          'has no template',
-          'throws "has no template"'
-        )
-      }
+      await t.rejects(
+        () => actions.initialise(),
+        /has no template/,
+        'throws xpm.ConfigurationError with "has no template"'
+      )
       t.end()
     }
   )
@@ -564,17 +552,11 @@ await t.test('Actions template errors', async (t): Promise<void> => {
         },
       })
 
-      try {
-        await actions.initialise()
-        t.fail('should have thrown an error')
-      } catch (error) {
-        t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-        t.match(
-          (error as Error).message,
-          'template is not a string',
-          'throws "template is not a string"'
-        )
-      }
+      await t.rejects(
+        () => actions.initialise(),
+        /template is not a string/,
+        'throws xpm.ConfigurationError with "template is not a string"'
+      )
       t.end()
     }
   )
@@ -597,17 +579,11 @@ await t.test('Actions template errors', async (t): Promise<void> => {
         },
       })
 
-      try {
-        await actions.initialise()
-        t.fail('should have thrown an error')
-      } catch (error) {
-        t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-        t.match(
-          (error as Error).message,
-          'is not an array',
-          'throws "is not an array"'
-        )
-      }
+      await t.rejects(
+        () => actions.initialise(),
+        /is not an array/,
+        'throws xpm.ConfigurationError with "is not an array"'
+      )
       t.end()
     }
   )
@@ -630,17 +606,11 @@ await t.test('Actions template errors', async (t): Promise<void> => {
         },
       })
 
-      try {
-        await actions.initialise()
-        t.fail('should have thrown an error')
-      } catch (error) {
-        t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-        t.match(
-          (error as Error).message,
-          'value is not a string',
-          'throws "value is not a string"'
-        )
-      }
+      await t.rejects(
+        () => actions.initialise(),
+        /value is not a string/,
+        'throws xpm.ConfigurationError with "value is not a string"'
+      )
       t.end()
     }
   )
@@ -663,17 +633,11 @@ await t.test('Actions template errors', async (t): Promise<void> => {
         },
       })
 
-      try {
-        await actions.initialise()
-        t.fail('should have thrown an error')
-      } catch (error) {
-        t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-        t.match(
-          (error as Error).message,
-          'undefined variable',
-          'throws "undefined variable"'
-        )
-      }
+      await t.rejects(
+        () => actions.initialise(),
+        /undefined variable/,
+        'throws xpm.ConfigurationError with "undefined variable"'
+      )
       t.end()
     }
   )
@@ -696,17 +660,11 @@ await t.test('Actions template errors', async (t): Promise<void> => {
         },
       })
 
-      try {
-        await actions.initialise()
-        t.fail('should have thrown an error')
-      } catch (error) {
-        t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-        t.match(
-          (error as Error).message,
-          'name substitution',
-          'throws "name substitution"'
-        )
-      }
+      await t.rejects(
+        () => actions.initialise(),
+        /name substitution/,
+        'throws xpm.ConfigurationError with "name substitution"'
+      )
       t.end()
     }
   )
@@ -728,17 +686,11 @@ await t.test('Action errors', async (t): Promise<void> => {
 
   const actionOne = actions.get('one')
 
-  try {
-    await actionOne.initialise()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'commands substitution',
-      'throws "commands substitution"'
-    )
-  }
+  await t.rejects(
+    () => actionOne.initialise(),
+    /commands substitution/,
+    'throws xpm.ConfigurationError with "commands substitution"'
+  )
 
   t.end()
 })

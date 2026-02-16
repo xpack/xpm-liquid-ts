@@ -329,24 +329,19 @@ await t.test(
       arch: 'not-an-array', // Should be an array
     }
 
-    try {
-      await expander.expandTemplate({
-        templateName,
-        // Force invalid type
-        matrix: invalidMatrix as unknown as xpm.JsonTemplateMatrix,
-        templateContent: {},
-        templateType: 'action',
-        instanceFactory: (expandedName) => ({ name: expandedName }),
-      })
-      t.fail('should have thrown an error')
-    } catch (error) {
-      t.ok(error instanceof xpm.ConfigurationError, 'throws ConfigurationError')
-      t.match(
-        (error as Error).message,
-        'is not an array',
-        'error message is "is not an array"'
-      )
-    }
+    await t.rejects(
+      () =>
+        expander.expandTemplate({
+          templateName,
+          // Force invalid type
+          matrix: invalidMatrix as unknown as xpm.JsonTemplateMatrix,
+          templateContent: {},
+          templateType: 'action',
+          instanceFactory: (expandedName) => ({ name: expandedName }),
+        }),
+      /is not an array/,
+      'throws ConfigurationError with "is not an array"'
+    )
 
     t.end()
   }
@@ -370,23 +365,18 @@ await t.test(
       arch: ['x64'],
     }
 
-    try {
-      await expander.expandTemplate({
-        templateName,
-        matrix,
-        templateContent: {},
-        templateType: 'action',
-        instanceFactory: (expandedName) => ({ name: expandedName }),
-      })
-      t.fail('should have thrown an error')
-    } catch (error) {
-      t.ok(error instanceof xpm.ConfigurationError, 'throws ConfigurationError')
-      t.match(
-        (error as Error).message,
-        'substitution',
-        'error message is "substitution"'
-      )
-    }
+    await t.rejects(
+      () =>
+        expander.expandTemplate({
+          templateName,
+          matrix,
+          templateContent: {},
+          templateType: 'action',
+          instanceFactory: (expandedName) => ({ name: expandedName }),
+        }),
+      /substitution/,
+      'throws ConfigurationError with "substitution"'
+    )
 
     t.end()
   }
