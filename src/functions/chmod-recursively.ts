@@ -30,7 +30,7 @@ import { ConfigurationError } from '../index.js'
  * more than sufficient for typical use cases whilst preventing pathological
  * scenarios.
  */
-const MAX_RECURSION_DEPTH = 42
+const CHMOD_RECURSIVELY_MAX_DEPTH = 42
 
 // ============================================================================
 
@@ -72,7 +72,7 @@ const MAX_RECURSION_DEPTH = 42
  * warnings if the expected permission state is not achieved, which can
  * occur on filesystems with non-standard permission handling.
  *
- * Recursion depth is limited to `MAX_RECURSION_DEPTH` levels to
+ * Recursion depth is limited to `CHMOD_RECURSIVELY_MAX_DEPTH` levels to
  * protect against extremely deep directory trees.
  *
  * @param inputPath - The file or folder path to process.
@@ -89,20 +89,23 @@ export async function chmodRecursively({
   readOnly,
   log,
   depth = 0,
+  maxDepth = CHMOD_RECURSIVELY_MAX_DEPTH,
 }: {
   inputPath: string
   readOnly: boolean
   log: Logger
   depth?: number
+  maxDepth?: number
 }): Promise<void> {
   assert(inputPath, 'inputPath is required')
   assert(log, 'log is required')
+  assert(maxDepth > 0, 'maxDepth must be a positive integer')
 
   /* c8 ignore start - defensive guard for pathological directory trees. */
-  if (depth > MAX_RECURSION_DEPTH) {
+  if (depth > maxDepth) {
     throw new ConfigurationError(
       `Recursion depth limit exceeded ` +
-        `(${String(MAX_RECURSION_DEPTH)} levels) ` +
+        `(${String(maxDepth)} levels) ` +
         `whilst processing: ${inputPath}`
     )
   }
