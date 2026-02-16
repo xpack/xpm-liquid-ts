@@ -13,11 +13,15 @@
 
 // https://tapjs.org/coverage/#coverage-maps
 
-// # If it returns a string or string array, then it will only generate 
+// # If it returns a string or string array, then it will only generate
 // coverage for the file(s) listed.
 
-export default function getCoverageMapFiles (testFilePath) { 
-  const sourceFilePath = testFilePath.replace(/tests\/tap/, 'src')
+export default function getCoverageMapFiles(testFilePath) {
+  let sourceFilePath = testFilePath.replace(/tests\/tap/, 'src')
+  if (sourceFilePath.split('/').length > 3) {
+    sourceFilePath = sourceFilePath.replace(/\/[a-z0-9-]+.ts/, '.ts')
+  }
+
   // console.log(`Getting coverage map for source file: ${sourceFilePath}`)
   return sourceFilePath
 }
