@@ -16,7 +16,21 @@ import { ConfigurationError } from './errors.js'
 
 // ============================================================================
 
-export const CombinationsGeneratorMaxCombinationsLimit = 10000
+/**
+ * The default maximum number of combinations that can be generated.
+ *
+ * @remarks
+ * This constant defines the default limit for the total number of
+ * combinations that a {@link CombinationsGenerator} instance can produce.
+ * The limit exists to prevent performance issues and memory exhaustion when
+ * working with large matrices.
+ *
+ * This value can be overridden by providing a custom `maxCombinations`
+ * parameter when constructing a {@link CombinationsGenerator} instance.
+ *
+ * The limit is intentionally low (42 * 10).
+ */
+export const CombinationsGeneratorMaxCombinationsLimit = 42 * 10
 
 /**
  * A matrix combination mapping parameter names to their values.
@@ -224,19 +238,24 @@ export class CombinationsGenerator {
    * @yields Individual matrix combinations one at a time.
    */
   *generate(): Generator<MatrixCombination> {
-  // Calculate total combinations
-  const totalCombinations = this._matrixValues.reduce(
-    (product, values) => product * values.length,
-    1
-  )
-  
-  if (totalCombinations > this._maxCombinations) {
-    throw new ConfigurationError(
-      `Matrix would generate ${String(totalCombinations)} combinations, ` +
-      `exceeding limit of ${String(this._maxCombinations)}. ` +
-      `Consider using fewer parameters or values.`
+    // Empty matrix produces no combinations
+    if (this._matrixKeys.length === 0) {
+      return
+    }
+
+    // Calculate total combinations
+    const totalCombinations = this._matrixValues.reduce(
+      (product, values) => product * values.length,
+      1
     )
-  }
+
+    if (totalCombinations > this._maxCombinations) {
+      throw new ConfigurationError(
+        `Matrix would generate ${String(totalCombinations)} combinations, ` +
+          `exceeding limit of ${String(this._maxCombinations)}. ` +
+          `Consider using fewer parameters or values.`
+      )
+    }
 
     yield* this._generateRecursively(0, {})
   }
