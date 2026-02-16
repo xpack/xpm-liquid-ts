@@ -30,21 +30,25 @@ tests/tap/
 ## Running Tests
 
 ### Run All Tests
+
 ```bash
 npm test
 ```
 
 ### Run with Coverage
+
 ```bash
 npm run test-coverage
 ```
 
 ### Run Specific Test File
+
 ```bash
 node --loader ts-node/esm tests/tap/classes/package/basic.ts
 ```
 
 ### Run Tests in Watch Mode
+
 ```bash
 npm run watch
 # Then in another terminal:
@@ -66,10 +70,10 @@ const log = new Logger({ level: 'info' })
 await test('Description of what is being tested', async (t): Promise<void> => {
   // Arrange
   const instance = new xpm.SomeClass({ log })
-  
+
   // Act
   await instance.initialise()
-  
+
   // Assert
   t.equal(instance.someProperty, expectedValue, 'property has expected value')
   t.ok(instance.someMethod(), 'method returns truthy value')
@@ -86,6 +90,7 @@ test('Synchronous test', (t): void => {
 ### Testing Conventions
 
 #### 1. Test Naming
+
 - Use descriptive test names that explain what is being tested
 - Follow pattern: `ClassName - specific scenario` or `functionName - specific case`
 - Group related tests with similar prefixes
@@ -101,6 +106,7 @@ await test('BuildConfigurations - single configuration', async (t) => {
 ```
 
 #### 2. Async/Await Pattern
+
 - **Always use `async/await`** for asynchronous tests
 - **Do NOT use `t.end()`** in async tests (it's handled automatically)
 - Only use `t.end()` in synchronous callback-based tests
@@ -128,6 +134,7 @@ await test('Wrong', async (t): Promise<void> => {
 ```
 
 #### 3. Error Testing
+
 Use `t.throws()` for synchronous errors and `t.rejects()` for async errors:
 
 ```typescript
@@ -149,7 +156,7 @@ test('throws ConfigurationError', (t): void => {
 // Asynchronous error
 await test('rejects with ConfigurationError', async (t): Promise<void> => {
   const instance = new xpm.SomeClass({ log })
-  
+
   await t.rejects(
     async () => await instance.initialise(),
     {
@@ -162,6 +169,7 @@ await test('rejects with ConfigurationError', async (t): Promise<void> => {
 ```
 
 #### 4. Idempotent Initialisation Testing
+
 Use the helper for testing repeated initialisation:
 
 ```typescript
@@ -174,6 +182,7 @@ await test('supports idempotent initialisation', async (t): Promise<void> => {
 ```
 
 #### 5. Test Organisation Within Files
+
 - Group related tests together
 - Use descriptive test names that form a narrative
 - Start with basic functionality, then edge cases, then error conditions
@@ -200,23 +209,31 @@ The test suite includes a helper library in `tests/helpers/` with reusable test 
 ### Available Helpers
 
 #### testIdempotentInitialisation
+
 Tests that calling `initialise()` multiple times is safe and returns consistent results.
 
 ```typescript
 import { testIdempotentInitialisation } from '../../helpers/index.js'
 
 await test('idempotent initialisation', async (t): Promise<void> => {
-  const actions = new xpm.Actions({ log, engine, substitutionsVariables, jsonActions })
+  const actions = new xpm.Actions({
+    log,
+    engine,
+    substitutionsVariables,
+    jsonActions,
+  })
   await testIdempotentInitialisation(t, actions)
 })
 ```
 
 **What it tests:**
+
 - First `initialise()` returns `true`
 - Subsequent calls also return `true`
 - Multiple calls don't cause errors or state corruption
 
 #### Shared Logger Instance
+
 Import a pre-configured logger for consistent test logging:
 
 ```typescript
@@ -245,18 +262,18 @@ Many xpm-lib classes use a two-step initialisation pattern:
 await test('ClassName - lazy initialisation', async (t): Promise<void> => {
   // Step 1: Construction (lightweight)
   const instance = new xpm.SomeClass({ log, ...params })
-  
+
   // At this point, accessing properties should fail
   t.throws(
     () => instance.someProperty,
     { constructor: assert.AssertionError },
     'accessing property before initialise() throws'
   )
-  
+
   // Step 2: Initialisation (populates data)
   const result = await instance.initialise()
   t.ok(result, 'initialise() returns true')
-  
+
   // Now properties are accessible
   t.ok(instance.someProperty, 'property accessible after initialise()')
 })
@@ -273,7 +290,7 @@ await test('template expansion with matrix', async (t): Promise<void> => {
     ...xpm.liquidSubstitutionsVariablesBase,
     matrix: { arch: 'x64', platform: 'linux' },
   }
-  
+
   const result = await xpm.performSubstitutions({
     engine: liquidEngine,
     variables: substitutionsVariables,
@@ -281,7 +298,7 @@ await test('template expansion with matrix', async (t): Promise<void> => {
     context: 'test',
     log,
   })
-  
+
   t.equal(result, 'build-linux-x64', 'template expanded correctly')
 })
 ```
@@ -300,7 +317,7 @@ const __dirname = path.dirname(__filename)
 await test('reads package.json', async (t): Promise<void> => {
   const fixturesPath = path.join(__dirname, '..', '..', 'fixtures')
   const packagePath = path.join(fixturesPath, 'package-version')
-  
+
   const pkg = new xpm.Package({ packageFolderPath: packagePath, log })
   // ...
 })
@@ -318,6 +335,7 @@ Test fixtures are located in `tests/fixtures/` and include:
 - `chmod-recursively/` - Files and symlinks for permission tests
 
 When adding fixtures:
+
 - Create descriptive folder names
 - Add README.md if the fixture structure is complex
 - Keep fixtures minimal (only include necessary files)
@@ -326,6 +344,7 @@ When adding fixtures:
 ## Coverage
 
 View coverage report after running:
+
 ```bash
 npm run test-coverage
 open coverage/lcov-report/index.html
@@ -341,6 +360,7 @@ open coverage/lcov-report/index.html
 ### Uncovered Code
 
 Some code is intentionally not covered:
+
 - Error paths that are unreachable in normal operation
 - Defensive assertions that should never trigger
 - Platform-specific code on non-matching platforms
@@ -350,16 +370,19 @@ Add `/* c8 ignore next */` comments for intentionally uncovered lines.
 ## Debugging Tests
 
 ### Enable Verbose Logging
+
 ```typescript
 const log = new Logger({ level: 'trace' })
 ```
 
 ### Run Single Test Suite
+
 ```bash
 node --loader ts-node/esm tests/tap/classes/actions/basic.ts
 ```
 
 ### Use Node Debugger
+
 ```bash
 node --inspect-brk --loader ts-node/esm tests/tap/classes/actions/basic.ts
 ```
@@ -401,6 +424,7 @@ The test suite runs in ~40-45 seconds (982 tests). To maintain performance:
 ## Continuous Integration
 
 Tests run automatically on:
+
 - Every commit (pre-commit hook)
 - Pull requests
 - Main branch updates
