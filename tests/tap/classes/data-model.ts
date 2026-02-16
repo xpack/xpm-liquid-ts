@@ -38,21 +38,16 @@ import { log } from '../../common.js'
 
 await t.test('constructor', async (t): Promise<void> => {
   const jsonNoXpack = { name: 'test', version: '1.2.3', xpack: [] }
-  try {
-    const dataModel = new xpm.DataModel({
-      log,
-      jsonPackage: jsonNoXpack as xpm.JsonXpmPackage,
-    })
-    t.fail('should have thrown an error')
-  } catch (error) {
-    // console.log(error)
-    t.type(error, AssertionError, 'throws AssertionError')
-    t.match(
-      (error as Error).message,
-      'xpack section missing',
-      'error message is "xpack section missing"'
-    )
-  }
+  t.throws(
+    () => {
+      new xpm.DataModel({
+        log,
+        jsonPackage: jsonNoXpack as xpm.JsonXpmPackage,
+      })
+    },
+    /xpack section missing/,
+    'throws AssertionError with \"xpack section missing\"'
+  )
 
   const json = {
     name: 'test-package',

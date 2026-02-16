@@ -38,75 +38,35 @@ await t.test('Actions - uninitialised', async (t): Promise<void> => {
     jsonActions: undefined,
   })
 
-  try {
-    actions.size
-    t.fail(
-      'should have thrown an error when accessing size before initialise()'
-    )
-  } catch (error) {
-    t.throws(AssertionError, 'size throws AssertionError')
-    t.match(
-      (error as Error).message,
-      'must be initialised',
-      'size throws "must be initialised"'
-    )
-  }
+  t.throws(
+    () => actions.size,
+    { name: 'AssertionError', message: /must be initialised/ },
+    'size throws AssertionError with "must be initialised"'
+  )
 
-  try {
-    actions.isEmpty
-    t.fail(
-      'should have thrown an error when accessing isEmpty before initialise()'
-    )
-  } catch (error) {
-    t.throws(AssertionError, 'isEmpty throws AssertionError')
-    t.match(
-      (error as Error).message,
-      'must be initialised',
-      'isEmpty throws "must be initialised"'
-    )
-  }
+  t.throws(
+    () => actions.isEmpty,
+    { name: 'AssertionError', message: /must be initialised/ },
+    'isEmpty throws AssertionError with "must be initialised"'
+  )
 
-  try {
-    actions.names
-    t.fail(
-      'should have thrown an error when accessing names before initialise()'
-    )
-  } catch (error) {
-    t.throws(AssertionError, 'names throws AssertionError')
-    t.match(
-      (error as Error).message,
-      'must be initialised',
-      'names throws "must be initialised"'
-    )
-  }
+  t.throws(
+    () => actions.names,
+    { name: 'AssertionError', message: /must be initialised/ },
+    'names throws AssertionError with "must be initialised"'
+  )
 
-  try {
-    actions.has('nonexistent')
-    t.fail(
-      'should have thrown an error when accessing has() before initialise()'
-    )
-  } catch (error) {
-    t.throws(AssertionError, 'has() throws AssertionError')
-    t.match(
-      (error as Error).message,
-      'must be initialised',
-      'has() throws "must be initialised"'
-    )
-  }
+  t.throws(
+    () => actions.has('nonexistent'),
+    { name: 'AssertionError', message: /must be initialised/ },
+    'has() throws AssertionError with "must be initialised"'
+  )
 
-  try {
-    actions.get('nonexistent')
-    t.fail(
-      'should have thrown an error when accessing get() before initialise()'
-    )
-  } catch (error) {
-    t.throws(AssertionError, 'get() throws AssertionError')
-    t.match(
-      (error as Error).message,
-      'must be initialised',
-      'get() throws "must be initialised"'
-    )
-  }
+  t.throws(
+    () => actions.get('nonexistent'),
+    { name: 'AssertionError', message: /must be initialised/ },
+    'get() throws AssertionError with "must be initialised"'
+  )
 
   t.end()
 })
@@ -128,17 +88,14 @@ await t.test('Actions undefined', async (t): Promise<void> => {
   t.equal(actions.isEmpty, true, 'empty')
   t.equal(actions.names.length, 0, 'names.length 0')
 
-  try {
-    const action = actions.get('nonexistent')
-    t.fail('should have thrown an error, got ' + action.actionName)
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'does not exist',
-      'throws "does not exist"'
-    )
-  }
+  t.throws(
+    () => actions.get('nonexistent'),
+    {
+      constructor: xpm.ConfigurationError,
+      message: /does not exist/,
+    },
+    'throws ConfigurationError with "does not exist"'
+  )
 
   t.end()
 })
@@ -174,20 +131,11 @@ await t.test('Actions at top', async (t): Promise<void> => {
   t.equal(one.actionName, 'one', 'actionName is "one"')
   t.equal(one.parentActions, actions, 'parentActions is actions')
 
-  try {
-    one.commands
-    t.fail('one.commands should throw before initialise()')
-  } catch (error) {
-    t.throws(
-      AssertionError,
-      'one.commands throws xpm.AssertionError before initialise()'
-    )
-    t.match(
-      (error as Error).message,
-      'must be initialised',
-      'one.commands throws "must be initialised"'
-    )
-  }
+  t.throws(
+    () => one.commands,
+    { name: 'AssertionError', message: /must be initialised/ },
+    'one.commands throws AssertionError with "must be initialised"'
+  )
   isInitialised = await one.initialise()
   t.equal(isInitialised, true, 'one.initialise() => true')
   isInitialised = await one.initialise()
@@ -501,7 +449,10 @@ await t.test('Actions template errors', async (t): Promise<void> => {
 
       await t.rejects(
         () => actions.initialise(),
-        /matrix is not an object/,
+        {
+          constructor: xpm.ConfigurationError,
+          message: /matrix is not an object/,
+        },
         'throws xpm.ConfigurationError with "matrix is not an object"'
       )
       t.end()
@@ -527,7 +478,10 @@ await t.test('Actions template errors', async (t): Promise<void> => {
 
       await t.rejects(
         () => actions.initialise(),
-        /has no template/,
+        {
+          constructor: xpm.ConfigurationError,
+          message: /has no template/,
+        },
         'throws xpm.ConfigurationError with "has no template"'
       )
       t.end()
@@ -554,7 +508,10 @@ await t.test('Actions template errors', async (t): Promise<void> => {
 
       await t.rejects(
         () => actions.initialise(),
-        /template is not a string/,
+        {
+          constructor: xpm.ConfigurationError,
+          message: /template is not a string/,
+        },
         'throws xpm.ConfigurationError with "template is not a string"'
       )
       t.end()
@@ -581,7 +538,10 @@ await t.test('Actions template errors', async (t): Promise<void> => {
 
       await t.rejects(
         () => actions.initialise(),
-        /is not an array/,
+        {
+          constructor: xpm.ConfigurationError,
+          message: /is not an array/,
+        },
         'throws xpm.ConfigurationError with "is not an array"'
       )
       t.end()
@@ -608,7 +568,10 @@ await t.test('Actions template errors', async (t): Promise<void> => {
 
       await t.rejects(
         () => actions.initialise(),
-        /value is not a string/,
+        {
+          constructor: xpm.ConfigurationError,
+          message: /value is not a string/,
+        },
         'throws xpm.ConfigurationError with "value is not a string"'
       )
       t.end()
@@ -635,7 +598,10 @@ await t.test('Actions template errors', async (t): Promise<void> => {
 
       await t.rejects(
         () => actions.initialise(),
-        /undefined variable/,
+        {
+          constructor: xpm.ConfigurationError,
+          message: /undefined variable/,
+        },
         'throws xpm.ConfigurationError with "undefined variable"'
       )
       t.end()
@@ -662,7 +628,10 @@ await t.test('Actions template errors', async (t): Promise<void> => {
 
       await t.rejects(
         () => actions.initialise(),
-        /name substitution/,
+        {
+          constructor: xpm.ConfigurationError,
+          message: /name substitution/,
+        },
         'throws xpm.ConfigurationError with "name substitution"'
       )
       t.end()
@@ -688,7 +657,10 @@ await t.test('Action errors', async (t): Promise<void> => {
 
   await t.rejects(
     () => actionOne.initialise(),
-    /commands substitution/,
+    {
+      constructor: xpm.ConfigurationError,
+      message: /commands substitution/,
+    },
     'throws xpm.ConfigurationError with "commands substitution"'
   )
 

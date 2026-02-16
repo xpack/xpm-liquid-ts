@@ -268,51 +268,45 @@ t.test('isBinaryXpmPackage', (t): void => {
     'with xpack alone is not a binary xpm package'
   )
 
-  try {
-    xpmPackage.jsonPackage = {
-      name: 'n',
-      version: '1.0.0',
-      xpack: {
-        executables: {
-          mybin: './.content/bin/mybin',
-        },
+  xpmPackage.jsonPackage = {
+    name: 'n',
+    version: '1.0.0',
+    xpack: {
+      executables: {
+        mybin: './.content/bin/mybin',
       },
-    } as xpm.JsonXpmPackage
-    xpmPackage.isBinaryXpmPackage()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.type(error, xpm.ConfigurationError, 'throws xpm.ConfigurationError')
-    t.match(
-      (error as Error).message,
-      'has no "xpack.binaries"',
-      'error message is "no xpack.binaries"'
-    )
-  }
+    },
+  } as xpm.JsonXpmPackage
+  t.throws(
+    () => xpmPackage.isBinaryXpmPackage(),
+    {
+      constructor: xpm.ConfigurationError,
+      message: /has no "xpack.binaries"/,
+    },
+    'throws ConfigurationError with "has no xpack.binaries"'
+  )
 
-  try {
-    xpmPackage.jsonPackage = {
-      name: 'n',
-      version: '1.0.0',
-      xpack: {
-        executables: {
-          mybin: './.content/bin/mybin',
-        },
-        binaries: {
-          destination: './.content/bin',
-          baseUrl: 'https://example.com/downloads/mybin',
-        } as xpm.JsonXpmBinaries,
+  xpmPackage.jsonPackage = {
+    name: 'n',
+    version: '1.0.0',
+    xpack: {
+      executables: {
+        mybin: './.content/bin/mybin',
       },
-    } as xpm.JsonXpmPackage
-    xpmPackage.isBinaryXpmPackage()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.type(error, xpm.ConfigurationError, 'throws xpm.ConfigurationError')
-    t.match(
-      (error as Error).message,
-      'has no "xpack.binaries.platforms"',
-      'error message is "no xpack.binaries.platforms"'
-    )
-  }
+      binaries: {
+        destination: './.content/bin',
+        baseUrl: 'https://example.com/downloads/mybin',
+      } as xpm.JsonXpmBinaries,
+    },
+  } as xpm.JsonXpmPackage
+  t.throws(
+    () => xpmPackage.isBinaryXpmPackage(),
+    {
+      constructor: xpm.ConfigurationError,
+      message: /has no "xpack.binaries.platforms"/,
+    },
+    'throws ConfigurationError with "has no xpack.binaries.platforms"'
+  )
 
   xpmPackage.jsonPackage = {
     name: 'n',
@@ -356,28 +350,25 @@ t.test('isBinaryXpmPackage', (t): void => {
     )
   }
 
-  try {
-    xpmPackage.jsonPackage = {
-      name: 'n',
-      version: '1.0.0',
-      xpack: {
-        binaries: {
-          destination: './.content/bin',
-          baseUrl: 'https://example.com/downloads/mybin',
-          platforms: {},
-        },
+  xpmPackage.jsonPackage = {
+    name: 'n',
+    version: '1.0.0',
+    xpack: {
+      binaries: {
+        destination: './.content/bin',
+        baseUrl: 'https://example.com/downloads/mybin',
+        platforms: {},
       },
-    } as xpm.JsonXpmPackage
-    xpmPackage.isBinaryXpmPackage()
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.type(error, xpm.ConfigurationError, 'throws xpm.ConfigurationError')
-    t.match(
-      (error as Error).message,
-      'has no "xpack.executables"',
-      'error message is "no xpack.executables"'
-    )
-  }
+    },
+  } as xpm.JsonXpmPackage
+  t.throws(
+    () => xpmPackage.isBinaryXpmPackage(),
+    {
+      constructor: xpm.ConfigurationError,
+      message: /has no "xpack.executables"/,
+    },
+    'throws ConfigurationError with "has no xpack.executables"'
+  )
 
   t.end()
 })
@@ -791,17 +782,14 @@ t.test('parsePackageSpecifier', (t): void => {
     packageFolderPath: '/tmp',
   })
 
-  try {
-    xpmPackage.parsePackageSpecifier({ npmPackageSpecifier: '@a/b/c' })
-    t.fail('should have thrown an error')
-  } catch (error) {
-    t.type(error, xpm.InputError, 'throws xpm.InputError')
-    t.match(
-      (error as Error).message,
-      'not a package name',
-      'error message is "not a package name"'
-    )
-  }
+  t.throws(
+    () => xpmPackage.parsePackageSpecifier({ npmPackageSpecifier: '@a/b/c' }),
+    {
+      constructor: xpm.InputError,
+      message: /not a package name/,
+    },
+    'throws InputError with "not a package name"'
+  )
 
   let spec = xpmPackage.parsePackageSpecifier({
     npmPackageSpecifier: '@a',

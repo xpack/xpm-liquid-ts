@@ -339,7 +339,10 @@ await t.test(
           templateType: 'action',
           instanceFactory: (expandedName) => ({ name: expandedName }),
         }),
-      /is not an array/,
+      {
+        constructor: xpm.ConfigurationError,
+        message: /is not an array/,
+      },
       'throws ConfigurationError with "is not an array"'
     )
 
@@ -374,7 +377,10 @@ await t.test(
           templateType: 'action',
           instanceFactory: (expandedName) => ({ name: expandedName }),
         }),
-      /substitution/,
+      {
+        constructor: xpm.ConfigurationError,
+        message: /substitution/,
+      },
       'throws ConfigurationError with "substitution"'
     )
 
@@ -400,23 +406,21 @@ await t.test(
       arch: [], // Empty array
     }
 
-    try {
-      const instances = await expander.expandTemplate({
-        templateName,
-        matrix,
-        templateContent: {},
-        templateType: 'action',
-        instanceFactory: (expandedName) => ({ name: expandedName }),
-      })
-      t.fail('should have thrown an error')
-    } catch (error) {
-      t.ok(error instanceof xpm.ConfigurationError, 'throws ConfigurationError')
-      t.match(
-        (error as Error).message,
-        'cannot be empty',
-        'error message is "cannot be empty"'
-      )
-    }
+    await t.rejects(
+      () =>
+        expander.expandTemplate({
+          templateName,
+          matrix,
+          templateContent: {},
+          templateType: 'action',
+          instanceFactory: (expandedName) => ({ name: expandedName }),
+        }),
+      {
+        constructor: xpm.ConfigurationError,
+        message: /cannot be empty/,
+      },
+      'throws ConfigurationError with \"cannot be empty\"'
+    )
 
     t.end()
   }

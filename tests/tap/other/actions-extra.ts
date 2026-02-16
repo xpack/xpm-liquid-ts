@@ -141,6 +141,10 @@ await t.test('actions', async (t): Promise<void> => {
 
   await t.rejects(
     () => actionTwo.initialise(),
+    {
+      constructor: xpm.ConfigurationError,
+      message: /not defined/,
+    },
     'actionTwo initialisation failed as expected'
   )
 

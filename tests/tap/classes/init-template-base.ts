@@ -1468,17 +1468,14 @@ t.test('XpmInitTemplateBase.isPlatformSupported()', (t): void => {
     'darwin is not supported'
   )
 
-  try {
-    template.isPlatformSupported([])
-    t.fail('should have thrown for empty platform list')
-  } catch (error) {
-    t.type(error, AssertionError, 'threw an AssertionError')
-    t.match(
-      (error as AssertionError).message,
-      'platforms array is required',
-      'error message is "platforms array is required"'
-    )
-  }
+  t.throws(
+    () => template.isPlatformSupported([]),
+    {
+      name: 'AssertionError',
+      message: /platforms array is required/,
+    },
+    'throws AssertionError with "platforms array is required"'
+  )
 
   t.end()
 })
@@ -1597,7 +1594,10 @@ await t.test('XpmInitTemplateBase.render()', async (t): Promise<void> => {
             destinationFilePath,
             substitutionsVariables: { noProjectName: 'Test', properties: {} },
           }),
-        /undefined variable/,
+        {
+          constructor: xpm.OutputError,
+          message: /undefined variable/,
+        },
         'throws XpmOutputError with "undefined variable"'
       )
 
@@ -1727,7 +1727,10 @@ await t.test(
     })
     await t.rejects(
       () => template.run(),
-      /not possible without a TTY/,
+      {
+        constructor: xpm.JsonSyntaxError,
+        message: /not possible without a TTY/,
+      },
       'throws XpmSyntaxError with "not possible without a TTY"'
     )
 

@@ -135,6 +135,7 @@ await t.test(
         })
       },
       {
+        constructor: xpm.ConfigurationError,
         message: 'action "test-template" matrix.arch is not an array',
       },
       'throws ConfigurationError for non-array matrix value'
@@ -166,6 +167,7 @@ await t.test(
         })
       },
       {
+        constructor: xpm.ConfigurationError,
         message:
           'buildConfiguration "test-template" matrix.arch value is not a string',
       },
@@ -197,6 +199,7 @@ await t.test(
         })
       },
       {
+        constructor: xpm.ConfigurationError,
         message: /in action "my-action" matrix substitution/,
       },
       'throws ConfigurationError with context when substitution fails'

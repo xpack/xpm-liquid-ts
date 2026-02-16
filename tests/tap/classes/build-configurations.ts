@@ -44,113 +44,59 @@ await t.test(
       jsonBuildConfigurations: undefined,
     })
 
-    try {
-      buildConfigurations.size
-      t.fail('size should have thrown an error')
-    } catch (error) {
-      t.throws(AssertionError, 'size throws AssertionError')
-      t.match(
-        (error as Error).message,
-        'must be initialised',
-        'size throws "must be initialised"'
-      )
-    }
+    t.throws(
+      () => buildConfigurations.size,
+      { name: 'AssertionError', message: /must be initialised/ },
+      'size throws AssertionError with "must be initialised"'
+    )
 
-    try {
-      buildConfigurations.isEmpty
-      t.fail('isEmpty should have thrown an error')
-    } catch (error) {
-      t.throws(AssertionError, 'isEmpty throws AssertionError')
-      t.match(
-        (error as Error).message,
-        'must be initialised',
-        'isEmpty throws "must be initialised"'
-      )
-    }
+    t.throws(
+      () => buildConfigurations.isEmpty,
+      { name: 'AssertionError', message: /must be initialised/ },
+      'isEmpty throws AssertionError with "must be initialised"'
+    )
 
-    try {
-      buildConfigurations.names
-      t.fail('names should have thrown an error')
-    } catch (error) {
-      t.throws(AssertionError, 'names throws AssertionError')
-      t.match(
-        (error as Error).message,
-        'must be initialised',
-        'names throws "must be initialised"'
-      )
-    }
+    t.throws(
+      () => buildConfigurations.names,
+      { name: 'AssertionError', message: /must be initialised/ },
+      'names throws AssertionError with "must be initialised"'
+    )
 
-    try {
-      buildConfigurations.getJsonName('undefined')
-      t.fail('getJsonName() should have thrown an error')
-    } catch (error) {
-      t.throws(AssertionError, 'getJsonName() throws AssertionError')
-      t.match(
-        (error as Error).message,
-        'must be initialised',
-        'getJsonName() throws "must be initialised"'
-      )
-    }
+    t.throws(
+      () => buildConfigurations.getJsonName('undefined'),
+      { name: 'AssertionError', message: /must be initialised/ },
+      'getJsonName() throws AssertionError with "must be initialised"'
+    )
 
-    try {
-      buildConfigurations.hasJson('undefined')
-      t.fail('hasJson() should have thrown an error')
-    } catch (error) {
-      t.throws(AssertionError, 'hasJson() throws AssertionError')
-      t.match(
-        (error as Error).message,
-        'must be initialised',
-        'hasJson() throws "must be initialised"'
-      )
-    }
+    t.throws(
+      () => buildConfigurations.hasJson('undefined'),
+      { name: 'AssertionError', message: /must be initialised/ },
+      'hasJson() throws AssertionError with "must be initialised"'
+    )
 
-    try {
-      buildConfigurations.getJson('undefined')
-      t.fail('getJson() should have thrown an error')
-    } catch (error) {
-      t.throws(AssertionError, 'getJson() throws AssertionError')
-      t.match(
-        (error as Error).message,
-        'must be initialised',
-        'getJson() throws "must be initialised"'
-      )
-    }
+    t.throws(
+      () => buildConfigurations.getJson('undefined'),
+      { name: 'AssertionError', message: /must be initialised/ },
+      'getJson() throws AssertionError with "must be initialised"'
+    )
 
-    try {
-      buildConfigurations.isHidden('undefined')
-      t.fail('isHidden() should have thrown an error')
-    } catch (error) {
-      t.throws(AssertionError, 'isHidden() throws AssertionError')
-      t.match(
-        (error as Error).message,
-        'must be initialised',
-        'isHidden() throws "must be initialised"'
-      )
-    }
+    t.throws(
+      () => buildConfigurations.isHidden('undefined'),
+      { name: 'AssertionError', message: /must be initialised/ },
+      'isHidden() throws AssertionError with "must be initialised"'
+    )
 
-    try {
-      buildConfigurations.has('undefined')
-      t.fail('has() should have thrown an error')
-    } catch (error) {
-      t.throws(AssertionError, 'has() throws AssertionError')
-      t.match(
-        (error as Error).message,
-        'must be initialised',
-        'has() throws "must be initialised"'
-      )
-    }
+    t.throws(
+      () => buildConfigurations.has('undefined'),
+      { name: 'AssertionError', message: /must be initialised/ },
+      'has() throws AssertionError with "must be initialised"'
+    )
 
-    try {
-      buildConfigurations.get('undefined')
-      t.fail('get() should have thrown an error')
-    } catch (error) {
-      t.throws(AssertionError, 'get() throws AssertionError')
-      t.match(
-        (error as Error).message,
-        'must be initialised',
-        'get() throws "must be initialised"'
-      )
-    }
+    t.throws(
+      () => buildConfigurations.get('undefined'),
+      { name: 'AssertionError', message: /must be initialised/ },
+      'get() throws AssertionError with "must be initialised"'
+    )
 
     t.end()
   }
@@ -173,20 +119,14 @@ await t.test('BuildConfigurations undefined', async (t): Promise<void> => {
   t.equal(buildConfigurations.isEmpty, true, 'empty')
   t.equal(buildConfigurations.names.length, 0, 'names.length 0')
 
-  try {
-    const buildConfiguration = buildConfigurations.get('nonexistent')
-    t.fail(
-      'should have thrown an error, got ' +
-        buildConfiguration.buildConfigurationName
-    )
-  } catch (error) {
-    t.throws(xpm.ConfigurationError, 'throws xpm.Error')
-    t.match(
-      (error as Error).message,
-      'does not exist',
-      'throws "does not exist"'
-    )
-  }
+  t.throws(
+    () => buildConfigurations.get('nonexistent'),
+    {
+      constructor: xpm.ConfigurationError,
+      message: /does not exist/,
+    },
+    'throws ConfigurationError with "does not exist"'
+  )
 
   t.end()
 })
@@ -303,7 +243,10 @@ await t.test('BuildConfigurations', async (t): Promise<void> => {
   const configTwo = buildConfigurations.get('configTwo')
   await t.rejects(
     () => configTwo.initialise(),
-    /undefined variable/,
+    {
+      constructor: xpm.ConfigurationError,
+      message: /undefined variable/,
+    },
     'throws xpm.ConfigurationError with "undefined variable"'
   )
 
@@ -373,7 +316,10 @@ await t.test(
 
     await t.rejects(
       () => configThree.initialise(),
-      /undefined variable/,
+      {
+        constructor: xpm.ConfigurationError,
+        message: /undefined variable/,
+      },
       'throws xpm.ConfigurationError with "undefined variable"'
     )
 
@@ -744,7 +690,10 @@ await t.test('BuildConfigurations templates', async (t): Promise<void> => {
   const configSixA1 = buildConfigurations.get('configSix-a1')
   await t.rejects(
     () => configSixA1.initialise(),
-    /undefined variable/,
+    {
+      constructor: xpm.ConfigurationError,
+      message: /undefined variable/,
+    },
     'throws xpm.ConfigurationError with "undefined variable"'
   )
 
@@ -882,7 +831,10 @@ await t.test(
         })
         await t.rejects(
           () => buildConfigurations.initialise(),
-          /undefined variable/,
+          {
+            constructor: xpm.ConfigurationError,
+            message: /undefined variable/,
+          },
           'throws xpm.ConfigurationError with "undefined variable"'
         )
 
