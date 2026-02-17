@@ -156,7 +156,7 @@ export class LiquidPropertiesDrop extends liquidjs.Drop {
    * @param context - The Liquid rendering context.
    * @returns The resolved property value.
    *
-   * @throws {@link InputError}
+   * @throws {@link TemplateError}
    * If the property is not defined.
    */
   override async liquidMethodMissing(
@@ -325,7 +325,7 @@ export class LiquidMatrixDrop extends liquidjs.Drop {
    * @param context - The Liquid rendering context.
    * @returns The resolved matrix parameter value.
    *
-   * @throws {@link InputError}
+   * @throws {@link TemplateError}
    * If the matrix parameter is not defined.
    */
   override async liquidMethodMissing(
