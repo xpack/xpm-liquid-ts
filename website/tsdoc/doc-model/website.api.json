@@ -714,41 +714,6 @@
               "isAbstract": false
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!Actions#_actionsNamesSet:member",
-              "docComment": "/**\n * Set of all action names for quick lookup.\n *\n * @remarks\n *\n * This set provides O(1) existence checks for action names, enabling efficient validation during template expansion and duplicate detection.\n *\n * Key characteristics:\n *\n * <ol> <li>Known only after <code>Actions.initialise()</code> completes.</li> <li>Contains all action names including those generated from templates.</li> <li>Used to detect duplicate action names that might arise from template expansion conflicts or explicit duplicates in <code>package.json</code>.</li> </ol>\n *\n * This redundant storage (alongside `_actionsMap`) is justified by the performance benefit for name existence checks, especially in packages with many actions.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly _actionsNamesSet: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Set",
-                  "canonicalReference": "!Set:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "<string>"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_actionsNamesSet",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 3
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!Actions#_expandTemplateActions:member(1)",
               "docComment": "/**\n * Expands a template action into multiple concrete actions.\n *\n * @remarks\n *\n * This method uses the {@link TemplateExpander} to compute the Cartesian product of all matrix parameter values and creates a separate action for each combination, substituting matrix values into both the action name and command templates.\n *\n * Processing steps:\n *\n * <ol> <li>Validates matrix and template structure.</li> <li>Delegates to <code>TemplateExpander</code> for matrix processing and name expansion.</li> <li>Creates action instances via factory callback for each combination.</li> </ol>\n *\n * Matrix variables are scoped to individual actions and accessible via the `matrix` namespace during action command evaluation.\n *\n * @param actionName - The template action name containing Liquid variables.\n *\n * @param jsonActionTemplate - The JSON action template definition containing matrix parameters and a template.\n *\n * @returns A promise that resolves to a map of expanded action names to their corresponding action instances.\n *\n * @throws\n *\n * {@link ConfigurationError} If the matrix structure is invalid, template format is incorrect, or substitution fails.\n */\n",
@@ -932,9 +897,44 @@
               "isAbstract": false
             },
             {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!Actions#_namesSet:member",
+              "docComment": "/**\n * Set of all action names for quick lookup.\n *\n * @remarks\n *\n * This set provides O(1) existence checks for action names, enabling efficient validation during template expansion and duplicate detection.\n *\n * Key characteristics:\n *\n * <ol> <li>Known only after <code>Actions.initialise()</code> completes.</li> <li>Contains all action names including those generated from templates.</li> <li>Used to detect duplicate action names that might arise from template expansion conflicts or explicit duplicates in <code>package.json</code>.</li> </ol>\n *\n * This redundant storage (alongside `_actionsMap`) is justified by the performance benefit for name existence checks, especially in packages with many actions.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected readonly _namesSet: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Set",
+                  "canonicalReference": "!Set:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_namesSet",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!Actions#_processTemplate:member(1)",
-              "docComment": "/**\n * Processes a template action by expanding it and registering the generated actions.\n *\n * @remarks\n *\n * This helper method is called during collection initialisation for each action whose name contains template syntax (<code>\\{\\{</code> markers).\n *\n * Processing steps:\n *\n * <ol> <li>Calls <code>_expandTemplateActions()</code> to generate all action instances from the template's matrix parameters.</li> <li>Validates that each expanded action name is unique and does not conflict with existing actions.</li> <li>Registers each expanded action in the internal maps: <ul> <li><code>_actionsMap</code>: Maps name to action instance.</li> <li><code>_jsonActionsNamesMap</code>: Maps expanded name back to original template name.</li> <li><code>_actionsNamesSet</code>: Tracks all registered names for duplicate detection.</li> </ul> </li> </ol>\n *\n * @param actionName - The template action name containing Liquid variables.\n *\n * @param jsonActionTemplate - The JSON template definition containing matrix parameters and an action template.\n *\n * @returns A promise that resolves when processing is complete.\n *\n * @throws\n *\n * {@link ConfigurationError} If duplicate action names are detected during expansion or if template expansion fails.\n */\n",
+              "docComment": "/**\n * Processes a template action by expanding it and registering the generated actions.\n *\n * @remarks\n *\n * This helper method is called during collection initialisation for each action whose name contains template syntax (<code>\\{\\{</code> markers).\n *\n * Processing steps:\n *\n * <ol> <li>Calls <code>_expandTemplateActions()</code> to generate all action instances from the template's matrix parameters.</li> <li>Validates that each expanded action name is unique and does not conflict with existing actions.</li> <li>Registers each expanded action in the internal maps: <ul> <li><code>_actionsMap</code>: Maps name to action instance.</li> <li><code>_jsonActionsNamesMap</code>: Maps expanded name back to original template name.</li> <li><code>_namesSet</code>: Tracks all registered names for duplicate detection.</li> </ul> </li> </ol>\n *\n * @param actionName - The template action name containing Liquid variables.\n *\n * @param jsonActionTemplate - The JSON template definition containing matrix parameters and an action template.\n *\n * @returns A promise that resolves when processing is complete.\n *\n * @throws\n *\n * {@link ConfigurationError} If duplicate action names are detected during expansion or if template expansion fails.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -2687,41 +2687,6 @@
           "members": [
             {
               "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!BuildConfigurations#_buildComfigurationsNamesSet:member",
-              "docComment": "/**\n * Set of all build configuration names for duplicate detection.\n *\n * @remarks\n *\n * This set provides O(1) existence checks for configuration names, enabling efficient validation during template expansion to prevent duplicate configurations.\n *\n * Duplicate scenarios detected:\n *\n * <ol> <li>Explicit duplicates in <code>package.json</code> with identical names.</li> <li>Template expansion conflicts where different templates generate the same concrete configuration name.</li> <li>Conflicts between template-generated names and explicitly defined configuration names.</li> </ol>\n *\n * Detection occurs during {@link BuildConfigurations.initialise}, throwing {@link ConfigurationError} when duplicates are found to ensure configuration name uniqueness.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly _buildComfigurationsNamesSet: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Set",
-                  "canonicalReference": "!Set:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "<string>"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_buildComfigurationsNamesSet",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 3
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!BuildConfigurations#_buildConfigurationsMap:member",
               "docComment": "/**\n * Map of build configuration names to their corresponding instances.\n *\n * @remarks\n *\n * This map serves as the primary configuration registry, populated during collection initialisation with entries for all discovered configurations.\n *\n * Key characteristics:\n *\n * <ol> <li>Known only after <code>BuildConfigurations.initialise()</code> completes.</li> <li>Possibly empty if there are no build configurations defined.</li> <li>Values can be <code>undefined</code> to indicate a configuration exists but hasn't been instantiated yet (lazy loading).</li> <li>For template configurations, contains one entry per expanded combination, not the original template definition.</li> </ol>\n *\n * Configurations transition from `undefined` to instantiated when first accessed via {@link BuildConfigurations.get}, implementing the lazy evaluation pattern to avoid unnecessary processing.\n */\n",
               "excerptTokens": [
@@ -2948,9 +2913,44 @@
               "isAbstract": false
             },
             {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!BuildConfigurations#_namesSet:member",
+              "docComment": "/**\n * Set of all build configuration names for duplicate detection.\n *\n * @remarks\n *\n * This set provides O(1) existence checks for configuration names, enabling efficient validation during template expansion to prevent duplicate configurations.\n *\n * Duplicate scenarios detected:\n *\n * <ol> <li>Explicit duplicates in <code>package.json</code> with identical names.</li> <li>Template expansion conflicts where different templates generate the same concrete configuration name.</li> <li>Conflicts between template-generated names and explicitly defined configuration names.</li> </ol>\n *\n * Detection occurs during {@link BuildConfigurations.initialise}, throwing {@link ConfigurationError} when duplicates are found to ensure configuration name uniqueness.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected readonly _namesSet: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Set",
+                  "canonicalReference": "!Set:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_namesSet",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!BuildConfigurations#_processTemplate:member(1)",
-              "docComment": "/**\n * Processes a template build configuration by expanding it and registering the generated configurations.\n *\n * @remarks\n *\n * This helper method is called during collection initialisation for each build configuration whose name contains template syntax (<code>\\{\\{</code> markers).\n *\n * Processing steps:\n *\n * <ol> <li>Calls <code>_expandTemplateBuildConfigurations()</code> to generate all configuration instances from the template's matrix parameters.</li> <li>Validates that each expanded configuration name is unique and does not conflict with existing configurations.</li> <li>Registers each expanded configuration in the internal maps: <ul> <li><code>_buildConfigurationsMap</code>: Maps name to configuration instance.</li> <li><code>_jsonBuildConfigurationsNamesMap</code>: Maps expanded name back to original template name.</li> <li><code>_buildComfigurationsNamesSet</code>: Tracks all registered names for duplicate detection.</li> </ul> </li> </ol>\n *\n * @param buildConfigurationName - The template configuration name containing Liquid variables.\n *\n * @param jsonBuildConfiguration - The JSON template definition containing matrix parameters and a configuration template.\n *\n * @returns A promise that resolves when processing is complete.\n *\n * @throws\n *\n * {@link ConfigurationError} If duplicate configuration names are detected during expansion or if template expansion fails.\n */\n",
+              "docComment": "/**\n * Processes a template build configuration by expanding it and registering the generated configurations.\n *\n * @remarks\n *\n * This helper method is called during collection initialisation for each build configuration whose name contains template syntax (<code>\\{\\{</code> markers).\n *\n * Processing steps:\n *\n * <ol> <li>Calls <code>_expandTemplateBuildConfigurations()</code> to generate all configuration instances from the template's matrix parameters.</li> <li>Validates that each expanded configuration name is unique and does not conflict with existing configurations.</li> <li>Registers each expanded configuration in the internal maps: <ul> <li><code>_buildConfigurationsMap</code>: Maps name to configuration instance.</li> <li><code>_jsonBuildConfigurationsNamesMap</code>: Maps expanded name back to original template name.</li> <li><code>_namesSet</code>: Tracks all registered names for duplicate detection.</li> </ul> </li> </ol>\n *\n * @param buildConfigurationName - The template configuration name containing Liquid variables.\n *\n * @param jsonBuildConfiguration - The JSON template definition containing matrix parameters and a configuration template.\n *\n * @returns A promise that resolves when processing is complete.\n *\n * @throws\n *\n * {@link ConfigurationError} If duplicate configuration names are detected during expansion or if template expansion fails.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",

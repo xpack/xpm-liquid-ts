@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/buildconfigurations/_buildcomfigurationsnamesset
-title: BuildConfigurations._buildComfigurationsNamesSet property
+slug: /api/xpm-lib/classes/buildconfigurations/_namesset
+title: BuildConfigurations._namesSet property
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ Set of all build configuration names for duplicate detection.
 ## Signature
 
 ```typescript
-protected readonly _buildComfigurationsNamesSet: Set<string>;
+protected readonly _namesSet: Set<string>;
 ```
 
 ## Remarks

@@ -16,7 +16,7 @@ export declare class BuildConfigurations {
     readonly jsonBuildConfigurations: JsonBuildConfigurations;
     protected readonly _buildConfigurationsMap: Map<string, BuildConfiguration | undefined>;
     protected readonly _jsonBuildConfigurationsNamesMap: Map<string, string>;
-    protected readonly _buildComfigurationsNamesSet: Set<string>;
+    protected readonly _namesSet: Set<string>;
     protected _isInitialised: boolean;
     protected _names: string[];
     constructor({ engine, substitutionsVariables, jsonBuildConfigurations, log, }: BuildConfigurationsConstructorParameters);

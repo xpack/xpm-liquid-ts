@@ -18,7 +18,7 @@ export declare class Actions {
     readonly jsonActions: JsonActions;
     readonly buildConfiguration: BuildConfiguration | undefined;
     protected readonly _actionsMap: Map<string, Action | undefined>;
-    protected readonly _actionsNamesSet: Set<string>;
+    protected readonly _namesSet: Set<string>;
     protected readonly _jsonActionsNamesMap: Map<string, string>;
     protected _isInitialised: boolean;
     protected _names: string[];

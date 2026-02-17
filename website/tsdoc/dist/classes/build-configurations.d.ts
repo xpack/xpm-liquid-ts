@@ -207,7 +207,7 @@ export declare class BuildConfigurations {
      * throwing {@link ConfigurationError} when duplicates are found to ensure
      * configuration name uniqueness.
      */
-    protected readonly _buildComfigurationsNamesSet: Set<string>;
+    protected readonly _namesSet: Set<string>;
     /**
      * Flag indicating whether the collection has been initialised.
      *
@@ -467,7 +467,7 @@ export declare class BuildConfigurations {
      *      instance.</li>
      *   <li><code>_jsonBuildConfigurationsNamesMap</code>: Maps expanded name
      *      back to original template name.</li>
-     *   <li><code>_buildComfigurationsNamesSet</code>: Tracks all registered
+     *   <li><code>_namesSet</code>: Tracks all registered
      *      names for duplicate detection.</li>
      *   </ul>
      * </li>

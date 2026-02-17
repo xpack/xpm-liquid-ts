@@ -91,29 +91,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[\_buildComfigurationsNamesSet](/xpm-lib-ts/docs/api/xpm-lib/classes/buildconfigurations/_buildcomfigurationsnamesset)
-
-
-</td><td>
-
-`protected`
-
-`readonly`
-
-
-</td><td>
-
-Set&lt;string&gt;
-
-
-</td><td>
-
-Set of all build configuration names for duplicate detection.
-
-
-</td></tr>
-<tr><td>
-
 [\_buildConfigurationsMap](/xpm-lib-ts/docs/api/xpm-lib/classes/buildconfigurations/_buildconfigurationsmap)
 
 
@@ -197,6 +174,29 @@ string\[\]
 </td><td>
 
 Cached array of all build configuration names in the collection.
+
+
+</td></tr>
+<tr><td>
+
+[\_namesSet](/xpm-lib-ts/docs/api/xpm-lib/classes/buildconfigurations/_namesset)
+
+
+</td><td>
+
+`protected`
+
+`readonly`
+
+
+</td><td>
+
+Set&lt;string&gt;
+
+
+</td><td>
+
+Set of all build configuration names for duplicate detection.
 
 
 </td></tr>

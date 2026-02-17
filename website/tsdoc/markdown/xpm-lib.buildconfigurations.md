@@ -81,29 +81,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[\_buildComfigurationsNamesSet](./xpm-lib.buildconfigurations._buildcomfigurationsnamesset.md)
-
-
-</td><td>
-
-`protected`
-
-`readonly`
-
-
-</td><td>
-
-Set&lt;string&gt;
-
-
-</td><td>
-
-Set of all build configuration names for duplicate detection.
-
-
-</td></tr>
-<tr><td>
-
 [\_buildConfigurationsMap](./xpm-lib.buildconfigurations._buildconfigurationsmap.md)
 
 
@@ -187,6 +164,29 @@ string\[\]
 </td><td>
 
 Cached array of all build configuration names in the collection.
+
+
+</td></tr>
+<tr><td>
+
+[\_namesSet](./xpm-lib.buildconfigurations._namesset.md)
+
+
+</td><td>
+
+`protected`
+
+`readonly`
+
+
+</td><td>
+
+Set&lt;string&gt;
+
+
+</td><td>
+
+Set of all build configuration names for duplicate detection.
 
 
 </td></tr>

@@ -16,7 +16,7 @@ export class BuildConfigurations {
     jsonBuildConfigurations;
     _buildConfigurationsMap = new Map();
     _jsonBuildConfigurationsNamesMap = new Map();
-    _buildComfigurationsNamesSet = new Set();
+    _namesSet = new Set();
     _isInitialised = false;
     _names = [];
     constructor({ engine, substitutionsVariables, jsonBuildConfigurations, log, }) {
@@ -44,14 +44,14 @@ export class BuildConfigurations {
                 });
             }
             else {
-                if (this._buildComfigurationsNamesSet.has(buildConfigurationName)) {
+                if (this._namesSet.has(buildConfigurationName)) {
                     throw new ConfigurationError(`build configuration name ` +
                         `"${buildConfigurationName}" already defined`);
                 }
                 else {
                     this._buildConfigurationsMap.set(buildConfigurationName, undefined);
                     this._jsonBuildConfigurationsNamesMap.set(buildConfigurationName, buildConfigurationName);
-                    this._buildComfigurationsNamesSet.add(buildConfigurationName);
+                    this._namesSet.add(buildConfigurationName);
                 }
             }
         }
@@ -139,7 +139,7 @@ export class BuildConfigurations {
                 jsonBuildConfigurationTemplate,
             });
             for (const [expandedBuildConfigurationName, expandedBuildConfiguration,] of expandedBuildConfigurationsMap) {
-                if (this._buildComfigurationsNamesSet.has(expandedBuildConfigurationName)) {
+                if (this._namesSet.has(expandedBuildConfigurationName)) {
                     throw new ConfigurationError(`duplicate build configuration name ` +
                         `"${expandedBuildConfigurationName}" ` +
                         `could not be generated from template.`);
@@ -147,7 +147,7 @@ export class BuildConfigurations {
                 else {
                     this._buildConfigurationsMap.set(expandedBuildConfigurationName, expandedBuildConfiguration);
                     this._jsonBuildConfigurationsNamesMap.set(expandedBuildConfigurationName, buildConfigurationName);
-                    this._buildComfigurationsNamesSet.add(expandedBuildConfigurationName);
+                    this._namesSet.add(expandedBuildConfigurationName);
                 }
             }
         }

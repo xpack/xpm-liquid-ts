@@ -223,7 +223,7 @@ export declare class Actions {
      * performance benefit for name existence checks, especially in packages
      * with many actions.
      */
-    protected readonly _actionsNamesSet: Set<string>;
+    protected readonly _namesSet: Set<string>;
     /**
      * Map of expanded action names to their original JSON action names.
      *
@@ -421,7 +421,7 @@ export declare class Actions {
      *   <li><code>_actionsMap</code>: Maps name to action instance.</li>
      *   <li><code>_jsonActionsNamesMap</code>: Maps expanded name back to
      *      original template name.</li>
-     *   <li><code>_actionsNamesSet</code>: Tracks all registered names for
+     *   <li><code>_namesSet</code>: Tracks all registered names for
      *      duplicate detection.</li>
      *   </ul>
      * </li>

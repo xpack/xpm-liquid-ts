@@ -12,7 +12,7 @@ export class Actions {
     jsonActions;
     buildConfiguration;
     _actionsMap = new Map();
-    _actionsNamesSet = new Set();
+    _namesSet = new Set();
     _jsonActionsNamesMap = new Map();
     _isInitialised = false;
     _names = [];
@@ -70,13 +70,13 @@ export class Actions {
                 });
             }
             else {
-                if (this._actionsNamesSet.has(actionName)) {
+                if (this._namesSet.has(actionName)) {
                     throw new ConfigurationError(`action name "${actionName}" already defined`);
                 }
                 else {
                     this._actionsMap.set(actionName, undefined);
                     this._jsonActionsNamesMap.set(actionName, actionName);
-                    this._actionsNamesSet.add(actionName);
+                    this._namesSet.add(actionName);
                 }
             }
         }
@@ -130,14 +130,14 @@ export class Actions {
                 jsonActionTemplate,
             });
             for (const [expandedActionName, expandedAction] of expandedActionsMap) {
-                if (this._actionsNamesSet.has(expandedActionName)) {
+                if (this._namesSet.has(expandedActionName)) {
                     throw new ConfigurationError(`duplicate action name "${expandedActionName}" ` +
                         `could not be generated from template.`);
                 }
                 else {
                     this._actionsMap.set(expandedActionName, expandedAction);
                     this._jsonActionsNamesMap.set(expandedActionName, actionName);
-                    this._actionsNamesSet.add(expandedActionName);
+                    this._namesSet.add(expandedActionName);
                 }
             }
         }

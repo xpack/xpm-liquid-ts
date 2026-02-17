@@ -112,12 +112,6 @@
                 },
                 {
                   "type": "doc",
-                  "label": "_actionsNamesSet",
-                  "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/actions/$_actionsnamesset$"
-                },
-                {
-                  "type": "doc",
                   "label": "_isInitialised",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/actions/$_isinitialised$"
@@ -133,6 +127,12 @@
                   "label": "_names",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/actions/$_names$"
+                },
+                {
+                  "type": "doc",
+                  "label": "_namesSet",
+                  "className": "tsdocEllipsis",
+                  "id": "api/xpm-lib/classes/actions/$_namesset$"
                 },
                 {
                   "type": "doc",
@@ -394,12 +394,6 @@
               "items": [
                 {
                   "type": "doc",
-                  "label": "_buildComfigurationsNamesSet",
-                  "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/buildconfigurations/$_buildcomfigurationsnamesset$"
-                },
-                {
-                  "type": "doc",
                   "label": "_buildConfigurationsMap",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/buildconfigurations/$_buildconfigurationsmap$"
@@ -421,6 +415,12 @@
                   "label": "_names",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/buildconfigurations/$_names$"
+                },
+                {
+                  "type": "doc",
+                  "label": "_namesSet",
+                  "className": "tsdocEllipsis",
+                  "id": "api/xpm-lib/classes/buildconfigurations/$_namesset$"
                 },
                 {
                   "type": "doc",

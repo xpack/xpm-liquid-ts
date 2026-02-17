@@ -116,29 +116,6 @@ Map of action names to their corresponding action instances.
 </td></tr>
 <tr><td>
 
-[\_actionsNamesSet](/xpm-lib-ts/docs/api/xpm-lib/classes/actions/_actionsnamesset)
-
-
-</td><td>
-
-`protected`
-
-`readonly`
-
-
-</td><td>
-
-Set&lt;string&gt;
-
-
-</td><td>
-
-Set of all action names for quick lookup.
-
-
-</td></tr>
-<tr><td>
-
 [\_isInitialised](/xpm-lib-ts/docs/api/xpm-lib/classes/actions/_isinitialised)
 
 
@@ -199,6 +176,29 @@ string\[\]
 </td><td>
 
 Cached array of all action names in the collection.
+
+
+</td></tr>
+<tr><td>
+
+[\_namesSet](/xpm-lib-ts/docs/api/xpm-lib/classes/actions/_namesset)
+
+
+</td><td>
+
+`protected`
+
+`readonly`
+
+
+</td><td>
+
+Set&lt;string&gt;
+
+
+</td><td>
+
+Set of all action names for quick lookup.
 
 
 </td></tr>
