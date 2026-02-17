@@ -5,15 +5,15 @@ The `@xpack/xpm-lib` module can be imported as usual by name into both
 TypeScript and JavaScript Node.js code.
 
 
-## `XpmPackage`
+## `xpm.Package`
 
-The `XpmPackage` is the top object that includes all xpm specific definitions
+The `xpm.Package` is the top object that includes all xpm specific definitions
 in the `package.json` file.
 
 To import its definition in a file, use:
 
 ```typescript
-import { XpmPackage } from '@xpack/xpm-lib'
+import * as xpm from '@xpack/xpm-lib'
 ```
 
 ### Constructor
@@ -22,7 +22,7 @@ The object constructor requires a logger instance and the path where
 the xpm package is located:
 
 ```typescript
-const xpmPackage = new XpmPackage({ log, packageFolderPath: config.cwd })
+const xpmPackage = new xpm.Package({ log, packageFolderPath: config.cwd })
 ```
 
 ### Read the `package.json`
@@ -88,19 +88,19 @@ A utility function to parse package specifier:
 
 - `substitutionsVariables`
 
-## `XpmDataModel`
+## `xpm.DataModel`
 
 Once the `package.json` is validated, the next step is to create the top
 data model object.
 
 ```typescript
-const xpmDataModel = new XpmDataModel({ log, jsonPackage })
+const xpmDataModel = new xpm.DataModel({ log, jsonPackage })
 ```
 
 The constructor uses lazy processing: it creates empty objects without 
 performing any processing. Objects must be initialised before use.
 
-## `XpmBuildConfigurations`
+## `xpm.BuildConfigurations`
 
 With the data model created, it is possible to create the list 
 of build configurations and enumerate the names:
@@ -134,7 +134,7 @@ computing the names. The actual content processing is delayed until needed.
 - substitutionsVariables
 - jsonBuildConfigurations
 
-## `XpmBuildConfiguration`
+## `xpm.BuildConfiguration`
 
 With the collection of build configurations initialised, it is now possible to 
 access an individual build configuration:
@@ -161,7 +161,7 @@ in an empty state, then initialised when needed.
 - `buildFolderRelativePath`
 - `isTemplate`
 
-## `XpmActions`
+## `xpm.Actions`
 
 The next class of objects managed by the data model are actions.
 
@@ -213,7 +213,7 @@ for (const actionName of actions.names()) {
 - `jsonActions`
 - `buildConfiguration`
 
-## `XpmAction`
+## `xpm.Action`
 
 With the collection of actions initialised, it is now possible to 
 access an individual action:

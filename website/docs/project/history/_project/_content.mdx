@@ -4,8 +4,8 @@
 ### May 2021
 
 The project was created as `xpm-liquid` by extracting the Liquid 
-substitution code from **xpm** to make it reusable in the Visual Studio Code 
-extension.
+substitution code from **xpm** to make it reusable across both **xpm** 
+and the Visual Studio Code extension.
 
 ### March 2024
 
@@ -18,10 +18,16 @@ with additional functionality beyond Liquid substitutions.
 
 ### January 2026
 
-Version 3.0.0 was released with a significantly extended API using 
-`XpmPackage` and `XpmLiquid*` classes. 
+Version 3.0.0 was released with a significantly extended API, introducing 
+`XpmPackage` and `XpmLiquid*` classes for comprehensive package management. 
 
-Support for CommonJS was dropped, making the project ESM-only.
+Support for CommonJS was dropped, making the project ESM-only. Website 
+documentation was also added in this release.
 
-Website documentation was also added.
+### February 2026
 
+Version 4.0.0 was released with a refined and more consistent API. The `Xpm`
+prefix was removed from class names, and the recommended usage pattern now 
+employs an explicit `xpm.` namespace.
+
+Test coverage was extended to 100%.
