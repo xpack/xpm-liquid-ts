@@ -296,7 +296,7 @@ export declare class Actions {
      * `Array.from(map.keys())` on every access whilst still
      * providing a clean getter interface.
      */
-    protected _actionsNames: string[];
+    protected _names: string[];
     /**
      * Constructs an actions collection instance.
      *
@@ -551,7 +551,7 @@ export declare class Action {
      * Names must be unique within the actions collection, enforced during
      * {@link Actions.initialise}.
      */
-    readonly actionName: string;
+    readonly name: string;
     /**
      * The JSON definition of the action commands.
      *

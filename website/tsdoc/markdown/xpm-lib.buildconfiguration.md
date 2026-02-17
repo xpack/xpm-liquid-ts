@@ -230,27 +230,6 @@ Retrieves the actions collection for this build configuration.
 </td></tr>
 <tr><td>
 
-[buildConfigurationName](./xpm-lib.buildconfiguration.buildconfigurationname.md)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-The build configuration name after substitution.
-
-
-</td></tr>
-<tr><td>
-
 [buildFolderRelativePath](./xpm-lib.buildconfiguration.buildfolderrelativepath.md)
 
 
@@ -411,6 +390,27 @@ _(Optional)_ The matrix parameter values for template-generated configurations.
 </td></tr>
 <tr><td>
 
+[name](./xpm-lib.buildconfiguration.name.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The build configuration name after substitution.
+
+
+</td></tr>
+<tr><td>
+
 [parentBuildConfigurations](./xpm-lib.buildconfiguration.parentbuildconfigurations.md)
 
 
@@ -451,7 +451,7 @@ The resolved properties for this configuration.
 </td></tr>
 <tr><td>
 
-[templateBuildConfigurationName?](./xpm-lib.buildconfiguration.templatebuildconfigurationname.md)
+[templateName?](./xpm-lib.buildconfiguration.templatename.md)
 
 
 </td><td>

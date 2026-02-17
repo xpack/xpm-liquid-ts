@@ -58,12 +58,6 @@
                 },
                 {
                   "type": "doc",
-                  "label": "actionName",
-                  "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/action/actionname"
-                },
-                {
-                  "type": "doc",
                   "label": "commands",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/action/commands"
@@ -73,6 +67,12 @@
                   "label": "jsonAction",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/action/jsonaction"
+                },
+                {
+                  "type": "doc",
+                  "label": "name",
+                  "className": "tsdocEllipsis",
+                  "id": "api/xpm-lib/classes/action/name"
                 },
                 {
                   "type": "doc",
@@ -112,12 +112,6 @@
                 },
                 {
                   "type": "doc",
-                  "label": "_actionsNames",
-                  "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/actions/$_actionsnames$"
-                },
-                {
-                  "type": "doc",
                   "label": "_actionsNamesSet",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/actions/$_actionsnamesset$"
@@ -133,6 +127,12 @@
                   "label": "_jsonActionsNamesMap",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/actions/$_jsonactionsnamesmap$"
+                },
+                {
+                  "type": "doc",
+                  "label": "_names",
+                  "className": "tsdocEllipsis",
+                  "id": "api/xpm-lib/classes/actions/$_names$"
                 },
                 {
                   "type": "doc",
@@ -274,12 +274,6 @@
                 },
                 {
                   "type": "doc",
-                  "label": "buildConfigurationName",
-                  "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/buildconfiguration/buildconfigurationname"
-                },
-                {
-                  "type": "doc",
                   "label": "buildFolderRelativePath",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/buildconfiguration/buildfolderrelativepath"
@@ -328,6 +322,12 @@
                 },
                 {
                   "type": "doc",
+                  "label": "name",
+                  "className": "tsdocEllipsis",
+                  "id": "api/xpm-lib/classes/buildconfiguration/name"
+                },
+                {
+                  "type": "doc",
                   "label": "parentBuildConfigurations",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/buildconfiguration/parentbuildconfigurations"
@@ -340,9 +340,9 @@
                 },
                 {
                   "type": "doc",
-                  "label": "templateBuildConfigurationName",
+                  "label": "templateName",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/buildconfiguration/templatebuildconfigurationname"
+                  "id": "api/xpm-lib/classes/buildconfiguration/templatename"
                 },
                 {
                   "type": "doc",
@@ -406,12 +406,6 @@
                 },
                 {
                   "type": "doc",
-                  "label": "_buildConfigurationsNames",
-                  "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/buildconfigurations/$_buildconfigurationsnames$"
-                },
-                {
-                  "type": "doc",
                   "label": "_isInitialised",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/buildconfigurations/$_isinitialised$"
@@ -421,6 +415,12 @@
                   "label": "_jsonBuildConfigurationsNamesMap",
                   "className": "tsdocEllipsis",
                   "id": "api/xpm-lib/classes/buildconfigurations/$_jsonbuildconfigurationsnamesmap$"
+                },
+                {
+                  "type": "doc",
+                  "label": "_names",
+                  "className": "tsdocEllipsis",
+                  "id": "api/xpm-lib/classes/buildconfigurations/$_names$"
                 },
                 {
                   "type": "doc",

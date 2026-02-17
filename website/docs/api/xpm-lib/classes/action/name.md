@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/action/actionname
-title: Action.actionName property
+slug: /api/xpm-lib/classes/action/name
+title: Action.name property
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ The name of the action.
 ## Signature
 
 ```typescript
-readonly actionName: string;
+readonly name: string;
 ```
 
 ## Remarks

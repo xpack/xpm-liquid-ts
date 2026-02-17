@@ -339,36 +339,6 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!Action#actionName:member",
-              "docComment": "/**\n * The name of the action.\n *\n * @remarks\n *\n * This is the final, expanded action name used for identification and execution. For template-generated actions, this is the concrete name after matrix substitution (e.g., `test-x64` rather than `test-{{ matrix.arch }}`).\n *\n * The name is used for:\n *\n * <ol> <li>User-facing identification when listing or executing actions.</li> <li>Logging and diagnostic output to track action lifecycle.</li> <li>Creating copies of inherited actions with preserved names.</li> </ol>\n *\n * Names must be unique within the actions collection, enforced during {@link Actions.initialise}.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "readonly actionName: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "actionName",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!Action#commands:member",
               "docComment": "/**\n * Retrieves the array of command strings for this action.\n *\n * @remarks\n *\n * The action must be initialised via {@link Action.initialise} before accessing this property. Attempting to access commands from an uninitialised action will result in an assertion error.\n *\n * @returns The array of command strings after variable substitution.\n */\n",
               "excerptTokens": [
@@ -456,6 +426,36 @@
               "isOptional": false,
               "releaseTag": "Public",
               "name": "jsonAction",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!Action#name:member",
+              "docComment": "/**\n * The name of the action.\n *\n * @remarks\n *\n * This is the final, expanded action name used for identification and execution. For template-generated actions, this is the concrete name after matrix substitution (e.g., `test-x64` rather than `test-{{ matrix.arch }}`).\n *\n * The name is used for:\n *\n * <ol> <li>User-facing identification when listing or executing actions.</li> <li>Logging and diagnostic output to track action lifecycle.</li> <li>Creating copies of inherited actions with preserved names.</li> </ol>\n *\n * Names must be unique within the actions collection, enforced during {@link Actions.initialise}.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly name: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "name",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -715,36 +715,6 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!Actions#_actionsNames:member",
-              "docComment": "/**\n * Cached array of all action names in the collection.\n *\n * @remarks\n *\n * This array provides O(1) access to action names without repeatedly creating new arrays from the map keys, improving performance when the names are accessed multiple times.\n *\n * Key characteristics:\n *\n * <ol> <li>Empty initially after construction.</li> <li>Populated during <code>Actions.initialise()</code> after all action names are determined.</li> <li>Contains all action names including those generated from templates.</li> <li>Returned by the <code>names</code> getter for efficient repeated access.</li> </ol>\n *\n * This cached approach avoids the overhead of calling `Array.from(map.keys())` on every access whilst still providing a clean getter interface.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected _actionsNames: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_actionsNames",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!Actions#_actionsNamesSet:member",
               "docComment": "/**\n * Set of all action names for quick lookup.\n *\n * @remarks\n *\n * This set provides O(1) existence checks for action names, enabling efficient validation during template expansion and duplicate detection.\n *\n * Key characteristics:\n *\n * <ol> <li>Known only after <code>Actions.initialise()</code> completes.</li> <li>Contains all action names including those generated from templates.</li> <li>Used to detect duplicate action names that might arise from template expansion conflicts or explicit duplicates in <code>package.json</code>.</li> </ol>\n *\n * This redundant storage (alongside `_actionsMap`) is justified by the performance benefit for name existence checks, especially in packages with many actions.\n */\n",
               "excerptTokens": [
@@ -926,6 +896,36 @@
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 3
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!Actions#_names:member",
+              "docComment": "/**\n * Cached array of all action names in the collection.\n *\n * @remarks\n *\n * This array provides O(1) access to action names without repeatedly creating new arrays from the map keys, improving performance when the names are accessed multiple times.\n *\n * Key characteristics:\n *\n * <ol> <li>Empty initially after construction.</li> <li>Populated during <code>Actions.initialise()</code> after all action names are determined.</li> <li>Contains all action names including those generated from templates.</li> <li>Returned by the <code>names</code> getter for efficient repeated access.</li> </ol>\n *\n * This cached approach avoids the overhead of calling `Array.from(map.keys())` on every access whilst still providing a clean getter interface.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _names: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_names",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
               },
               "isStatic": false,
               "isProtected": true,
@@ -2110,36 +2110,6 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!BuildConfiguration#buildConfigurationName:member",
-              "docComment": "/**\n * The build configuration name after substitution.\n *\n * @remarks\n *\n * This is the final, expanded configuration name used for identification and selection. For template-generated configurations, this is the concrete name after matrix substitution (e.g., `release-x64` rather than `release-{{ matrix.arch }}`).\n *\n * The name is used for:\n *\n * <ol> <li>User-facing identification when listing or selecting configurations.</li> <li><b>Build folder path generation (default:</b> <code>build/\\{name\\}</code>).</li> <li>Logging and diagnostic output to track configuration lifecycle.</li> <li>Inheritance references from other configurations.</li> </ol>\n *\n * Names must be unique within the configurations collection, enforced during {@link BuildConfigurations.initialise}.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "readonly buildConfigurationName: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "buildConfigurationName",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!BuildConfiguration#buildFolderRelativePath:member",
               "docComment": "/**\n * Retrieves the build folder relative path for this configuration.\n *\n * @returns The build folder relative path.\n */\n",
               "excerptTokens": [
@@ -2420,6 +2390,36 @@
             },
             {
               "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!BuildConfiguration#name:member",
+              "docComment": "/**\n * The build configuration name after substitution.\n *\n * @remarks\n *\n * This is the final, expanded configuration name used for identification and selection. For template-generated configurations, this is the concrete name after matrix substitution (e.g., `release-x64` rather than `release-{{ matrix.arch }}`).\n *\n * The name is used for:\n *\n * <ol> <li>User-facing identification when listing or selecting configurations.</li> <li><b>Build folder path generation (default:</b> <code>build/\\{name\\}</code>).</li> <li>Logging and diagnostic output to track configuration lifecycle.</li> <li>Inheritance references from other configurations.</li> </ol>\n *\n * Names must be unique within the configurations collection, enforced during {@link BuildConfigurations.initialise}.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly name: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "name",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
               "canonicalReference": "@xpack/xpm-lib!BuildConfiguration#parentBuildConfigurations:member",
               "docComment": "/**\n * The parent build configurations collection.\n *\n * @remarks\n *\n * This reference maintains the hierarchical relationship between individual configurations and their containing collection, providing essential context for configuration initialisation.\n *\n * The parent collection provides access to:\n *\n * <ol> <li>Liquid templating engine for variable substitution.</li> <li>Base substitution variables hierarchy (package metadata, environment, platform detection).</li> <li>Logger instance for diagnostic output.</li> <li>JSON build configurations lookup for inheritance resolution.</li> <li>Other configuration instances when processing inheritance chains.</li> </ol>\n *\n * This design enables configurations to access shared resources without duplicating them, while supporting complex inheritance relationships where configurations reference and inherit from each other.\n */\n",
               "excerptTokens": [
@@ -2482,12 +2482,12 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!BuildConfiguration#templateBuildConfigurationName:member",
+              "canonicalReference": "@xpack/xpm-lib!BuildConfiguration#templateName:member",
               "docComment": "/**\n * The template build configuration name, if derived from a template.\n *\n * @remarks\n *\n * For template-generated configurations, this preserves the original template name containing Liquid variables (e.g., `release-{{ matrix.arch }}`), while `buildConfigurationName` holds the expanded concrete name.\n *\n * Usage:\n *\n * <ol> <li>Undefined for regular (non-template) configurations.</li> <li>Set to the template name for configurations generated from matrix expansion.</li> <li>Used to determine whether full JSON substitution is needed during initialisation (templates require complete substitution, regular configurations only substitute specific fields).</li> <li>Enables tracing and debugging of template expansion process.</li> </ol>\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "readonly templateBuildConfigurationName?: "
+                  "text": "readonly templateName?: "
                 },
                 {
                   "kind": "Content",
@@ -2501,7 +2501,7 @@
               "isReadonly": true,
               "isOptional": true,
               "releaseTag": "Public",
-              "name": "templateBuildConfigurationName",
+              "name": "templateName",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -2765,36 +2765,6 @@
               "isAbstract": false
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!BuildConfigurations#_buildConfigurationsNames:member",
-              "docComment": "/**\n * Cached array of all build configuration names in the collection.\n *\n * @remarks\n *\n * This array provides O(1) access to configuration names without repeatedly creating new arrays from the map keys, improving performance when the names are accessed multiple times.\n *\n * Key characteristics:\n *\n * <ol> <li>Empty initially after construction.</li> <li>Populated during <code>BuildConfigurations.initialise()</code> after all configuration names are determined.</li> <li>Contains all configuration names including those generated from templates.</li> <li>Returned by the <code>names</code> getter for efficient repeated access.</li> </ol>\n *\n * This cached approach avoids the overhead of calling `Array.from(map.keys())` on every access whilst still providing a clean getter interface.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected _buildConfigurationsNames: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_buildConfigurationsNames",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!BuildConfigurations#_expandTemplateBuildConfigurations:member(1)",
               "docComment": "/**\n * Expands a template build configuration into multiple configurations.\n *\n * @remarks\n *\n * This method uses the {@link TemplateExpander} to compute the Cartesian product of matrix parameter values and creates a configuration for each combination, substituting matrix values into both the configuration name and content.\n *\n * Processing steps:\n *\n * <ol> <li>Validates matrix and template structure.</li> <li>Delegates to <code>TemplateExpander</code> for matrix processing and name expansion.</li> <li>Creates configuration instances via factory callback for each combination.</li> </ol>\n *\n * Matrix variables are scoped to individual configurations and accessible via the `matrix` namespace during property, dependency, and action evaluation.\n *\n * @param buildConfigurationName - The template configuration name containing Liquid variables.\n *\n * @param jsonBuildConfigurationTemplate - The template definition containing matrix parameters and a configuration template.\n *\n * @returns A promise that resolves to a map of expanded configuration names to their corresponding instances.\n *\n * @throws\n *\n * {@link ConfigurationError} If the matrix structure is invalid or substitution fails.\n */\n",
@@ -2942,6 +2912,36 @@
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 3
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!BuildConfigurations#_names:member",
+              "docComment": "/**\n * Cached array of all build configuration names in the collection.\n *\n * @remarks\n *\n * This array provides O(1) access to configuration names without repeatedly creating new arrays from the map keys, improving performance when the names are accessed multiple times.\n *\n * Key characteristics:\n *\n * <ol> <li>Empty initially after construction.</li> <li>Populated during <code>BuildConfigurations.initialise()</code> after all configuration names are determined.</li> <li>Contains all configuration names including those generated from templates.</li> <li>Returned by the <code>names</code> getter for efficient repeated access.</li> </ol>\n *\n * This cached approach avoids the overhead of calling `Array.from(map.keys())` on every access whilst still providing a clean getter interface.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected _names: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "_names",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
               },
               "isStatic": false,
               "isProtected": true,

@@ -127,27 +127,6 @@ Map of build configuration names to their corresponding instances.
 </td></tr>
 <tr><td>
 
-[\_buildConfigurationsNames](./xpm-lib.buildconfigurations._buildconfigurationsnames.md)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-string\[\]
-
-
-</td><td>
-
-Cached array of all build configuration names in the collection.
-
-
-</td></tr>
-<tr><td>
-
 [\_isInitialised](./xpm-lib.buildconfigurations._isinitialised.md)
 
 
@@ -187,6 +166,27 @@ Map&lt;string, string&gt;
 </td><td>
 
 Map of expanded build configuration names to their JSON source names.
+
+
+</td></tr>
+<tr><td>
+
+[\_names](./xpm-lib.buildconfigurations._names.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+Cached array of all build configuration names in the collection.
 
 
 </td></tr>

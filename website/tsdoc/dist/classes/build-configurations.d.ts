@@ -257,7 +257,7 @@ export declare class BuildConfigurations {
      * `Array.from(map.keys())` on every access whilst still
      * providing a clean getter interface.
      */
-    protected _buildConfigurationsNames: string[];
+    protected _names: string[];
     /**
      * Constructs a build configurations collection.
      *
@@ -607,7 +607,7 @@ export declare class BuildConfiguration {
      * Names must be unique within the configurations collection, enforced
      * during {@link BuildConfigurations.initialise}.
      */
-    readonly buildConfigurationName: string;
+    readonly name: string;
     /**
      * The template build configuration name, if derived from a template.
      *
@@ -629,7 +629,7 @@ export declare class BuildConfiguration {
      * <li>Enables tracing and debugging of template expansion process.</li>
      * </ol>
      */
-    readonly templateBuildConfigurationName?: string;
+    readonly templateName?: string;
     /**
      * The parent build configurations collection.
      *

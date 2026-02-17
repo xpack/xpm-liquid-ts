@@ -18,7 +18,7 @@ export declare class BuildConfigurations {
     protected readonly _jsonBuildConfigurationsNamesMap: Map<string, string>;
     protected readonly _buildComfigurationsNamesSet: Set<string>;
     protected _isInitialised: boolean;
-    protected _buildConfigurationsNames: string[];
+    protected _names: string[];
     constructor({ engine, substitutionsVariables, jsonBuildConfigurations, log, }: BuildConfigurationsConstructorParameters);
     initialise(): Promise<boolean>;
     get size(): number;
@@ -47,8 +47,8 @@ export interface BuildConfigurationConstructorParameters {
     matrixParameters?: LiquidSubstitutionsStrings;
 }
 export declare class BuildConfiguration {
-    readonly buildConfigurationName: string;
-    readonly templateBuildConfigurationName?: string;
+    readonly name: string;
+    readonly templateName?: string;
     readonly parentBuildConfigurations: BuildConfigurations;
     inheritsNames: string[];
     readonly isHidden: boolean;

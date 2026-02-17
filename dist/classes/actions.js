@@ -15,13 +15,13 @@ export class Actions {
     _actionsNamesSet = new Set();
     _jsonActionsNamesMap = new Map();
     _isInitialised = false;
-    _actionsNames = [];
+    _names = [];
     constructor({ engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, log, }) {
         assert(log, 'log is required');
         assert(engine, 'engine is required');
         assert(substitutionsVariables, 'substitutionsVariables is required');
         if (buildConfiguration !== undefined) {
-            log.trace(`${Actions.name}()` + ` @${buildConfiguration.buildConfigurationName}`);
+            log.trace(`${Actions.name}()` + ` @${buildConfiguration.name}`);
         }
         else {
             log.trace(`${Actions.name}()`);
@@ -49,7 +49,7 @@ export class Actions {
         if (this._isInitialised) {
             if (this.buildConfiguration !== undefined) {
                 log.trace(`${Actions.name}.initialise()` +
-                    ` @${this.buildConfiguration.buildConfigurationName} again`);
+                    ` @${this.buildConfiguration.name} again`);
             }
             else {
                 log.trace(`${Actions.name}.initialise() again`);
@@ -57,8 +57,7 @@ export class Actions {
             return false;
         }
         if (this.buildConfiguration !== undefined) {
-            log.trace(`${Actions.name}.initialise()` +
-                ` @${this.buildConfiguration.buildConfigurationName}`);
+            log.trace(`${Actions.name}.initialise()` + ` @${this.buildConfiguration.name}`);
         }
         else {
             log.trace(`${Actions.name}.initialise()`);
@@ -81,9 +80,9 @@ export class Actions {
                 }
             }
         }
-        const actionsNames = Array.from(this._actionsMap.keys());
-        this._actionsNames = actionsNames;
-        this.log.trace(`${Actions.name}.initialise() =>`, actionsNames);
+        const names = Array.from(this._actionsMap.keys());
+        this._names = names;
+        this.log.trace(`${Actions.name}.initialise() =>`, names);
         this._isInitialised = true;
         return true;
     }
@@ -97,7 +96,7 @@ export class Actions {
     }
     get names() {
         assert(this._isInitialised, 'Actions collection must be initialised before accessing names');
-        return this._actionsNames;
+        return this._names;
     }
     has(actionName) {
         assert(this._isInitialised, 'Actions collection must be initialised before accessing has()');
@@ -183,7 +182,7 @@ export class Actions {
     }
 }
 export class Action {
-    actionName;
+    name;
     jsonAction;
     parentActions;
     _matrixParameters;
@@ -194,7 +193,7 @@ export class Action {
         assert(parentActions, 'parentActions is required');
         const log = parentActions.log;
         log.trace(`${Action.name}(${actionName})`);
-        this.actionName = actionName;
+        this.name = actionName;
         this.jsonAction = jsonAction;
         this.parentActions = parentActions;
         if (matrixParameters !== undefined) {
@@ -204,10 +203,10 @@ export class Action {
     async initialise() {
         const log = this.parentActions.log;
         if (this._isInitialised) {
-            log.trace(`${Action.name}.initialise(${this.actionName}) again`);
+            log.trace(`${Action.name}.initialise(${this.name}) again`);
             return false;
         }
-        log.trace(`${Action.name}.initialise(${this.actionName})`);
+        log.trace(`${Action.name}.initialise(${this.name})`);
         const jsonAction = this.jsonAction;
         const inputCommands = Array.isArray(jsonAction)
             ? jsonAction.join(os.EOL)
@@ -227,7 +226,7 @@ export class Action {
             }
             catch (error) {
                 const message = getErrorMessage(error) +
-                    ` in action "${this.actionName}" commands substitution`;
+                    ` in action "${this.name}" commands substitution`;
                 throw new ConfigurationError(message);
             }
         }
@@ -237,8 +236,8 @@ export class Action {
         this._commands = substitutedCommands
             .replace(new RegExp(os.EOL + '$'), '')
             .split(os.EOL);
-        log.trace(`${Action.name}.initialise() =>`, this.actionName);
-        log.trace(this.actionName, 'commands =>', this._commands);
+        log.trace(`${Action.name}.initialise() =>`, this.name);
+        log.trace(this.name, 'commands =>', this._commands);
         this._isInitialised = true;
         return true;
     }

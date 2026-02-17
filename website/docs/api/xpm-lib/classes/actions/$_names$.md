@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/actions/_actionsnames
-title: Actions._actionsNames property
+slug: /api/xpm-lib/classes/actions/_names
+title: Actions._names property
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ Cached array of all action names in the collection.
 ## Signature
 
 ```typescript
-protected _actionsNames: string[];
+protected _names: string[];
 ```
 
 ## Remarks

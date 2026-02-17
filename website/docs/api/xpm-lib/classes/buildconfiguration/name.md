@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/buildconfiguration/buildconfigurationname
-title: BuildConfiguration.buildConfigurationName property
+slug: /api/xpm-lib/classes/buildconfiguration/name
+title: BuildConfiguration.name property
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ The build configuration name after substitution.
 ## Signature
 
 ```typescript
-readonly buildConfigurationName: string;
+readonly name: string;
 ```
 
 ## Remarks

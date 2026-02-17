@@ -21,7 +21,7 @@ export declare class Actions {
     protected readonly _actionsNamesSet: Set<string>;
     protected readonly _jsonActionsNamesMap: Map<string, string>;
     protected _isInitialised: boolean;
-    protected _actionsNames: string[];
+    protected _names: string[];
     constructor({ engine, substitutionsVariables, jsonActions, inheritedActionsMap, buildConfiguration, log, }: ActionsConstructorParameters);
     initialise(): Promise<boolean>;
     get size(): number;
@@ -45,7 +45,7 @@ export interface ActionConstructorParameters {
     matrixParameters?: LiquidSubstitutionsStrings;
 }
 export declare class Action {
-    readonly actionName: string;
+    readonly name: string;
     readonly jsonAction: JsonActionContent;
     readonly parentActions: Actions;
     protected readonly _matrixParameters?: LiquidSubstitutionsStrings;

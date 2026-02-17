@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/buildconfigurations/_buildconfigurationsnames
-title: BuildConfigurations._buildConfigurationsNames property
+slug: /api/xpm-lib/classes/buildconfigurations/_names
+title: BuildConfigurations._names property
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ Cached array of all build configuration names in the collection.
 ## Signature
 
 ```typescript
-protected _buildConfigurationsNames: string[];
+protected _names: string[];
 ```
 
 ## Remarks

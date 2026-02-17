@@ -106,27 +106,6 @@ Map of action names to their corresponding action instances.
 </td></tr>
 <tr><td>
 
-[\_actionsNames](./xpm-lib.actions._actionsnames.md)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-string\[\]
-
-
-</td><td>
-
-Cached array of all action names in the collection.
-
-
-</td></tr>
-<tr><td>
-
 [\_actionsNamesSet](./xpm-lib.actions._actionsnamesset.md)
 
 
@@ -189,6 +168,27 @@ Map&lt;string, string&gt;
 </td><td>
 
 Map of expanded action names to their original JSON action names.
+
+
+</td></tr>
+<tr><td>
+
+[\_names](./xpm-lib.actions._names.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+Cached array of all action names in the collection.
 
 
 </td></tr>

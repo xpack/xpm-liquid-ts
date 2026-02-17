@@ -156,27 +156,6 @@ _(Optional)_ The matrix parameter values for template-generated actions.
 </td></tr>
 <tr><td>
 
-[actionName](/xpm-lib-ts/docs/api/xpm-lib/classes/action/actionname)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-The name of the action.
-
-
-</td></tr>
-<tr><td>
-
 [commands](/xpm-lib-ts/docs/api/xpm-lib/classes/action/commands)
 
 
@@ -214,6 +193,27 @@ Retrieves the array of command strings for this action.
 </td><td>
 
 The JSON definition of the action commands.
+
+
+</td></tr>
+<tr><td>
+
+[name](/xpm-lib-ts/docs/api/xpm-lib/classes/action/name)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the action.
 
 
 </td></tr>
