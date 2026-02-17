@@ -267,8 +267,7 @@ export class BuildConfigurations {
    * throwing {@link ConfigurationError} when duplicates are found to ensure
    * configuration name uniqueness.
    */
-  protected readonly _buildComfigurationsNamesSet: Set<string> =
-    new Set<string>()
+  protected readonly _namesSet: Set<string> = new Set<string>()
 
   /**
    * Flag indicating whether the collection has been initialised.
@@ -422,7 +421,7 @@ export class BuildConfigurations {
             jsonBuildConfiguration as JsonBuildConfigurationTemplate,
         })
       } else {
-        if (this._buildComfigurationsNamesSet.has(buildConfigurationName)) {
+        if (this._namesSet.has(buildConfigurationName)) {
           throw new ConfigurationError(
             `build configuration name ` +
               `"${buildConfigurationName}" already defined`
@@ -433,7 +432,7 @@ export class BuildConfigurations {
             buildConfigurationName,
             buildConfigurationName
           )
-          this._buildComfigurationsNamesSet.add(buildConfigurationName)
+          this._namesSet.add(buildConfigurationName)
         }
       }
     }
@@ -744,7 +743,7 @@ export class BuildConfigurations {
    *      instance.</li>
    *   <li><code>_jsonBuildConfigurationsNamesMap</code>: Maps expanded name
    *      back to original template name.</li>
-   *   <li><code>_buildComfigurationsNamesSet</code>: Tracks all registered
+   *   <li><code>_namesSet</code>: Tracks all registered
    *      names for duplicate detection.</li>
    *   </ul>
    * </li>
@@ -778,9 +777,7 @@ export class BuildConfigurations {
         expandedBuildConfigurationName,
         expandedBuildConfiguration,
       ] of expandedBuildConfigurationsMap) {
-        if (
-          this._buildComfigurationsNamesSet.has(expandedBuildConfigurationName)
-        ) {
+        if (this._namesSet.has(expandedBuildConfigurationName)) {
           throw new ConfigurationError(
             `duplicate build configuration name ` +
               `"${expandedBuildConfigurationName}" ` +
@@ -795,7 +792,7 @@ export class BuildConfigurations {
             expandedBuildConfigurationName,
             buildConfigurationName
           )
-          this._buildComfigurationsNamesSet.add(expandedBuildConfigurationName)
+          this._namesSet.add(expandedBuildConfigurationName)
         }
       }
     } catch (error) {

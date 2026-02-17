@@ -282,7 +282,7 @@ export class Actions {
    * performance benefit for name existence checks, especially in packages
    * with many actions.
    */
-  protected readonly _actionsNamesSet: Set<string> = new Set<string>()
+  protected readonly _namesSet: Set<string> = new Set<string>()
 
   /**
    * Map of expanded action names to their original JSON action names.
@@ -471,14 +471,14 @@ export class Actions {
           jsonActionTemplate: jsonAction as JsonActionTemplate,
         })
       } else {
-        if (this._actionsNamesSet.has(actionName)) {
+        if (this._namesSet.has(actionName)) {
           throw new ConfigurationError(
             `action name "${actionName}" already defined`
           )
         } else {
           this._actionsMap.set(actionName, undefined)
           this._jsonActionsNamesMap.set(actionName, actionName)
-          this._actionsNamesSet.add(actionName)
+          this._namesSet.add(actionName)
         }
       }
     }
@@ -656,7 +656,7 @@ export class Actions {
    *   <li><code>_actionsMap</code>: Maps name to action instance.</li>
    *   <li><code>_jsonActionsNamesMap</code>: Maps expanded name back to
    *      original template name.</li>
-   *   <li><code>_actionsNamesSet</code>: Tracks all registered names for
+   *   <li><code>_namesSet</code>: Tracks all registered names for
    *      duplicate detection.</li>
    *   </ul>
    * </li>
@@ -685,7 +685,7 @@ export class Actions {
         jsonActionTemplate,
       })
       for (const [expandedActionName, expandedAction] of expandedActionsMap) {
-        if (this._actionsNamesSet.has(expandedActionName)) {
+        if (this._namesSet.has(expandedActionName)) {
           throw new ConfigurationError(
             `duplicate action name "${expandedActionName}" ` +
               `could not be generated from template.`
@@ -693,7 +693,7 @@ export class Actions {
         } else {
           this._actionsMap.set(expandedActionName, expandedAction)
           this._jsonActionsNamesMap.set(expandedActionName, actionName)
-          this._actionsNamesSet.add(expandedActionName)
+          this._namesSet.add(expandedActionName)
         }
       }
     } catch (error) {
