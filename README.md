@@ -6,7 +6,8 @@
 
 # The xpm Core Library
 
-A TypeScript Node.js module with the common code for xpm and xpm enabled projects.
+A TypeScript Node.js module with the common code for **xpm** and xpm 
+enabled projects.
 
 ## Project documentation
 
