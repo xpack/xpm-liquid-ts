@@ -21,6 +21,10 @@
         {
           "type": "category",
           "label": "Classes",
+          "link": {
+            "type": "doc",
+            "id": "api/xpm-lib/classes/index"
+          },
           "className": "tsdocEllipsis",
           "collapsed": true,
           "items": [
@@ -29,7 +33,7 @@
               "label": "Action",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/action"
+                "id": "api/xpm-lib/classes/action/action"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -80,7 +84,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/action/$constructor$"
+                  "id": "api/xpm-lib/classes/action/$_constructor_$"
                 },
                 {
                   "type": "doc",
@@ -95,7 +99,7 @@
               "label": "Actions",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/actions"
+                "id": "api/xpm-lib/classes/actions/actions"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -212,7 +216,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/actions/$constructor$"
+                  "id": "api/xpm-lib/classes/actions/$_constructor_$"
                 }
               ]
             },
@@ -221,7 +225,7 @@
               "label": "BuildConfiguration",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/buildconfiguration"
+                "id": "api/xpm-lib/classes/buildconfiguration/buildconfiguration"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -374,7 +378,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/buildconfiguration/$constructor$"
+                  "id": "api/xpm-lib/classes/buildconfiguration/$_constructor_$"
                 }
               ]
             },
@@ -383,7 +387,7 @@
               "label": "BuildConfigurations",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/buildconfigurations"
+                "id": "api/xpm-lib/classes/buildconfigurations/buildconfigurations"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -518,7 +522,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/buildconfigurations/$constructor$"
+                  "id": "api/xpm-lib/classes/buildconfigurations/$_constructor_$"
                 }
               ]
             },
@@ -527,7 +531,7 @@
               "label": "CombinationsGenerator",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/combinationsgenerator"
+                "id": "api/xpm-lib/classes/combinationsgenerator/combinationsgenerator"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -572,7 +576,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/combinationsgenerator/$constructor$"
+                  "id": "api/xpm-lib/classes/combinationsgenerator/$_constructor_$"
                 }
               ]
             },
@@ -581,7 +585,7 @@
               "label": "ConfigurationError",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/configurationerror"
+                "id": "api/xpm-lib/classes/configurationerror/configurationerror"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -592,7 +596,7 @@
               "label": "DataModel",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/datamodel"
+                "id": "api/xpm-lib/classes/datamodel/datamodel"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -637,7 +641,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/datamodel/$constructor$"
+                  "id": "api/xpm-lib/classes/datamodel/$_constructor_$"
                 }
               ]
             },
@@ -646,7 +650,7 @@
               "label": "InitTemplateBase",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/inittemplatebase"
+                "id": "api/xpm-lib/classes/inittemplatebase/inittemplatebase"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -769,7 +773,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/inittemplatebase/$constructor$"
+                  "id": "api/xpm-lib/classes/inittemplatebase/$_constructor_$"
                 }
               ]
             },
@@ -778,7 +782,7 @@
               "label": "InputError",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/inputerror"
+                "id": "api/xpm-lib/classes/inputerror/inputerror"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -789,7 +793,7 @@
               "label": "JsonSyntaxError",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/jsonsyntaxerror"
+                "id": "api/xpm-lib/classes/jsonsyntaxerror/jsonsyntaxerror"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -800,7 +804,7 @@
               "label": "LiquidEngine",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/liquidengine"
+                "id": "api/xpm-lib/classes/liquidengine/liquidengine"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -809,7 +813,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/liquidengine/$constructor$"
+                  "id": "api/xpm-lib/classes/liquidengine/$_constructor_$"
                 }
               ]
             },
@@ -818,7 +822,7 @@
               "label": "LiquidMatrixDrop",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/liquidmatrixdrop"
+                "id": "api/xpm-lib/classes/liquidmatrixdrop/liquidmatrixdrop"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -845,7 +849,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/liquidmatrixdrop/$constructor$"
+                  "id": "api/xpm-lib/classes/liquidmatrixdrop/$_constructor_$"
                 },
                 {
                   "type": "doc",
@@ -860,7 +864,7 @@
               "label": "LiquidPropertiesDrop",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/liquidpropertiesdrop"
+                "id": "api/xpm-lib/classes/liquidpropertiesdrop/liquidpropertiesdrop"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -887,7 +891,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/liquidpropertiesdrop/$constructor$"
+                  "id": "api/xpm-lib/classes/liquidpropertiesdrop/$_constructor_$"
                 },
                 {
                   "type": "doc",
@@ -902,7 +906,7 @@
               "label": "OutputError",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/outputerror"
+                "id": "api/xpm-lib/classes/outputerror/outputerror"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -913,7 +917,7 @@
               "label": "Package",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/package"
+                "id": "api/xpm-lib/classes/package/package"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -940,7 +944,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/package/$constructor$"
+                  "id": "api/xpm-lib/classes/package/$_constructor_$"
                 },
                 {
                   "type": "doc",
@@ -1021,7 +1025,7 @@
               "label": "PlatformDetector",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/platformdetector"
+                "id": "api/xpm-lib/classes/platformdetector/platformdetector"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1030,7 +1034,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/platformdetector/$constructor$"
+                  "id": "api/xpm-lib/classes/platformdetector/$_constructor_$"
                 },
                 {
                   "type": "doc",
@@ -1051,7 +1055,7 @@
               "label": "Policies",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/policies"
+                "id": "api/xpm-lib/classes/policies/policies"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1060,7 +1064,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/policies/$constructor$"
+                  "id": "api/xpm-lib/classes/policies/$_constructor_$"
                 },
                 {
                   "type": "doc",
@@ -1099,7 +1103,7 @@
               "label": "PrerequisitesError",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/prerequisiteserror"
+                "id": "api/xpm-lib/classes/prerequisiteserror/prerequisiteserror"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1110,7 +1114,7 @@
               "label": "TemplateError",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/templateerror"
+                "id": "api/xpm-lib/classes/templateerror/templateerror"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1121,7 +1125,7 @@
               "label": "TemplateExpander",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/classes/templateexpander"
+                "id": "api/xpm-lib/classes/templateexpander/templateexpander"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1142,7 +1146,7 @@
                   "type": "doc",
                   "label": "(constructor)",
                   "className": "tsdocEllipsis",
-                  "id": "api/xpm-lib/classes/templateexpander/$constructor$"
+                  "id": "api/xpm-lib/classes/templateexpander/$_constructor_$"
                 },
                 {
                   "type": "doc",
@@ -1169,6 +1173,10 @@
         {
           "type": "category",
           "label": "Type Aliases",
+          "link": {
+            "type": "doc",
+            "id": "api/xpm-lib/typealiases/index"
+          },
           "className": "tsdocEllipsis",
           "collapsed": true,
           "items": [
@@ -1177,7 +1185,7 @@
               "label": "ActionCommands",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/actioncommands"
+                "id": "api/xpm-lib/typealiases/actioncommands/actioncommands"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1188,7 +1196,7 @@
               "label": "InitTemplateItems",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/inittemplateitems"
+                "id": "api/xpm-lib/typealiases/inittemplateitems/inittemplateitems"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1199,7 +1207,7 @@
               "label": "InitTemplatePlatform",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/inittemplateplatform"
+                "id": "api/xpm-lib/typealiases/inittemplateplatform/inittemplateplatform"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1210,7 +1218,7 @@
               "label": "InitTemplatePropertiesDefinitions",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/inittemplatepropertiesdefinitions"
+                "id": "api/xpm-lib/typealiases/inittemplatepropertiesdefinitions/inittemplatepropertiesdefinitions"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1221,7 +1229,7 @@
               "label": "InitTemplateType",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/inittemplatetype"
+                "id": "api/xpm-lib/typealiases/inittemplatetype/inittemplatetype"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1232,7 +1240,7 @@
               "label": "InstanceFactoryCallback",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/instancefactorycallback"
+                "id": "api/xpm-lib/typealiases/instancefactorycallback/instancefactorycallback"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1243,7 +1251,7 @@
               "label": "JsonAction",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsonaction"
+                "id": "api/xpm-lib/typealiases/jsonaction/jsonaction"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1254,7 +1262,7 @@
               "label": "JsonActionContent",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsonactioncontent"
+                "id": "api/xpm-lib/typealiases/jsonactioncontent/jsonactioncontent"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1265,7 +1273,7 @@
               "label": "JsonActions",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsonactions"
+                "id": "api/xpm-lib/typealiases/jsonactions/jsonactions"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1276,7 +1284,7 @@
               "label": "JsonBuildConfiguration",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsonbuildconfiguration"
+                "id": "api/xpm-lib/typealiases/jsonbuildconfiguration/jsonbuildconfiguration"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1287,7 +1295,7 @@
               "label": "JsonBuildConfigurationInherits",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsonbuildconfigurationinherits"
+                "id": "api/xpm-lib/typealiases/jsonbuildconfigurationinherits/jsonbuildconfigurationinherits"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1298,7 +1306,7 @@
               "label": "JsonBuildConfigurations",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsonbuildconfigurations"
+                "id": "api/xpm-lib/typealiases/jsonbuildconfigurations/jsonbuildconfigurations"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1309,7 +1317,7 @@
               "label": "JsonDependencies",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsondependencies"
+                "id": "api/xpm-lib/typealiases/jsondependencies/jsondependencies"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1320,7 +1328,7 @@
               "label": "JsonDependenciesContent",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsondependenciescontent"
+                "id": "api/xpm-lib/typealiases/jsondependenciescontent/jsondependenciescontent"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1331,7 +1339,7 @@
               "label": "JsonProperties",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsonproperties"
+                "id": "api/xpm-lib/typealiases/jsonproperties/jsonproperties"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1342,7 +1350,7 @@
               "label": "JsonPropertyValue",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsonpropertyvalue"
+                "id": "api/xpm-lib/typealiases/jsonpropertyvalue/jsonpropertyvalue"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1353,7 +1361,7 @@
               "label": "JsonScripts",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsonscripts"
+                "id": "api/xpm-lib/typealiases/jsonscripts/jsonscripts"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1364,7 +1372,7 @@
               "label": "JsonTemplateMatrix",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsontemplatematrix"
+                "id": "api/xpm-lib/typealiases/jsontemplatematrix/jsontemplatematrix"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1375,7 +1383,7 @@
               "label": "JsonTemplateMatrixContent",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsontemplatematrixcontent"
+                "id": "api/xpm-lib/typealiases/jsontemplatematrixcontent/jsontemplatematrixcontent"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1386,7 +1394,7 @@
               "label": "JsonXpmBinariesPlatforms",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/jsonxpmbinariesplatforms"
+                "id": "api/xpm-lib/typealiases/jsonxpmbinariesplatforms/jsonxpmbinariesplatforms"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1397,7 +1405,7 @@
               "label": "LiquidSubstitutionsStrings",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/liquidsubstitutionsstrings"
+                "id": "api/xpm-lib/typealiases/liquidsubstitutionsstrings/liquidsubstitutionsstrings"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1408,7 +1416,7 @@
               "label": "MatrixCombination",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/typealiases/matrixcombination"
+                "id": "api/xpm-lib/typealiases/matrixcombination/matrixcombination"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1419,6 +1427,10 @@
         {
           "type": "category",
           "label": "Interfaces",
+          "link": {
+            "type": "doc",
+            "id": "api/xpm-lib/interfaces/index"
+          },
           "className": "tsdocEllipsis",
           "collapsed": true,
           "items": [
@@ -1427,7 +1439,7 @@
               "label": "ActionConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/actionconstructorparameters"
+                "id": "api/xpm-lib/interfaces/actionconstructorparameters/actionconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1463,7 +1475,7 @@
               "label": "ActionsConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/actionsconstructorparameters"
+                "id": "api/xpm-lib/interfaces/actionsconstructorparameters/actionsconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1511,7 +1523,7 @@
               "label": "BuildConfigurationConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/buildconfigurationconstructorparameters"
+                "id": "api/xpm-lib/interfaces/buildconfigurationconstructorparameters/buildconfigurationconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1553,7 +1565,7 @@
               "label": "BuildConfigurationsConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/buildconfigurationsconstructorparameters"
+                "id": "api/xpm-lib/interfaces/buildconfigurationsconstructorparameters/buildconfigurationsconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1589,7 +1601,7 @@
               "label": "CombinationsGeneratorConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/combinationsgeneratorconstructorparameters"
+                "id": "api/xpm-lib/interfaces/combinationsgeneratorconstructorparameters/combinationsgeneratorconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1625,7 +1637,7 @@
               "label": "Config",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/config"
+                "id": "api/xpm-lib/interfaces/config/config"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1667,7 +1679,7 @@
               "label": "Context",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/context"
+                "id": "api/xpm-lib/interfaces/context/context"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1691,7 +1703,7 @@
               "label": "DataModelConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/datamodelconstructorparameters"
+                "id": "api/xpm-lib/interfaces/datamodelconstructorparameters/datamodelconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1715,7 +1727,7 @@
               "label": "InitTemplateConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/inittemplateconstructorparameters"
+                "id": "api/xpm-lib/interfaces/inittemplateconstructorparameters/inittemplateconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1757,7 +1769,7 @@
               "label": "InitTemplateItemValue",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/inittemplateitemvalue"
+                "id": "api/xpm-lib/interfaces/inittemplateitemvalue/inittemplateitemvalue"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1781,7 +1793,7 @@
               "label": "InitTemplatePropertiesDefinition",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/inittemplatepropertiesdefinition"
+                "id": "api/xpm-lib/interfaces/inittemplatepropertiesdefinition/inittemplatepropertiesdefinition"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1829,7 +1841,7 @@
               "label": "InitTemplateSubstitutionsVariables",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/inittemplatesubstitutionsvariables"
+                "id": "api/xpm-lib/interfaces/inittemplatesubstitutionsvariables/inittemplatesubstitutionsvariables"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1847,7 +1859,7 @@
               "label": "JsonActionTemplate",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/jsonactiontemplate"
+                "id": "api/xpm-lib/interfaces/jsonactiontemplate/jsonactiontemplate"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1871,7 +1883,7 @@
               "label": "JsonBuildConfigurationContent",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/jsonbuildconfigurationcontent"
+                "id": "api/xpm-lib/interfaces/jsonbuildconfigurationcontent/jsonbuildconfigurationcontent"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1925,7 +1937,7 @@
               "label": "JsonBuildConfigurationTemplate",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/jsonbuildconfigurationtemplate"
+                "id": "api/xpm-lib/interfaces/jsonbuildconfigurationtemplate/jsonbuildconfigurationtemplate"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1949,7 +1961,7 @@
               "label": "JsonDependencyExtended",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/jsondependencyextended"
+                "id": "api/xpm-lib/interfaces/jsondependencyextended/jsondependencyextended"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -1979,7 +1991,7 @@
               "label": "JsonNpmPackage",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/jsonnpmpackage"
+                "id": "api/xpm-lib/interfaces/jsonnpmpackage/jsonnpmpackage"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2027,7 +2039,7 @@
               "label": "JsonPackageSpecifier",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/jsonpackagespecifier"
+                "id": "api/xpm-lib/interfaces/jsonpackagespecifier/jsonpackagespecifier"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2057,7 +2069,7 @@
               "label": "JsonXpack",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/jsonxpack"
+                "id": "api/xpm-lib/interfaces/jsonxpack/jsonxpack"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2123,7 +2135,7 @@
               "label": "JsonXpmBinaries",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/jsonxpmbinaries"
+                "id": "api/xpm-lib/interfaces/jsonxpmbinaries/jsonxpmbinaries"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2159,7 +2171,7 @@
               "label": "JsonXpmPackage",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/jsonxpmpackage"
+                "id": "api/xpm-lib/interfaces/jsonxpmpackage/jsonxpmpackage"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2177,7 +2189,7 @@
               "label": "JsonXpmPlatformFile",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/jsonxpmplatformfile"
+                "id": "api/xpm-lib/interfaces/jsonxpmplatformfile/jsonxpmplatformfile"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2219,7 +2231,7 @@
               "label": "LiquidMatrixDropConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/liquidmatrixdropconstructorparameters"
+                "id": "api/xpm-lib/interfaces/liquidmatrixdropconstructorparameters/liquidmatrixdropconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2249,7 +2261,7 @@
               "label": "LiquidPropertiesDropConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/liquidpropertiesdropconstructorparameters"
+                "id": "api/xpm-lib/interfaces/liquidpropertiesdropconstructorparameters/liquidpropertiesdropconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2279,7 +2291,7 @@
               "label": "LiquidSubstitutionsVariables",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/liquidsubstitutionsvariables"
+                "id": "api/xpm-lib/interfaces/liquidsubstitutionsvariables/liquidsubstitutionsvariables"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2333,7 +2345,7 @@
               "label": "PackageConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/packageconstructorparameters"
+                "id": "api/xpm-lib/interfaces/packageconstructorparameters/packageconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2357,7 +2369,7 @@
               "label": "PlatformInfo",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/platforminfo"
+                "id": "api/xpm-lib/interfaces/platforminfo/platforminfo"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2381,7 +2393,7 @@
               "label": "PlatformInfoOptions",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/platforminfooptions"
+                "id": "api/xpm-lib/interfaces/platforminfooptions/platforminfooptions"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2399,7 +2411,7 @@
               "label": "PoliciesConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/policiesconstructorparameters"
+                "id": "api/xpm-lib/interfaces/policiesconstructorparameters/policiesconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2423,7 +2435,7 @@
               "label": "ProcessedMatrix",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/processedmatrix"
+                "id": "api/xpm-lib/interfaces/processedmatrix/processedmatrix"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2447,7 +2459,7 @@
               "label": "TemplateExpanderConstructorParameters",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/interfaces/templateexpanderconstructorparameters"
+                "id": "api/xpm-lib/interfaces/templateexpanderconstructorparameters/templateexpanderconstructorparameters"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2477,6 +2489,10 @@
         {
           "type": "category",
           "label": "Variables",
+          "link": {
+            "type": "doc",
+            "id": "api/xpm-lib/variables/index"
+          },
           "className": "tsdocEllipsis",
           "collapsed": true,
           "items": [
@@ -2485,7 +2501,7 @@
               "label": "buildFolderRelativePathPropertyName",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/variables/buildfolderrelativepathpropertyname"
+                "id": "api/xpm-lib/variables/buildfolderrelativepathpropertyname/buildfolderrelativepathpropertyname"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2496,7 +2512,7 @@
               "label": "COMBINATIONS_GENERATOR_MAX_COMBINATIONS_LIMIT",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/variables/combinations_generator_max_combinations_limit"
+                "id": "api/xpm-lib/variables/combinations_generator_max_combinations_limit/combinations_generator_max_combinations_limit"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2507,7 +2523,7 @@
               "label": "liquidSubstitutionsVariablesBase",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/variables/liquidsubstitutionsvariablesbase"
+                "id": "api/xpm-lib/variables/liquidsubstitutionsvariablesbase/liquidsubstitutionsvariablesbase"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2518,6 +2534,10 @@
         {
           "type": "category",
           "label": "Functions",
+          "link": {
+            "type": "doc",
+            "id": "api/xpm-lib/functions/index"
+          },
           "className": "tsdocEllipsis",
           "collapsed": true,
           "items": [
@@ -2526,7 +2546,7 @@
               "label": "chmodRecursively()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/chmodrecursively"
+                "id": "api/xpm-lib/functions/chmodrecursively/chmodrecursively"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2537,7 +2557,7 @@
               "label": "filterPath()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/filterpath"
+                "id": "api/xpm-lib/functions/filterpath/filterpath"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2548,7 +2568,7 @@
               "label": "filterPosixPath()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/filterposixpath"
+                "id": "api/xpm-lib/functions/filterposixpath/filterposixpath"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2559,7 +2579,7 @@
               "label": "filterWin32Path()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/filterwin32path"
+                "id": "api/xpm-lib/functions/filterwin32path/filterwin32path"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2570,7 +2590,7 @@
               "label": "getErrorMessage()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/geterrormessage"
+                "id": "api/xpm-lib/functions/geterrormessage/geterrormessage"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2581,7 +2601,7 @@
               "label": "getPlatformKey()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/getplatformkey"
+                "id": "api/xpm-lib/functions/getplatformkey/getplatformkey"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2592,7 +2612,7 @@
               "label": "hasLiquidSyntax()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/hasliquidsyntax"
+                "id": "api/xpm-lib/functions/hasliquidsyntax/hasliquidsyntax"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2603,7 +2623,7 @@
               "label": "isBoolean()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/isboolean"
+                "id": "api/xpm-lib/functions/isboolean/isboolean"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2614,7 +2634,7 @@
               "label": "isJsonArray()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/isjsonarray"
+                "id": "api/xpm-lib/functions/isjsonarray/isjsonarray"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2625,7 +2645,7 @@
               "label": "isJsonObject()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/isjsonobject"
+                "id": "api/xpm-lib/functions/isjsonobject/isjsonobject"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2636,7 +2656,7 @@
               "label": "isNonEmptyJsonObject()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/isnonemptyjsonobject"
+                "id": "api/xpm-lib/functions/isnonemptyjsonobject/isnonemptyjsonobject"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2647,7 +2667,7 @@
               "label": "isNumber()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/isnumber"
+                "id": "api/xpm-lib/functions/isnumber/isnumber"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2658,7 +2678,7 @@
               "label": "isObject()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/isobject"
+                "id": "api/xpm-lib/functions/isobject/isobject"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2669,7 +2689,7 @@
               "label": "isPrimitive()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/isprimitive"
+                "id": "api/xpm-lib/functions/isprimitive/isprimitive"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2680,7 +2700,7 @@
               "label": "isString()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/isstring"
+                "id": "api/xpm-lib/functions/isstring/isstring"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2691,7 +2711,7 @@
               "label": "performSubstitutions()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/performsubstitutions"
+                "id": "api/xpm-lib/functions/performsubstitutions/performsubstitutions"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
@@ -2702,7 +2722,7 @@
               "label": "processMatrixForExpansion()",
               "link": {
                 "type": "doc",
-                "id": "api/xpm-lib/functions/processmatrixforexpansion"
+                "id": "api/xpm-lib/functions/processmatrixforexpansion/processmatrixforexpansion"
               },
               "className": "tsdocEllipsis",
               "collapsed": true,
