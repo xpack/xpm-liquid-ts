@@ -89,17 +89,17 @@ export class LiquidPropertiesDrop extends liquidjs.Drop {
   /**
    * The logger instance for output and diagnostics.
    */
-  protected _log: Logger
+  protected readonly _log: Logger
 
   /**
    * The properties map used for substitutions.
    */
-  protected _properties: LiquidSubstitutionsStrings
+  protected readonly _properties: LiquidSubstitutionsStrings
 
   /**
    * The Liquid engine used to render nested substitutions.
    */
-  protected _engine: liquidjs.Liquid
+  protected readonly _engine: liquidjs.Liquid
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -261,17 +261,17 @@ export class LiquidMatrixDrop extends liquidjs.Drop {
   /**
    * The logger instance for output and diagnostics.
    */
-  protected _log: Logger
+  protected readonly _log: Logger
 
   /**
    * The matrix parameters map used for substitutions.
    */
-  protected _matrix: LiquidSubstitutionsStrings
+  protected readonly _matrix: LiquidSubstitutionsStrings
 
   /**
    * The Liquid engine used to render nested substitutions.
    */
-  protected _engine: liquidjs.Liquid
+  protected readonly _engine: liquidjs.Liquid
 
   // --------------------------------------------------------------------------
   // Constructor.

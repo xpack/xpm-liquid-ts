@@ -120,32 +120,33 @@ export abstract class InitTemplateBase {
   /**
    * The <b>xpm</b> context containing configuration and logging utilities.
    */
-  protected _context: Context
+  protected readonly _context: Context
 
   /**
    * The logger instance for output and diagnostics.
    */
-  protected _log: Logger
+  protected readonly _log: Logger
 
   /**
    * Definitions of all properties supported by this template.
    */
-  protected _propertiesDefinitions: InitTemplatePropertiesDefinitions = {}
+  protected readonly _propertiesDefinitions: InitTemplatePropertiesDefinitions =
+    {}
 
   /**
    * The absolute path to the module folder.
    */
-  protected __dirname: string
+  protected readonly __dirname: string
 
   /**
    * The absolute path to the templates folder.
    */
-  protected _templatesPath: string
+  protected readonly _templatesPath: string
 
   /**
    * The Liquid templating engine instance.
    */
-  protected _engine: Liquid
+  protected readonly _engine: Liquid
 
   /**
    * The variables to be used for template substitutions.
@@ -204,7 +205,7 @@ export abstract class InitTemplateBase {
    * behaviour whilst allowing test environments to inject controlled
    * process implementations.
    */
-  protected _process: NodeJS.Process
+  protected readonly _process: NodeJS.Process
 
   // --------------------------------------------------------------------------
   // Constructor.

@@ -174,7 +174,7 @@ export class Package {
    * The logger enables detailed diagnostics without affecting normal
    * operation, as trace-level output is typically disabled in production.
    */
-  protected _log: Logger
+  protected readonly _log: Logger
 
   // --------------------------------------------------------------------------
   // Constructor.

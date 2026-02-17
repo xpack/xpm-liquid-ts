@@ -1253,7 +1253,7 @@ export class BuildConfiguration {
    * hierarchies without impacting runtime performance when tracing is
    * disabled.
    */
-  protected _log: Logger
+  protected readonly _log: Logger
 
   /**
    * The variables used for substitution in this configuration.
