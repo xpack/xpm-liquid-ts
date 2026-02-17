@@ -5,6 +5,7 @@ seo_title: Version {{releaseVersion}} released
 description: Version v{{releaseVersion}} is a TODO new/maintenance release
 keywords:
   - xpack
+  - xpm
   - xpm-lib
   - release
 
@@ -42,8 +43,8 @@ Version **{{releaseVersion}}** is a new release; it adds ....
 
 <PageMetadata title={frontMatter.seo_title} />
 
-The [](https://xpack.github.io/xpm-lib-ts/)
-project is a TypeScript and dual mode CommonJS/ECMAScript Node.js module.
+The [xpm Core lib](https://xpack.github.io/xpm-lib-ts/)
+project is a TypeScript Node.js module.
 
 <CommonPrerequisites nodeVersion="20.0"/>
 
@@ -58,13 +59,7 @@ page.
 To include this module within TypeScript and ECMAScript modules, utilise `import`:
 
 ```typescript
-import { Xxx } from '@xpack/xpm-lib'
-```
-
-In JavaScript with CommonJS, utilise `require()`:
-
-```javascript
-const { Xxx } = require('@xpack/xpm-lib')
+import * as xpmLib from '@xpack/xpm-lib'
 ```
 
 ## Source code

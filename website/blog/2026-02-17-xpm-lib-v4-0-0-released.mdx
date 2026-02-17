@@ -2,13 +2,14 @@
 
 title:  v4.0.0 released
 seo_title: Version 4.0.0 released
-description: Version v4.0.0 is a TODO new/maintenance release
+description: Version v4.0.0 is a new major release
 keywords:
   - xpack
+  - xpm
   - xpm-lib
   - release
 
-date: 2026-01-22 00:48:00 +0200
+date: 2026-02-17 13:05:38 +0200
 
 authors: ilg-ul
 
@@ -32,17 +33,13 @@ import Link from '@docusaurus/Link';
 import CommonPrerequisites from './_common/_prerequisites.mdx';
 import CommonDownloadAnalytics from './_common/_download-analytics.mdx';
 
-TODO: select one summary
-
-Version **4.0.0** is a maintenance release; it resolves ...
-
-Version **4.0.0** is a new release; it adds ....
+Version **4.0.0** is a new major release; it adds a refined and more consistent API.
 
 <!-- truncate -->
 
 <PageMetadata title={frontMatter.seo_title} />
 
-The [](https://xpack.github.io/xpm-lib-ts/)
+The [xpm Core lib](https://xpack.github.io/xpm-lib-ts/)
 project is a TypeScript and dual mode CommonJS/ECMAScript Node.js module.
 
 <CommonPrerequisites nodeVersion="20.0"/>
@@ -58,13 +55,7 @@ page.
 To include this module within TypeScript and ECMAScript modules, utilise `import`:
 
 ```typescript
-import { Xxx } from '@xpack/xpm-lib'
-```
-
-In JavaScript with CommonJS, utilise `require()`:
-
-```javascript
-const { Xxx } = require('@xpack/xpm-lib')
+import * as xpmLib from '@xpack/xpm-lib'
 ```
 
 ## Source code
