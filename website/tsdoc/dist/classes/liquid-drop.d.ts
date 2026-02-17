@@ -54,15 +54,15 @@ export declare class LiquidPropertiesDrop extends liquidjs.Drop {
     /**
      * The logger instance for output and diagnostics.
      */
-    protected _log: Logger;
+    protected readonly _log: Logger;
     /**
      * The properties map used for substitutions.
      */
-    protected _properties: LiquidSubstitutionsStrings;
+    protected readonly _properties: LiquidSubstitutionsStrings;
     /**
      * The Liquid engine used to render nested substitutions.
      */
-    protected _engine: liquidjs.Liquid;
+    protected readonly _engine: liquidjs.Liquid;
     /**
      * Constructs a properties drop.
      *
@@ -99,7 +99,7 @@ export declare class LiquidPropertiesDrop extends liquidjs.Drop {
      * @param context - The Liquid rendering context.
      * @returns The resolved property value.
      *
-     * @throws {@link InputError}
+     * @throws {@link TemplateError}
      * If the property is not defined.
      */
     liquidMethodMissing(key: string, context: liquidjs.Context): Promise<any>;
@@ -153,15 +153,15 @@ export declare class LiquidMatrixDrop extends liquidjs.Drop {
     /**
      * The logger instance for output and diagnostics.
      */
-    protected _log: Logger;
+    protected readonly _log: Logger;
     /**
      * The matrix parameters map used for substitutions.
      */
-    protected _matrix: LiquidSubstitutionsStrings;
+    protected readonly _matrix: LiquidSubstitutionsStrings;
     /**
      * The Liquid engine used to render nested substitutions.
      */
-    protected _engine: liquidjs.Liquid;
+    protected readonly _engine: liquidjs.Liquid;
     /**
      * Constructs a matrix drop.
      *
@@ -199,7 +199,7 @@ export declare class LiquidMatrixDrop extends liquidjs.Drop {
      * @param context - The Liquid rendering context.
      * @returns The resolved matrix parameter value.
      *
-     * @throws {@link InputError}
+     * @throws {@link TemplateError}
      * If the matrix parameter is not defined.
      */
     liquidMethodMissing(key: string, context: liquidjs.Context): Promise<any>;

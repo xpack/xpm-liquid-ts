@@ -72,7 +72,7 @@ The resolved property value.
 
 ## Exceptions
 
-[InputError](./xpm-lib.inputerror.md) If the property is not defined.
+[TemplateError](./xpm-lib.templateerror.md) If the property is not defined.
 
 ## Remarks
 

@@ -19,7 +19,7 @@ The properties map used for substitutions.
 ## Signature
 
 ```typescript
-protected _properties: LiquidSubstitutionsStrings;
+protected readonly _properties: LiquidSubstitutionsStrings;
 ```
 <hr/>
 

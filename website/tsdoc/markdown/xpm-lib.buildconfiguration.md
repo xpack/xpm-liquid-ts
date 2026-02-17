@@ -172,6 +172,8 @@ Flag indicating whether the configuration has been initialised.
 
 `protected`
 
+`readonly`
+
 
 </td><td>
 

@@ -88,6 +88,8 @@ Description
 
 `protected`
 
+`readonly`
+
 
 </td><td>
 
@@ -109,6 +111,8 @@ The Liquid engine used for substitutions.
 
 `protected`
 
+`readonly`
+
 
 </td><td>
 
@@ -129,6 +133,8 @@ The JSON package definition.
 </td><td>
 
 `protected`
+
+`readonly`
 
 
 </td><td>

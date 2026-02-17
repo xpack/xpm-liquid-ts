@@ -72,7 +72,7 @@ The resolved matrix parameter value.
 
 ## Exceptions
 
-[InputError](./xpm-lib.inputerror.md) If the matrix parameter is not defined.
+[TemplateError](./xpm-lib.templateerror.md) If the matrix parameter is not defined.
 
 ## Remarks
 

@@ -10,15 +10,15 @@ export interface InitTemplateConstructorParameters {
     process?: NodeJS.Process;
 }
 export declare abstract class InitTemplateBase {
-    protected _context: Context;
-    protected _log: Logger;
-    protected _propertiesDefinitions: InitTemplatePropertiesDefinitions;
-    protected __dirname: string;
-    protected _templatesPath: string;
-    protected _engine: Liquid;
+    protected readonly _context: Context;
+    protected readonly _log: Logger;
+    protected readonly _propertiesDefinitions: InitTemplatePropertiesDefinitions;
+    protected readonly __dirname: string;
+    protected readonly _templatesPath: string;
+    protected readonly _engine: Liquid;
     protected _substitutionsVariables?: InitTemplateSubstitutionsVariables;
     protected _isInteractive: boolean;
-    protected _process: NodeJS.Process;
+    protected readonly _process: NodeJS.Process;
     constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, }: InitTemplateConstructorParameters);
     run(): Promise<number>;
     abstract generate(): Promise<void>;

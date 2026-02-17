@@ -9,5 +9,5 @@ Definitions of all properties supported by this template.
 **Signature:**
 
 ```typescript
-protected _propertiesDefinitions: InitTemplatePropertiesDefinitions;
+protected readonly _propertiesDefinitions: InitTemplatePropertiesDefinitions;
 ```

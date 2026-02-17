@@ -19,7 +19,7 @@ The absolute path to the module folder.
 ## Signature
 
 ```typescript
-protected __dirname: string;
+protected readonly __dirname: string;
 ```
 <hr/>
 

@@ -9,5 +9,5 @@ The logger instance for output and diagnostics.
 **Signature:**
 
 ```typescript
-protected _log: Logger;
+protected readonly _log: Logger;
 ```

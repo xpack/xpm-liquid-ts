@@ -77,7 +77,7 @@ The fully substituted string.
 
 ## Exceptions
 
-[ConfigurationError](./xpm-lib.configurationerror.md) If Liquid rendering fails.
+[TemplateError](./xpm-lib.templateerror.md) If Liquid rendering fails, iteration limit is exceeded, or output size limit is exceeded.
 
 ## Remarks
 

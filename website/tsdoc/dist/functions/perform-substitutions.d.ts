@@ -47,10 +47,16 @@ import { LiquidSubstitutionsVariables } from '../data/substitutions-variables.js
  * @param engine - The Liquid engine used to render substitutions.
  * @param input - The input string, possibly containing substitutions.
  * @param substitutionsVariables - The variables available for substitution.
+ * @param maxIterations - Optional maximum number of substitution iterations
+ * to prevent infinite loops from circular references. Defaults to 420.
+ * @param maxOutputSize - Optional maximum output size in bytes to prevent
+ * memory exhaustion from exponentially expanding templates. Defaults to 43008
+ * bytes (42KB).
  * @returns The fully substituted string.
  *
- * @throws {@link ConfigurationError}
- * If Liquid rendering fails.
+ * @throws {@link TemplateError}
+ * If Liquid rendering fails, iteration limit is exceeded, or output size
+ * limit is exceeded.
  */
 export declare function performSubstitutions({ engine, input, substitutionsVariables, log, maxIterations, maxOutputSize, }: {
     engine: LiquidEngine;

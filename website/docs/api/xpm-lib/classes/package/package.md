@@ -98,6 +98,8 @@ Description
 
 `protected`
 
+`readonly`
+
 
 </td><td>
 

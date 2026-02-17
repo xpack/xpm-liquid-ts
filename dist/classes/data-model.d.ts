@@ -13,9 +13,9 @@ export declare class DataModel {
     readonly substitutionsVariables: LiquidSubstitutionsVariables;
     readonly actions: Actions;
     readonly buildConfigurations: BuildConfigurations;
-    protected _log: Logger;
-    protected _engine: LiquidEngine;
-    protected _jsonPackage: JsonXpmPackage;
+    protected readonly _log: Logger;
+    protected readonly _engine: LiquidEngine;
+    protected readonly _jsonPackage: JsonXpmPackage;
     constructor({ jsonPackage, log }: DataModelConstructorParameters);
 }
 //# sourceMappingURL=data-model.d.ts.map

@@ -82,7 +82,7 @@ The resolved property value.
 
 ## Exceptions
 
-[InputError](/xpm-lib-ts/docs/api/xpm-lib/classes/inputerror) If the property is not defined.
+[TemplateError](/xpm-lib-ts/docs/api/xpm-lib/classes/templateerror) If the property is not defined.
 
 ## Remarks
 

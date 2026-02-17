@@ -88,6 +88,8 @@ Description
 
 `protected`
 
+`readonly`
+
 
 </td><td>
 
@@ -109,6 +111,8 @@ The absolute path to the module folder.
 
 `protected`
 
+`readonly`
+
 
 </td><td>
 
@@ -129,6 +133,8 @@ The <b>xpm</b> context containing configuration and logging utilities.
 </td><td>
 
 `protected`
+
+`readonly`
 
 
 </td><td>
@@ -172,6 +178,8 @@ Flag indicating whether the template is running in interactive mode.
 
 `protected`
 
+`readonly`
+
 
 </td><td>
 
@@ -193,6 +201,8 @@ The logger instance for output and diagnostics.
 
 `protected`
 
+`readonly`
+
 
 </td><td>
 
@@ -213,6 +223,8 @@ The Node.js process object for accessing runtime environment information.
 </td><td>
 
 `protected`
+
+`readonly`
 
 
 </td><td>
@@ -255,6 +267,8 @@ _(Optional)_ The variables to be used for template substitutions.
 </td><td>
 
 `protected`
+
+`readonly`
 
 
 </td><td>

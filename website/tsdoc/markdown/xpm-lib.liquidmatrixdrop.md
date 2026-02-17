@@ -89,6 +89,8 @@ Description
 
 `protected`
 
+`readonly`
+
 
 </td><td>
 
@@ -110,6 +112,8 @@ The Liquid engine used to render nested substitutions.
 
 `protected`
 
+`readonly`
+
 
 </td><td>
 
@@ -130,6 +134,8 @@ The logger instance for output and diagnostics.
 </td><td>
 
 `protected`
+
+`readonly`
 
 
 </td><td>

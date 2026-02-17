@@ -1819,7 +1819,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _log: "
+                  "text": "protected readonly _log: "
                 },
                 {
                   "kind": "Reference",
@@ -1831,7 +1831,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_log",
@@ -4662,7 +4662,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _engine: "
+                  "text": "protected readonly _engine: "
                 },
                 {
                   "kind": "Reference",
@@ -4674,7 +4674,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_engine",
@@ -4693,7 +4693,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _jsonPackage: "
+                  "text": "protected readonly _jsonPackage: "
                 },
                 {
                   "kind": "Reference",
@@ -4705,7 +4705,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_jsonPackage",
@@ -4724,7 +4724,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _log: "
+                  "text": "protected readonly _log: "
                 },
                 {
                   "kind": "Reference",
@@ -4736,7 +4736,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_log",
@@ -5286,7 +5286,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected __dirname: "
+                  "text": "protected readonly __dirname: "
                 },
                 {
                   "kind": "Content",
@@ -5297,7 +5297,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "__dirname",
@@ -5352,7 +5352,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _context: "
+                  "text": "protected readonly _context: "
                 },
                 {
                   "kind": "Reference",
@@ -5364,7 +5364,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_context",
@@ -5444,7 +5444,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _engine: "
+                  "text": "protected readonly _engine: "
                 },
                 {
                   "kind": "Reference",
@@ -5456,7 +5456,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_engine",
@@ -5505,7 +5505,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _log: "
+                  "text": "protected readonly _log: "
                 },
                 {
                   "kind": "Reference",
@@ -5517,7 +5517,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_log",
@@ -5536,7 +5536,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _process: "
+                  "text": "protected readonly _process: "
                 },
                 {
                   "kind": "Reference",
@@ -5548,7 +5548,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_process",
@@ -5567,7 +5567,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _propertiesDefinitions: "
+                  "text": "protected readonly _propertiesDefinitions: "
                 },
                 {
                   "kind": "Reference",
@@ -5579,7 +5579,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_propertiesDefinitions",
@@ -5629,7 +5629,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _templatesPath: "
+                  "text": "protected readonly _templatesPath: "
                 },
                 {
                   "kind": "Content",
@@ -5640,7 +5640,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_templatesPath",
@@ -9261,7 +9261,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _engine: "
+                  "text": "protected readonly _engine: "
                 },
                 {
                   "kind": "Reference",
@@ -9273,7 +9273,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_engine",
@@ -9292,7 +9292,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _log: "
+                  "text": "protected readonly _log: "
                 },
                 {
                   "kind": "Reference",
@@ -9304,7 +9304,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_log",
@@ -9323,7 +9323,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _matrix: "
+                  "text": "protected readonly _matrix: "
                 },
                 {
                   "kind": "Reference",
@@ -9335,7 +9335,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_matrix",
@@ -9391,7 +9391,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!LiquidMatrixDrop#liquidMethodMissing:member(1)",
-              "docComment": "/**\n * Resolves a missing matrix parameter and performs nested substitutions.\n *\n * @remarks\n *\n * Called by the Liquid engine when a matrix parameter is accessed that doesn't exist as a regular method. This implements the Drop pattern for dynamic matrix parameter resolution.\n *\n * Resolution process:\n *\n * <ol> <li>Validate the parameter exists, throw <code>InputError</code> if not.</li> <li>Retrieve the parameter value (string, array, or object).</li> <li>If object, return as-is for Liquid to access nested properties.</li> <li>If array, join elements into a single string for processing.</li> <li>If the value contains Liquid syntax, recursively render it with the current context to resolve nested references.</li> <li>Return the final resolved value.</li> </ol>\n *\n * This mirrors the behavior of {@link LiquidPropertiesDrop} but operates on matrix parameters instead of properties. Matrix values can reference other substitution variables, enabling complex template expansions.\n *\n * @param key - The matrix parameter name requested by the template.\n *\n * @param context - The Liquid rendering context.\n *\n * @returns The resolved matrix parameter value.\n *\n * @throws\n *\n * {@link InputError} If the matrix parameter is not defined.\n */\n",
+              "docComment": "/**\n * Resolves a missing matrix parameter and performs nested substitutions.\n *\n * @remarks\n *\n * Called by the Liquid engine when a matrix parameter is accessed that doesn't exist as a regular method. This implements the Drop pattern for dynamic matrix parameter resolution.\n *\n * Resolution process:\n *\n * <ol> <li>Validate the parameter exists, throw <code>InputError</code> if not.</li> <li>Retrieve the parameter value (string, array, or object).</li> <li>If object, return as-is for Liquid to access nested properties.</li> <li>If array, join elements into a single string for processing.</li> <li>If the value contains Liquid syntax, recursively render it with the current context to resolve nested references.</li> <li>Return the final resolved value.</li> </ol>\n *\n * This mirrors the behavior of {@link LiquidPropertiesDrop} but operates on matrix parameters instead of properties. Matrix values can reference other substitution variables, enabling complex template expansions.\n *\n * @param key - The matrix parameter name requested by the template.\n *\n * @param context - The Liquid rendering context.\n *\n * @returns The resolved matrix parameter value.\n *\n * @throws\n *\n * {@link TemplateError} If the matrix parameter is not defined.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9599,7 +9599,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _engine: "
+                  "text": "protected readonly _engine: "
                 },
                 {
                   "kind": "Reference",
@@ -9611,7 +9611,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_engine",
@@ -9630,7 +9630,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _log: "
+                  "text": "protected readonly _log: "
                 },
                 {
                   "kind": "Reference",
@@ -9642,7 +9642,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_log",
@@ -9661,7 +9661,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _properties: "
+                  "text": "protected readonly _properties: "
                 },
                 {
                   "kind": "Reference",
@@ -9673,7 +9673,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_properties",
@@ -9729,7 +9729,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!LiquidPropertiesDrop#liquidMethodMissing:member(1)",
-              "docComment": "/**\n * Resolves a missing property and performs nested substitutions.\n *\n * @remarks\n *\n * Called by the Liquid engine when a property is accessed that doesn't exist as a regular method. This implements the Drop pattern for dynamic property resolution.\n *\n * Resolution process:\n *\n * <ol> <li>Validate the property exists, throw <code>InputError</code> if not.</li> <li>Retrieve the property value (string, array, or object).</li> <li>If object, return as-is for Liquid to access nested properties.</li> <li>If array, join elements into a single string for processing.</li> <li>If the value contains Liquid syntax, recursively render it with the current context to resolve nested references.</li> <li>Return the final resolved value.</li> </ol>\n *\n * Array values are concatenated without separators, allowing properties to span multiple lines in JSON while producing a single string output.\n *\n * @param key - The property name requested by the template.\n *\n * @param context - The Liquid rendering context.\n *\n * @returns The resolved property value.\n *\n * @throws\n *\n * {@link InputError} If the property is not defined.\n */\n",
+              "docComment": "/**\n * Resolves a missing property and performs nested substitutions.\n *\n * @remarks\n *\n * Called by the Liquid engine when a property is accessed that doesn't exist as a regular method. This implements the Drop pattern for dynamic property resolution.\n *\n * Resolution process:\n *\n * <ol> <li>Validate the property exists, throw <code>InputError</code> if not.</li> <li>Retrieve the property value (string, array, or object).</li> <li>If object, return as-is for Liquid to access nested properties.</li> <li>If array, join elements into a single string for processing.</li> <li>If the value contains Liquid syntax, recursively render it with the current context to resolve nested references.</li> <li>Return the final resolved value.</li> </ol>\n *\n * Array values are concatenated without separators, allowing properties to span multiple lines in JSON while producing a single string output.\n *\n * @param key - The property name requested by the template.\n *\n * @param context - The Liquid rendering context.\n *\n * @returns The resolved property value.\n *\n * @throws\n *\n * {@link TemplateError} If the property is not defined.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10291,7 +10291,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected _log: "
+                  "text": "protected readonly _log: "
                 },
                 {
                   "kind": "Reference",
@@ -10303,7 +10303,7 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
               "name": "_log",
@@ -10986,7 +10986,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@xpack/xpm-lib!performSubstitutions:function(1)",
-          "docComment": "/**\n * Performs substitutions on an input string using Liquid.\n *\n * @remarks\n *\n * This function processes Liquid template syntax (variables and tags) by repeatedly rendering the input until no more substitutions are detected. The iterative approach supports nested substitutions where one property references another.\n *\n * Processing workflow:\n *\n * <ol> <li>Skip processing for empty strings to avoid unnecessary overhead.</li> <li>Prepare Liquid context with substitution variables.</li> <li>If <code>properties</code> exist, wrap them in <code>LiquidPropertiesDrop</code> for lazy evaluation and nested substitution support.</li> <li>If <code>matrix</code> parameters exist, wrap them in <code>LiquidMatrixDrop</code> for template expansion variable access.</li> <li>Iterate while Liquid syntax (<code>\\{\\{</code> or <code>\\{%</code>) is present: <ul> <li>Parse and render the current string.</li> <li>Break if no changes occur (safety check).</li> <li>Continue with the substituted result.</li> </ul> </li> <li>Return the fully substituted string.</li> </ol>\n *\n * The Drop pattern enables recursive property resolution: when a template accesses `{{ properties.foo }}` and `foo` contains `{{ properties.bar }}`, the next iteration resolves `bar`, and so on until no Liquid syntax remains.\n *\n * Error handling:\n *\n * Liquid rendering errors are caught, stripped of line number information (which can be misleading for nested templates), and re-thrown as {@link ConfigurationError}.\n *\n * @param log - The logger instance for output and diagnostics.\n *\n * @param engine - The Liquid engine used to render substitutions.\n *\n * @param input - The input string, possibly containing substitutions.\n *\n * @param substitutionsVariables - The variables available for substitution.\n *\n * @returns The fully substituted string.\n *\n * @throws\n *\n * {@link ConfigurationError} If Liquid rendering fails.\n */\n",
+          "docComment": "/**\n * Performs substitutions on an input string using Liquid.\n *\n * @remarks\n *\n * This function processes Liquid template syntax (variables and tags) by repeatedly rendering the input until no more substitutions are detected. The iterative approach supports nested substitutions where one property references another.\n *\n * Processing workflow:\n *\n * <ol> <li>Skip processing for empty strings to avoid unnecessary overhead.</li> <li>Prepare Liquid context with substitution variables.</li> <li>If <code>properties</code> exist, wrap them in <code>LiquidPropertiesDrop</code> for lazy evaluation and nested substitution support.</li> <li>If <code>matrix</code> parameters exist, wrap them in <code>LiquidMatrixDrop</code> for template expansion variable access.</li> <li>Iterate while Liquid syntax (<code>\\{\\{</code> or <code>\\{%</code>) is present: <ul> <li>Parse and render the current string.</li> <li>Break if no changes occur (safety check).</li> <li>Continue with the substituted result.</li> </ul> </li> <li>Return the fully substituted string.</li> </ol>\n *\n * The Drop pattern enables recursive property resolution: when a template accesses `{{ properties.foo }}` and `foo` contains `{{ properties.bar }}`, the next iteration resolves `bar`, and so on until no Liquid syntax remains.\n *\n * Error handling:\n *\n * Liquid rendering errors are caught, stripped of line number information (which can be misleading for nested templates), and re-thrown as {@link ConfigurationError}.\n *\n * @param log - The logger instance for output and diagnostics.\n *\n * @param engine - The Liquid engine used to render substitutions.\n *\n * @param input - The input string, possibly containing substitutions.\n *\n * @param substitutionsVariables - The variables available for substitution.\n *\n * @param maxIterations - Optional maximum number of substitution iterations to prevent infinite loops from circular references. Defaults to 420.\n *\n * @param maxOutputSize - Optional maximum output size in bytes to prevent memory exhaustion from exponentially expanding templates. Defaults to 43008 bytes (42KB).\n *\n * @returns The fully substituted string.\n *\n * @throws\n *\n * {@link TemplateError} If Liquid rendering fails, iteration limit is exceeded, or output size limit is exceeded.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",

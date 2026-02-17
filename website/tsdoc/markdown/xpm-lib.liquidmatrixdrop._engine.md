@@ -9,5 +9,5 @@ The Liquid engine used to render nested substitutions.
 **Signature:**
 
 ```typescript
-protected _engine: liquidjs.Liquid;
+protected readonly _engine: liquidjs.Liquid;
 ```

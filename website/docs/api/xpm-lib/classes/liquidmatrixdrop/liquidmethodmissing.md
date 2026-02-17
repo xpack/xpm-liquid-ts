@@ -82,7 +82,7 @@ The resolved matrix parameter value.
 
 ## Exceptions
 
-[InputError](/xpm-lib-ts/docs/api/xpm-lib/classes/inputerror) If the matrix parameter is not defined.
+[TemplateError](/xpm-lib-ts/docs/api/xpm-lib/classes/templateerror) If the matrix parameter is not defined.
 
 ## Remarks
 

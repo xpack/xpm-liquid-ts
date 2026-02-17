@@ -9,5 +9,5 @@ The <b>xpm</b> context containing configuration and logging utilities.
 **Signature:**
 
 ```typescript
-protected _context: Context;
+protected readonly _context: Context;
 ```

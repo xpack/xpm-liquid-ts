@@ -7,7 +7,7 @@ export interface PackageConstructorParameters {
 export declare class Package {
     packageFolderPath: string;
     jsonPackage?: JsonXpmPackage;
-    protected _log: Logger;
+    protected readonly _log: Logger;
     constructor({ packageFolderPath, log }: PackageConstructorParameters);
     readPackageDotJson({ withThrow, }?: {
         withThrow?: boolean;

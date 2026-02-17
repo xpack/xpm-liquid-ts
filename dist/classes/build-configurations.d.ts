@@ -57,7 +57,7 @@ export declare class BuildConfiguration {
     devDependencies: JsonDependencies;
     jsonBuildConfiguration: JsonBuildConfigurationContent;
     isTemplate: boolean;
-    protected _log: Logger;
+    protected readonly _log: Logger;
     protected _substitutionsVariables: LiquidSubstitutionsVariables;
     protected readonly matrixParameters?: LiquidSubstitutionsStrings;
     protected _actions: Actions | undefined;

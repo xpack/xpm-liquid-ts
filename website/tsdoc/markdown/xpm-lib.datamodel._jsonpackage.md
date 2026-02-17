@@ -9,7 +9,7 @@ The JSON package definition.
 **Signature:**
 
 ```typescript
-protected _jsonPackage: JsonXpmPackage;
+protected readonly _jsonPackage: JsonXpmPackage;
 ```
 
 ## Remarks

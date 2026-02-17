@@ -9,7 +9,7 @@ The Node.js process object for accessing runtime environment information.
 **Signature:**
 
 ```typescript
-protected _process: NodeJS.Process;
+protected readonly _process: NodeJS.Process;
 ```
 
 ## Remarks

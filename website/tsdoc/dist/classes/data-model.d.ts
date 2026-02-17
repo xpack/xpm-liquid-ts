@@ -156,7 +156,7 @@ export declare class DataModel {
      * configurations) to maintain consistent logging throughout the package
      * lifecycle.
      */
-    protected _log: Logger;
+    protected readonly _log: Logger;
     /**
      * The Liquid engine used for substitutions.
      *
@@ -179,7 +179,7 @@ export declare class DataModel {
      *    template evaluation across all package components.</li>
      * </ol>
      */
-    protected _engine: LiquidEngine;
+    protected readonly _engine: LiquidEngine;
     /**
      * The JSON package definition.
      *
@@ -204,7 +204,7 @@ export declare class DataModel {
      * The package definition is validated during construction, requiring the
      * `xpack` section to be present and be a valid JSON object.
      */
-    protected _jsonPackage: JsonXpmPackage;
+    protected readonly _jsonPackage: JsonXpmPackage;
     /**
      * Constructs a Liquid package processor.
      *

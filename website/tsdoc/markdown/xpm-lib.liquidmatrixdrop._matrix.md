@@ -9,5 +9,5 @@ The matrix parameters map used for substitutions.
 **Signature:**
 
 ```typescript
-protected _matrix: LiquidSubstitutionsStrings;
+protected readonly _matrix: LiquidSubstitutionsStrings;
 ```

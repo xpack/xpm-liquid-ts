@@ -19,7 +19,7 @@ The Liquid templating engine instance.
 ## Signature
 
 ```typescript
-protected _engine: Liquid;
+protected readonly _engine: Liquid;
 ```
 <hr/>
 

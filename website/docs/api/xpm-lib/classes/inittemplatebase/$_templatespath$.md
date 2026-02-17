@@ -19,7 +19,7 @@ The absolute path to the templates folder.
 ## Signature
 
 ```typescript
-protected _templatesPath: string;
+protected readonly _templatesPath: string;
 ```
 <hr/>
 

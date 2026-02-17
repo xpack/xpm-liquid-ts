@@ -128,7 +128,7 @@ export declare class Package {
      * The logger enables detailed diagnostics without affecting normal
      * operation, as trace-level output is typically disabled in production.
      */
-    protected _log: Logger;
+    protected readonly _log: Logger;
     /**
      * Constructs a package helper bound to a specific folder.
      *
