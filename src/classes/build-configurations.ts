@@ -320,7 +320,7 @@ export class BuildConfigurations {
    * `Array.from(map.keys())` on every access whilst still
    * providing a clean getter interface.
    */
-  protected _buildConfigurationsNames: string[] = []
+  protected _names: string[] = []
 
   // --------------------------------------------------------------------------
   // Constructor and async initialiser.
@@ -438,15 +438,10 @@ export class BuildConfigurations {
       }
     }
 
-    const buildConfigurationsNames = Array.from(
-      this._buildConfigurationsMap.keys()
-    )
-    this._buildConfigurationsNames = buildConfigurationsNames
+    const names = Array.from(this._buildConfigurationsMap.keys())
+    this._names = names
 
-    log.trace(
-      `${BuildConfigurations.name}.initialise() =>`,
-      buildConfigurationsNames
-    )
+    log.trace(`${BuildConfigurations.name}.initialise() =>`, names)
 
     this._isInitialised = true
     return true
@@ -513,7 +508,7 @@ export class BuildConfigurations {
         'accessing names'
     )
 
-    return this._buildConfigurationsNames
+    return this._names
   }
 
   /**
@@ -995,7 +990,7 @@ export class BuildConfiguration {
    * Names must be unique within the configurations collection, enforced
    * during {@link BuildConfigurations.initialise}.
    */
-  readonly buildConfigurationName: string
+  readonly name: string
 
   /**
    * The template build configuration name, if derived from a template.
@@ -1018,7 +1013,7 @@ export class BuildConfiguration {
    * <li>Enables tracing and debugging of template expansion process.</li>
    * </ol>
    */
-  readonly templateBuildConfigurationName?: string
+  readonly templateName?: string
 
   /**
    * The parent build configurations collection.
@@ -1449,14 +1444,14 @@ export class BuildConfiguration {
 
     log.trace(`${BuildConfiguration.name}(${buildConfigurationName})`)
 
-    this.buildConfigurationName = buildConfigurationName
+    this.name = buildConfigurationName
     this.jsonBuildConfiguration = jsonBuildConfiguration
     this.parentBuildConfigurations = parentBuildConfigurations
     if (matrixParameters !== undefined) {
       this.matrixParameters = matrixParameters
     }
     if (templateBuildConfigurationName !== undefined) {
-      this.templateBuildConfigurationName = templateBuildConfigurationName
+      this.templateName = templateBuildConfigurationName
     }
 
     this._substitutionsVariables = {
@@ -1465,7 +1460,7 @@ export class BuildConfiguration {
 
     this.isHidden = this.jsonBuildConfiguration.hidden ?? false
 
-    this.isTemplate = this.templateBuildConfigurationName !== undefined
+    this.isTemplate = this.templateName !== undefined
 
     // The rest of the initialisation is done in the async initialiser.
   }
@@ -1519,23 +1514,16 @@ export class BuildConfiguration {
    */
   async initialise(): Promise<boolean> {
     const log = this._log
-    log.trace(
-      `${BuildConfiguration.name}.initialise()` +
-        ` @${this.buildConfigurationName}`
-    )
+    log.trace(`${BuildConfiguration.name}.initialise()` + ` @${this.name}`)
 
     if (this._isInitialised) {
       log.trace(
-        `${BuildConfiguration.name}.initialise()` +
-          ` @${this.buildConfigurationName} again`
+        `${BuildConfiguration.name}.initialise()` + ` @${this.name} again`
       )
       return false
     }
 
-    log.trace(
-      `${BuildConfiguration.name}.initialise()` +
-        ` @${this.buildConfigurationName}`
-    )
+    log.trace(`${BuildConfiguration.name}.initialise()` + ` @${this.name}`)
     let localJsonBuildConfiguration: JsonBuildConfigurationContent
 
     if (this.isTemplate) {
@@ -1554,7 +1542,7 @@ export class BuildConfiguration {
       ...localJsonBuildConfiguration.properties,
     }
 
-    assert(this.buildConfigurationName, 'buildConfigurationName missing')
+    assert(this.name, 'buildConfigurationName missing')
     this._substitutionsVariables = {
       ...this.parentBuildConfigurations.substitutionsVariables,
       properties: {
@@ -1564,7 +1552,7 @@ export class BuildConfiguration {
       matrix: this.matrixParameters ?? {},
       configuration: {
         ...localJsonBuildConfiguration,
-        name: this.buildConfigurationName,
+        name: this.name,
       },
     }
 
@@ -1606,7 +1594,7 @@ export class BuildConfiguration {
       } catch (error) {
         const message =
           getErrorMessage(error) +
-          ` in buildConfiguration "${this.buildConfigurationName}" dependencies`
+          ` in buildConfiguration "${this.name}" dependencies`
         throw new ConfigurationError(message)
       }
       const parsedDependencies = JSON.parse(
@@ -1640,22 +1628,14 @@ export class BuildConfiguration {
 
     if (!this.isHidden) {
       log.trace(
-        this.buildConfigurationName,
+        this.name,
         'buildFolderRelativePath =>',
         this._buildFolderRelativePath
       )
     }
-    log.trace(this.buildConfigurationName, 'properties => ', this.properties)
-    log.trace(
-      this.buildConfigurationName,
-      'dependencies => ',
-      this.dependencies
-    )
-    log.trace(
-      this.buildConfigurationName,
-      'devDependencies => ',
-      this.devDependencies
-    )
+    log.trace(this.name, 'properties => ', this.properties)
+    log.trace(this.name, 'dependencies => ', this.dependencies)
+    log.trace(this.name, 'devDependencies => ', this.devDependencies)
 
     // Action names are not available at this point.
     // log.trace(this.buildConfigurationName, 'actions => ',
@@ -1771,14 +1751,13 @@ export class BuildConfiguration {
             /* c8 ignore stop */
             configuration: {
               ...this.jsonBuildConfiguration,
-              name: this.buildConfigurationName,
+              name: this.name,
             },
           },
         })
       } catch (error) {
         const message =
-          getErrorMessage(error) +
-          ` in buildConfiguration "${this.buildConfigurationName}"`
+          getErrorMessage(error) + ` in buildConfiguration "${this.name}"`
         throw new ConfigurationError(message)
       }
 
@@ -1852,14 +1831,14 @@ export class BuildConfiguration {
             ...this._substitutionsVariables,
             configuration: {
               ...this.jsonBuildConfiguration,
-              name: this.buildConfigurationName,
+              name: this.name,
             },
           },
         })
       } catch (error) {
         const message =
           getErrorMessage(error) +
-          ` in buildConfiguration "${this.buildConfigurationName}" inherits`
+          ` in buildConfiguration "${this.name}" inherits`
         throw new ConfigurationError(message)
       }
 
@@ -1959,14 +1938,14 @@ export class BuildConfiguration {
       !this.parentBuildConfigurations.hasJson(inheritedBuildConfigurationName)
     ) {
       throw new ConfigurationError(
-        `buildConfiguration "${this.buildConfigurationName}" ` +
+        `buildConfiguration "${this.name}" ` +
           `inherits from missing "${inheritedBuildConfigurationName}"`
       )
     }
 
     if (this._inheritedNamesSet.has(inheritedBuildConfigurationName)) {
       throw new ConfigurationError(
-        `buildConfiguration "${this.buildConfigurationName}" ` +
+        `buildConfiguration "${this.name}" ` +
           `inherits from circular reference ` +
           `"${inheritedBuildConfigurationName}"`
       )
@@ -2074,7 +2053,7 @@ export class BuildConfiguration {
     const inheritsNames = this._parseInheritsField(localJsonBuildConfiguration)
     this.inheritsNames = inheritsNames
 
-    log.trace(this.buildConfigurationName, 'inherits from', this.inheritsNames)
+    log.trace(this.name, 'inherits from', this.inheritsNames)
 
     const inheritedActionsMap: Map<string, Action> = new Map<string, Action>()
 
@@ -2136,18 +2115,14 @@ export class BuildConfiguration {
           return substitutedFolderPath
         } catch (error) {
           const message =
-            getErrorMessage(error) +
-            ` in buildConfiguration "${this.buildConfigurationName}"`
+            getErrorMessage(error) + ` in buildConfiguration "${this.name}"`
           throw new ConfigurationError(message)
         }
       }
     }
 
     // Provide a default value, based on the name.
-    const defaultFolderPath = path.join(
-      'build',
-      filterPath(this.buildConfigurationName)
-    )
+    const defaultFolderPath = path.join('build', filterPath(this.name))
     return defaultFolderPath
   }
 }

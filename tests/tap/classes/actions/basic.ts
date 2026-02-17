@@ -118,7 +118,7 @@ await t.test('Actions - at top level', async (t): Promise<void> => {
   t.equal(actions.has('three'), false, 'has("three") is false')
 
   const one = actions.get('one')
-  t.equal(one.actionName, 'one', 'actionName is "one"')
+  t.equal(one.name, 'one', 'name is "one"')
   t.equal(one.parentActions, actions, 'parentActions is actions')
 
   t.throws(
@@ -134,7 +134,7 @@ await t.test('Actions - at top level', async (t): Promise<void> => {
   t.equal(oneCommands[0], 'echo "one"', 'one.commands[0] is correct')
 
   const two = actions.get('two')
-  t.equal(two.actionName, 'two', 'actionName is "two"')
+  t.equal(two.name, 'two', 'name is "two"')
   t.equal(two.parentActions, actions, 'parentActions is actions')
   await testIdempotentInitialisation(t, two, 'two')
 

@@ -13,7 +13,7 @@
 
 // import * as os from 'node:os'
 // import * as path from 'node:path'
-import assert, { AssertionError } from 'node:assert'
+import assert from 'node:assert'
 
 // ----------------------------------------------------------------------------
 
@@ -141,11 +141,7 @@ await t.test(
       buildConfigurations,
       'parentBuildConfigurations'
     )
-    t.equal(
-      buildConfiguration.buildConfigurationName,
-      'alfa',
-      'buildConfigurationName is "alfa"'
-    )
+    t.equal(buildConfiguration.name, 'alfa', 'buildConfigurationName is "alfa"')
 
     await buildConfiguration.initialise()
 
@@ -201,7 +197,7 @@ await t.test(
     t.ok(actionOne, 'actions.get("one")')
 
     t.equal(actionOne.parentActions, actions, 'parentActions')
-    t.equal(actionOne.actionName, 'one', 'actionName is "one"')
+    t.equal(actionOne.name, 'one', 'name is "one"')
 
     t.equal(
       actionOne.jsonAction,

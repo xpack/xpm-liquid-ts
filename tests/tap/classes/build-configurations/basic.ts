@@ -193,11 +193,7 @@ await t.test(
     t.equal(buildConfigurations.has('configOne'), true, 'has configOne')
 
     const configOne = buildConfigurations.get('configOne')
-    t.equal(
-      configOne.buildConfigurationName,
-      'configOne',
-      'buildConfigurationName configOne'
-    )
+    t.equal(configOne.name, 'configOne', 'buildConfigurationName configOne')
 
     await testIdempotentInitialisation(t, configOne, 'configOne')
 

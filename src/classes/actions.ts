@@ -361,7 +361,7 @@ export class Actions {
    * `Array.from(map.keys())` on every access whilst still
    * providing a clean getter interface.
    */
-  protected _actionsNames: string[] = []
+  protected _names: string[] = []
 
   // --------------------------------------------------------------------------
   // Constructor and async initialiser.
@@ -388,9 +388,7 @@ export class Actions {
     assert(substitutionsVariables, 'substitutionsVariables is required')
 
     if (buildConfiguration !== undefined) {
-      log.trace(
-        `${Actions.name}()` + ` @${buildConfiguration.buildConfigurationName}`
-      )
+      log.trace(`${Actions.name}()` + ` @${buildConfiguration.name}`)
     } else {
       log.trace(`${Actions.name}()`)
     }
@@ -450,7 +448,7 @@ export class Actions {
       if (this.buildConfiguration !== undefined) {
         log.trace(
           `${Actions.name}.initialise()` +
-            ` @${this.buildConfiguration.buildConfigurationName} again`
+            ` @${this.buildConfiguration.name} again`
         )
       } else {
         log.trace(`${Actions.name}.initialise() again`)
@@ -460,8 +458,7 @@ export class Actions {
 
     if (this.buildConfiguration !== undefined) {
       log.trace(
-        `${Actions.name}.initialise()` +
-          ` @${this.buildConfiguration.buildConfigurationName}`
+        `${Actions.name}.initialise()` + ` @${this.buildConfiguration.name}`
       )
     } else {
       log.trace(`${Actions.name}.initialise()`)
@@ -485,10 +482,10 @@ export class Actions {
         }
       }
     }
-    const actionsNames = Array.from(this._actionsMap.keys())
-    this._actionsNames = actionsNames
+    const names = Array.from(this._actionsMap.keys())
+    this._names = names
 
-    this.log.trace(`${Actions.name}.initialise() =>`, actionsNames)
+    this.log.trace(`${Actions.name}.initialise() =>`, names)
 
     this._isInitialised = true
     return true
@@ -551,7 +548,7 @@ export class Actions {
       this._isInitialised,
       'Actions collection must be initialised before accessing names'
     )
-    return this._actionsNames
+    return this._names
   }
 
   /**
@@ -883,7 +880,7 @@ export class Action {
    * Names must be unique within the actions collection, enforced during
    * {@link Actions.initialise}.
    */
-  readonly actionName: string
+  readonly name: string
 
   /**
    * The JSON definition of the action commands.
@@ -1044,7 +1041,7 @@ export class Action {
     const log = parentActions.log
     log.trace(`${Action.name}(${actionName})`)
 
-    this.actionName = actionName
+    this.name = actionName
     this.jsonAction = jsonAction
     this.parentActions = parentActions
     if (matrixParameters !== undefined) {
@@ -1087,12 +1084,12 @@ export class Action {
     const log = this.parentActions.log
 
     if (this._isInitialised) {
-      log.trace(`${Action.name}.initialise(${this.actionName}) again`)
+      log.trace(`${Action.name}.initialise(${this.name}) again`)
 
       return false
     }
 
-    log.trace(`${Action.name}.initialise(${this.actionName})`)
+    log.trace(`${Action.name}.initialise(${this.name})`)
 
     // Silently accept empty or non-existing actions.
     const jsonAction = this.jsonAction
@@ -1115,7 +1112,7 @@ export class Action {
       } catch (error) {
         const message =
           getErrorMessage(error) +
-          ` in action "${this.actionName}" commands substitution`
+          ` in action "${this.name}" commands substitution`
         throw new ConfigurationError(message)
       }
     } else {
@@ -1126,8 +1123,8 @@ export class Action {
       .replace(new RegExp(os.EOL + '$'), '')
       .split(os.EOL)
 
-    log.trace(`${Action.name}.initialise() =>`, this.actionName)
-    log.trace(this.actionName, 'commands =>', this._commands)
+    log.trace(`${Action.name}.initialise() =>`, this.name)
+    log.trace(this.name, 'commands =>', this._commands)
 
     this._isInitialised = true
     return true

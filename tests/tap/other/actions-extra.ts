@@ -115,7 +115,7 @@ await t.test(
     t.ok(actionOne, 'topActions.get("one")')
 
     t.equal(actionOne.parentActions, topActions, 'parentActions')
-    t.equal(actionOne.actionName, 'one', 'actionName is "one"')
+    t.equal(actionOne.name, 'one', 'actionName is "one"')
 
     t.equal(
       actionOne.jsonAction,
