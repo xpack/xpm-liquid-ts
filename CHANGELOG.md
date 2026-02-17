@@ -6,6 +6,308 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues)
 and close existing issues and pull requests.
 
+## 2026-02-17
+
+* v4.0.0 prepared
+* 484c061 website update
+* 7e968d9 dist & website update
+* a7aba72 shorten members names
+* f44313e dist & website updates
+* da68f12 rename actions & build configurations names
+* 67592f0 dist & website update
+* 147518c more readonly members
+* 96a6120 tsdoc update
+* 3ad016e dist & website re-generate
+* 3045eb6 package.json update scripts
+* 8815199 launch.json update
+* 7e4b381 dist & website update
+* 58cd921 README update
+* 5e20089 tsdoc update
+* 099bea8 update README & CODE-REVIEW
+* d4bfb59 errors.ts update tsdoc
+* 2f13eec add tests/CODE-REVIEW.md
+* 0545e95 tests: remove more useless t.end() from async tests
+* f4aa85f tests: add initialisation.ts
+
+## 2026-02-16
+
+* 145cb66 tests: split large files
+* b677af0 test remove useless t.end() from async tests
+* 44f225a tests update descriptions
+* b2362fa tests: use t.reject and t.throws
+* 3fc8ee1 tests use t.reject
+* 1b06fa8 tests is_something.ts use array
+* 69ee0ef tests use t.reject
+* d96403c tests combinations-generator.ts update constant
+* 1231def reclassify errors
+* 91471b2 functions: make limits parameters
+* bde3753 combinations-generatr.ts cosmetics
+* 1133ea4 combinations-generator.ts update, with test
+
+## 2026-02-13
+
+* 4f2dfd8 combinations-generator.ts improvements & protected prefix
+* 28e583f perform-substitutions.ts: add MAX_SUBSTITUTION_OUTPUT_SIZE
+* b625728 simplify template expander
+* fdae6cd add platformDetector
+* db45573 data-model.ts: use LiquidEngine
+* cbbdb19 perform-substitutions.ts: MAX_SUBSTITUTION_ITERATIONS
+* 01904d2 create a shared TemplateExpander class
+* c697ad3 hasLiquidSyntax, used but not in drops
+* ccc4803 implement generator pattern for memory efficiency
+* 35715bc single regex for both patterns
+* 2620b47 assert must be initialised
+
+## 2026-02-12
+
+* 4439e93 build-configuration.ts cosmetics
+* 4220750 chmod-recursively.ts: throws ConfigurationError
+* 5e4ef0e cosmetise /* c8 ignore ... */
+* fc2b8fb add edge case documentation for safety nets
+* 5f556f0 platform-agnostic tests
+* 419d14c build-configurations.ts: extract long methods
+* ec52cc3 Improve error message consistency
+* 40443cd chmod-recursive.ts: add MAX_RECURSION_DEPTH
+* 15f94bb init-template-base.ts: collect all errors
+* 0ecb130 tests: use common log
+* 937cac2 add matrix-expander.ts
+* 056938e tests/package.ts /tmp
+* 1f575b4 tests/init-template-base.ts cosmetics
+* ee177ed perform-substitutions.ts: MAX_ITERATIONS
+* 650debc package.ts: constructor assert
+* 0de2e2e init-template-base.ts: MAX_RETRIES
+* 2c301b0 init-template-base.ts: render() assert
+* a984ca3 build-configuration.ts: getJsonName() throws
+* d403021 actions.ts: get optimisation
+* 3474640 tests: log level silent
+* 59f1bc4 tests cosmetics async & subtests
+
+## 2026-02-11
+
+* 5bc23d2 dist & website update
+* 2d00c51 copilot-instructions update
+* 1a076ef add missing tsdoc
+* 22ddb5b package.json update description
+* 7c4a934 build-configurtion.ts: document _processInherits()
+* d31b34c package*.json remove del dependency
+* b7b323a website/package*.json update
+* 1b3f3b6 package*.json update
+* 0ffdf16 dist & website update
+* 18dee9f define separate types for constructor parameters
+* 2f103ff tsdoc updates
+* 7b3317b remove xpm & json namespaces
+* 5ae5f2c rename Error classes
+
+## 2026-02-08
+
+* 1332aa8 use the json namespace
+* 2c96339 use the xpm namespace
+
+## 2026-02-07
+
+* 89f67ef Revert "test-ci.yml: COLUMNS: 120"
+* c8a8086 test-ci.yml: COLUMNS: 120
+* 4cd563e update dist
+* eff71b5 package.json: enable coverage to test-ci
+* 4d07428 test/tap/init-template-base.ts test askForMoreValues
+* d1e31e5 init-template-base.ts: group private
+
+## 2026-02-05
+
+* a2c569e dist & website update
+* 31b06ea copilot-instructions.md update
+* bd6ba29 remove /* eslint max-len: ...
+* 1256585 tests: enable typecheck
+* 82ce65b tests: add coverage-map
+* 34f4e49 remove tests/package.json
+* 7bb2c3a tests/tap t.test()
+* d1ce5a5 .taprc typecheck commented out
+* 98d4f96 tsconfig-common.json add TODO node22
+* 74d2235 package.json update test scripts
+* eaef09d package*.json remove make-dir & cp-file
+* 296092b launch.json update test one
+* 9f4eeb7 tests/tap/init-template-base.ts test copyFile|copyFolder
+* 05df8f5 tests/tap/build-configurations.ts add type conversion
+* 6b919db init-template-base.ts: update copyFile|copyFolder
+* 30750bc types/json.ts add JsonBuildConfigurationTemplateMatrix
+* 9da1e11 types/xpm.ts: add cwd to config
+* bee6065 rename tests without numbers
+* 853d9f9 dist & website update
+* 6315202 launch.json update
+* 54f0350 package.json update scripts
+* ee7dd01 tests/tap/640-init-template-base.ts
+* fded6f7 package.json: fix compile-watch
+* 9bda80b .taprc # jobs 1
+* 2b71bcc init-template-base.ts: private & _validatePropertiesDefinitions
+* 48d9edc catch (error)
+* 1ebcadd xpm-init-template.ts: add XpmInitTemplateType & Items
+* b066c6a is-something.ts: fix isString() return type
+* 6d0b7c7 build-configurations.ts: inherits explicit strings
+
+## 2026-02-03
+
+* 3b62f73 more consistent process.platform
+* 8595c68 tests cleanups
+* 1b0ea9e tests add errors
+* 1b539a2 build-configurations.ts: split initialise()
+* 8da659c cosmetics more separators
+* c14bb15 move createSubstituted* as a method
+* a96e65a utils.ts cosmetics
+* 584fbaf renumber tests utils
+* 782109b add combination-generator.ts
+* f5713f5 tests renumber
+* 9e72227 tests add build-configuration
+* af7b925 tests/actions update messages
+* 8c21537 build-configurations.ts: silence c8
+* 60c0d9b build-configurations.ts: throw in _getBuildFolderRelativePath
+* 84fb0dc build-configurations.ts: fix skip empty inherits
+
+## 2026-02-02
+
+* a4727cb actions.ts: upate duplicate messages
+* d3a0a7a build-configurations.ts: get throws
+* ea002db build-configurations.ts: check duplicates
+
+## 2026-02-01
+
+* 7134a6f utils.ts: fix c8 comment
+* 62ae1c7 actions tested with 100% coverage
+* c98d360 actions.ts: add more exceptions
+* 2ab9b26 add c8 explanations
+* 80ab542 remove @throws `AssertionError`
+* 24f4165 add messages to assert()
+* 18411c8 tests: integrate all subtitutions
+* f4f856f copilot-instructions.md update
+
+## 2026-01-30
+
+* 61eb1c0 test: rework throws
+* c351f48 actions.ts cosmetics
+* c79bf4e actions & build-configuration getters
+* 2c5f134 actions.ts cosmetics
+* 54c9c48 actions.ts XpmAction initialise() with conditional substitutions
+* e0f1a67 actions.ts XpmAction does not assert for jsonAction
+* 11abb3b actions.ts get() throws if not found
+* 8777358 package.ts cosmetics
+
+## 2026-01-29
+
+* 581704a tests re-work with folders & coverage
+* 40e3bd4 silence coverage warnings
+* f1b4b2a package.json cosmetics
+* 4413130 policies.ts cosmetics
+* c019981 perform-substitutions.ts: pass engine.options to Context
+* 9169efb perform-substitutions.ts: rework properties & matrix drops
+* 47a2ca6 liquid-engine.ts: accept keys on arrays
+
+## 2026-01-28
+
+* d4133d3 website tsdoc formatting
+
+## 2026-01-27
+
+* 7efd064 getPlatformKey more generic
+* c61f87f tsdoc initialise()
+* c553dd9 perform-subtitutions.ts cleanups
+* 6437276 chmod-recursively.ts: add log.trace symlink
+* 07dbb2b rename chmodRecursively
+
+## 2026-01-26
+
+* 00a533c pacakge.json add topCondig
+* e6b2597 dist & website update
+* dcf85ff src update tsdoc
+* 2f92b48 website: remove unused _test-results.mdx
+* 49383fc dist & website update
+* 40efea4 website update
+* f557695 actions.ts comments cosmetics
+* ad63ce0 build-configurations.ts: rename isHidden, _substitutionsVariables
+
+## 2026-01-25
+
+* f40976b website update commons
+* e89c336 website: API Reference
+* 0c15985 dist & website update
+* 29a3f81 src & tests: rename data-model, actions, build-configurations
+* b53dc66 rename copilot-instructions.md
+* 13056ac tsdoc cosmetics
+* 67063c0 website: add index pages
+* cc382ae dist & website update
+* 5702d07 src: use html lists
+* 9517446 website/package-lock.json update
+* 5eac1d1 custom.css: reduce table rows padding
+* 2a4b4e9 sidebar-category-tsdoc.json: add links
+
+## 2026-01-24
+
+* 74f1de3 api-extractor.json: silence ae-missing-release-tag
+* 061d0b6 update dist & website without @public
+* a3e602a src: remove @public
+* e24c339 website use emitDeclarationOnly
+
+## 2026-01-23
+
+* 8a0f955 add website badge
+* b3d68e2 website (work in progress)
+* 937d81d Merge commit '70b7fa1a22e23dc9b55c8ef817ce0955e7e1caf2' into website
+* 70b7fa1 Merge commit '3afbcbb27b1f3f0a73b1ee9fafe8efa55002bfde' into development
+* 3afbcbb add dist to git
+* a3f7406 .github update
+* ba73b28 publish-github-pages update
+* 29c83a5 website update after less .gitignore
+* 0695e66 publish-github-pages update
+* 6db7525 publish-github-pages update
+* 6a6cb6c README update
+* 454bb2c initial website
+* 555fd47 package*.json update
+* 43e4371 settings.json update
+* e4f4f58 tsconfig*.json update
+* 1fd5c75 tests/tap update for new api
+* 45b4efe add .copilot-instructions.md
+* af7165c add TSDoc comments
+
+## 2026-01-19
+
+* 385f43b policies.ts update
+* d6289fe more fodler reorganise & cosmetics
+* 83eb96b reorganise folders
+* af70139 move downloader back to xpm
+* 9fded39 eslint.config.js cleanup
+
+## 2026-01-18
+
+* 8aad321 separate downloader.ts
+* 6876848 actions & buildConfigurations error processing
+* 843f028 add liquid drop for matrix
+* c1fa57f utils.ts: ad getErrorMessage()
+* 8fe3cd5 liquid-build-configuration.ts: check circular inheritance
+
+## 2026-01-17
+
+* c5f46cf update tests without await
+* b78b5bd liquid-build-configurtions.ts re-work substitutions logic
+* cf73ab4 liquid-actions.ts throw XpmError
+* 794456f perform-substitutions.ts throw XpmErrot
+* f06ee21 liquid-drop.ts trace cosmetics
+* 9139549 liquid-engine.ts accept split_lines on arrays
+* 3efc46b liquid-build-configuration fix dependencies
+
+## 2026-01-16
+
+* fbcd561 liquid-build-configuration.ts cosmetics
+* 8998052 liquid-actions.ts add reference to buildConfiguration
+* 006395c liquid-actions.js: detect duplicates
+
+## 2026-01-15
+
+* 11698ce liquid-build-configuration: public jsonBuildConfiguration
+
+## 2026-01-14
+
+* 6741930 test update for windows
+* ecc21d1 test-ci.yml update
+* 399d566 CHANGELOG update
+
 ## 2026-01-14
 
 * 54c8fe6 prepare 4.0.0-pre
@@ -52,8 +354,10 @@ and close existing issues and pull requests.
 
 ## 2026-01-05
 
-2026-01-05 * 51b7a26 3.1.3
-2026-01-05 * a087546 prepare v3.1.3
+## 2026-01-05
+
+* 51b7a26 3.1.3
+* a087546 prepare v3.1.3
 * 5515ed0 fix pacote & semver imports
 
 ## 2026-01-04
