@@ -1,6 +1,6 @@
 {
   "name": "@xpack/xpm-lib",
-  "version": "4.0.0-pre",
+  "version": "4.0.0",
   "description": "A Node.js ES6 module with the xpm core library",
   "type": "module",
   "main": "./dist/index.js",
