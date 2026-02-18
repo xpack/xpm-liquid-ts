@@ -60,7 +60,7 @@
   },
   "scripts": {
     "compile-watch": "tsc --build --verbose --watch",
-    "prettier": "prettier src tests/tap --write",
+    "prettier": "prettier src tests/tap --write --config config/.prettierrc.json --ignore-path xonfig/.prettierignore",
     "fix": "eslint --fix src",
     "compile": "tsc --project tsconfig.json",
     "fix-compile": "npm run prettier && npm run fix && npm run compile",
