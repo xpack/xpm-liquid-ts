@@ -5,6 +5,7 @@
 
 import eslint from '@eslint/js'
 import prettierConfig from 'eslint-config-prettier'
+import path from 'node:path'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config({
@@ -31,7 +32,7 @@ export default tseslint.config({
       // ask TypeScript's type checking service for each source file's type information
       projectService: true,
       // tells our parser the absolute path of your project's root directory
-      tsconfigRootDir: import.meta.dirname,
+      tsconfigRootDir: path.dirname(path.dirname(new URL(import.meta.url).pathname)),
     },
   },
 })
