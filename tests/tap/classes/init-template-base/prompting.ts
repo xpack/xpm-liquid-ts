@@ -25,6 +25,7 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../../src/index.js'
+import { policies } from '../../../helpers/policies.js'
 
 // ============================================================================
 
@@ -149,6 +150,7 @@ await t.test(
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     await t.rejects(
       () => template.run(),
@@ -217,6 +219,7 @@ await t.test(
         templatesPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
+        policies,
       })
 
       await template.run()
@@ -258,6 +261,7 @@ await t.test(
         templatesPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
+        policies,
       })
 
       await template.run()
@@ -307,6 +311,7 @@ await t.test(
         templatesPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
+        policies,
       })
 
       await template.run()
@@ -346,6 +351,7 @@ await t.test(
         templatesPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
+        policies,
       })
 
       await template.run()
@@ -395,6 +401,7 @@ await t.test(
         templatesPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
+        policies,
       })
 
       await template.run()
@@ -434,6 +441,7 @@ await t.test(
         templatesPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
+        policies,
       })
 
       await template.run()
@@ -491,6 +499,7 @@ await t.test(
         templatesPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
+        policies,
       })
 
       await template.run()
@@ -532,6 +541,7 @@ await t.test(
         templatesPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
+        policies,
       })
       await template.run()
     })

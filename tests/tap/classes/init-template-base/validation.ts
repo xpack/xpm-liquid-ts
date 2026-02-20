@@ -25,6 +25,7 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../../src/index.js'
+import { policies } from '../../../helpers/policies.js'
 
 // ============================================================================
 
@@ -200,6 +201,7 @@ await t.test(
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
 
     const exitCode = await template.run()
@@ -300,6 +302,7 @@ await t.test(
         templatesPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
+        policies,
       })
 
       const exitCode = await template.run()
@@ -330,6 +333,7 @@ await t.test(
           templatesPath: '/my/templates',
           propertiesDefinitions,
           process: mockProcess,
+          policies,
         })
 
         await template.run()
@@ -367,6 +371,7 @@ await t.test(
           templatesPath: '/my/templates',
           propertiesDefinitions,
           process: mockProcess,
+          policies,
         })
 
         await template.run()
@@ -404,6 +409,7 @@ await t.test(
           templatesPath: '/my/templates',
           propertiesDefinitions,
           process: mockProcess,
+          policies,
         })
 
         await template.run()
@@ -441,6 +447,7 @@ await t.test(
           templatesPath: '/my/templates',
           propertiesDefinitions,
           process: mockProcess,
+          policies,
         })
 
         await template.run()
@@ -495,6 +502,7 @@ await t.test(
           templatesPath: '/my/templates',
           propertiesDefinitions,
           process: mockProcess,
+          policies,
         })
 
         await template.run()
@@ -529,6 +537,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -550,6 +559,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -572,6 +582,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -596,6 +607,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -620,6 +632,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -644,6 +657,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -669,6 +683,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -694,6 +709,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -720,6 +736,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -745,6 +762,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -771,6 +789,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -798,6 +817,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -825,6 +845,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -854,6 +875,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -886,6 +908,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -918,6 +941,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -948,6 +972,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -979,6 +1004,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -1010,6 +1036,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -1041,6 +1068,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -1068,6 +1096,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -1095,6 +1124,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -1122,6 +1152,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -1149,6 +1180,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -1175,6 +1207,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown')
   } catch (error) {
@@ -1210,6 +1243,7 @@ t.test('InitTemplateBase - isPlatformSupported()', (t): void => {
     templatesPath: '/my/templates',
     propertiesDefinitions,
     process: mockProcess,
+    policies,
   })
 
   t.equal(

@@ -44,6 +44,7 @@ import {
 } from './errors.js'
 import { LiquidEngine } from './liquid-engine.js'
 import { liquidSubstitutionsVariablesBase } from '../data/substitutions-variables.js'
+import type { Policies } from './policies.js'
 
 // ============================================================================
 
@@ -105,6 +106,30 @@ export interface InitTemplateConstructorParameters {
    * <https://liquidjs.com/tutorials/options.html>
    */
   options?: LiquidOptions
+
+  /**
+   * The policy flags instance that governs template behaviour.
+   *
+   * @remarks
+   * The `Policies` instance encapsulates compatibility flags derived
+   * from the minimum required <b>xpm</b> version declared by the
+   * package being initialised. These flags control how the template
+   * builds its substitution variables:
+   *
+   * <ul>
+   * <li>When {@link Policies.topPropertiesXpmInitTemplate} is
+   *    <code>true</code> (legacy, <b>xpm</b> \< 0.23.0), config
+   *    properties are spread at the top level of
+   *    <code>substitutionsVariables</code> for direct access in
+   *    templates.</li>
+   * <li>When <code>false</code> (modern, <b>xpm</b> \>= 0.23.0),
+   *    config properties are grouped under
+   *    <code>substitutionsVariables.matrix</code>, and base variables
+   *    from {@link liquidSubstitutionsVariablesBase} are merged into
+   *    <code>substitutionsVariables.properties</code>.</li>
+   * </ul>
+   */
+  policies: Policies
 }
 
 /**
@@ -225,6 +250,27 @@ export abstract class InitTemplateBase {
    */
   readonly process: NodeJS.Process
 
+  /**
+   * The policy flags instance that governs template behaviour.
+   *
+   * @remarks
+   * Stores the {@link Policies} instance supplied via the constructor.
+   * It is consulted in {@link InitTemplateBase.run} to determine
+   * which substitution variable layout to build:
+   *
+   * <ul>
+   * <li>Legacy layout ({@link Policies.topPropertiesXpmInitTemplate}
+   *    <code>= true</code>): config properties are spread at the top
+   *    level of <code>substitutionsVariables</code>.</li>
+   * <li>Modern layout (<code>false</code>): config properties are
+   *    placed under <code>substitutionsVariables.matrix</code>, and
+   *    base variables from
+   *    <code>liquidSubstitutionsVariablesBase</code> populate
+   *    <code>substitutionsVariables.properties</code>.</li>
+   * </ul>
+   */
+  policies: Policies
+
   // --------------------------------------------------------------------------
   // Constructor.
 
@@ -244,6 +290,7 @@ export abstract class InitTemplateBase {
     propertiesDefinitions,
     process: _process = process,
     options,
+    policies,
   }: InitTemplateConstructorParameters) {
     assert(context, 'context is required')
     assert(context.log, 'context.log is required')
@@ -262,6 +309,8 @@ export abstract class InitTemplateBase {
     this.templatesPath = templatesPath
 
     this.process = _process
+
+    this.policies = policies
 
     this._validatePropertiesDefinitions()
 
@@ -370,19 +419,35 @@ export abstract class InitTemplateBase {
 
     const currentTime = new Date()
 
-    const substitutionsVariables: InitTemplateSubstitutionsVariables = {
-      ...liquidSubstitutionsVariablesBase,
-      // Also pass the properties grouped.
-      properties: {
-        ...liquidSubstitutionsVariablesBase.properties,
+    let substitutionsVariables: InitTemplateSubstitutionsVariables
+
+    if (this.policies.topPropertiesXpmInitTemplate) {
+      substitutionsVariables = {
+        // Spread all config properties for easier access in templates.
         ...config.properties,
-      },
-      // An array with the property names, for iteration in templates.
-      propertiesNames: Object.keys(config.properties),
-      // The project name, for convenience.
-      projectName: config.projectName,
-      // Current year, for copyright statements.
-      year: currentTime.getFullYear().toString(),
+        // Also pass the properties grouped.
+        properties: config.properties,
+        // An array with the property names, for iteration in templates.
+        propertiesNames: Object.keys(config.properties),
+        // The project name, for convenience.
+        projectName: config.projectName,
+        // Current year, for copyright statements.
+        year: currentTime.getFullYear().toString(),
+      }
+    } else {
+      substitutionsVariables = {
+        ...liquidSubstitutionsVariablesBase,
+        // Pass the configuration properties grouped.
+        matrix: {
+          ...config.properties,
+        },
+        // An array with the property names, for iteration in templates.
+        propertiesNames: Object.keys(config.properties),
+        // The project name, for convenience.
+        projectName: config.projectName,
+        // Current year, for copyright statements.
+        year: currentTime.getFullYear().toString(),
+      }
     }
 
     this.substitutionsVariables = substitutionsVariables

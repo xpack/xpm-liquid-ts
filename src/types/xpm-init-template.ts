@@ -272,7 +272,7 @@ export interface InitTemplateSubstitutionsVariables {
   /**
    * The resolved template properties.
    */
-  properties: Record<string, string | string[] | boolean | number>
+  matrix?: Record<string, string | string[] | boolean | number>
   /**
    * Additional template variables.
    */

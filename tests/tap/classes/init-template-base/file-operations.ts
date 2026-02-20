@@ -26,6 +26,7 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../../src/index.js'
+import { policies } from '../../../helpers/policies.js'
 
 // ============================================================================
 
@@ -133,6 +134,7 @@ await t.test(
       templatesPath: path.join(fixturesFolderPath, 'template'),
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
 
     const exitCode = await template.run()
@@ -202,6 +204,7 @@ await t.test('InitTemplateBase - render()', async (t): Promise<void> => {
     templatesPath: path.join(fixturesFolderPath, 'template'),
     propertiesDefinitions,
     process: mockProcess,
+    policies,
   })
 
   const exitCode = await template.run()
@@ -273,6 +276,7 @@ t.test('InitTemplateBase - copyFile() assertions', (t): void => {
     templatesPath: path.join(fixturesFolderPath, 'template'),
     propertiesDefinitions,
     process: mockProcess,
+    policies,
   })
 
   template.run().then(
@@ -350,6 +354,7 @@ t.test('InitTemplateBase - copyFolder() assertions', (t): void => {
     templatesPath: path.join(fixturesFolderPath, 'template'),
     propertiesDefinitions,
     process: mockProcess,
+    policies,
   })
 
   template.run().then(
@@ -416,6 +421,7 @@ await t.test(
       templatesPath: path.join(fixturesFolderPath, 'template'),
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
 
     const exitCode = await template.run()
@@ -449,6 +455,7 @@ await t.test(
       templatesPath: path.join(fixturesFolderPath, 'template'),
       propertiesDefinitions,
       process: mockProcess,
+      policies,
     })
 
     // Do not call run(), so substitutionsVariables is not initialised.

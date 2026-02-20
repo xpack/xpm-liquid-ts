@@ -25,6 +25,7 @@ import { Logger } from '@xpack/logger'
 // ----------------------------------------------------------------------------
 
 import * as xpm from '../../../../src/index.js'
+import { policies, legacyPolicies } from '../../../helpers/policies.js'
 
 // ============================================================================
 
@@ -77,6 +78,7 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown for missing context')
   } catch (error) {
@@ -90,6 +92,7 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown for missing context')
   } catch (error) {
@@ -103,6 +106,7 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown for missing context')
   } catch (error) {
@@ -119,6 +123,7 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown for missing context')
   } catch (error) {
@@ -142,6 +147,7 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown for missing context')
   } catch (error) {
@@ -159,6 +165,7 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
       templatesPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown for missing context')
   } catch (error) {
@@ -172,6 +179,7 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
       templatesPath: undefined as unknown as string,
       propertiesDefinitions: {},
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown for missing context')
   } catch (error) {
@@ -186,6 +194,7 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
       propertiesDefinitions:
         undefined as unknown as xpm.InitTemplatePropertiesDefinitions,
       process: mockProcess,
+      policies,
     })
     t.fail('should have thrown for missing context')
   } catch (error) {
@@ -222,12 +231,57 @@ await t.test(
           'substitutionsVariables.year is correct'
         )
         t.equal(
+          this.substitutionsVariables?.matrix?.stringProp,
+          'a string',
+          'substitutionsVariables.matrix.stringProp is correct'
+        )
+
+        // Check that liquidSubstitutionsVariablesBase was added.
+        t.ok(
+          this.substitutionsVariables?.env,
+          'substitutionsVariables.env is present'
+        )
+        t.ok(
+          this.substitutionsVariables?.os,
+          'substitutionsVariables.os is present'
+        )
+        t.ok(
+          this.substitutionsVariables?.path,
+          'substitutionsVariables.path is present'
+        )
+      }
+    }
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      __dirname: '/my/dir',
+      templatesPath: '/my/templates',
+      propertiesDefinitions,
+      process: mockProcess,
+      policies,
+    })
+
+    const exitCode = await template.run()
+    t.equal(exitCode, 0, 'exit code is 0')
+  }
+)
+
+await t.test(
+  'InitTemplateBase - topPropertiesXpmInitTemplate',
+  async (t): Promise<void> => {
+    class XpmInitTemplate extends xpm.InitTemplateBase {
+      async generate(): Promise<void> {
+        t.ok(true, 'generate() called')
+
+        t.equal(
           this.substitutionsVariables?.stringProp,
           'a string',
-          'substitutionsVariables.stringProp is correct'
+          'substitutionsVariables.stringProp is correct (top-level)'
         )
+
         t.equal(
-          this.substitutionsVariables?.properties.stringProp,
+          (this.substitutionsVariables?.properties as Record<string, unknown>)
+            ?.stringProp,
           'a string',
           'substitutionsVariables.properties.stringProp is correct'
         )
@@ -240,6 +294,7 @@ await t.test(
       templatesPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
+      policies: legacyPolicies,
     })
 
     const exitCode = await template.run()
@@ -272,6 +327,7 @@ await t.test('InitTemplateBase - default process', async (t): Promise<void> => {
     __dirname: '/my/dir',
     templatesPath: '/my/templates',
     propertiesDefinitions,
+    policies,
   })
 
   const exitCode = await template.run()
