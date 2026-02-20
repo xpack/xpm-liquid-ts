@@ -109,7 +109,13 @@ export class LiquidEngine extends liquidjs.Liquid {
    * platform-specific behaviour. Defaults to a new {@link PlatformDetector}
    * instance.
    */
-  constructor(platformDetector: PlatformDetector = new PlatformDetector()) {
+  constructor({
+    platformDetector = new PlatformDetector(),
+    options = {},
+  }: {
+    platformDetector?: PlatformDetector
+    options?: liquidjs.LiquidOptions
+  } = {}) {
     super({
       strictFilters: true,
       strictVariables: true,
@@ -119,6 +125,8 @@ export class LiquidEngine extends liquidjs.Liquid {
       trimOutputRight: false,
       greedy: false,
       lenientIf: true,
+      cache: false,
+      ...options, // Allow overriding defaults with provided options.
     })
 
     this.platformDetector = platformDetector
