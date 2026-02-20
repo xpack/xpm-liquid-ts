@@ -43,6 +43,7 @@ import {
   ConfigurationError,
 } from './errors.js'
 import { LiquidEngine } from './liquid-engine.js'
+import { liquidSubstitutionsVariablesBase } from '../data/substitutions-variables.js'
 
 // ============================================================================
 
@@ -370,10 +371,12 @@ export abstract class InitTemplateBase {
     const currentTime = new Date()
 
     const substitutionsVariables: InitTemplateSubstitutionsVariables = {
-      // Spread all config properties for easier access in templates.
-      ...config.properties,
+      ...liquidSubstitutionsVariablesBase,
       // Also pass the properties grouped.
-      properties: config.properties,
+      properties: {
+        ...liquidSubstitutionsVariablesBase.properties,
+        ...config.properties,
+      },
       // An array with the property names, for iteration in templates.
       propertiesNames: Object.keys(config.properties),
       // The project name, for convenience.
