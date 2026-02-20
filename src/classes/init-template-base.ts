@@ -459,6 +459,9 @@ export abstract class InitTemplateBase {
     sourceFileRelativePath: string
     destinationFilePath?: string
   }): Promise<void> {
+    assert(sourceFileRelativePath, 'sourceFileRelativePath is required')
+    assert(destinationFilePath, 'destinationFilePath is required')
+
     const log = this._log
 
     await fs.mkdir(path.dirname(destinationFilePath), { recursive: true })
@@ -500,6 +503,9 @@ export abstract class InitTemplateBase {
     sourceFolderRelativePath: string
     destinationFolderPath?: string
   }): Promise<void> {
+    assert(sourceFolderRelativePath, 'sourceFolderRelativePath is required')
+    assert(destinationFolderPath, 'destinationFolderPath is required')
+
     const log = this._log
 
     const sourceFolderAbsolutePath = path.resolve(
@@ -550,6 +556,8 @@ export abstract class InitTemplateBase {
     destinationFilePath: string
     substitutionsVariables?: InitTemplateSubstitutionsVariables
   }): Promise<void> {
+    assert(sourceFilePath, 'sourceFilePath is required')
+    assert(destinationFilePath, 'destinationFilePath is required')
     assert(
       substitutionsVariables !== undefined,
       'substitutionsVariables is required for rendering templates. ' +
