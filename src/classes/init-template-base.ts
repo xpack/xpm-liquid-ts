@@ -117,15 +117,16 @@ export interface InitTemplateConstructorParameters {
    * builds its substitution variables:
    *
    * <ul>
-   * <li>When {@link Policies.topPropertiesXpmInitTemplate} is
-   *    <code>true</code> (legacy, <b>xpm</b> \< 0.23.0), config
+   * <li>When <code>Policies.topPropertiesXpmInitTemplate</code> is
+   *    <code>true</code> (legacy, <b>xpm</b> \< 0.23.0), configuration
    *    properties are spread at the top level of
    *    <code>substitutionsVariables</code> for direct access in
    *    templates.</li>
-   * <li>When <code>false</code> (modern, <b>xpm</b> \>= 0.23.0),
-   *    config properties are grouped under
+   * <li>When <code>Policies.topPropertiesXpmInitTemplate</code> is
+   *    <code>false</code> (modern, <b>xpm</b> \>= 0.23.0),
+   *    configuration properties are grouped under
    *    <code>substitutionsVariables.matrix</code>, and base variables
-   *    from {@link liquidSubstitutionsVariablesBase} are merged into
+   *    from <code>liquidSubstitutionsVariablesBase</code> are merged into
    *    <code>substitutionsVariables.properties</code>.</li>
    * </ul>
    */
@@ -259,10 +260,10 @@ export abstract class InitTemplateBase {
    * which substitution variable layout to build:
    *
    * <ul>
-   * <li>Legacy layout ({@link Policies.topPropertiesXpmInitTemplate}
-   *    <code>= true</code>): config properties are spread at the top
+   * <li>Legacy layout (<code>Policies.topPropertiesXpmInitTemplate</code>
+   *    is <code>true</code>): configuration properties are spread at the top
    *    level of <code>substitutionsVariables</code>.</li>
-   * <li>Modern layout (<code>false</code>): config properties are
+   * <li>Modern layout (<code>false</code>): configuration properties are
    *    placed under <code>substitutionsVariables.matrix</code>, and
    *    base variables from
    *    <code>liquidSubstitutionsVariablesBase</code> populate
