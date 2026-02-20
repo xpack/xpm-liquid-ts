@@ -50,6 +50,11 @@ t.test('Policies - default version', (t): void => {
     false,
     'singleParameterXpmInitTemplate false'
   )
+  t.equal(
+    policies.topPropertiesXpmInitTemplate,
+    false,
+    'topPropertiesXpmInitTemplate false'
+  )
 
   t.end()
 })
@@ -69,6 +74,11 @@ t.test('Policies - version 0.1.2', (t): void => {
     true,
     'singleParameterXpmInitTemplate true'
   )
+  t.equal(
+    policies.topPropertiesXpmInitTemplate,
+    true,
+    'topPropertiesXpmInitTemplate true'
+  )
 
   t.end()
 })
@@ -86,6 +96,11 @@ t.test('Policies - version 0.14.0', (t): void => {
     policies.singleParameterXpmInitTemplate,
     true,
     'singleParameterXpmInitTemplate true'
+  )
+  t.equal(
+    policies.topPropertiesXpmInitTemplate,
+    true,
+    'topPropertiesXpmInitTemplate true'
   )
 
   t.end()
@@ -109,6 +124,11 @@ t.test('Policies - version 0.16.0', (t): void => {
     true,
     'singleParameterXpmInitTemplate true'
   )
+  t.equal(
+    policies.topPropertiesXpmInitTemplate,
+    true,
+    'topPropertiesXpmInitTemplate true'
+  )
 
   t.end()
 })
@@ -130,6 +150,38 @@ t.test('Policies - version 0.22.0', (t): void => {
     policies.singleParameterXpmInitTemplate,
     false,
     'singleParameterXpmInitTemplate false'
+  )
+  t.equal(
+    policies.topPropertiesXpmInitTemplate,
+    true,
+    'topPropertiesXpmInitTemplate true'
+  )
+
+  t.end()
+})
+
+t.test('Policies - version 0.23.0', (t): void => {
+  const policies = new xpm.Policies({ log, minVersion: '0.23.0' })
+  t.equal(policies.shareNpmDependencies, false, 'shareNpmDependencies false')
+  t.equal(
+    policies.nonHierarchicalLocalXpacksFolder,
+    false,
+    'nonHierarchicalLocalXpacksFolder false'
+  )
+  t.equal(
+    policies.onlyStringDependencies,
+    false,
+    'onlyStringDependencies false'
+  )
+  t.equal(
+    policies.singleParameterXpmInitTemplate,
+    false,
+    'singleParameterXpmInitTemplate false'
+  )
+  t.equal(
+    policies.topPropertiesXpmInitTemplate,
+    false,
+    'topPropertiesXpmInitTemplate false'
   )
 
   t.end()

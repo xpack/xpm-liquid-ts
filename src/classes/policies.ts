@@ -11,7 +11,7 @@
 
 // ----------------------------------------------------------------------------
 
-// import assert from 'node:assert'
+import assert from 'node:assert'
 
 // https://nodejs.org/docs/latest/api/
 import { Logger } from '@xpack/logger'
@@ -35,7 +35,7 @@ export interface PoliciesConstructorParameters {
   /**
    * The minimum <b>xpm</b> version to evaluate.
    */
-  minVersion: string
+  minVersion?: string
 
   /**
    * The logger instance for output and diagnostics.
@@ -144,6 +144,22 @@ export class Policies {
    */
   singleParameterXpmInitTemplate = false
 
+  /**
+   * Indicates whether `xpm init` templates expose top-level properties.
+   *
+   * @remarks
+   * Legacy behavior (before 0.23.0): init templates exposed the configuration
+   * properties both as top-level and also grouped as `properties`
+   * in the liquid substitutions variables.
+   *
+   * Modern behavior (0.23.0+): init templates expose the configuration
+   * properties as `matrix` vs. the liquid substitutions variables as
+   * `properties` providing a clearer structure and avoiding conflicts.
+   *
+   * Set to `true` for packages with minimumXpmRequired \< 0.23.0.
+   */
+  topPropertiesXpmInitTemplate = false
+
   // --------------------------------------------------------------------------
   // Constructor.
 
@@ -177,9 +193,10 @@ export class Policies {
    * @param log - The logger instance for output and diagnostics.
    */
   constructor({ minVersion, log }: PoliciesConstructorParameters) {
-    log.trace(`${Policies.name}({minVersion: ${minVersion})`)
+    log.trace(`${Policies.name}({minVersion: ${String(minVersion)}})`)
 
     if (semver.valid(minVersion) !== null) {
+      assert(minVersion)
       this.minVersion = minVersion
 
       this.shareNpmDependencies = semver.lt(this.minVersion, '0.14.0')
@@ -191,6 +208,8 @@ export class Policies {
       this.onlyStringDependencies = semver.lt(this.minVersion, '0.16.0')
 
       this.singleParameterXpmInitTemplate = semver.lt(this.minVersion, '0.22.0')
+
+      this.topPropertiesXpmInitTemplate = semver.lt(this.minVersion, '0.23.0')
     }
 
     log.trace('policies:', this)
