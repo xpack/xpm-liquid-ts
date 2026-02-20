@@ -103,7 +103,7 @@ export interface InitTemplateConstructorParameters {
    *
    * Refer to the Liquid documentation for the complete list of available
    * configuration options:
-   * <https://liquidjs.com/tutorials/options.html>
+   * \<https://liquidjs.com/tutorials/options.html\>
    */
   options?: LiquidOptions
 
