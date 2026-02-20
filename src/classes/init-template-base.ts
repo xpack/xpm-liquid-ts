@@ -18,7 +18,7 @@ import * as path from 'node:path'
 import * as fs from 'node:fs/promises'
 
 // https://www.npmjs.com/package/liquidjs
-import { Liquid } from 'liquidjs'
+import { Liquid, LiquidOptions } from 'liquidjs'
 
 import { Logger } from '@xpack/logger'
 
@@ -86,6 +86,23 @@ export interface InitTemplateConstructorParameters {
    * and methods.
    */
   process?: NodeJS.Process
+
+  /**
+   * Optional configuration options for the Liquid templating engine.
+   *
+   * @remarks
+   * These options customise the behaviour of the Liquid template engine
+   * used for rendering template files. The options are merged with the
+   * required `root` property (set to `templatesPath`) when initialising
+   * the engine. Common options include `strictFilters`,
+   * `strictVariables`, and `trimOutputLeft`/`trimOutputRight` for
+   * controlling whitespace handling.
+   *
+   * Refer to the Liquid documentation for the complete list of available
+   * configuration options:
+   * <https://liquidjs.com/tutorials/options.html>
+   */
+  options?: LiquidOptions
 }
 
 /**
@@ -225,6 +242,7 @@ export abstract class InitTemplateBase {
     templatesPath,
     propertiesDefinitions,
     process: _process = process,
+    options,
   }: InitTemplateConstructorParameters) {
     assert(context, 'context is required')
     assert(context.log, 'context.log is required')
@@ -247,14 +265,11 @@ export abstract class InitTemplateBase {
     this._validatePropertiesDefinitions()
 
     // https://liquidjs.com
-    this._engine = new Liquid({
-      root: this._templatesPath,
-      cache: false,
-      strictFilters: true, // default: false
-      strictVariables: true, // default: false
-      trimTagRight: false, // default: false
-      trimTagLeft: false, // default: false
-      greedy: false,
+    this._engine = new LiquidEngine({
+      options: {
+        ...options,
+        root: this.templatesPath,
+      },
     })
   }
 
