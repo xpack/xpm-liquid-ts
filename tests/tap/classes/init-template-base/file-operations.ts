@@ -151,7 +151,7 @@ await t.test('InitTemplateBase - render()', async (t): Promise<void> => {
         path.join(os.tmpdir(), 'render-')
       )
 
-      const sourceFilePath = path.join(this._templatesPath, 'hello-liquid.txt')
+      const sourceFilePath = path.join(this.templatesPath, 'hello-liquid.txt')
       const destinationFilePath = path.join(
         temporaryFolderPath,
         'output',

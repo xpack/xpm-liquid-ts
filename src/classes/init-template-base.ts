@@ -42,6 +42,7 @@ import {
   OutputError,
   ConfigurationError,
 } from './errors.js'
+import { LiquidEngine } from './liquid-engine.js'
 
 // ============================================================================
 
@@ -137,38 +138,37 @@ export abstract class InitTemplateBase {
   /**
    * The <b>xpm</b> context containing configuration and logging utilities.
    */
-  protected readonly _context: Context
+  readonly context: Context
 
   /**
    * The logger instance for output and diagnostics.
    */
-  protected readonly _log: Logger
+  readonly log: Logger
 
   /**
    * Definitions of all properties supported by this template.
    */
-  protected readonly _propertiesDefinitions: InitTemplatePropertiesDefinitions =
-    {}
+  readonly propertiesDefinitions: InitTemplatePropertiesDefinitions = {}
 
   /**
    * The absolute path to the module folder.
    */
-  protected readonly __dirname: string
+  readonly __dirname: string
 
   /**
    * The absolute path to the templates folder.
    */
-  protected readonly _templatesPath: string
+  readonly templatesPath: string
 
   /**
    * The Liquid templating engine instance.
    */
-  protected readonly _engine: Liquid
+  readonly engine: Liquid
 
   /**
    * The variables to be used for template substitutions.
    */
-  protected _substitutionsVariables?: InitTemplateSubstitutionsVariables
+  substitutionsVariables?: InitTemplateSubstitutionsVariables
 
   /**
    * Flag indicating whether the template is running in interactive mode.
@@ -193,7 +193,7 @@ export abstract class InitTemplateBase {
    * after user input to exclude interactive time from performance metrics,
    * ensuring accurate measurement of the template processing duration.
    */
-  protected _isInteractive = false
+  isInteractive = false
 
   /**
    * The Node.js process object for accessing runtime environment information.
@@ -222,7 +222,7 @@ export abstract class InitTemplateBase {
    * behaviour whilst allowing test environments to inject controlled
    * process implementations.
    */
-  protected readonly _process: NodeJS.Process
+  readonly process: NodeJS.Process
 
   // --------------------------------------------------------------------------
   // Constructor.
@@ -246,26 +246,26 @@ export abstract class InitTemplateBase {
   }: InitTemplateConstructorParameters) {
     assert(context, 'context is required')
     assert(context.log, 'context.log is required')
-    assert(context.config, 'context.context is required')
+    assert(context.config, 'context.config is required')
     assert(context.config.projectName, 'context.config.projectName is required')
     assert(context.config.properties, 'context.config.properties is required')
     assert(__dirname, '__dirname is required')
     assert(templatesPath, 'templatesPath is required')
     assert(propertiesDefinitions, 'propertiesDefinitions is required')
 
-    this._context = context
-    this._log = context.log
+    this.context = context
+    this.log = context.log
 
-    this._propertiesDefinitions = propertiesDefinitions
+    this.propertiesDefinitions = propertiesDefinitions
     this.__dirname = __dirname
-    this._templatesPath = templatesPath
+    this.templatesPath = templatesPath
 
-    this._process = _process
+    this.process = _process
 
     this._validatePropertiesDefinitions()
 
     // https://liquidjs.com
-    this._engine = new LiquidEngine({
+    this.engine = new LiquidEngine({
       options: {
         ...options,
         root: this.templatesPath,
@@ -298,12 +298,12 @@ export abstract class InitTemplateBase {
    * available (non-TTY environment).
    */
   async run(): Promise<number> {
-    const log = this._log
+    const log = this.log
     log.trace(`${this.constructor.name}.run()`)
 
     log.info()
 
-    const context = this._context
+    const context = this.context
     const config = context.config
 
     assert(config.properties, 'config.properties is required')
@@ -311,7 +311,7 @@ export abstract class InitTemplateBase {
     const validationErrors: string[] = []
     for (const [key, val] of Object.entries(config.properties)) {
       try {
-        config.properties[key] = this._validatePropertyValue(key, val as string)
+        config.properties[key] = this.validatePropertyValue(key, val as string)
       } catch (error) {
         if (error instanceof Error) {
           const errorMessage = `${key}: ${error.message}`
@@ -333,17 +333,16 @@ export abstract class InitTemplateBase {
     // If there is at least one mandatory property without an explicit value,
     // enter the interactive mode and ask for the missing values.
 
-    const mustAsk = Object.keys(this._propertiesDefinitions).some((key) => {
+    const mustAsk = Object.keys(this.propertiesDefinitions).some((key) => {
       return (
-        this._propertiesDefinitions[key].isMandatory &&
-        !config.properties?.[key]
+        this.propertiesDefinitions[key].isMandatory && !config.properties?.[key]
       )
     })
 
     let isInteractive
     if (mustAsk) {
       // Need to ask for more values.
-      if (!(this._process.stdin.isTTY && this._process.stdout.isTTY)) {
+      if (!(this.process.stdin.isTTY && this.process.stdout.isTTY)) {
         throw new JsonSyntaxError(
           'Interactive mode not possible without a TTY.'
         )
@@ -357,7 +356,7 @@ export abstract class InitTemplateBase {
       isInteractive = true
     } else {
       // Properties without explicit values get their defaults.
-      Object.entries(this._propertiesDefinitions).forEach(([key, val]) => {
+      Object.entries(this.propertiesDefinitions).forEach(([key, val]) => {
         assert(config.properties, 'config.properties is required')
         if (!config.properties[key] && val.default !== undefined) {
           config.properties[key] = val.default
@@ -366,21 +365,24 @@ export abstract class InitTemplateBase {
       isInteractive = false
     }
 
-    this._isInteractive = isInteractive
+    this.isInteractive = isInteractive
 
     const currentTime = new Date()
 
     const substitutionsVariables: InitTemplateSubstitutionsVariables = {
-      // Spread all config properties.
+      // Spread all config properties for easier access in templates.
       ...config.properties,
       // Also pass the properties grouped.
       properties: config.properties,
+      // An array with the property names, for iteration in templates.
       propertiesNames: Object.keys(config.properties),
+      // The project name, for convenience.
       projectName: config.projectName,
+      // Current year, for copyright statements.
       year: currentTime.getFullYear().toString(),
     }
 
-    this._substitutionsVariables = substitutionsVariables
+    this.substitutionsVariables = substitutionsVariables
     await this.generate()
 
     return 0 // success
@@ -396,7 +398,7 @@ export abstract class InitTemplateBase {
    * {@link InitTemplateBase.copyFolder}, and
    * {@link InitTemplateBase.render} to create the project structure.
    * The substitution variables are available via the
-   * {@link InitTemplateBase._substitutionsVariables} property.
+   * {@link InitTemplateBase.substitutionsVariables} property.
    *
    * The implementation must be <b>asynchronous</b> to allow for file system
    * operations.
@@ -424,11 +426,11 @@ export abstract class InitTemplateBase {
   isPlatformSupported(platforms: string[] | undefined): boolean {
     assert(platforms && platforms.length !== 0, 'platforms array is required')
 
-    if (platforms.includes(`${this._process.platform}-${this._process.arch}`)) {
+    if (platforms.includes(`${this.process.platform}-${this.process.arch}`)) {
       return true
     }
 
-    if (platforms.includes(this._process.platform)) {
+    if (platforms.includes(this.process.platform)) {
       return true
     }
 
@@ -462,18 +464,18 @@ export abstract class InitTemplateBase {
     assert(sourceFileRelativePath, 'sourceFileRelativePath is required')
     assert(destinationFilePath, 'destinationFilePath is required')
 
-    const log = this._log
+    const log = this.log
 
     await fs.mkdir(path.dirname(destinationFilePath), { recursive: true })
 
     const sourceFileAbsolutePath = path.resolve(
-      this._templatesPath,
+      this.templatesPath,
       sourceFileRelativePath
     )
     await fs.copyFile(sourceFileAbsolutePath, destinationFilePath)
 
     const destinationFileRelativePath = path.relative(
-      this._context.config.cwd,
+      this.context.config.cwd,
       destinationFilePath
     )
     log.info(`File '${destinationFileRelativePath}' copied.`)
@@ -506,10 +508,10 @@ export abstract class InitTemplateBase {
     assert(sourceFolderRelativePath, 'sourceFolderRelativePath is required')
     assert(destinationFolderPath, 'destinationFolderPath is required')
 
-    const log = this._log
+    const log = this.log
 
     const sourceFolderAbsolutePath = path.resolve(
-      this._templatesPath,
+      this.templatesPath,
       sourceFolderRelativePath
     )
     await this._copyFolderRecursively({
@@ -550,7 +552,7 @@ export abstract class InitTemplateBase {
   async render({
     sourceFilePath,
     destinationFilePath,
-    substitutionsVariables = this._substitutionsVariables,
+    substitutionsVariables = this.substitutionsVariables,
   }: {
     sourceFilePath: string
     destinationFilePath: string
@@ -564,8 +566,8 @@ export abstract class InitTemplateBase {
         'Ensure that run() has been called to prepare the variables.'
     )
 
-    const log = this._log
-    const context = this._context
+    const log = this.log
+    const context = this.context
     const config = context.config
     const cwd = config.cwd
 
@@ -581,7 +583,7 @@ export abstract class InitTemplateBase {
 
     // const headerPath = path.resolve(codePath, `${pnam}.h`)
     try {
-      const fileContent = (await this._engine.renderFile(
+      const fileContent = (await this.engine.renderFile(
         sourceFilePath,
         substitutionsVariables
       )) as string
@@ -595,9 +597,6 @@ export abstract class InitTemplateBase {
     }
     log.info(`File '${destinationFileRelativePath}' generated.`)
   }
-
-  // --------------------------------------------------------------------------
-  // Protected Methods.
 
   /**
    * Validates a property value against its definition.
@@ -629,11 +628,11 @@ export abstract class InitTemplateBase {
    * @throws {@link ConfigurationError}
    * If the property is unsupported or the value is invalid.
    */
-  protected _validatePropertyValue(
+  validatePropertyValue(
     name: string,
     value: string
   ): string | boolean | number {
-    const propDef = this._propertiesDefinitions[name]
+    const propDef = this.propertiesDefinitions[name]
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (propDef === undefined) {
       throw new ConfigurationError(`Unsupported property '${name}'`)
@@ -691,6 +690,9 @@ export abstract class InitTemplateBase {
     )
   }
 
+  // --------------------------------------------------------------------------
+  // Protected Methods.
+
   /**
    * Prompts the user interactively for missing property values.
    *
@@ -715,21 +717,21 @@ export abstract class InitTemplateBase {
    * collected.
    */
   protected async _askForMoreValues() {
-    const context = this._context
+    const context = this.context
     const config = context.config
 
     assert(config.properties, 'config.properties is required')
 
     const rl = readline.createInterface({
-      input: this._process.stdin,
-      output: this._process.stdout,
+      input: this.process.stdin,
+      output: this.process.stdout,
     })
 
-    for (const name of Object.keys(this._propertiesDefinitions)) {
+    for (const name of Object.keys(this.propertiesDefinitions)) {
       if (config.properties[name]) {
         continue
       }
-      const definition = this._propertiesDefinitions[name]
+      const definition = this.propertiesDefinitions[name]
       let prompt = `${definition.label}?`
       switch (definition.type) {
         case 'select': {
@@ -786,27 +788,27 @@ export abstract class InitTemplateBase {
         const answer = (await rl.question(prompt)).trim()
         // console.log('{' + answer + '}')
         try {
-          const value = this._validatePropertyValue(name, answer)
+          const value = this.validatePropertyValue(name, answer)
           // console.log('[' + value + ']')
           config.properties[name] = value
           break
         } catch (error) {
           if (error instanceof Error) {
-            this._log.trace(error.message)
+            this.log.trace(error.message)
           }
-          this._process.stdout.write(`${definition.description}\n`)
+          this.process.stdout.write(`${definition.description}\n`)
           if (definition.type === 'select') {
             assert(definition.items, 'definition.items is required')
             for (const [ikey, ival] of Object.entries(definition.items)) {
               if (isString(ival)) {
-                this._process.stdout.write(`- ${ikey}: ${ival as string}\n`)
+                this.process.stdout.write(`- ${ikey}: ${ival as string}\n`)
               } else if (
                 isObject(ival) &&
                 this.isPlatformSupported(
                   (ival as InitTemplateItemValue).platforms
                 )
               ) {
-                this._process.stdout.write(
+                this.process.stdout.write(
                   `- ${ikey}: ${(ival as InitTemplateItemValue).message}\n`
                 )
               }
@@ -917,16 +919,16 @@ export abstract class InitTemplateBase {
    */
   protected _validatePropertiesDefinitions(): void {
     assert(
-      isObject(this._propertiesDefinitions),
+      isObject(this.propertiesDefinitions),
       'propertiesDefinitions is not an object.'
     )
 
     assert(
-      Object.keys(this._propertiesDefinitions).length > 0,
+      Object.keys(this.propertiesDefinitions).length > 0,
       'propertiesDefinitions is an empty object.'
     )
 
-    for (const [key, val] of Object.entries(this._propertiesDefinitions)) {
+    for (const [key, val] of Object.entries(this.propertiesDefinitions)) {
       assert(isString(val.label), `Property '${key}' must have a string label`)
       assert(val.label.trim() !== '', `Property '${key}' has an empty label`)
 

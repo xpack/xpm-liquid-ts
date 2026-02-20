@@ -204,7 +204,7 @@ await t.test(
           t.ok(true, 'generate() called')
 
           t.equal(
-            this._context.config.properties!.stringProp,
+            this.context.config.properties!.stringProp,
             'baburiba',
             'string property value is correct'
           )
@@ -245,7 +245,7 @@ await t.test(
           t.ok(true, 'generate() called')
 
           t.equal(
-            this._context.config.properties!.stringProp,
+            this.context.config.properties!.stringProp,
             'defaultString',
             'string property value is default'
           )
@@ -294,7 +294,7 @@ await t.test(
           t.ok(true, 'generate() called')
 
           t.equal(
-            this._context.config.properties!.numberProp,
+            this.context.config.properties!.numberProp,
             42,
             'number property value is correct'
           )
@@ -333,7 +333,7 @@ await t.test(
           t.ok(true, 'generate() called')
 
           t.equal(
-            this._context.config.properties!.numberProp,
+            this.context.config.properties!.numberProp,
             43,
             'number property value is default'
           )
@@ -382,7 +382,7 @@ await t.test(
           t.ok(true, 'generate() called')
 
           t.equal(
-            this._context.config.properties!.booleanProp,
+            this.context.config.properties!.booleanProp,
             true,
             'boolean property value is correct'
           )
@@ -421,7 +421,7 @@ await t.test(
           t.ok(true, 'generate() called')
 
           t.equal(
-            this._context.config.properties!.booleanProp,
+            this.context.config.properties!.booleanProp,
             false,
             'boolean property value is default'
           )
@@ -478,7 +478,7 @@ await t.test(
           t.ok(true, 'generate() called')
 
           t.equal(
-            this._context.config.properties!.selectProp,
+            this.context.config.properties!.selectProp,
             'option2',
             'select property value is correct'
           )
@@ -519,7 +519,7 @@ await t.test(
           t.ok(true, 'generate() called')
 
           t.equal(
-            this._context.config.properties!.selectProp,
+            this.context.config.properties!.selectProp,
             'option3',
             'select property value is default'
           )

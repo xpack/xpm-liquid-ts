@@ -206,32 +206,28 @@ await t.test(
       async generate(): Promise<void> {
         t.ok(true, 'generate() called')
 
-        t.same(this._context, mockContext, 'context is correct')
+        t.same(this.context, mockContext, 'context is correct')
         t.equal(this.__dirname, '/my/dir', '__dirname is correct')
-        t.equal(
-          this._templatesPath,
-          '/my/templates',
-          'templatesPath is correct'
-        )
-        t.same(this._process, mockProcess, 'process is correct')
+        t.equal(this.templatesPath, '/my/templates', 'templatesPath is correct')
+        t.same(this.process, mockProcess, 'process is correct')
 
         t.equal(
-          this._substitutionsVariables?.projectName,
+          this.substitutionsVariables?.projectName,
           'test-project',
           'substitutionsVariables.projectName is correct'
         )
         t.equal(
-          this._substitutionsVariables?.year,
+          this.substitutionsVariables?.year,
           new Date().getFullYear().toString(),
           'substitutionsVariables.year is correct'
         )
         t.equal(
-          this._substitutionsVariables?.stringProp,
+          this.substitutionsVariables?.stringProp,
           'a string',
           'substitutionsVariables.stringProp is correct'
         )
         t.equal(
-          this._substitutionsVariables?.properties.stringProp,
+          this.substitutionsVariables?.properties.stringProp,
           'a string',
           'substitutionsVariables.properties.stringProp is correct'
         )
@@ -256,7 +252,7 @@ await t.test('InitTemplateBase - default process', async (t): Promise<void> => {
     async generate(): Promise<void> {
       t.ok(true, 'generate() called')
 
-      t.same(this._process, process, 'process is default')
+      t.same(this.process, process, 'process is default')
     }
   }
 

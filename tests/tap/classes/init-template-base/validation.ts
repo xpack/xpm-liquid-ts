@@ -11,8 +11,8 @@
 
 // ----------------------------------------------------------------------------
 
-import { fileURLToPath } from 'node:url'
-import * as path from 'node:path'
+// import { fileURLToPath } from 'node:url'
+// import * as path from 'node:path'
 import { AssertionError } from 'node:assert'
 
 // ----------------------------------------------------------------------------
@@ -164,7 +164,7 @@ await t.test(
       async generate(): Promise<void> {
         t.ok(true, 'generate() called')
 
-        const config = this._context.config
+        const config = this.context.config
 
         t.equal(
           xpm.isString(config.properties!.stringProp),
@@ -224,7 +224,7 @@ await t.test(
         async generate(): Promise<void> {
           t.ok(true, 'generate() called')
 
-          const config = this._context.config
+          const config = this.context.config
 
           t.equal(
             xpm.isString(config.properties!.stringProp),
