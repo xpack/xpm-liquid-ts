@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/inittemplatebase/_substitutionsvariables
-title: InitTemplateBase._substitutionsVariables property
+slug: /api/xpm-lib/classes/inittemplatebase/templatespath
+title: InitTemplateBase.templatesPath property
 custom_edit_url: null
 ---
 
@@ -14,12 +14,12 @@ custom_edit_url: null
 
 
 
-The variables to be used for template substitutions.
+The absolute path to the templates folder.
 
 ## Signature
 
 ```typescript
-protected _substitutionsVariables?: InitTemplateSubstitutionsVariables;
+readonly templatesPath: string;
 ```
 <hr/>
 

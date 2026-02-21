@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/inittemplatebase/_engine
-title: InitTemplateBase._engine property
+slug: /api/xpm-lib/interfaces/inittemplatesubstitutionsvariables/matrix
+title: InitTemplateSubstitutionsVariables.matrix property
 custom_edit_url: null
 ---
 
@@ -14,12 +14,12 @@ custom_edit_url: null
 
 
 
-The Liquid templating engine instance.
+The resolved template properties.
 
 ## Signature
 
 ```typescript
-protected readonly _engine: Liquid;
+matrix?: Record<string, string | string[] | boolean | number>;
 ```
 <hr/>
 

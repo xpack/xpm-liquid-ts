@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/interfaces/inittemplatesubstitutionsvariables/properties
-title: InitTemplateSubstitutionsVariables.properties property
+slug: /api/xpm-lib/classes/inittemplatebase/substitutionsvariables
+title: InitTemplateBase.substitutionsVariables property
 custom_edit_url: null
 ---
 
@@ -14,12 +14,12 @@ custom_edit_url: null
 
 
 
-The resolved template properties.
+The variables to be used for template substitutions.
 
 ## Signature
 
 ```typescript
-properties: Record<string, string | boolean | number>;
+substitutionsVariables?: InitTemplateSubstitutionsVariables;
 ```
 <hr/>
 

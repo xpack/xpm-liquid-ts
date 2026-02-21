@@ -42,7 +42,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-{ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, }
+{ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, options, policies, }
 
 
 </td><td>

@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/inittemplatebase/_log
-title: InitTemplateBase._log property
+slug: /api/xpm-lib/classes/inittemplatebase/log
+title: InitTemplateBase.log property
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ The logger instance for output and diagnostics.
 ## Signature
 
 ```typescript
-protected readonly _log: Logger;
+readonly log: Logger;
 ```
 <hr/>
 

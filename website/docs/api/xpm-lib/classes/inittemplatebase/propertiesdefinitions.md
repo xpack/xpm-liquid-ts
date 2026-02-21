@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/inittemplatebase/_propertiesdefinitions
-title: InitTemplateBase._propertiesDefinitions property
+slug: /api/xpm-lib/classes/inittemplatebase/propertiesdefinitions
+title: InitTemplateBase.propertiesDefinitions property
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ Definitions of all properties supported by this template.
 ## Signature
 
 ```typescript
-protected readonly _propertiesDefinitions: InitTemplatePropertiesDefinitions;
+readonly propertiesDefinitions: InitTemplatePropertiesDefinitions;
 ```
 <hr/>
 

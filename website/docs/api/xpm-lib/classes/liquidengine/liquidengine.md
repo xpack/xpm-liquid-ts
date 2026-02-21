@@ -53,7 +53,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)(platformDetector)](/xpm-lib-ts/docs/api/xpm-lib/classes/liquidengine/constructor)
+[(constructor)({ platformDetector, options, }, input)](/xpm-lib-ts/docs/api/xpm-lib/classes/liquidengine/constructor)
 
 
 </td><td>

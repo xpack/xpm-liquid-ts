@@ -91,6 +91,44 @@ The <b>xpm</b> context containing configuration and logging utilities.
 </td></tr>
 <tr><td>
 
+[options?](/xpm-lib-ts/docs/api/xpm-lib/interfaces/inittemplateconstructorparameters/options)
+
+
+</td><td>
+
+
+</td><td>
+
+LiquidOptions
+
+
+</td><td>
+
+_(Optional)_ Optional configuration options for the Liquid templating engine.
+
+
+</td></tr>
+<tr><td>
+
+[policies](/xpm-lib-ts/docs/api/xpm-lib/interfaces/inittemplateconstructorparameters/policies)
+
+
+</td><td>
+
+
+</td><td>
+
+[Policies](/xpm-lib-ts/docs/api/xpm-lib/classes/policies)
+
+
+</td><td>
+
+The policy flags instance that governs template behaviour.
+
+
+</td></tr>
+<tr><td>
+
 [process?](/xpm-lib-ts/docs/api/xpm-lib/interfaces/inittemplateconstructorparameters/process)
 
 

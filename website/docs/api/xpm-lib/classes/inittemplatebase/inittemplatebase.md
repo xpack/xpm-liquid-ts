@@ -52,7 +52,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)({ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, }, input)](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/constructor)
+[(constructor)({ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, options, policies, }, input)](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/constructor)
 
 
 </td><td>
@@ -96,8 +96,6 @@ Description
 
 </td><td>
 
-`protected`
-
 `readonly`
 
 
@@ -114,12 +112,10 @@ The absolute path to the module folder.
 </td></tr>
 <tr><td>
 
-[\_context](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/_context)
+[context](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/context)
 
 
 </td><td>
-
-`protected`
 
 `readonly`
 
@@ -137,12 +133,10 @@ The <b>xpm</b> context containing configuration and logging utilities.
 </td></tr>
 <tr><td>
 
-[\_engine](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/_engine)
+[engine](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/engine)
 
 
 </td><td>
-
-`protected`
 
 `readonly`
 
@@ -160,12 +154,10 @@ The Liquid templating engine instance.
 </td></tr>
 <tr><td>
 
-[\_isInteractive](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/_isinteractive)
+[isInteractive](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/isinteractive)
 
 
 </td><td>
-
-`protected`
 
 
 </td><td>
@@ -181,12 +173,10 @@ Flag indicating whether the template is running in interactive mode.
 </td></tr>
 <tr><td>
 
-[\_log](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/_log)
+[log](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/log)
 
 
 </td><td>
-
-`protected`
 
 `readonly`
 
@@ -204,12 +194,29 @@ The logger instance for output and diagnostics.
 </td></tr>
 <tr><td>
 
-[\_process](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/_process)
+[policies](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/policies)
 
 
 </td><td>
 
-`protected`
+
+</td><td>
+
+[Policies](/xpm-lib-ts/docs/api/xpm-lib/classes/policies)
+
+
+</td><td>
+
+The policy flags instance that governs template behaviour.
+
+
+</td></tr>
+<tr><td>
+
+[process](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/process)
+
+
+</td><td>
 
 `readonly`
 
@@ -227,12 +234,10 @@ The Node.js process object for accessing runtime environment information.
 </td></tr>
 <tr><td>
 
-[\_propertiesDefinitions](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/_propertiesdefinitions)
+[propertiesDefinitions](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/propertiesdefinitions)
 
 
 </td><td>
-
-`protected`
 
 `readonly`
 
@@ -250,12 +255,10 @@ Definitions of all properties supported by this template.
 </td></tr>
 <tr><td>
 
-[\_substitutionsVariables?](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/_substitutionsvariables)
+[substitutionsVariables?](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/substitutionsvariables)
 
 
 </td><td>
-
-`protected`
 
 
 </td><td>
@@ -271,12 +274,10 @@ _(Optional)_ The variables to be used for template substitutions.
 </td></tr>
 <tr><td>
 
-[\_templatesPath](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/_templatespath)
+[templatesPath](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/templatespath)
 
 
 </td><td>
-
-`protected`
 
 `readonly`
 
@@ -357,22 +358,6 @@ Recursively copies all contents of a source folder to a destination folder.
 </td><td>
 
 Validates the structure and content of property definitions.
-
-
-</td></tr>
-<tr><td>
-
-[\_validatePropertyValue(name, value)](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/_validatepropertyvalue)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-Validates a property value against its definition.
 
 
 </td></tr>
@@ -459,6 +444,20 @@ Renders a template file using Liquid and writes the output.
 </td><td>
 
 Executes the template initialisation process.
+
+
+</td></tr>
+<tr><td>
+
+[validatePropertyValue(name, value)](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/validatepropertyvalue)
+
+
+</td><td>
+
+
+</td><td>
+
+Validates a property value against its definition.
 
 
 </td></tr>

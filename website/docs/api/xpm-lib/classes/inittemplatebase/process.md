@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/inittemplatebase/_process
-title: InitTemplateBase._process property
+slug: /api/xpm-lib/classes/inittemplatebase/process
+title: InitTemplateBase.process property
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ The Node.js process object for accessing runtime environment information.
 ## Signature
 
 ```typescript
-protected readonly _process: NodeJS.Process;
+readonly process: NodeJS.Process;
 ```
 
 ## Remarks

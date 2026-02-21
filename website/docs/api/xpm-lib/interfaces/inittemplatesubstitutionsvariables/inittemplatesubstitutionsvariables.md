@@ -66,7 +66,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[properties](/xpm-lib-ts/docs/api/xpm-lib/interfaces/inittemplatesubstitutionsvariables/properties)
+[matrix?](/xpm-lib-ts/docs/api/xpm-lib/interfaces/inittemplatesubstitutionsvariables/matrix)
 
 
 </td><td>
@@ -74,12 +74,12 @@ Description
 
 </td><td>
 
-Record&lt;string, string \| boolean \| number&gt;
+Record&lt;string, string \| string\[\] \| boolean \| number&gt;
 
 
 </td><td>
 
-The resolved template properties.
+_(Optional)_ The resolved template properties.
 
 
 </td></tr>

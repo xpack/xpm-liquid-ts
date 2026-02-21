@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/inittemplatebase/_validatepropertyvalue
-title: InitTemplateBase._validatePropertyValue() method
+slug: /api/xpm-lib/classes/inittemplatebase/validatepropertyvalue
+title: InitTemplateBase.validatePropertyValue() method
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ Validates a property value against its definition.
 ## Signature
 
 ```typescript
-protected _validatePropertyValue(name: string, value: string): string | boolean | number;
+validatePropertyValue(name: string, value: string): string | boolean | number;
 ```
 
 ## Parameters

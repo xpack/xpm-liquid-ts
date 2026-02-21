@@ -29,7 +29,7 @@ A promise that resolves when generation is complete.
 
 ## Remarks
 
-This abstract method must be implemented by derived classes to define the specific files and folder structure to create for the project. Implementations should use [InitTemplateBase.copyFile()](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/copyfile)<!-- -->, [InitTemplateBase.copyFolder()](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/copyfolder)<!-- -->, and [InitTemplateBase.render()](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/render) to create the project structure. The substitution variables are available via the [InitTemplateBase.\_substitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/_substitutionsvariables) property.
+This abstract method must be implemented by derived classes to define the specific files and folder structure to create for the project. Implementations should use [InitTemplateBase.copyFile()](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/copyfile)<!-- -->, [InitTemplateBase.copyFolder()](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/copyfolder)<!-- -->, and [InitTemplateBase.render()](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/render) to create the project structure. The substitution variables are available via the [InitTemplateBase.substitutionsVariables](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/substitutionsvariables) property.
 
 The implementation must be <b>asynchronous</b> to allow for file system operations.
 

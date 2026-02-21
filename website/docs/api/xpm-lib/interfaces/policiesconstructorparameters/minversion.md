@@ -19,7 +19,7 @@ The minimum <b>xpm</b> version to evaluate.
 ## Signature
 
 ```typescript
-minVersion: string;
+minVersion?: string;
 ```
 <hr/>
 

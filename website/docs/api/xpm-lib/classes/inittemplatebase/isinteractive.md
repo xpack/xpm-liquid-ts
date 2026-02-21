@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/inittemplatebase/_isinteractive
-title: InitTemplateBase._isInteractive property
+slug: /api/xpm-lib/classes/inittemplatebase/isinteractive
+title: InitTemplateBase.isInteractive property
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ Flag indicating whether the template is running in interactive mode.
 ## Signature
 
 ```typescript
-protected _isInteractive: boolean;
+isInteractive: boolean;
 ```
 
 ## Remarks

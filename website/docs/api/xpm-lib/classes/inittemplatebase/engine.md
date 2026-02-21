@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/inittemplatebase/_templatespath
-title: InitTemplateBase._templatesPath property
+slug: /api/xpm-lib/classes/inittemplatebase/engine
+title: InitTemplateBase.engine property
 custom_edit_url: null
 ---
 
@@ -14,12 +14,12 @@ custom_edit_url: null
 
 
 
-The absolute path to the templates folder.
+The Liquid templating engine instance.
 
 ## Signature
 
 ```typescript
-protected readonly _templatesPath: string;
+readonly engine: Liquid;
 ```
 <hr/>
 

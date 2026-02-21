@@ -3,8 +3,8 @@
 # DO NOT EDIT!
 # Automatically generated via tsdoc2docusaurus by API Documenter.
 
-slug: /api/xpm-lib/classes/inittemplatebase/_context
-title: InitTemplateBase._context property
+slug: /api/xpm-lib/classes/inittemplatebase/context
+title: InitTemplateBase.context property
 custom_edit_url: null
 ---
 
@@ -19,7 +19,7 @@ The <b>xpm</b> context containing configuration and logging utilities.
 ## Signature
 
 ```typescript
-protected readonly _context: Context;
+readonly context: Context;
 ```
 <hr/>
 
