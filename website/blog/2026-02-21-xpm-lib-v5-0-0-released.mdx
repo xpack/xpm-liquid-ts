@@ -1,0 +1,96 @@
+---
+
+title:  v5.0.0 released
+seo_title: Version 5.0.0 released
+description: Version v5.0.0 is a new release
+keywords:
+  - xpack
+  - xpm
+  - xpm-lib
+  - release
+
+date: 2026-02-21 14:21:26 +0200
+
+authors: ilg-ul
+
+# To be listed in the Releases page.
+tags:
+  - releases
+
+# ----- Custom properties -----------------------------------------------------
+
+version: "5.0.0"
+
+release_tag_url: "https://github.com/xpack/xpm-lib-ts/tree/v5.0.0"
+
+---
+
+import {PageMetadata} from '@docusaurus/theme-common';
+import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
+import Link from '@docusaurus/Link';
+
+import CommonPrerequisites from './_common/_prerequisites.mdx';
+import CommonDownloadAnalytics from './_common/_download-analytics.mdx';
+
+Version **5.0.0** is a new release; it improves support for xpm init templates.
+
+<!-- truncate -->
+
+<PageMetadata title={frontMatter.seo_title} />
+
+The [xpm Core lib](https://xpack.github.io/xpm-lib-ts/)
+project is a TypeScript Node.js module.
+
+<CommonPrerequisites nodeVersion="20.0"/>
+
+## Installation
+
+For installation instructions, please refer to the
+[Installation Guide](/docs/install/)
+page.
+
+## Import
+
+To include this module within TypeScript and ECMAScript modules, utilise `import`:
+
+```typescript
+import * as xpmLib from '@xpack/xpm-lib'
+```
+
+## Source code
+
+- <Link to={frontMatter.release_tag_url}>GitHub tag v{frontMatter.version} tree</Link>
+
+## Bug fixes
+
+- none
+
+## Enhancements
+
+- [[#9](https://github.com/xpack/xpm-lib-ts/issues/9)] - for more flexibility, 
+  pass options to LiquidEngine constructor
+- [[#10](https://github.com/xpack/xpm-lib-ts/issues/10)] - use the more 
+  elaborate LiquidEngine in the InitTemplateBase class
+- [[#11](https://github.com/xpack/xpm-lib-ts/issues/10)] - add asserts 
+  to InitTemplateBase file functions
+- [[#12](https://github.com/xpack/xpm-lib-ts/issues/12)] - make most 
+  InitTemplateBase members and methods public enhancement
+- [[#13](https://github.com/xpack/xpm-lib-ts/issues/13)] - use the same 
+  substitution variables for xpm init templates
+- [[#14](https://github.com/xpack/xpm-lib-ts/issues/14)] - add a new policy 
+  topPropertiesXpmInitTemplate
+- [[#15](https://github.com/xpack/xpm-lib-ts/issues/15)] - add policies 
+  to InitTemplateBase
+
+## Known problems
+
+- none
+
+## CI tests
+
+Before publishing, a set of tests were performed.
+The results are available from:
+
+- [GitHub Actions](https://github.com/xpack/xpm-lib-ts/actions)
+
