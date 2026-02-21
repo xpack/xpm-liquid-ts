@@ -15,7 +15,7 @@ export interface InitTemplateItemValue {
     message: string;
 }
 export interface InitTemplateSubstitutionsVariables {
-    properties: Record<string, string | boolean | number>;
+    matrix?: Record<string, string | string[] | boolean | number>;
     [key: string]: unknown;
 }
 //# sourceMappingURL=xpm-init-template.d.ts.map

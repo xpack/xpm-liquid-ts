@@ -6,8 +6,7 @@
 
 # The xpm Core Library
 
-A TypeScript Node.js module with the common code for **xpm** and xpm 
-enabled projects.
+A TypeScript Node.js module with the common code for xpm and xpm enabled projects.
 
 ## Project documentation
 
@@ -17,7 +16,7 @@ For information on how to install and use this project, please refer to the
 ## Project source
 
 The source code of the current release is available on
-[GitHub tag v4.0.0 tree](https://github.com/xpack/xpm-lib-ts/tree/v4.0.0).
+[GitHub tag v5.0.0 tree](https://github.com/xpack/xpm-lib-ts/tree/v5.0.0).
 
 ## License
 

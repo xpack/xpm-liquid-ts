@@ -33,5 +33,7 @@
     "tsbuildinfo",
     "typedoc",
     "xpack"
-  ]
+  ],
+  "prettier.configPath": "config/.prettierrc.json",
+  "prettier.ignorePath": "config/.prettierignore"
 }

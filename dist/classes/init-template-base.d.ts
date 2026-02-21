@@ -1,25 +1,29 @@
-import { Liquid } from 'liquidjs';
+import { Liquid, LiquidOptions } from 'liquidjs';
 import { Logger } from '@xpack/logger';
 import { InitTemplatePropertiesDefinitions, InitTemplateSubstitutionsVariables } from '../types/xpm-init-template.js';
 import { Context } from '../types/xpm.js';
+import type { Policies } from './policies.js';
 export interface InitTemplateConstructorParameters {
     context: Context;
     __dirname: string;
     templatesPath: string;
     propertiesDefinitions: InitTemplatePropertiesDefinitions;
     process?: NodeJS.Process;
+    options?: LiquidOptions;
+    policies: Policies;
 }
 export declare abstract class InitTemplateBase {
-    protected readonly _context: Context;
-    protected readonly _log: Logger;
-    protected readonly _propertiesDefinitions: InitTemplatePropertiesDefinitions;
-    protected readonly __dirname: string;
-    protected readonly _templatesPath: string;
-    protected readonly _engine: Liquid;
-    protected _substitutionsVariables?: InitTemplateSubstitutionsVariables;
-    protected _isInteractive: boolean;
-    protected readonly _process: NodeJS.Process;
-    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, }: InitTemplateConstructorParameters);
+    readonly context: Context;
+    readonly log: Logger;
+    readonly propertiesDefinitions: InitTemplatePropertiesDefinitions;
+    readonly __dirname: string;
+    readonly templatesPath: string;
+    readonly engine: Liquid;
+    substitutionsVariables?: InitTemplateSubstitutionsVariables;
+    isInteractive: boolean;
+    readonly process: NodeJS.Process;
+    policies: Policies;
+    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, options, policies, }: InitTemplateConstructorParameters);
     run(): Promise<number>;
     abstract generate(): Promise<void>;
     isPlatformSupported(platforms: string[] | undefined): boolean;
@@ -36,7 +40,7 @@ export declare abstract class InitTemplateBase {
         destinationFilePath: string;
         substitutionsVariables?: InitTemplateSubstitutionsVariables;
     }): Promise<void>;
-    protected _validatePropertyValue(name: string, value: string): string | boolean | number;
+    validatePropertyValue(name: string, value: string): string | boolean | number;
     protected _askForMoreValues(): Promise<void>;
     protected _copyFolderRecursively({ sourceFolderPath, destinationFolderPath, }: {
         sourceFolderPath: string;

@@ -33,7 +33,7 @@ function HomepageHeader() {
         <p className="hero__subtitle">{siteConfig.tagline}
         </p>
         <div className={styles.installWithCopy}>
-          <InstallWithCopy>npm install @xpack/xpm-lib@4.0.0</InstallWithCopy>
+          <InstallWithCopy>npm install @xpack/xpm-lib@5.0.0</InstallWithCopy>
         </div>
       </div>
     </header>

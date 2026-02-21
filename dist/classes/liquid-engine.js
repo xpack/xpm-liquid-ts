@@ -6,7 +6,7 @@ import { isJsonObject } from '../functions/is-something.js';
 import { PlatformDetector } from './platform-detector.js';
 export class LiquidEngine extends liquidjs.Liquid {
     platformDetector;
-    constructor(platformDetector = new PlatformDetector()) {
+    constructor({ platformDetector = new PlatformDetector(), options = {}, } = {}) {
         super({
             strictFilters: true,
             strictVariables: true,
@@ -16,6 +16,8 @@ export class LiquidEngine extends liquidjs.Liquid {
             trimOutputRight: false,
             greedy: false,
             lenientIf: true,
+            cache: false,
+            ...options,
         });
         this.platformDetector = platformDetector;
         this.registerFilter('path_basename', (p, ...arg) => path.basename(p, ...arg));

@@ -3,56 +3,56 @@ import * as util from 'node:util';
 import * as readline from 'node:readline/promises';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
-import { Liquid } from 'liquidjs';
 import { isString, isObject, isBoolean, isNumber, } from '../functions/is-something.js';
 import { JsonSyntaxError, InputError, OutputError, ConfigurationError, } from './errors.js';
+import { LiquidEngine } from './liquid-engine.js';
+import { liquidSubstitutionsVariablesBase } from '../data/substitutions-variables.js';
 export class InitTemplateBase {
-    _context;
-    _log;
-    _propertiesDefinitions = {};
+    context;
+    log;
+    propertiesDefinitions = {};
     __dirname;
-    _templatesPath;
-    _engine;
-    _substitutionsVariables;
-    _isInteractive = false;
-    _process;
-    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process = process, }) {
+    templatesPath;
+    engine;
+    substitutionsVariables;
+    isInteractive = false;
+    process;
+    policies;
+    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process = process, options, policies, }) {
         assert(context, 'context is required');
         assert(context.log, 'context.log is required');
-        assert(context.config, 'context.context is required');
+        assert(context.config, 'context.config is required');
         assert(context.config.projectName, 'context.config.projectName is required');
         assert(context.config.properties, 'context.config.properties is required');
         assert(__dirname, '__dirname is required');
         assert(templatesPath, 'templatesPath is required');
         assert(propertiesDefinitions, 'propertiesDefinitions is required');
-        this._context = context;
-        this._log = context.log;
-        this._propertiesDefinitions = propertiesDefinitions;
+        this.context = context;
+        this.log = context.log;
+        this.propertiesDefinitions = propertiesDefinitions;
         this.__dirname = __dirname;
-        this._templatesPath = templatesPath;
-        this._process = _process;
+        this.templatesPath = templatesPath;
+        this.process = _process;
+        this.policies = policies;
         this._validatePropertiesDefinitions();
-        this._engine = new Liquid({
-            root: this._templatesPath,
-            cache: false,
-            strictFilters: true,
-            strictVariables: true,
-            trimTagRight: false,
-            trimTagLeft: false,
-            greedy: false,
+        this.engine = new LiquidEngine({
+            options: {
+                ...options,
+                root: this.templatesPath,
+            },
         });
     }
     async run() {
-        const log = this._log;
+        const log = this.log;
         log.trace(`${this.constructor.name}.run()`);
         log.info();
-        const context = this._context;
+        const context = this.context;
         const config = context.config;
         assert(config.properties, 'config.properties is required');
         const validationErrors = [];
         for (const [key, val] of Object.entries(config.properties)) {
             try {
-                config.properties[key] = this._validatePropertyValue(key, val);
+                config.properties[key] = this.validatePropertyValue(key, val);
             }
             catch (error) {
                 if (error instanceof Error) {
@@ -67,13 +67,12 @@ export class InitTemplateBase {
                 ? '1 invalid property'
                 : `${String(validationErrors.length)} invalid properties`);
         }
-        const mustAsk = Object.keys(this._propertiesDefinitions).some((key) => {
-            return (this._propertiesDefinitions[key].isMandatory &&
-                !config.properties?.[key]);
+        const mustAsk = Object.keys(this.propertiesDefinitions).some((key) => {
+            return (this.propertiesDefinitions[key].isMandatory && !config.properties?.[key]);
         });
         let isInteractive;
         if (mustAsk) {
-            if (!(this._process.stdin.isTTY && this._process.stdout.isTTY)) {
+            if (!(this.process.stdin.isTTY && this.process.stdout.isTTY)) {
                 throw new JsonSyntaxError('Interactive mode not possible without a TTY.');
             }
             await this._askForMoreValues();
@@ -82,7 +81,7 @@ export class InitTemplateBase {
             isInteractive = true;
         }
         else {
-            Object.entries(this._propertiesDefinitions).forEach(([key, val]) => {
+            Object.entries(this.propertiesDefinitions).forEach(([key, val]) => {
                 assert(config.properties, 'config.properties is required');
                 if (!config.properties[key] && val.default !== undefined) {
                     config.properties[key] = val.default;
@@ -90,51 +89,71 @@ export class InitTemplateBase {
             });
             isInteractive = false;
         }
-        this._isInteractive = isInteractive;
+        this.isInteractive = isInteractive;
         const currentTime = new Date();
-        const substitutionsVariables = {
-            ...config.properties,
-            properties: config.properties,
-            propertiesNames: Object.keys(config.properties),
-            projectName: config.projectName,
-            year: currentTime.getFullYear().toString(),
-        };
-        this._substitutionsVariables = substitutionsVariables;
+        let substitutionsVariables;
+        if (this.policies.topPropertiesXpmInitTemplate) {
+            substitutionsVariables = {
+                ...config.properties,
+                properties: config.properties,
+                propertiesNames: Object.keys(config.properties),
+                projectName: config.projectName,
+                year: currentTime.getFullYear().toString(),
+            };
+        }
+        else {
+            substitutionsVariables = {
+                ...liquidSubstitutionsVariablesBase,
+                matrix: {
+                    ...config.properties,
+                },
+                propertiesNames: Object.keys(config.properties),
+                projectName: config.projectName,
+                year: currentTime.getFullYear().toString(),
+            };
+        }
+        this.substitutionsVariables = substitutionsVariables;
         await this.generate();
         return 0;
     }
     isPlatformSupported(platforms) {
         assert(platforms && platforms.length !== 0, 'platforms array is required');
-        if (platforms.includes(`${this._process.platform}-${this._process.arch}`)) {
+        if (platforms.includes(`${this.process.platform}-${this.process.arch}`)) {
             return true;
         }
-        if (platforms.includes(this._process.platform)) {
+        if (platforms.includes(this.process.platform)) {
             return true;
         }
         return false;
     }
     async copyFile({ sourceFileRelativePath, destinationFilePath = sourceFileRelativePath, }) {
-        const log = this._log;
+        assert(sourceFileRelativePath, 'sourceFileRelativePath is required');
+        assert(destinationFilePath, 'destinationFilePath is required');
+        const log = this.log;
         await fs.mkdir(path.dirname(destinationFilePath), { recursive: true });
-        const sourceFileAbsolutePath = path.resolve(this._templatesPath, sourceFileRelativePath);
+        const sourceFileAbsolutePath = path.resolve(this.templatesPath, sourceFileRelativePath);
         await fs.copyFile(sourceFileAbsolutePath, destinationFilePath);
-        const destinationFileRelativePath = path.relative(this._context.config.cwd, destinationFilePath);
+        const destinationFileRelativePath = path.relative(this.context.config.cwd, destinationFilePath);
         log.info(`File '${destinationFileRelativePath}' copied.`);
     }
     async copyFolder({ sourceFolderRelativePath, destinationFolderPath = sourceFolderRelativePath, }) {
-        const log = this._log;
-        const sourceFolderAbsolutePath = path.resolve(this._templatesPath, sourceFolderRelativePath);
+        assert(sourceFolderRelativePath, 'sourceFolderRelativePath is required');
+        assert(destinationFolderPath, 'destinationFolderPath is required');
+        const log = this.log;
+        const sourceFolderAbsolutePath = path.resolve(this.templatesPath, sourceFolderRelativePath);
         await this._copyFolderRecursively({
             sourceFolderPath: sourceFolderAbsolutePath,
             destinationFolderPath: path.resolve(destinationFolderPath),
         });
         log.info(`Folder '${destinationFolderPath}' copied.`);
     }
-    async render({ sourceFilePath, destinationFilePath, substitutionsVariables = this._substitutionsVariables, }) {
+    async render({ sourceFilePath, destinationFilePath, substitutionsVariables = this.substitutionsVariables, }) {
+        assert(sourceFilePath, 'sourceFilePath is required');
+        assert(destinationFilePath, 'destinationFilePath is required');
         assert(substitutionsVariables !== undefined, 'substitutionsVariables is required for rendering templates. ' +
             'Ensure that run() has been called to prepare the variables.');
-        const log = this._log;
-        const context = this._context;
+        const log = this.log;
+        const context = this.context;
         const config = context.config;
         const cwd = config.cwd;
         const sourceFileRelativePath = path.relative(cwd, sourceFilePath);
@@ -143,7 +162,7 @@ export class InitTemplateBase {
             `'${destinationFileRelativePath}'`);
         log.trace(`render(${sourceFilePath}, ${destinationFilePath})`);
         try {
-            const fileContent = (await this._engine.renderFile(sourceFilePath, substitutionsVariables));
+            const fileContent = (await this.engine.renderFile(sourceFilePath, substitutionsVariables));
             await fs.mkdir(path.dirname(destinationFilePath), { recursive: true });
             await fs.writeFile(destinationFilePath, fileContent, 'utf8');
         }
@@ -154,8 +173,8 @@ export class InitTemplateBase {
         }
         log.info(`File '${destinationFileRelativePath}' generated.`);
     }
-    _validatePropertyValue(name, value) {
-        const propDef = this._propertiesDefinitions[name];
+    validatePropertyValue(name, value) {
+        const propDef = this.propertiesDefinitions[name];
         if (propDef === undefined) {
             throw new ConfigurationError(`Unsupported property '${name}'`);
         }
@@ -201,18 +220,18 @@ export class InitTemplateBase {
         throw new ConfigurationError(`Unsupported value '${value}' for property '${name}'`);
     }
     async _askForMoreValues() {
-        const context = this._context;
+        const context = this.context;
         const config = context.config;
         assert(config.properties, 'config.properties is required');
         const rl = readline.createInterface({
-            input: this._process.stdin,
-            output: this._process.stdout,
+            input: this.process.stdin,
+            output: this.process.stdout,
         });
-        for (const name of Object.keys(this._propertiesDefinitions)) {
+        for (const name of Object.keys(this.propertiesDefinitions)) {
             if (config.properties[name]) {
                 continue;
             }
-            const definition = this._propertiesDefinitions[name];
+            const definition = this.propertiesDefinitions[name];
             let prompt = `${definition.label}?`;
             switch (definition.type) {
                 case 'select': {
@@ -255,24 +274,24 @@ export class InitTemplateBase {
                 }
                 const answer = (await rl.question(prompt)).trim();
                 try {
-                    const value = this._validatePropertyValue(name, answer);
+                    const value = this.validatePropertyValue(name, answer);
                     config.properties[name] = value;
                     break;
                 }
                 catch (error) {
                     if (error instanceof Error) {
-                        this._log.trace(error.message);
+                        this.log.trace(error.message);
                     }
-                    this._process.stdout.write(`${definition.description}\n`);
+                    this.process.stdout.write(`${definition.description}\n`);
                     if (definition.type === 'select') {
                         assert(definition.items, 'definition.items is required');
                         for (const [ikey, ival] of Object.entries(definition.items)) {
                             if (isString(ival)) {
-                                this._process.stdout.write(`- ${ikey}: ${ival}\n`);
+                                this.process.stdout.write(`- ${ikey}: ${ival}\n`);
                             }
                             else if (isObject(ival) &&
                                 this.isPlatformSupported(ival.platforms)) {
-                                this._process.stdout.write(`- ${ikey}: ${ival.message}\n`);
+                                this.process.stdout.write(`- ${ikey}: ${ival.message}\n`);
                             }
                         }
                     }
@@ -298,9 +317,9 @@ export class InitTemplateBase {
         }
     }
     _validatePropertiesDefinitions() {
-        assert(isObject(this._propertiesDefinitions), 'propertiesDefinitions is not an object.');
-        assert(Object.keys(this._propertiesDefinitions).length > 0, 'propertiesDefinitions is an empty object.');
-        for (const [key, val] of Object.entries(this._propertiesDefinitions)) {
+        assert(isObject(this.propertiesDefinitions), 'propertiesDefinitions is not an object.');
+        assert(Object.keys(this.propertiesDefinitions).length > 0, 'propertiesDefinitions is an empty object.');
+        for (const [key, val] of Object.entries(this.propertiesDefinitions)) {
             assert(isString(val.label), `Property '${key}' must have a string label`);
             assert(val.label.trim() !== '', `Property '${key}' has an empty label`);
             assert(isString(val.description), `Property '${key}' must have a string description`);
