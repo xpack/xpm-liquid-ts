@@ -6,10 +6,47 @@ Please check
 [GitHub](https://github.com/xpack/xpm-liquid-ts/issues)
 and close existing issues and pull requests.
 
+## 2026-02-21
+
+* v5.0.0 published on npmjs.com
+* v5.0.0 prepared
+* d2c2480 website update copyright 2026
+
+## 2026-02-20
+
+* d9ec695 tsdoc updates
+* 138d272 fix tsdoc
+* 60f9436 #15: add policies to InitTemplateBase
+* 5b5afab #14: add a new policy topPropertiesXpmInitTemplate
+* 7ca0150 #13: use common substitution variables for templates
+* 460d487 #12: make most InitTemplateBase members and methods public
+* d08bdc7 #11: add asserts to InitTemplateBase file functions
+* 0c6c823 #10: use LiquidEngine in templates
+* 70619b2 #9: pass options to LiquidEngine constructor
+
+## 2026-02-19
+
+* 270b015 move some tsconfig to config
+* 98fdcf2 move eslint configurations to config
+* a990e6e move prettier configurations to config
+
 ## 2026-02-17
 
-* v4.0.0 published on npmjs.com
-* v4.0.0 prepared
+* f1024c5 README update
+* 5404785 website: blog post release 4.0.0 published
+* c5a6124 4.0.0
+* e8404f7 CHANGELOG: publish npm v4.0.0
+* 2f47ffe CHANGELOG update
+
+## 2026-02-17
+
+## 2026-02-17
+
+* f1024c5 README update
+* 5404785 website: blog post release 4.0.0 published
+* c5a6124 4.0.0
+* e8404f7 CHANGELOG: publish npm v4.0.0
+* 2f47ffe CHANGELOG update
 * 484c061 website update
 * 7e968d9 dist & website update
 * a7aba72 shorten members names
