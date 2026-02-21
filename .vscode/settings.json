@@ -1,11 +1,8 @@
 {
-  "markdownlint.config": {
-    "MD041": false
-  },
-  "typescript.tsc.autoDetect": "off",
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
   "editor.tabSize": 2,
-  "standard.engine": "ts-standard",
-  "standard.autoFixOnSave": true,
+  "editor.formatOnSave": true,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -13,26 +10,13 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "files.associations": {
-    "api-extractor.json": "jsonc"
+    "*.json": "jsonc"
   },
   "cSpell.language": "en-GB",
-  "cSpell.ignoreWords": [
-    "Funcs",
-    "Ionescu",
-    "Liviu",
-    "POSIX",
-    "Schlueter",
-    "Stmts",
-    "endianness",
-    "liquidjs",
-    "npmignore",
-    "npmjs",
-    "orandea",
-    "postversion",
-    "tmpdir",
-    "tsbuildinfo",
-    "typedoc",
-    "xpack"
+  "cSpell.ignoreWords": [],
+  "xpack.exclude": [
+    "**/tests/**",
+    "**/tmp/**"
   ],
   "prettier.configPath": "config/.prettierrc.json",
   "prettier.ignorePath": "config/.prettierignore"

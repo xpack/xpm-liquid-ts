@@ -1,5 +1,8 @@
 {
-  /* https://www.typescriptlang.org/tsconfig */
+  // DO NOT EDIT!
+  // Automatically generated from npm-packages-helper/templates/*.
+
+  // https://www.typescriptlang.org/tsconfig
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "./config/tsconfig-common.json",
   "compilerOptions": {
