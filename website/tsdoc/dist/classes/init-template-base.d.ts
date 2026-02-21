@@ -1,7 +1,8 @@
-import { Liquid } from 'liquidjs';
+import { Liquid, LiquidOptions } from 'liquidjs';
 import { Logger } from '@xpack/logger';
 import { InitTemplatePropertiesDefinitions, InitTemplateSubstitutionsVariables } from '../types/xpm-init-template.js';
 import { Context } from '../types/xpm.js';
+import type { Policies } from './policies.js';
 /**
  * Configuration parameters for constructing an `xpm init` template.
  *
@@ -39,6 +40,46 @@ export interface InitTemplateConstructorParameters {
      * and methods.
      */
     process?: NodeJS.Process;
+    /**
+     * Optional configuration options for the Liquid templating engine.
+     *
+     * @remarks
+     * These options customise the behaviour of the Liquid template engine
+     * used for rendering template files. The options are merged with the
+     * required `root` property (set to `templatesPath`) when initialising
+     * the engine. Common options include `strictFilters`,
+     * `strictVariables`, and `trimOutputLeft`/`trimOutputRight` for
+     * controlling whitespace handling.
+     *
+     * Refer to the Liquid documentation for the complete list of available
+     * configuration options:
+     * \<https://liquidjs.com/tutorials/options.html\>
+     */
+    options?: LiquidOptions;
+    /**
+     * The policy flags instance that governs template behaviour.
+     *
+     * @remarks
+     * The `Policies` instance encapsulates compatibility flags derived
+     * from the minimum required <b>xpm</b> version declared by the
+     * package being initialised. These flags control how the template
+     * builds its substitution variables:
+     *
+     * <ul>
+     * <li>When <code>Policies.topPropertiesXpmInitTemplate</code> is
+     *    <code>true</code> (legacy, <b>xpm</b> \< 0.23.0), configuration
+     *    properties are spread at the top level of
+     *    <code>substitutionsVariables</code> for direct access in
+     *    templates.</li>
+     * <li>When <code>Policies.topPropertiesXpmInitTemplate</code> is
+     *    <code>false</code> (modern, <b>xpm</b> \>= 0.23.0),
+     *    configuration properties are grouped under
+     *    <code>substitutionsVariables.matrix</code>, and base variables
+     *    from <code>liquidSubstitutionsVariablesBase</code> are merged into
+     *    <code>substitutionsVariables.properties</code>.</li>
+     * </ul>
+     */
+    policies: Policies;
 }
 /**
  * Base class for `xpm init` templates.
@@ -66,31 +107,31 @@ export declare abstract class InitTemplateBase {
     /**
      * The <b>xpm</b> context containing configuration and logging utilities.
      */
-    protected readonly _context: Context;
+    readonly context: Context;
     /**
      * The logger instance for output and diagnostics.
      */
-    protected readonly _log: Logger;
+    readonly log: Logger;
     /**
      * Definitions of all properties supported by this template.
      */
-    protected readonly _propertiesDefinitions: InitTemplatePropertiesDefinitions;
+    readonly propertiesDefinitions: InitTemplatePropertiesDefinitions;
     /**
      * The absolute path to the module folder.
      */
-    protected readonly __dirname: string;
+    readonly __dirname: string;
     /**
      * The absolute path to the templates folder.
      */
-    protected readonly _templatesPath: string;
+    readonly templatesPath: string;
     /**
      * The Liquid templating engine instance.
      */
-    protected readonly _engine: Liquid;
+    readonly engine: Liquid;
     /**
      * The variables to be used for template substitutions.
      */
-    protected _substitutionsVariables?: InitTemplateSubstitutionsVariables;
+    substitutionsVariables?: InitTemplateSubstitutionsVariables;
     /**
      * Flag indicating whether the template is running in interactive mode.
      *
@@ -114,7 +155,7 @@ export declare abstract class InitTemplateBase {
      * after user input to exclude interactive time from performance metrics,
      * ensuring accurate measurement of the template processing duration.
      */
-    protected _isInteractive: boolean;
+    isInteractive: boolean;
     /**
      * The Node.js process object for accessing runtime environment information.
      *
@@ -142,7 +183,27 @@ export declare abstract class InitTemplateBase {
      * behaviour whilst allowing test environments to inject controlled
      * process implementations.
      */
-    protected readonly _process: NodeJS.Process;
+    readonly process: NodeJS.Process;
+    /**
+     * The policy flags instance that governs template behaviour.
+     *
+     * @remarks
+     * Stores the {@link Policies} instance supplied via the constructor.
+     * It is consulted in {@link InitTemplateBase.run} to determine
+     * which substitution variable layout to build:
+     *
+     * <ul>
+     * <li>Legacy layout (<code>Policies.topPropertiesXpmInitTemplate</code>
+     *    is <code>true</code>): configuration properties are spread at the top
+     *    level of <code>substitutionsVariables</code>.</li>
+     * <li>Modern layout (<code>false</code>): configuration properties are
+     *    placed under <code>substitutionsVariables.matrix</code>, and
+     *    base variables from
+     *    <code>liquidSubstitutionsVariablesBase</code> populate
+     *    <code>substitutionsVariables.properties</code>.</li>
+     * </ul>
+     */
+    policies: Policies;
     /**
      * Constructs an `xpm init` template instance.
      *
@@ -152,7 +213,7 @@ export declare abstract class InitTemplateBase {
      * @param templatesPath - The absolute path to the templates folder.
      * @param propertiesDefinitions - The definitions of all supported properties.
      */
-    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, }: InitTemplateConstructorParameters);
+    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, options, policies, }: InitTemplateConstructorParameters);
     /**
      * Executes the template initialisation process.
      *
@@ -185,7 +246,7 @@ export declare abstract class InitTemplateBase {
      * {@link InitTemplateBase.copyFolder}, and
      * {@link InitTemplateBase.render} to create the project structure.
      * The substitution variables are available via the
-     * {@link InitTemplateBase._substitutionsVariables} property.
+     * {@link InitTemplateBase.substitutionsVariables} property.
      *
      * The implementation must be <b>asynchronous</b> to allow for file system
      * operations.
@@ -315,7 +376,7 @@ export declare abstract class InitTemplateBase {
      * @throws {@link ConfigurationError}
      * If the property is unsupported or the value is invalid.
      */
-    protected _validatePropertyValue(name: string, value: string): string | boolean | number;
+    validatePropertyValue(name: string, value: string): string | boolean | number;
     /**
      * Prompts the user interactively for missing property values.
      *

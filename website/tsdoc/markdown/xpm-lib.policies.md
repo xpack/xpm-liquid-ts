@@ -178,5 +178,24 @@ Indicates whether `xpm init` templates accept a single parameter.
 
 
 </td></tr>
+<tr><td>
+
+[topPropertiesXpmInitTemplate](./xpm-lib.policies.toppropertiesxpminittemplate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Indicates whether `xpm init` templates expose top-level properties.
+
+
+</td></tr>
 </tbody></table>
 

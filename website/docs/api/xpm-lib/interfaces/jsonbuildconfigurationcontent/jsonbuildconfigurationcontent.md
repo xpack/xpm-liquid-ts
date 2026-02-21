@@ -182,6 +182,6 @@ _(Optional)_ The properties map for substitutions.
 
 <hr/>
 
-<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.56.3.</p>
+<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.57.2.</p>
 
 </div>

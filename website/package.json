@@ -73,10 +73,7 @@
     "del-cli": "^7.0.0",
     "json": "^11.0.0",
     "liquidjs": "^10.24.0",
-    "typescript": "~5.9.3",
-    "typedoc": "^0.28.16",
-    "typedoc-plugin-markdown": "^4.9.0",
-    "@xpack/tsdoc2docusaurus": "github:xpack/tsdoc2docusaurus-cli-ts#v1.3.0"
+    "typescript": "~5.9.3"
   },
   "browserslist": {
     "production": [

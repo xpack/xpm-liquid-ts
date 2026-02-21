@@ -1,7 +1,7 @@
 {
   "metadata": {
     "toolPackage": "@microsoft/api-extractor",
-    "toolVersion": "7.56.3",
+    "toolVersion": "7.57.2",
     "schemaVersion": 1011,
     "oldestForwardsCompatibleVersion": 1001,
     "tsdocConfig": {
@@ -5286,7 +5286,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "protected readonly __dirname: "
+                  "text": "readonly __dirname: "
                 },
                 {
                   "kind": "Content",
@@ -5306,7 +5306,7 @@
                 "endIndex": 2
               },
               "isStatic": false,
-              "isProtected": true,
+              "isProtected": false,
               "isAbstract": false
             },
             {
@@ -5344,37 +5344,6 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "_askForMoreValues"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_context:member",
-              "docComment": "/**\n * The <b>xpm</b> context containing configuration and logging utilities.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly _context: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Context",
-                  "canonicalReference": "@xpack/xpm-lib!Context:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_context",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
             },
             {
               "kind": "Method",
@@ -5438,221 +5407,6 @@
               "name": "_copyFolderRecursively"
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_engine:member",
-              "docComment": "/**\n * The Liquid templating engine instance.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly _engine: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Liquid",
-                  "canonicalReference": "liquidjs!Liquid:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_engine",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_isInteractive:member",
-              "docComment": "/**\n * Flag indicating whether the template is running in interactive mode.\n *\n * @remarks\n *\n * This flag determines whether the template execution involved user interaction through terminal prompts for missing mandatory property values.\n *\n * State management:\n *\n * <ol> <li>Initialised to <code>false</code> upon construction.</li> <li>Set to <code>true</code> in {@link InitTemplateBase.run} if at least one mandatory property was missing and required interactive prompting.</li> <li>Set to <code>false</code> if all mandatory properties were provided via command-line options.</li> </ol>\n *\n * When interactive mode is activated, the context start time is reset after user input to exclude interactive time from performance metrics, ensuring accurate measurement of the template processing duration.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected _isInteractive: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_isInteractive",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_log:member",
-              "docComment": "/**\n * The logger instance for output and diagnostics.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly _log: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Logger",
-                  "canonicalReference": "@xpack/logger!Logger:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_log",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_process:member",
-              "docComment": "/**\n * The Node.js process object for accessing runtime environment information.\n *\n * @remarks\n *\n * This reference provides access to process properties including standard I/O streams, platform information, and architecture details. It is configurable via the constructor to support testing scenarios where process properties need to be mocked or controlled.\n *\n * Usage within the template:\n *\n * <ol> <li>Platform detection via <code>process.platform</code> and <code>process.arch</code> for platform-specific property validation.</li> <li>TTY detection via <code>stdin.isTTY</code> and <code>stdout.isTTY</code> to determine whether interactive prompting is possible.</li> <li>Standard I/O access for interactive user prompts and diagnostic output.</li> </ol>\n *\n * Defaults to the global Node.js <code>process</code> object when not explicitly provided in the constructor, enabling normal runtime behaviour whilst allowing test environments to inject controlled process implementations.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly _process: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "NodeJS.Process",
-                  "canonicalReference": "!\"\\\"node:process\\\"\".__global.NodeJS.Process:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_process",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_propertiesDefinitions:member",
-              "docComment": "/**\n * Definitions of all properties supported by this template.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly _propertiesDefinitions: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "InitTemplatePropertiesDefinitions",
-                  "canonicalReference": "@xpack/xpm-lib!InitTemplatePropertiesDefinitions:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_propertiesDefinitions",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_substitutionsVariables:member",
-              "docComment": "/**\n * The variables to be used for template substitutions.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected _substitutionsVariables?: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "InitTemplateSubstitutionsVariables",
-                  "canonicalReference": "@xpack/xpm-lib!InitTemplateSubstitutionsVariables:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": true,
-              "releaseTag": "Public",
-              "name": "_substitutionsVariables",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_templatesPath:member",
-              "docComment": "/**\n * The absolute path to the templates folder.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected readonly _templatesPath: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "_templatesPath",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": true,
-              "isAbstract": false
-            },
-            {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_validatePropertiesDefinitions:member(1)",
               "docComment": "/**\n * Validates the structure and content of property definitions.\n *\n * @remarks\n *\n * This internal method performs comprehensive validation of the property definitions object during template construction, ensuring all definitions are well-formed and internally consistent before the template is used.\n *\n * Validation steps:\n *\n * <ol> <li><b>Overall structure:</b> <ul> <li>Verifies that <code>propertiesDefinitions</code> is an object.</li> <li>Ensures at least one property is defined (not empty).</li> </ul> </li> <li><b>Common property fields:</b> <ul> <li><code>label</code>: Must be a non-empty string.</li> <li><code>description</code>: Must be a non-empty string.</li> <li><code>isMandatory</code>: Must be a boolean if present.</li> <li><code>type</code>: Must be defined and one of: <code>select</code>, <code>string</code>, <code>number</code>, <code>boolean</code>.</li> </ul> </li> <li><b>Type-specific validation:</b> <ul> <li><b>Select properties:</b> <ul> <li>Must have an <code>items</code> object with at least one entry.</li> <li>Each item must be either a string (description) or an object with <code>platforms</code> array and <code>message</code> string.</li> <li>Non-mandatory properties must have a default value.</li> <li>Default values must be non-empty strings present in the items list.</li> </ul> </li> <li><b>String properties:</b> Default value must be a non-empty string if present.</li> <li><b>Number properties:</b> Default value must be a number if present.</li> <li><b>Boolean properties:</b> Default value must be a boolean if present.</li> </ul> </li> </ol>\n *\n * This validation ensures that templates are correctly configured before use, preventing runtime errors during property processing and interactive prompting. Any validation failure triggers an assertion error with a descriptive message indicating the specific problem.\n */\n",
@@ -5684,70 +5438,6 @@
               "name": "_validatePropertiesDefinitions"
             },
             {
-              "kind": "Method",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_validatePropertyValue:member(1)",
-              "docComment": "/**\n * Validates a property value against its definition.\n *\n * @remarks\n *\n * This method checks whether the provided value is valid for the specified property according to its type definition. It performs type-specific validation and conversion:\n *\n * <ul> <li><b>For <code>select</code> properties:</b> validates against allowed items andchecks platform compatibility if specified</li> <li><b>For <code>boolean</code> properties:</b> converts <code>'true'</code>/<code>'false'</code> strings to booleans</li> <li><b>For <code>number</code> properties:</b> converts strings to numbers</li> </ul>\n *\n * If the value is empty and a default is defined, the default value is returned. For select properties with platform restrictions, only platform-compatible items are considered valid.\n *\n * @param name - The property name to validate.\n *\n * @param value - The property value to validate.\n *\n * @returns The validated and potentially converted value (string, boolean, or number).\n *\n * @throws\n *\n * {@link ConfigurationError} If the property is unsupported or the value is invalid.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "protected _validatePropertyValue(name: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", value: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string | boolean | number"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 5,
-                "endIndex": 6
-              },
-              "releaseTag": "Public",
-              "isProtected": true,
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "name",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  },
-                  "isOptional": false
-                },
-                {
-                  "parameterName": "value",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 4
-                  },
-                  "isOptional": false
-                }
-              ],
-              "isOptional": false,
-              "isAbstract": false,
-              "name": "_validatePropertyValue"
-            },
-            {
               "kind": "Constructor",
               "canonicalReference": "@xpack/xpm-lib!InitTemplateBase:constructor(1)",
               "docComment": "/**\n * Constructs an `xpm init` template instance.\n *\n * @param context - The <b>xpm</b> context containing configuration and logging.\n *\n * @param __dirname - The absolute path to the module folder.\n *\n * @param templatesPath - The absolute path to the templates folder.\n *\n * @param propertiesDefinitions - The definitions of all supported properties.\n */\n",
@@ -5771,7 +5461,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "{ context, __dirname, templatesPath, propertiesDefinitions, process: _process, }",
+                  "parameterName": "{ context, __dirname, templatesPath, propertiesDefinitions, process: _process, options, policies, }",
                   "parameterTypeTokenRange": {
                     "startIndex": 0,
                     "endIndex": 0
@@ -5787,6 +5477,37 @@
                   "isOptional": false
                 }
               ]
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#context:member",
+              "docComment": "/**\n * The <b>xpm</b> context containing configuration and logging utilities.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly context: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Context",
+                  "canonicalReference": "@xpack/xpm-lib!Context:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "context",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
             },
             {
               "kind": "Method",
@@ -5911,9 +5632,40 @@
               "name": "copyFolder"
             },
             {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#engine:member",
+              "docComment": "/**\n * The Liquid templating engine instance.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly engine: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Liquid",
+                  "canonicalReference": "liquidjs!Liquid:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "engine",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#generate:member(1)",
-              "docComment": "/**\n * Generates the project files from the template.\n *\n * @remarks\n *\n * This abstract method must be implemented by derived classes to define the specific files and folder structure to create for the project. Implementations should use {@link InitTemplateBase.copyFile}, {@link InitTemplateBase.copyFolder}, and {@link InitTemplateBase.render} to create the project structure. The substitution variables are available via the {@link InitTemplateBase._substitutionsVariables} property.\n *\n * The implementation must be <b>asynchronous</b> to allow for file system operations.\n *\n * @returns A promise that resolves when generation is complete.\n */\n",
+              "docComment": "/**\n * Generates the project files from the template.\n *\n * @remarks\n *\n * This abstract method must be implemented by derived classes to define the specific files and folder structure to create for the project. Implementations should use {@link InitTemplateBase.copyFile}, {@link InitTemplateBase.copyFolder}, and {@link InitTemplateBase.render} to create the project structure. The substitution variables are available via the {@link InitTemplateBase.substitutionsVariables} property.\n *\n * The implementation must be <b>asynchronous</b> to allow for file system operations.\n *\n * @returns A promise that resolves when generation is complete.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -5945,6 +5697,36 @@
               "isOptional": false,
               "isAbstract": true,
               "name": "generate"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#isInteractive:member",
+              "docComment": "/**\n * Flag indicating whether the template is running in interactive mode.\n *\n * @remarks\n *\n * This flag determines whether the template execution involved user interaction through terminal prompts for missing mandatory property values.\n *\n * State management:\n *\n * <ol> <li>Initialised to <code>false</code> upon construction.</li> <li>Set to <code>true</code> in {@link InitTemplateBase.run} if at least one mandatory property was missing and required interactive prompting.</li> <li>Set to <code>false</code> if all mandatory properties were provided via command-line options.</li> </ol>\n *\n * When interactive mode is activated, the context start time is reset after user input to exclude interactive time from performance metrics, ensuring accurate measurement of the template processing duration.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "isInteractive: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "isInteractive",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
             },
             {
               "kind": "Method",
@@ -5993,6 +5775,130 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "isPlatformSupported"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#log:member",
+              "docComment": "/**\n * The logger instance for output and diagnostics.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly log: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Logger",
+                  "canonicalReference": "@xpack/logger!Logger:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "log",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#policies:member",
+              "docComment": "/**\n * The policy flags instance that governs template behaviour.\n *\n * @remarks\n *\n * Stores the {@link Policies} instance supplied via the constructor. It is consulted in {@link InitTemplateBase.run} to determine which substitution variable layout to build:\n *\n * <ul> <li>Legacy layout (<code>Policies.topPropertiesXpmInitTemplate</code> is <code>true</code>): configuration properties are spread at the top level of <code>substitutionsVariables</code>.</li> <li>Modern layout (<code>false</code>): configuration properties are placed under <code>substitutionsVariables.matrix</code>, and base variables from <code>liquidSubstitutionsVariablesBase</code> populate <code>substitutionsVariables.properties</code>.</li> </ul>\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "policies: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Policies",
+                  "canonicalReference": "@xpack/xpm-lib!Policies:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "policies",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#process:member",
+              "docComment": "/**\n * The Node.js process object for accessing runtime environment information.\n *\n * @remarks\n *\n * This reference provides access to process properties including standard I/O streams, platform information, and architecture details. It is configurable via the constructor to support testing scenarios where process properties need to be mocked or controlled.\n *\n * Usage within the template:\n *\n * <ol> <li>Platform detection via <code>process.platform</code> and <code>process.arch</code> for platform-specific property validation.</li> <li>TTY detection via <code>stdin.isTTY</code> and <code>stdout.isTTY</code> to determine whether interactive prompting is possible.</li> <li>Standard I/O access for interactive user prompts and diagnostic output.</li> </ol>\n *\n * Defaults to the global Node.js <code>process</code> object when not explicitly provided in the constructor, enabling normal runtime behaviour whilst allowing test environments to inject controlled process implementations.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly process: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "NodeJS.Process",
+                  "canonicalReference": "!\"\\\"node:process\\\"\".__global.NodeJS.Process:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "process",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#propertiesDefinitions:member",
+              "docComment": "/**\n * Definitions of all properties supported by this template.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly propertiesDefinitions: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "InitTemplatePropertiesDefinitions",
+                  "canonicalReference": "@xpack/xpm-lib!InitTemplatePropertiesDefinitions:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "propertiesDefinitions",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
             },
             {
               "kind": "Method",
@@ -6099,6 +6005,131 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "run"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#substitutionsVariables:member",
+              "docComment": "/**\n * The variables to be used for template substitutions.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "substitutionsVariables?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "InitTemplateSubstitutionsVariables",
+                  "canonicalReference": "@xpack/xpm-lib!InitTemplateSubstitutionsVariables:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "substitutionsVariables",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#templatesPath:member",
+              "docComment": "/**\n * The absolute path to the templates folder.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly templatesPath: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "templatesPath",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#validatePropertyValue:member(1)",
+              "docComment": "/**\n * Validates a property value against its definition.\n *\n * @remarks\n *\n * This method checks whether the provided value is valid for the specified property according to its type definition. It performs type-specific validation and conversion:\n *\n * <ul> <li><b>For <code>select</code> properties:</b> validates against allowed items andchecks platform compatibility if specified</li> <li><b>For <code>boolean</code> properties:</b> converts <code>'true'</code>/<code>'false'</code> strings to booleans</li> <li><b>For <code>number</code> properties:</b> converts strings to numbers</li> </ul>\n *\n * If the value is empty and a default is defined, the default value is returned. For select properties with platform restrictions, only platform-compatible items are considered valid.\n *\n * @param name - The property name to validate.\n *\n * @param value - The property value to validate.\n *\n * @returns The validated and potentially converted value (string, boolean, or number).\n *\n * @throws\n *\n * {@link ConfigurationError} If the property is unsupported or the value is invalid.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "validatePropertyValue(name: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", value: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string | boolean | number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "name",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "value",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "validatePropertyValue"
             }
           ],
           "implementsTokenRanges": []
@@ -6168,6 +6199,62 @@
               "isOptional": false,
               "releaseTag": "Public",
               "name": "context",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateConstructorParameters#options:member",
+              "docComment": "/**\n * Optional configuration options for the Liquid templating engine.\n *\n * @remarks\n *\n * These options customise the behaviour of the Liquid template engine used for rendering template files. The options are merged with the required `root` property (set to `templatesPath`) when initialising the engine. Common options include `strictFilters`, `strictVariables`, and `trimOutputLeft`/`trimOutputRight` for controlling whitespace handling.\n *\n * Refer to the Liquid documentation for the complete list of available configuration options: \\<https://liquidjs.com/tutorials/options.html\\>\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "options?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "LiquidOptions",
+                  "canonicalReference": "liquidjs!LiquidOptions:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "options",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateConstructorParameters#policies:member",
+              "docComment": "/**\n * The policy flags instance that governs template behaviour.\n *\n * @remarks\n *\n * The `Policies` instance encapsulates compatibility flags derived from the minimum required <b>xpm</b> version declared by the package being initialised. These flags control how the template builds its substitution variables:\n *\n * <ul> <li>When <code>Policies.topPropertiesXpmInitTemplate</code> is <code>true</code> (legacy, <b>xpm</b> \\< 0.23.0), configuration properties are spread at the top level of <code>substitutionsVariables</code> for direct access in templates.</li> <li>When <code>Policies.topPropertiesXpmInitTemplate</code> is <code>false</code> (modern, <b>xpm</b> \\>= 0.23.0), configuration properties are grouped under <code>substitutionsVariables.matrix</code>, and base variables from <code>liquidSubstitutionsVariablesBase</code> are merged into <code>substitutionsVariables.properties</code>.</li> </ul>\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "policies: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Policies",
+                  "canonicalReference": "@xpack/xpm-lib!Policies:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "policies",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -6685,12 +6772,12 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateSubstitutionsVariables#properties:member",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateSubstitutionsVariables#matrix:member",
               "docComment": "/**\n * The resolved template properties.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "properties: "
+                  "text": "matrix?: "
                 },
                 {
                   "kind": "Reference",
@@ -6699,7 +6786,7 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "<string, string | boolean | number>"
+                  "text": "<string, string | string[] | boolean | number>"
                 },
                 {
                   "kind": "Content",
@@ -6707,9 +6794,9 @@
                 }
               ],
               "isReadonly": false,
-              "isOptional": false,
+              "isOptional": true,
               "releaseTag": "Public",
-              "name": "properties",
+              "name": "matrix",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 3
@@ -9196,12 +9283,29 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(platformDetector?: "
+                  "text": "constructor(input?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "{\n        platformDetector?: "
                 },
                 {
                   "kind": "Reference",
                   "text": "PlatformDetector",
                   "canonicalReference": "@xpack/xpm-lib!PlatformDetector:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";\n        options?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "liquidjs.LiquidOptions",
+                  "canonicalReference": "liquidjs!LiquidOptions:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";\n    }"
                 },
                 {
                   "kind": "Content",
@@ -9213,10 +9317,18 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "platformDetector",
+                  "parameterName": "{ platformDetector, options, }",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 0,
+                    "endIndex": 0
+                  },
+                  "isOptional": true
+                },
+                {
+                  "parameterName": "input",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
-                    "endIndex": 2
+                    "endIndex": 6
                   },
                   "isOptional": true
                 }
@@ -11524,6 +11636,36 @@
               "isStatic": false,
               "isProtected": false,
               "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@xpack/xpm-lib!Policies#topPropertiesXpmInitTemplate:member",
+              "docComment": "/**\n * Indicates whether `xpm init` templates expose top-level properties.\n *\n * @remarks\n *\n * Legacy behavior (before 0.23.0): init templates exposed the configuration properties both as top-level and also grouped as `properties` in the liquid substitutions variables.\n *\n * Modern behavior (0.23.0+): init templates expose the configuration properties as `matrix` vs. the liquid substitutions variables as `properties` providing a clearer structure and avoiding conflicts.\n *\n * Set to `true` for packages with minimumXpmRequired \\< 0.23.0.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "topPropertiesXpmInitTemplate: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "topPropertiesXpmInitTemplate",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
             }
           ],
           "implementsTokenRanges": []
@@ -11578,7 +11720,7 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "minVersion: "
+                  "text": "minVersion?: "
                 },
                 {
                   "kind": "Content",
@@ -11590,7 +11732,7 @@
                 }
               ],
               "isReadonly": false,
-              "isOptional": false,
+              "isOptional": true,
               "releaseTag": "Public",
               "name": "minVersion",
               "propertyTypeTokenRange": {

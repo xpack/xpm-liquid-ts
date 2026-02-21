@@ -13,7 +13,7 @@ export interface PoliciesConstructorParameters {
     /**
      * The minimum <b>xpm</b> version to evaluate.
      */
-    minVersion: string;
+    minVersion?: string;
     /**
      * The logger instance for output and diagnostics.
      */
@@ -112,6 +112,21 @@ export declare class Policies {
      * Set to `true` for packages with minimumXpmRequired \< 0.22.0.
      */
     singleParameterXpmInitTemplate: boolean;
+    /**
+     * Indicates whether `xpm init` templates expose top-level properties.
+     *
+     * @remarks
+     * Legacy behavior (before 0.23.0): init templates exposed the configuration
+     * properties both as top-level and also grouped as `properties`
+     * in the liquid substitutions variables.
+     *
+     * Modern behavior (0.23.0+): init templates expose the configuration
+     * properties as `matrix` vs. the liquid substitutions variables as
+     * `properties` providing a clearer structure and avoiding conflicts.
+     *
+     * Set to `true` for packages with minimumXpmRequired \< 0.23.0.
+     */
+    topPropertiesXpmInitTemplate: boolean;
     /**
      * Constructs policy flags based on a minimum <b>xpm</b> version.
      *

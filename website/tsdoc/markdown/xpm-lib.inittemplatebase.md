@@ -42,7 +42,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)({ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, }, input)](./xpm-lib.inittemplatebase._constructor_.md)
+[(constructor)({ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, options, policies, }, input)](./xpm-lib.inittemplatebase._constructor_.md)
 
 
 </td><td>
@@ -86,8 +86,6 @@ Description
 
 </td><td>
 
-`protected`
-
 `readonly`
 
 
@@ -104,12 +102,10 @@ The absolute path to the module folder.
 </td></tr>
 <tr><td>
 
-[\_context](./xpm-lib.inittemplatebase._context.md)
+[context](./xpm-lib.inittemplatebase.context.md)
 
 
 </td><td>
-
-`protected`
 
 `readonly`
 
@@ -127,12 +123,10 @@ The <b>xpm</b> context containing configuration and logging utilities.
 </td></tr>
 <tr><td>
 
-[\_engine](./xpm-lib.inittemplatebase._engine.md)
+[engine](./xpm-lib.inittemplatebase.engine.md)
 
 
 </td><td>
-
-`protected`
 
 `readonly`
 
@@ -150,12 +144,10 @@ The Liquid templating engine instance.
 </td></tr>
 <tr><td>
 
-[\_isInteractive](./xpm-lib.inittemplatebase._isinteractive.md)
+[isInteractive](./xpm-lib.inittemplatebase.isinteractive.md)
 
 
 </td><td>
-
-`protected`
 
 
 </td><td>
@@ -171,12 +163,10 @@ Flag indicating whether the template is running in interactive mode.
 </td></tr>
 <tr><td>
 
-[\_log](./xpm-lib.inittemplatebase._log.md)
+[log](./xpm-lib.inittemplatebase.log.md)
 
 
 </td><td>
-
-`protected`
 
 `readonly`
 
@@ -194,12 +184,29 @@ The logger instance for output and diagnostics.
 </td></tr>
 <tr><td>
 
-[\_process](./xpm-lib.inittemplatebase._process.md)
+[policies](./xpm-lib.inittemplatebase.policies.md)
 
 
 </td><td>
 
-`protected`
+
+</td><td>
+
+[Policies](./xpm-lib.policies.md)
+
+
+</td><td>
+
+The policy flags instance that governs template behaviour.
+
+
+</td></tr>
+<tr><td>
+
+[process](./xpm-lib.inittemplatebase.process.md)
+
+
+</td><td>
 
 `readonly`
 
@@ -217,12 +224,10 @@ The Node.js process object for accessing runtime environment information.
 </td></tr>
 <tr><td>
 
-[\_propertiesDefinitions](./xpm-lib.inittemplatebase._propertiesdefinitions.md)
+[propertiesDefinitions](./xpm-lib.inittemplatebase.propertiesdefinitions.md)
 
 
 </td><td>
-
-`protected`
 
 `readonly`
 
@@ -240,12 +245,10 @@ Definitions of all properties supported by this template.
 </td></tr>
 <tr><td>
 
-[\_substitutionsVariables?](./xpm-lib.inittemplatebase._substitutionsvariables.md)
+[substitutionsVariables?](./xpm-lib.inittemplatebase.substitutionsvariables.md)
 
 
 </td><td>
-
-`protected`
 
 
 </td><td>
@@ -261,12 +264,10 @@ _(Optional)_ The variables to be used for template substitutions.
 </td></tr>
 <tr><td>
 
-[\_templatesPath](./xpm-lib.inittemplatebase._templatespath.md)
+[templatesPath](./xpm-lib.inittemplatebase.templatespath.md)
 
 
 </td><td>
-
-`protected`
 
 `readonly`
 
@@ -347,22 +348,6 @@ Recursively copies all contents of a source folder to a destination folder.
 </td><td>
 
 Validates the structure and content of property definitions.
-
-
-</td></tr>
-<tr><td>
-
-[\_validatePropertyValue(name, value)](./xpm-lib.inittemplatebase._validatepropertyvalue.md)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-Validates a property value against its definition.
 
 
 </td></tr>
@@ -449,6 +434,20 @@ Renders a template file using Liquid and writes the output.
 </td><td>
 
 Executes the template initialisation process.
+
+
+</td></tr>
+<tr><td>
+
+[validatePropertyValue(name, value)](./xpm-lib.inittemplatebase.validatepropertyvalue.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Validates a property value against its definition.
 
 
 </td></tr>

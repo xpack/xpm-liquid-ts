@@ -62,7 +62,7 @@ The logger instance for output and diagnostics.
 </td></tr>
 <tr><td>
 
-[minVersion](./xpm-lib.policiesconstructorparameters.minversion.md)
+[minVersion?](./xpm-lib.policiesconstructorparameters.minversion.md)
 
 
 </td><td>
@@ -75,7 +75,7 @@ string
 
 </td><td>
 
-The minimum <b>xpm</b> version to evaluate.
+_(Optional)_ The minimum <b>xpm</b> version to evaluate.
 
 
 </td></tr>

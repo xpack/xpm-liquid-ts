@@ -77,6 +77,9 @@ export declare class LiquidEngine extends liquidjs.Liquid {
      * platform-specific behaviour. Defaults to a new {@link PlatformDetector}
      * instance.
      */
-    constructor(platformDetector?: PlatformDetector);
+    constructor({ platformDetector, options, }?: {
+        platformDetector?: PlatformDetector;
+        options?: liquidjs.LiquidOptions;
+    });
 }
 //# sourceMappingURL=liquid-engine.d.ts.map

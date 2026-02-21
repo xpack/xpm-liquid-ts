@@ -9,7 +9,10 @@ Constructs a Liquid engine instance with xpm-specific settings and filters.
 **Signature:**
 
 ```typescript
-constructor(platformDetector?: PlatformDetector);
+constructor(input?: {
+        platformDetector?: PlatformDetector;
+        options?: liquidjs.LiquidOptions;
+    });
 ```
 
 ## Parameters
@@ -32,17 +35,33 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-platformDetector
+{ platformDetector, options, }
 
 
 </td><td>
 
-[PlatformDetector](./xpm-lib.platformdetector.md)
+(not declared)
 
 
 </td><td>
 
-_(Optional)_ The platform detector instance for platform-specific behaviour. Defaults to a new [PlatformDetector](./xpm-lib.platformdetector.md) instance.
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+input
+
+
+</td><td>
+
+{ platformDetector?: [PlatformDetector](./xpm-lib.platformdetector.md)<!-- -->; options?: liquidjs.LiquidOptions; }
+
+
+</td><td>
+
+_(Optional)_
 
 
 </td></tr>

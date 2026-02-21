@@ -19,7 +19,7 @@ A promise that resolves when generation is complete.
 
 ## Remarks
 
-This abstract method must be implemented by derived classes to define the specific files and folder structure to create for the project. Implementations should use [InitTemplateBase.copyFile()](./xpm-lib.inittemplatebase.copyfile.md)<!-- -->, [InitTemplateBase.copyFolder()](./xpm-lib.inittemplatebase.copyfolder.md)<!-- -->, and [InitTemplateBase.render()](./xpm-lib.inittemplatebase.render.md) to create the project structure. The substitution variables are available via the [InitTemplateBase.\_substitutionsVariables](./xpm-lib.inittemplatebase._substitutionsvariables.md) property.
+This abstract method must be implemented by derived classes to define the specific files and folder structure to create for the project. Implementations should use [InitTemplateBase.copyFile()](./xpm-lib.inittemplatebase.copyfile.md)<!-- -->, [InitTemplateBase.copyFolder()](./xpm-lib.inittemplatebase.copyfolder.md)<!-- -->, and [InitTemplateBase.render()](./xpm-lib.inittemplatebase.render.md) to create the project structure. The substitution variables are available via the [InitTemplateBase.substitutionsVariables](./xpm-lib.inittemplatebase.substitutionsvariables.md) property.
 
 The implementation must be <b>asynchronous</b> to allow for file system operations.
 

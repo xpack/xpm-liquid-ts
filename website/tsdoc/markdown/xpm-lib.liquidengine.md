@@ -43,7 +43,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)(platformDetector)](./xpm-lib.liquidengine._constructor_.md)
+[(constructor)({ platformDetector, options, }, input)](./xpm-lib.liquidengine._constructor_.md)
 
 
 </td><td>
