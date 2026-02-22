@@ -1,7 +1,7 @@
 /*
  * DO NOT EDIT!
  * Automatically generated from npm-packages-helper/templates/*.
- * 
+ *
  * This file is part of the xPack project (http://xpack.github.io).
  * Copyright (c) 2021-2026 Liviu Ionescu. All rights reserved.
  *
@@ -22,7 +22,11 @@
 import eslint from '@eslint/js'
 import prettierConfig from 'eslint-config-prettier'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import tseslint from 'typescript-eslint'
+
+const configFilePath = fileURLToPath(import.meta.url)
+const configFolderPath = path.dirname(configFilePath)
 
 export default tseslint.config({
   extends: [
@@ -31,7 +35,7 @@ export default tseslint.config({
     tseslint.configs.stylisticTypeChecked,
     prettierConfig,
   ],
-  ignores: [ ],
+  ignores: [],
   rules: {
     'max-len': [
       'warn',
@@ -48,7 +52,7 @@ export default tseslint.config({
       // ask TypeScript's type checking service for each source file's type information
       projectService: true,
       // tells our parser the absolute path of your project's root directory
-      tsconfigRootDir: path.dirname(path.dirname(new URL(import.meta.url).pathname)),
+      tsconfigRootDir: path.resolve(configFolderPath, '..'),
     },
   },
 })
