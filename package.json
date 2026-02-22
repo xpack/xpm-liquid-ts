@@ -54,12 +54,11 @@
     "eslint-config-prettier": "^10.1.8",
     "json": "^11.0.0",
     "liquidjs": "^10.24.0",
-    "prettier": "3.8.1",
+    "prettier": "^3.8.1",
     "tap": "^21.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.38.0",
-    "@microsoft/api-extractor": "^7.52.8"
+    "typescript-eslint": "^8.38.0"
   },
   "scripts": {
     "generate-top-commons": "bash node_modules/@xpack/npm-packages-helper/maintenance-scripts/generate-top-commons.sh --xpack",
@@ -112,7 +111,8 @@
       "ubuntu-24.04",
       "ubuntu-24.04-arm",
       "macos-15-intel",
-      "macos-15"
+      "macos-15",
+      "windows-2025"
     ],
     "testCoverage": "true",
     "useEslint": "true",
