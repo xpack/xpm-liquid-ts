@@ -535,6 +535,13 @@ export abstract class InitTemplateBase {
 
     const log = this.log
 
+    const destinationFileRelativePath = path.relative(
+      this.context.config.cwd,
+      destinationFilePath
+    )
+
+    log.info(`Copying file '${destinationFileRelativePath}'...`)
+
     await fs.mkdir(path.dirname(destinationFilePath), { recursive: true })
 
     const sourceFileAbsolutePath = path.resolve(
@@ -542,12 +549,6 @@ export abstract class InitTemplateBase {
       sourceFileRelativePath
     )
     await fs.copyFile(sourceFileAbsolutePath, destinationFilePath)
-
-    const destinationFileRelativePath = path.relative(
-      this.context.config.cwd,
-      destinationFilePath
-    )
-    log.info(`File '${destinationFileRelativePath}' copied.`)
   }
 
   /**
@@ -579,6 +580,8 @@ export abstract class InitTemplateBase {
 
     const log = this.log
 
+    log.info(`Copying folder '${destinationFolderPath}'...`)
+
     const sourceFolderAbsolutePath = path.resolve(
       this.templatesPath,
       sourceFolderRelativePath
@@ -587,7 +590,6 @@ export abstract class InitTemplateBase {
       sourceFolderPath: sourceFolderAbsolutePath,
       destinationFolderPath: path.resolve(destinationFolderPath),
     })
-    log.info(`Folder '${destinationFolderPath}' copied.`)
   }
 
   /**
@@ -644,8 +646,8 @@ export abstract class InitTemplateBase {
     const destinationFileRelativePath = path.relative(cwd, destinationFilePath)
 
     log.info(
-      `Rendering template '${sourceFileRelativePath}' to ` +
-        `'${destinationFileRelativePath}'`
+      `Rendering template '${sourceFileRelativePath}' as ` +
+        `'${destinationFileRelativePath}'...`
     )
 
     log.trace(`render(${sourceFilePath}, ${destinationFilePath})`)
@@ -664,7 +666,6 @@ export abstract class InitTemplateBase {
         throw new OutputError(error.message)
       }
     }
-    log.info(`File '${destinationFileRelativePath}' generated.`)
   }
 
   /**
