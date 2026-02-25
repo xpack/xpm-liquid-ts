@@ -62,7 +62,7 @@
   },
   "scripts": {
     "generate-top-commons": "bash node_modules/@xpack/npm-packages-helper/maintenance-scripts/generate-top-commons.sh --xpack",
-    "compile-watch": "tsc --build --verbose --watch src",
+    "compile-watch": "tsc --watch --project tsconfig.json",
     "prettier": "prettier src tests/tap --write --config config/.prettierrc.json --ignore-path config/.prettierignore",
     "fix": "eslint --config config/eslint.config.js --fix src",
     "compile": "tsc --project tsconfig.json",
@@ -88,17 +88,17 @@
     "test-all": "tap run --reporter=tap --disable-coverage",
     "test-one": "tap run --reporter=tap --coverage-map=tests/coverage-map.js tests/tap/*/package/*.ts",
     "test-tap-config-list": "tap config list",
+    "tap": "tap --reporter=tap",
     "dev-cycle": "npm run fix && npm run compile && npm run test",
     "clean": "del-cli --force dist .tap",
     "deep-clean": "npm run clean && rm -rf node_modules package-lock.json",
+    "npm-audit": "npm audit fix --force",
     "dumpconf": "env | sort | uniq",
     "show-versions": "echo $(which node) $(node --version) && echo $(which npm) $(npm --version)",
     "pretest-coverage": "npm run lint",
     "pretest-no-coverage": "npm run lint",
-    "tap": "tap --reporter=tap",
     "prepublishOnly": "npm run lint && npm run test",
-    "postpublish": "git push origin --follow-tags",
-    "api-extractor": "api-extractor run --local --verbose"
+    "postpublish": "git push origin --follow-tags"
   },
   "topConfig": {
     "descriptiveName": "xpm Core Library",
@@ -120,8 +120,5 @@
   },
   "engines": {
     "node": ">=20.0"
-  },
-  "bin": {
-    "xpm-lib": "./bin/xpm-lib.js"
   }
 }
