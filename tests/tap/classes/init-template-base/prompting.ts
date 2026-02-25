@@ -133,6 +133,7 @@ await t.test(
         properties: {},
         cwd: process.cwd(),
       },
+      rootPath: '/my/root',
     }
 
     const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
@@ -146,8 +147,7 @@ await t.test(
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -173,7 +173,7 @@ await t.test(
         stdout: new MockStdout(),
       } as unknown as NodeJS.Process
 
-      let mockContext = {
+      let mockContext: xpm.Context = {
         log: new Logger({ level: 'info' }),
         config: {
           projectName: 'test-project',
@@ -182,6 +182,7 @@ await t.test(
           },
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
@@ -215,8 +216,7 @@ await t.test(
 
       let template = new XpmInitTemplate({
         context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
+        templatesFolderPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
         policies,
@@ -241,6 +241,7 @@ await t.test(
           },
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       class XpmInitTemplate2 extends xpm.InitTemplateBase {
@@ -257,8 +258,7 @@ await t.test(
 
       template = new XpmInitTemplate2({
         context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
+        templatesFolderPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
         policies,
@@ -274,13 +274,14 @@ await t.test(
         stdout: new MockStdout(),
       } as unknown as NodeJS.Process
 
-      let mockContext = {
+      let mockContext: xpm.Context = {
         log: new Logger({ level: 'info' }),
         config: {
           projectName: 'test-project',
           properties: {},
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
@@ -307,8 +308,7 @@ await t.test(
 
       let template = new XpmInitTemplate({
         context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
+        templatesFolderPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
         policies,
@@ -331,6 +331,7 @@ await t.test(
           properties: {},
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       class XpmInitTemplate2 extends xpm.InitTemplateBase {
@@ -347,8 +348,7 @@ await t.test(
 
       template = new XpmInitTemplate2({
         context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
+        templatesFolderPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
         policies,
@@ -364,13 +364,14 @@ await t.test(
         stdout: new MockStdout(),
       } as unknown as NodeJS.Process
 
-      let mockContext = {
+      let mockContext: xpm.Context = {
         log: new Logger({ level: 'info' }),
         config: {
           projectName: 'test-project',
           properties: {},
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
@@ -397,8 +398,7 @@ await t.test(
 
       let template = new XpmInitTemplate({
         context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
+        templatesFolderPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
         policies,
@@ -421,6 +421,7 @@ await t.test(
           properties: {},
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       class XpmInitTemplate2 extends xpm.InitTemplateBase {
@@ -437,8 +438,7 @@ await t.test(
 
       template = new XpmInitTemplate2({
         context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
+        templatesFolderPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
         policies,
@@ -456,13 +456,14 @@ await t.test(
         arch: 'x64',
       } as unknown as NodeJS.Process
 
-      let mockContext = {
+      let mockContext: xpm.Context = {
         log: new Logger({ level: 'info' }),
         config: {
           projectName: 'test-project',
           properties: {},
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
@@ -495,8 +496,7 @@ await t.test(
 
       let template = new XpmInitTemplate({
         context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
+        templatesFolderPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
         policies,
@@ -521,6 +521,7 @@ await t.test(
           properties: {},
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       class XpmInitTemplate2 extends xpm.InitTemplateBase {
@@ -537,8 +538,7 @@ await t.test(
 
       template = new XpmInitTemplate2({
         context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
+        templatesFolderPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
         policies,

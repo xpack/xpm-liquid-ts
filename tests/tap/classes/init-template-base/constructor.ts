@@ -45,6 +45,7 @@ const mockContext: xpm.Context = {
     },
     cwd: process.cwd(),
   },
+  rootPath: '/my/root',
 }
 
 const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
@@ -74,8 +75,7 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
   try {
     template = new XpmInitTemplate({
       context: undefined as unknown as xpm.Context,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
       policies,
@@ -88,8 +88,7 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
   try {
     template = new XpmInitTemplate({
       context: {} as xpm.Context,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
       policies,
@@ -102,13 +101,12 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
   try {
     template = new XpmInitTemplate({
       context: { log: new Logger({ level: 'info' }) } as xpm.Context,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
       policies,
     })
-    t.fail('should have thrown for missing context')
+    t.fail('should have thrown for missing context.config')
   } catch (error) {
     t.type(error, AssertionError, 'threw an error for missing context.config')
   }
@@ -118,9 +116,8 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
       context: {
         log: new Logger({ level: 'info' }),
         config: { cwd: process.cwd() },
-      },
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      } as xpm.Context,
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
       policies,
@@ -141,15 +138,14 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
         config: {
           projectName: 'test-project',
           cwd: '/my/cwd',
-        },
-      },
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+        } as xpm.Config,
+      } as xpm.Context,
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
       policies,
     })
-    t.fail('should have thrown for missing context')
+    t.fail('should have thrown for missing context.config.properties')
   } catch (error) {
     t.type(
       error,
@@ -160,43 +156,53 @@ t.test('InitTemplateBase - constructor assertions', (t): void => {
 
   try {
     template = new XpmInitTemplate({
-      context: mockContext,
-      __dirname: undefined as unknown as string,
-      templatesPath: '/my/templates',
+      context: {
+        log: new Logger({ level: 'info' }),
+        config: {
+          projectName: 'test-project',
+          cwd: '/my/cwd',
+          properties: {
+            stringProp: 'a string',
+          },
+        } as xpm.Config,
+      } as xpm.Context,
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions: {},
       process: mockProcess,
       policies,
     })
-    t.fail('should have thrown for missing context')
+    t.fail('should have thrown for missing context.rootPath')
   } catch (error) {
-    t.type(error, AssertionError, 'threw an error for missing __dirname')
+    t.type(error, AssertionError, 'threw an error for missing context.rootPath')
   }
 
   try {
     template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: undefined as unknown as string,
+      templatesFolderPath: undefined as unknown as string,
       propertiesDefinitions: {},
       process: mockProcess,
       policies,
     })
-    t.fail('should have thrown for missing context')
+    t.fail('should have thrown for missing templatesFolderPath')
   } catch (error) {
-    t.type(error, AssertionError, 'threw an error for missing templatesPath')
+    t.type(
+      error,
+      AssertionError,
+      'threw an error for missing templatesFolderPath'
+    )
   }
 
   try {
     template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions:
         undefined as unknown as xpm.InitTemplatePropertiesDefinitions,
       process: mockProcess,
       policies,
     })
-    t.fail('should have thrown for missing context')
+    t.fail('should have thrown for missing propertiesDefinitions')
   } catch (error) {
     t.type(
       error,
@@ -216,8 +222,12 @@ await t.test(
         t.ok(true, 'generate() called')
 
         t.same(this.context, mockContext, 'context is correct')
-        t.equal(this.__dirname, '/my/dir', '__dirname is correct')
-        t.equal(this.templatesPath, '/my/templates', 'templatesPath is correct')
+        t.equal(this.context.rootPath, '/my/root', 'rootPath is correct')
+        t.equal(
+          this.templatesFolderPath,
+          '/my/templates',
+          'templatesFolderPath is correct'
+        )
         t.same(this.process, mockProcess, 'process is correct')
 
         t.equal(
@@ -254,8 +264,7 @@ await t.test(
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -290,8 +299,7 @@ await t.test(
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies: legacyPolicies,
@@ -324,8 +332,7 @@ await t.test('InitTemplateBase - default process', async (t): Promise<void> => {
 
   const template = new XpmInitTemplate({
     context: mockContext,
-    __dirname: '/my/dir',
-    templatesPath: '/my/templates',
+    templatesFolderPath: '/my/templates',
     propertiesDefinitions,
     policies,
   })

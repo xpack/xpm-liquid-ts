@@ -126,12 +126,12 @@ await t.test(
         },
         cwd: process.cwd(),
       },
+      rootPath: '/my/root',
     }
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: path.join(fixturesFolderPath, 'template'),
+      templatesFolderPath: path.join(fixturesFolderPath, 'template'),
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -153,7 +153,10 @@ await t.test('InitTemplateBase - render()', async (t): Promise<void> => {
         path.join(os.tmpdir(), 'render-')
       )
 
-      const sourceFilePath = path.join(this.templatesPath, 'hello-liquid.txt')
+      const sourceFilePath = path.join(
+        this.templatesFolderPath,
+        'hello-liquid.txt'
+      )
       const destinationFilePath = path.join(
         temporaryFolderPath,
         'output',
@@ -196,12 +199,12 @@ await t.test('InitTemplateBase - render()', async (t): Promise<void> => {
       },
       cwd: process.cwd(),
     },
+    rootPath: '/my/root',
   }
 
   const template = new XpmInitTemplate({
     context: mockContext,
-    __dirname: '/my/dir',
-    templatesPath: path.join(fixturesFolderPath, 'template'),
+    templatesFolderPath: path.join(fixturesFolderPath, 'template'),
     propertiesDefinitions,
     process: mockProcess,
     policies,
@@ -268,12 +271,12 @@ t.test('InitTemplateBase - copyFile() assertions', (t): void => {
       },
       cwd: process.cwd(),
     },
+    rootPath: '/my/root',
   }
 
   const template = new XpmInitTemplate({
     context: mockContext,
-    __dirname: '/my/dir',
-    templatesPath: path.join(fixturesFolderPath, 'template'),
+    templatesFolderPath: path.join(fixturesFolderPath, 'template'),
     propertiesDefinitions,
     process: mockProcess,
     policies,
@@ -291,83 +294,78 @@ t.test('InitTemplateBase - copyFile() assertions', (t): void => {
   )
 })
 
-t.test('InitTemplateBase - copyFolder() assertions', (t): void => {
-  class XpmInitTemplate extends xpm.InitTemplateBase {
-    async generate(): Promise<void> {
-      t.ok(true, 'generate() called')
+await t.test(
+  'InitTemplateBase - copyFolder() assertions',
+  async (t): Promise<void> => {
+    class XpmInitTemplate extends xpm.InitTemplateBase {
+      async generate(): Promise<void> {
+        t.ok(true, 'generate() called')
 
-      await t.rejects(
-        () =>
-          this.copyFolder({
-            sourceFolderRelativePath: undefined as unknown as string,
-            destinationFolderPath: '/output',
-          }),
-        {
-          name: 'AssertionError',
-          message: /sourceFolderRelativePath is required/,
-        },
-        'throws AssertionError with "sourceFolderRelativePath is required"'
-      )
+        await t.rejects(
+          () =>
+            this.copyFolder({
+              sourceFolderRelativePath: undefined as unknown as string,
+              destinationFolderPath: '/output',
+            }),
+          {
+            name: 'AssertionError',
+            message: /sourceFolderRelativePath is required/,
+          },
+          'throws AssertionError with "sourceFolderRelativePath is required"'
+        )
 
-      await t.rejects(
-        () =>
-          this.copyFolder({
-            sourceFolderRelativePath: '',
-            destinationFolderPath: '/output',
-          }),
-        {
-          name: 'AssertionError',
-          message: /sourceFolderRelativePath is required/,
-        },
-        'throws AssertionError with empty sourceFolderRelativePath'
-      )
+        await t.rejects(
+          () =>
+            this.copyFolder({
+              sourceFolderRelativePath: '',
+              destinationFolderPath: '/output',
+            }),
+          {
+            name: 'AssertionError',
+            message: /sourceFolderRelativePath is required/,
+          },
+          'throws AssertionError with empty sourceFolderRelativePath'
+        )
 
-      await t.rejects(
-        () =>
-          this.copyFolder({
-            sourceFolderRelativePath: 'folder',
-            destinationFolderPath: '',
-          }),
-        {
-          name: 'AssertionError',
-          message: /destinationFolderPath is required/,
-        },
-        'throws AssertionError with "destinationFolderPath is required"'
-      )
+        await t.rejects(
+          () =>
+            this.copyFolder({
+              sourceFolderRelativePath: 'folder',
+              destinationFolderPath: '',
+            }),
+          {
+            name: 'AssertionError',
+            message: /destinationFolderPath is required/,
+          },
+          'throws AssertionError with "destinationFolderPath is required"'
+        )
+      }
     }
-  }
 
-  const mockContext: xpm.Context = {
-    log: new Logger({ level: 'silent' }),
-    config: {
-      projectName: 'test-project',
-      properties: {
-        stringProp: 'a string',
+    const mockContext: xpm.Context = {
+      log: new Logger({ level: 'silent' }),
+      config: {
+        projectName: 'test-project',
+        properties: {
+          stringProp: 'a string',
+        },
+        cwd: process.cwd(),
       },
-      cwd: process.cwd(),
-    },
-  }
-
-  const template = new XpmInitTemplate({
-    context: mockContext,
-    __dirname: '/my/dir',
-    templatesPath: path.join(fixturesFolderPath, 'template'),
-    propertiesDefinitions,
-    process: mockProcess,
-    policies,
-  })
-
-  template.run().then(
-    () => {
-      t.pass('run completed successfully')
-      t.end()
-    },
-    (error) => {
-      t.fail(`run failed: ${String(error)}`)
-      t.end()
+      rootPath: '/my/root',
     }
-  )
-})
+
+    const template = new XpmInitTemplate({
+      context: mockContext,
+      templatesFolderPath: path.join(fixturesFolderPath, 'template'),
+      propertiesDefinitions,
+      process: mockProcess,
+      policies,
+    })
+
+    await template.run()
+    t.pass('run completed successfully')
+  }
+)
 
 await t.test(
   'InitTemplateBase - render() assertions',
@@ -392,7 +390,10 @@ await t.test(
         await t.rejects(
           () =>
             this.render({
-              sourceFilePath: path.join(this.templatesPath, 'hello-liquid.txt'),
+              sourceFilePath: path.join(
+                this.templatesFolderPath,
+                'hello-liquid.txt'
+              ),
               destinationFilePath: undefined as unknown as string,
             }),
           {
@@ -413,12 +414,12 @@ await t.test(
         },
         cwd: process.cwd(),
       },
+      rootPath: '/my/root',
     }
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: path.join(fixturesFolderPath, 'template'),
+      templatesFolderPath: path.join(fixturesFolderPath, 'template'),
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -447,12 +448,12 @@ await t.test(
         },
         cwd: process.cwd(),
       },
+      rootPath: '/my/root',
     }
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: path.join(fixturesFolderPath, 'template'),
+      templatesFolderPath: path.join(fixturesFolderPath, 'template'),
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -460,7 +461,10 @@ await t.test(
 
     // Do not call run(), so substitutionsVariables is not initialised.
 
-    const sourceFilePath = path.join(template.templatesPath, 'hello-liquid.txt')
+    const sourceFilePath = path.join(
+      template.templatesFolderPath,
+      'hello-liquid.txt'
+    )
     const destinationFilePath = '/tmp/output.txt'
 
     await t.rejects(

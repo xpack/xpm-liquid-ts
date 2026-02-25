@@ -147,10 +147,16 @@ export interface Context {
    * The logger instance for output and diagnostics.
    */
   log: Logger
+
   /**
    * The <b>xpm</b> configuration options.
    */
   config: Config
+
+  /**
+   * The absolute path to the module folder.
+   */
+  rootPath: string
 
   /**
    * Allows additional context properties.

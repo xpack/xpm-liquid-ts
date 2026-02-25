@@ -45,6 +45,7 @@ const mockContext: xpm.Context = {
     },
     cwd: process.cwd(),
   },
+  rootPath: '/my/root',
 }
 
 const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
@@ -85,6 +86,7 @@ await t.test(
         },
         cwd: process.cwd(),
       },
+      rootPath: '/my/root',
     }
 
     const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
@@ -197,8 +199,7 @@ await t.test(
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -211,7 +212,7 @@ await t.test(
     // Test defaults.
 
     await t.test('defaults', async (t): Promise<void> => {
-      const mockContext = {
+      const mockContext: xpm.Context = {
         log: new Logger({ level: 'info' }),
         config: {
           projectName: 'test-project',
@@ -220,6 +221,7 @@ await t.test(
           },
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       class XpmInitTemplate extends xpm.InitTemplateBase {
@@ -298,8 +300,7 @@ await t.test(
 
       const template = new XpmInitTemplate({
         context: mockContext,
-        __dirname: '/my/dir',
-        templatesPath: '/my/templates',
+        templatesFolderPath: '/my/templates',
         propertiesDefinitions,
         process: mockProcess,
         policies,
@@ -314,7 +315,7 @@ await t.test(
     const log = new Logger({ level: 'silent' }) // <---
 
     await t.test('missing property', async (t): Promise<void> => {
-      const mockContext = {
+      const mockContext: xpm.Context = {
         log,
         config: {
           projectName: 'test-project',
@@ -324,13 +325,13 @@ await t.test(
           },
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       try {
         const template = new XpmInitTemplate({
           context: mockContext,
-          __dirname: '/my/dir',
-          templatesPath: '/my/templates',
+          templatesFolderPath: '/my/templates',
           propertiesDefinitions,
           process: mockProcess,
           policies,
@@ -353,7 +354,7 @@ await t.test(
     })
 
     await t.test('platform not supported', async (t): Promise<void> => {
-      const mockContext = {
+      const mockContext: xpm.Context = {
         log,
         config: {
           projectName: 'test-project',
@@ -362,13 +363,13 @@ await t.test(
           },
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       try {
         const template = new XpmInitTemplate({
           context: mockContext,
-          __dirname: '/my/dir',
-          templatesPath: '/my/templates',
+          templatesFolderPath: '/my/templates',
           propertiesDefinitions,
           process: mockProcess,
           policies,
@@ -391,7 +392,7 @@ await t.test(
     })
 
     await t.test('bad binary value', async (t): Promise<void> => {
-      const mockContext = {
+      const mockContext: xpm.Context = {
         log,
         config: {
           projectName: 'test-project',
@@ -400,13 +401,13 @@ await t.test(
           },
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       try {
         const template = new XpmInitTemplate({
           context: mockContext,
-          __dirname: '/my/dir',
-          templatesPath: '/my/templates',
+          templatesFolderPath: '/my/templates',
           propertiesDefinitions,
           process: mockProcess,
           policies,
@@ -429,7 +430,7 @@ await t.test(
     })
 
     await t.test('bad number', async (t): Promise<void> => {
-      const mockContext = {
+      const mockContext: xpm.Context = {
         log,
         config: {
           projectName: 'test-project',
@@ -438,13 +439,13 @@ await t.test(
           },
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
 
       try {
         const template = new XpmInitTemplate({
           context: mockContext,
-          __dirname: '/my/dir',
-          templatesPath: '/my/templates',
+          templatesFolderPath: '/my/templates',
           propertiesDefinitions,
           process: mockProcess,
           policies,
@@ -467,7 +468,7 @@ await t.test(
     })
 
     await t.test('string without default', async (t): Promise<void> => {
-      const mockContext = {
+      const mockContext: xpm.Context = {
         log,
         config: {
           projectName: 'test-project',
@@ -476,6 +477,7 @@ await t.test(
           },
           cwd: process.cwd(),
         },
+        rootPath: '/my/root',
       }
       const propertiesDefinitions: xpm.InitTemplatePropertiesDefinitions = {
         stringProp: {
@@ -498,8 +500,7 @@ await t.test(
       try {
         const template = new XpmInitTemplate({
           context: mockContext,
-          __dirname: '/my/dir',
-          templatesPath: '/my/templates',
+          templatesFolderPath: '/my/templates',
           propertiesDefinitions,
           process: mockProcess,
           policies,
@@ -533,8 +534,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -555,8 +555,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -578,8 +577,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -603,8 +601,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -628,8 +625,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -653,8 +649,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -679,8 +674,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -705,8 +699,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -732,8 +725,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -758,8 +750,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -785,8 +776,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -813,8 +803,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -841,8 +830,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -871,8 +859,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -904,8 +891,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -937,8 +923,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -968,8 +953,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -1000,8 +984,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -1032,8 +1015,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -1064,8 +1046,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -1092,8 +1073,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -1120,8 +1100,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -1148,8 +1127,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -1176,8 +1154,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -1203,8 +1180,7 @@ t.test('InitTemplateBase - _validatePropertiesDefinitions()', (t): void => {
 
     const template = new XpmInitTemplate({
       context: mockContext,
-      __dirname: '/my/dir',
-      templatesPath: '/my/templates',
+      templatesFolderPath: '/my/templates',
       propertiesDefinitions,
       process: mockProcess,
       policies,
@@ -1239,8 +1215,7 @@ t.test('InitTemplateBase - isPlatformSupported()', (t): void => {
 
   const template = new XpmInitTemplate({
     context: mockContext,
-    __dirname: '/my/dir',
-    templatesPath: '/my/templates',
+    templatesFolderPath: '/my/templates',
     propertiesDefinitions,
     process: mockProcess,
     policies,

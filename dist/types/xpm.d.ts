@@ -11,6 +11,7 @@ export interface Config {
 export interface Context {
     log: Logger;
     config: Config;
+    rootPath: string;
     [key: string]: any;
 }
 //# sourceMappingURL=xpm.d.ts.map

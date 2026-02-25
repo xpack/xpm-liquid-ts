@@ -5,8 +5,7 @@ import { Context } from '../types/xpm.js';
 import type { Policies } from './policies.js';
 export interface InitTemplateConstructorParameters {
     context: Context;
-    __dirname: string;
-    templatesPath: string;
+    templatesFolderPath: string;
     propertiesDefinitions: InitTemplatePropertiesDefinitions;
     process?: NodeJS.Process;
     options?: LiquidOptions;
@@ -16,14 +15,13 @@ export declare abstract class InitTemplateBase {
     readonly context: Context;
     readonly log: Logger;
     readonly propertiesDefinitions: InitTemplatePropertiesDefinitions;
-    readonly __dirname: string;
-    readonly templatesPath: string;
+    readonly templatesFolderPath: string;
     readonly engine: Liquid;
     substitutionsVariables?: InitTemplateSubstitutionsVariables;
     isInteractive: boolean;
     readonly process: NodeJS.Process;
     policies: Policies;
-    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, options, policies, }: InitTemplateConstructorParameters);
+    constructor({ context, templatesFolderPath, propertiesDefinitions, process: _process, options, policies, }: InitTemplateConstructorParameters);
     run(): Promise<number>;
     abstract generate(): Promise<void>;
     isPlatformSupported(platforms: string[] | undefined): boolean;

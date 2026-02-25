@@ -69,14 +69,9 @@ export interface InitTemplateConstructorParameters {
   context: Context
 
   /**
-   * The absolute path to the module folder.
-   */
-  __dirname: string
-
-  /**
    * The absolute path to the templates folder.
    */
-  templatesPath: string
+  templatesFolderPath: string
 
   /**
    * Definitions of all properties supported by this template.
@@ -178,14 +173,9 @@ export abstract class InitTemplateBase {
   readonly propertiesDefinitions: InitTemplatePropertiesDefinitions = {}
 
   /**
-   * The absolute path to the module folder.
-   */
-  readonly __dirname: string
-
-  /**
    * The absolute path to the templates folder.
    */
-  readonly templatesPath: string
+  readonly templatesFolderPath: string
 
   /**
    * The Liquid templating engine instance.
@@ -281,13 +271,12 @@ export abstract class InitTemplateBase {
    * @param context - The <b>xpm</b> context containing configuration and
    *    logging.
    * @param __dirname - The absolute path to the module folder.
-   * @param templatesPath - The absolute path to the templates folder.
+   * @param templatesFolderPath - The absolute path to the templates folder.
    * @param propertiesDefinitions - The definitions of all supported properties.
    */
   constructor({
     context,
-    __dirname,
-    templatesPath,
+    templatesFolderPath,
     propertiesDefinitions,
     process: _process = process,
     options,
@@ -298,16 +287,15 @@ export abstract class InitTemplateBase {
     assert(context.config, 'context.config is required')
     assert(context.config.projectName, 'context.config.projectName is required')
     assert(context.config.properties, 'context.config.properties is required')
-    assert(__dirname, '__dirname is required')
-    assert(templatesPath, 'templatesPath is required')
+    assert(context.rootPath, 'context.rootPath is required')
+    assert(templatesFolderPath, 'templatesPath is required')
     assert(propertiesDefinitions, 'propertiesDefinitions is required')
 
     this.context = context
     this.log = context.log
 
     this.propertiesDefinitions = propertiesDefinitions
-    this.__dirname = __dirname
-    this.templatesPath = templatesPath
+    this.templatesFolderPath = templatesFolderPath
 
     this.process = _process
 
@@ -319,7 +307,7 @@ export abstract class InitTemplateBase {
     this.engine = new LiquidEngine({
       options: {
         ...options,
-        root: this.templatesPath,
+        root: this.templatesFolderPath,
       },
     })
   }
@@ -545,7 +533,7 @@ export abstract class InitTemplateBase {
     await fs.mkdir(path.dirname(destinationFilePath), { recursive: true })
 
     const sourceFileAbsolutePath = path.resolve(
-      this.templatesPath,
+      this.templatesFolderPath,
       sourceFileRelativePath
     )
     await fs.copyFile(sourceFileAbsolutePath, destinationFilePath)
@@ -583,7 +571,7 @@ export abstract class InitTemplateBase {
     log.info(`Copying folder '${destinationFolderPath}'...`)
 
     const sourceFolderAbsolutePath = path.resolve(
-      this.templatesPath,
+      this.templatesFolderPath,
       sourceFolderRelativePath
     )
     await this._copyFolderRecursively({

@@ -11,34 +11,32 @@ export class InitTemplateBase {
     context;
     log;
     propertiesDefinitions = {};
-    __dirname;
-    templatesPath;
+    templatesFolderPath;
     engine;
     substitutionsVariables;
     isInteractive = false;
     process;
     policies;
-    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process = process, options, policies, }) {
+    constructor({ context, templatesFolderPath, propertiesDefinitions, process: _process = process, options, policies, }) {
         assert(context, 'context is required');
         assert(context.log, 'context.log is required');
         assert(context.config, 'context.config is required');
         assert(context.config.projectName, 'context.config.projectName is required');
         assert(context.config.properties, 'context.config.properties is required');
-        assert(__dirname, '__dirname is required');
-        assert(templatesPath, 'templatesPath is required');
+        assert(context.rootPath, 'context.rootPath is required');
+        assert(templatesFolderPath, 'templatesPath is required');
         assert(propertiesDefinitions, 'propertiesDefinitions is required');
         this.context = context;
         this.log = context.log;
         this.propertiesDefinitions = propertiesDefinitions;
-        this.__dirname = __dirname;
-        this.templatesPath = templatesPath;
+        this.templatesFolderPath = templatesFolderPath;
         this.process = _process;
         this.policies = policies;
         this._validatePropertiesDefinitions();
         this.engine = new LiquidEngine({
             options: {
                 ...options,
-                root: this.templatesPath,
+                root: this.templatesFolderPath,
             },
         });
     }
@@ -130,22 +128,22 @@ export class InitTemplateBase {
         assert(sourceFileRelativePath, 'sourceFileRelativePath is required');
         assert(destinationFilePath, 'destinationFilePath is required');
         const log = this.log;
-        await fs.mkdir(path.dirname(destinationFilePath), { recursive: true });
-        const sourceFileAbsolutePath = path.resolve(this.templatesPath, sourceFileRelativePath);
-        await fs.copyFile(sourceFileAbsolutePath, destinationFilePath);
         const destinationFileRelativePath = path.relative(this.context.config.cwd, destinationFilePath);
-        log.info(`File '${destinationFileRelativePath}' copied.`);
+        log.info(`Copying file '${destinationFileRelativePath}'...`);
+        await fs.mkdir(path.dirname(destinationFilePath), { recursive: true });
+        const sourceFileAbsolutePath = path.resolve(this.templatesFolderPath, sourceFileRelativePath);
+        await fs.copyFile(sourceFileAbsolutePath, destinationFilePath);
     }
     async copyFolder({ sourceFolderRelativePath, destinationFolderPath = sourceFolderRelativePath, }) {
         assert(sourceFolderRelativePath, 'sourceFolderRelativePath is required');
         assert(destinationFolderPath, 'destinationFolderPath is required');
         const log = this.log;
-        const sourceFolderAbsolutePath = path.resolve(this.templatesPath, sourceFolderRelativePath);
+        log.info(`Copying folder '${destinationFolderPath}'...`);
+        const sourceFolderAbsolutePath = path.resolve(this.templatesFolderPath, sourceFolderRelativePath);
         await this._copyFolderRecursively({
             sourceFolderPath: sourceFolderAbsolutePath,
             destinationFolderPath: path.resolve(destinationFolderPath),
         });
-        log.info(`Folder '${destinationFolderPath}' copied.`);
     }
     async render({ sourceFilePath, destinationFilePath, substitutionsVariables = this.substitutionsVariables, }) {
         assert(sourceFilePath, 'sourceFilePath is required');
@@ -158,8 +156,8 @@ export class InitTemplateBase {
         const cwd = config.cwd;
         const sourceFileRelativePath = path.relative(cwd, sourceFilePath);
         const destinationFileRelativePath = path.relative(cwd, destinationFilePath);
-        log.info(`Rendering template '${sourceFileRelativePath}' to ` +
-            `'${destinationFileRelativePath}'`);
+        log.info(`Rendering template '${sourceFileRelativePath}' as ` +
+            `'${destinationFileRelativePath}'...`);
         log.trace(`render(${sourceFilePath}, ${destinationFilePath})`);
         try {
             const fileContent = (await this.engine.renderFile(sourceFilePath, substitutionsVariables));
@@ -171,7 +169,6 @@ export class InitTemplateBase {
                 throw new OutputError(error.message);
             }
         }
-        log.info(`File '${destinationFileRelativePath}' generated.`);
     }
     validatePropertyValue(name, value) {
         const propDef = this.propertiesDefinitions[name];
