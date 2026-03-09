@@ -30,7 +30,7 @@
         "--reporter=tap",
         "--disable-coverage",
         "--timeout=0",
-        "tests/tap/classes/actions.ts"
+        "tests/tap/other/object-substitution.ts"
       ],
       "outFiles": [
         "${workspaceFolder}/dist/*.js"

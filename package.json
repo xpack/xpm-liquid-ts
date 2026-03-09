@@ -86,7 +86,7 @@
     "test-coverage": "tap --show-full-coverage",
     "test-no-coverage": "tap --disable-coverage",
     "test-all": "tap run --reporter=tap --disable-coverage",
-    "test-one": "tap run --reporter=tap --coverage-map=tests/coverage-map.js tests/tap/*/package/*.ts",
+    "test-one": "tap run --reporter=tap --coverage-map=tests/coverage-map.js tests/tap/*/object-substitution.ts",
     "test-tap-config-list": "tap config list",
     "tap": "tap --reporter=tap",
     "dev-cycle": "npm run fix && npm run compile && npm run test",
