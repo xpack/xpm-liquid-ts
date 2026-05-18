@@ -103,8 +103,7 @@ export class BuildConfigurations {
             const jsonBuildConfigurationTemplate = this.jsonBuildConfigurations[jsonBuildConfigurationName];
             return jsonBuildConfigurationTemplate.template.hidden ?? false;
         }
-        const jsonBuildConfigurationContent = this
-            .jsonBuildConfigurations[jsonBuildConfigurationName];
+        const jsonBuildConfigurationContent = this.jsonBuildConfigurations[jsonBuildConfigurationName];
         return jsonBuildConfigurationContent.hidden ?? false;
     }
     has(buildConfigurationName) {
@@ -120,9 +119,7 @@ export class BuildConfigurations {
         let buildConfiguration = this._buildConfigurationsMap.get(buildConfigurationName);
         if (buildConfiguration === undefined) {
             const jsonBuildConfigurationName = this.getJsonName(buildConfigurationName);
-            const jsonBuildConfiguration = (this
-                .jsonBuildConfigurations[jsonBuildConfigurationName] ??
-                {});
+            const jsonBuildConfiguration = this.jsonBuildConfigurations[jsonBuildConfigurationName] ?? {};
             buildConfiguration = new BuildConfiguration({
                 buildConfigurationName,
                 jsonBuildConfiguration,
