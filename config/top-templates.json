@@ -1,0 +1,23 @@
+{
+  "descriptiveName": "xpm Core Library",
+  "preferredName": "xpm Core Library",
+  "githubActionsNodeVersions": [
+    "20",
+    "22",
+    "24"
+  ],
+  "githubActionsOses": [
+    "ubuntu-24.04",
+    "ubuntu-24.04-arm",
+    "macos-15-intel",
+    "macos-15",
+    "windows-2025"
+  ],
+  "hasWebsite": true,
+  "testCoverage": true,
+  "isTypescript": true,
+  "useEslint": true,
+  "useTypescriptEslint": true,
+  "usePrettier": true,
+  "useTap": true
+}

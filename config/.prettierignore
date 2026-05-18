@@ -9,4 +9,12 @@ bin
 maintenance-scripts
 templates
 
+# Ignore Liquid template files.
+**/*-liquid.*
+**/*.liquid
 
+**/CODE-REVIEW.md
+**/code-review.md
+
+# Paths are relative to the current folder, which is config.
+../tests/fixtures/package-bad-json/package.json

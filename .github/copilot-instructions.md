@@ -12,9 +12,9 @@
 - Maintain consistency in terminology throughout the codebase
 - Prefer "folder" to "directory"
 
-## Code Style
+## TypeScript Code Style
 
-- Follow the existing ESlint TypeScript conventions in this project (`typescript-eslint` rules)
+- Follow the existing ESlint TypeScript conventions (the rules defined by the `typescript-eslint` and `prettier` projects)
 - Use consistent formatting and naming conventions based on prettier and ESLint configurations
 
 ## Documentation
@@ -41,6 +41,5 @@
 ## Folder Structure
 
 - `/src`: Contains the TypeScript source code
-- `/dist`: Contains the compiled JavaScript output
 - `/tests`: Contains the test suites and test cases
-- `/website`: Contains the project documentation and guides
+- `/templates`: Contains any template files used for code generation or project scaffolding

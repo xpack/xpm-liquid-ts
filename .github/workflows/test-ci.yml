@@ -20,6 +20,10 @@
 # https://github.com/actions/checkout
 # https://github.com/actions/setup-node
 
+# -----------------------------------------------------------------------------
+
+# https://xpack.github.io/xpm-lib-ts/
+# https://github.com/xpack/xpm-lib-ts/actions/workflows/test-ci.yml
 name: CI on Push
 
 on:
@@ -40,6 +44,7 @@ on:
       - '.github/FUNDING.yml'
       - '.github/workflows/publish-github-pages*.yml'
       - '.github/workflows/trigger-publish-github-pages*.yml'
+      - 'README*.md'
 
 # Allow one concurrent run.
 concurrency:
@@ -47,7 +52,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  npm-test:
+  ci-test:
+    name: 'xpm-lib-ts test'
 
     strategy:
       matrix:
