@@ -1,7 +1,7 @@
 {
   "metadata": {
     "toolPackage": "@microsoft/api-extractor",
-    "toolVersion": "7.57.2",
+    "toolVersion": "7.58.7",
     "schemaVersion": 1011,
     "oldestForwardsCompatibleVersion": 1001,
     "tsdocConfig": {
@@ -4635,6 +4635,33 @@
                 "startIndex": 1,
                 "endIndex": 2
               }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@xpack/xpm-lib!Context#rootPath:member",
+              "docComment": "/**\n * The absolute path to the module folder.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "rootPath: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "rootPath",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
             }
           ],
           "extendsTokenRanges": []
@@ -5280,36 +5307,6 @@
           "preserveMemberOrder": false,
           "members": [
             {
-              "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#__dirname:member",
-              "docComment": "/**\n * The absolute path to the module folder.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "readonly __dirname: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "__dirname",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
               "kind": "Method",
               "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#_askForMoreValues:member(1)",
               "docComment": "/**\n * Prompts the user interactively for missing property values.\n *\n * @remarks\n *\n * This method creates a readline interface and iteratively prompts the user to provide values for properties without explicit values. For each property, the prompt displays:\n *\n * <ul> <li>The property label</li> <li>Valid options (for select and boolean types)</li> <li>The default value in brackets, if available</li> </ul>\n *\n * If the user enters '?', help text is displayed showing the property description and all valid options with their descriptions. Invalid responses are rejected and the prompt is repeated until a valid value is provided. Platform-incompatible options are excluded from select properties.\n *\n * @returns A promise that resolves when all missing values have been collected.\n */\n",
@@ -5440,7 +5437,7 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@xpack/xpm-lib!InitTemplateBase:constructor(1)",
-              "docComment": "/**\n * Constructs an `xpm init` template instance.\n *\n * @param context - The <b>xpm</b> context containing configuration and logging.\n *\n * @param __dirname - The absolute path to the module folder.\n *\n * @param templatesPath - The absolute path to the templates folder.\n *\n * @param propertiesDefinitions - The definitions of all supported properties.\n */\n",
+              "docComment": "/**\n * Constructs an `xpm init` template instance.\n *\n * @param context - The <b>xpm</b> context containing configuration and logging.\n *\n * @param __dirname - The absolute path to the module folder.\n *\n * @param templatesFolderPath - The absolute path to the templates folder.\n *\n * @param propertiesDefinitions - The definitions of all supported properties.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -5461,7 +5458,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "{ context, __dirname, templatesPath, propertiesDefinitions, process: _process, options, policies, }",
+                  "parameterName": "{ context, templatesFolderPath, propertiesDefinitions, process: _process, options, policies, }",
                   "parameterTypeTokenRange": {
                     "startIndex": 0,
                     "endIndex": 0
@@ -6039,12 +6036,12 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#templatesPath:member",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateBase#templatesFolderPath:member",
               "docComment": "/**\n * The absolute path to the templates folder.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "readonly templatesPath: "
+                  "text": "readonly templatesFolderPath: "
                 },
                 {
                   "kind": "Content",
@@ -6058,7 +6055,7 @@
               "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
-              "name": "templatesPath",
+              "name": "templatesFolderPath",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -6149,33 +6146,6 @@
           "name": "InitTemplateConstructorParameters",
           "preserveMemberOrder": false,
           "members": [
-            {
-              "kind": "PropertySignature",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateConstructorParameters#__dirname:member",
-              "docComment": "/**\n * The absolute path to the module folder.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "__dirname: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "__dirname",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              }
-            },
             {
               "kind": "PropertySignature",
               "canonicalReference": "@xpack/xpm-lib!InitTemplateConstructorParameters#context:member",
@@ -6318,12 +6288,12 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@xpack/xpm-lib!InitTemplateConstructorParameters#templatesPath:member",
+              "canonicalReference": "@xpack/xpm-lib!InitTemplateConstructorParameters#templatesFolderPath:member",
               "docComment": "/**\n * The absolute path to the templates folder.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "templatesPath: "
+                  "text": "templatesFolderPath: "
                 },
                 {
                   "kind": "Content",
@@ -6337,7 +6307,7 @@
               "isReadonly": false,
               "isOptional": false,
               "releaseTag": "Public",
-              "name": "templatesPath",
+              "name": "templatesFolderPath",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2

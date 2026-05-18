@@ -22,6 +22,10 @@ Whether to coerce 64-bit architectures to their 32-bit equivalents.
 doForce32bit?: boolean;
 ```
 
+## Default Value
+
+`false`
+
 ## Remarks
 
 When <code>true</code>, applies the following architecture mappings:
@@ -32,6 +36,6 @@ This is useful for backward compatibility scenarios where only 32-bit binaries a
 
 <hr/>
 
-<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.57.2.</p>
+<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.58.7.</p>
 
 </div>

@@ -53,25 +53,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[\_\_dirname](/xpm-lib-ts/docs/api/xpm-lib/interfaces/inittemplateconstructorparameters/__dirname)
-
-
-</td><td>
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-The absolute path to the module folder.
-
-
-</td></tr>
-<tr><td>
-
 [context](/xpm-lib-ts/docs/api/xpm-lib/interfaces/inittemplateconstructorparameters/context)
 
 
@@ -167,7 +148,7 @@ Definitions of all properties supported by this template.
 </td></tr>
 <tr><td>
 
-[templatesPath](/xpm-lib-ts/docs/api/xpm-lib/interfaces/inittemplateconstructorparameters/templatespath)
+[templatesFolderPath](/xpm-lib-ts/docs/api/xpm-lib/interfaces/inittemplateconstructorparameters/templatesfolderpath)
 
 
 </td><td>
@@ -188,6 +169,6 @@ The absolute path to the templates folder.
 
 <hr/>
 
-<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.57.2.</p>
+<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.58.7.</p>
 
 </div>

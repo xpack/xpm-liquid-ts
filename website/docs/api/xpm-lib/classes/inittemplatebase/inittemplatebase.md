@@ -52,7 +52,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)({ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, options, policies, }, input)](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/constructor)
+[(constructor)({ context, templatesFolderPath, propertiesDefinitions, process: \_process, options, policies, }, input)](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/constructor)
 
 
 </td><td>
@@ -90,27 +90,6 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
-
-[\_\_dirname](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/__dirname)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-The absolute path to the module folder.
-
-
-</td></tr>
-<tr><td>
 
 [context](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/context)
 
@@ -274,7 +253,7 @@ _(Optional)_ The variables to be used for template substitutions.
 </td></tr>
 <tr><td>
 
-[templatesPath](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/templatespath)
+[templatesFolderPath](/xpm-lib-ts/docs/api/xpm-lib/classes/inittemplatebase/templatesfolderpath)
 
 
 </td><td>
@@ -465,6 +444,6 @@ Validates a property value against its definition.
 
 <hr/>
 
-<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.57.2.</p>
+<p class="tsdocGeneratedBy">Generated via <a href="https://xpack.github.io/tsdoc2docusaurus">tsdoc2docusaurus</a> 1.3.2 by <a href="https://api-extractor.com">API Extractor/Documenter</a> 7.58.7.</p>
 
 </div>

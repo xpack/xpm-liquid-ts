@@ -42,7 +42,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)({ context, \_\_dirname, templatesPath, propertiesDefinitions, process: \_process, options, policies, }, input)](./xpm-lib.inittemplatebase._constructor_.md)
+[(constructor)({ context, templatesFolderPath, propertiesDefinitions, process: \_process, options, policies, }, input)](./xpm-lib.inittemplatebase._constructor_.md)
 
 
 </td><td>
@@ -80,27 +80,6 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
-
-[\_\_dirname](./xpm-lib.inittemplatebase.__dirname.md)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-The absolute path to the module folder.
-
-
-</td></tr>
-<tr><td>
 
 [context](./xpm-lib.inittemplatebase.context.md)
 
@@ -264,7 +243,7 @@ _(Optional)_ The variables to be used for template substitutions.
 </td></tr>
 <tr><td>
 
-[templatesPath](./xpm-lib.inittemplatebase.templatespath.md)
+[templatesFolderPath](./xpm-lib.inittemplatebase.templatesfolderpath.md)
 
 
 </td><td>

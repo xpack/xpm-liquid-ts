@@ -12,6 +12,10 @@ Whether to coerce 64-bit architectures to their 32-bit equivalents.
 doForce32bit?: boolean;
 ```
 
+## Default Value
+
+`false`
+
 ## Remarks
 
 When <code>true</code>, applies the following architecture mappings:

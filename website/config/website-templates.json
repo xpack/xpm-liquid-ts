@@ -1,0 +1,11 @@
+{
+  "metadataKeywords": "xpm, xpack, liquid, typescript, nodejs, es6, module, library",
+  "tagline": "A TypeScript Node.js module with the common code for xpm and xpm enabled projects",
+  "title": "xpm-lib - The xpm core library (work in progress)",
+  "hasCustomDocsNavbarItem": true,
+  "hasCustomSidebar": true,
+  "hasTSDocDocusaurusApi": true,
+  "skipAlgolia": true,
+  "skipTests": true,
+  "useApiDocumenter": true
+}

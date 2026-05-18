@@ -132,6 +132,10 @@ export interface Context {
      */
     config: Config;
     /**
+     * The absolute path to the module folder.
+     */
+    rootPath: string;
+    /**
      * Allows additional context properties.
      */
     [key: string]: any;

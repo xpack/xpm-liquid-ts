@@ -43,25 +43,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[\_\_dirname](./xpm-lib.inittemplateconstructorparameters.__dirname.md)
-
-
-</td><td>
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-The absolute path to the module folder.
-
-
-</td></tr>
-<tr><td>
-
 [context](./xpm-lib.inittemplateconstructorparameters.context.md)
 
 
@@ -157,7 +138,7 @@ Definitions of all properties supported by this template.
 </td></tr>
 <tr><td>
 
-[templatesPath](./xpm-lib.inittemplateconstructorparameters.templatespath.md)
+[templatesFolderPath](./xpm-lib.inittemplateconstructorparameters.templatesfolderpath.md)
 
 
 </td><td>

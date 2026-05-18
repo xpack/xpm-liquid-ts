@@ -16,7 +16,8 @@ For information on how to install and use this project, please refer to the
 ## Project source
 
 The source code of the current release is available on
-[GitHub tag v5.0.0 tree](https://github.com/xpack/xpm-lib-ts/tree/v5.0.0).
+GitHub as [xpack/xpm-lib-ts](https://github.com/xpack/xpm-lib-ts),
+the [v5.0.0](https://github.com/xpack/xpm-lib-ts/tree/v5.0.0) tree.
 
 ## License
 

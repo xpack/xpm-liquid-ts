@@ -87,5 +87,24 @@ The logger instance for output and diagnostics.
 
 
 </td></tr>
+<tr><td>
+
+[rootPath](./xpm-lib.context.rootpath.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The absolute path to the module folder.
+
+
+</td></tr>
 </tbody></table>
 

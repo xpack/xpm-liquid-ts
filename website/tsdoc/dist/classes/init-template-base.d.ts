@@ -23,13 +23,9 @@ export interface InitTemplateConstructorParameters {
      */
     context: Context;
     /**
-     * The absolute path to the module folder.
-     */
-    __dirname: string;
-    /**
      * The absolute path to the templates folder.
      */
-    templatesPath: string;
+    templatesFolderPath: string;
     /**
      * Definitions of all properties supported by this template.
      */
@@ -117,13 +113,9 @@ export declare abstract class InitTemplateBase {
      */
     readonly propertiesDefinitions: InitTemplatePropertiesDefinitions;
     /**
-     * The absolute path to the module folder.
-     */
-    readonly __dirname: string;
-    /**
      * The absolute path to the templates folder.
      */
-    readonly templatesPath: string;
+    readonly templatesFolderPath: string;
     /**
      * The Liquid templating engine instance.
      */
@@ -210,10 +202,10 @@ export declare abstract class InitTemplateBase {
      * @param context - The <b>xpm</b> context containing configuration and
      *    logging.
      * @param __dirname - The absolute path to the module folder.
-     * @param templatesPath - The absolute path to the templates folder.
+     * @param templatesFolderPath - The absolute path to the templates folder.
      * @param propertiesDefinitions - The definitions of all supported properties.
      */
-    constructor({ context, __dirname, templatesPath, propertiesDefinitions, process: _process, options, policies, }: InitTemplateConstructorParameters);
+    constructor({ context, templatesFolderPath, propertiesDefinitions, process: _process, options, policies, }: InitTemplateConstructorParameters);
     /**
      * Executes the template initialisation process.
      *
