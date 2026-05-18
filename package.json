@@ -96,7 +96,7 @@
     "prepare": "del-cli dist && npm run prettier && npm run lint && npm run compile",
     "pretest": "npm run compile && npm run lint",
     "test-ci": "tap run --reporter=terse",
-    "test": "echo 'No tests defined'",
+    "test": "npm run test-coverage",
     "test-coverage": "tap --show-full-coverage",
     "test-no-coverage": "tap --disable-coverage",
     "test-all": "tap run --reporter=tap --disable-coverage",
