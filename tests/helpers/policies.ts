@@ -12,15 +12,15 @@
 
 // ----------------------------------------------------------------------------
 
-import { Policies } from '../../src/index.js';
-import { log } from './log.js';
+import { Policies } from '../../src/index.js'
+import { log } from './log.js'
 
 // ============================================================================
 
 // All false policies.
-export const policies = new Policies({ log });
+export const policies = new Policies({ log })
 
 // Legacy policies (all true).
-export const legacyPolicies = new Policies({ log, minVersion: '0.1.0' });
+export const legacyPolicies = new Policies({ log, minVersion: '0.1.0' })
 
 // ----------------------------------------------------------------------------

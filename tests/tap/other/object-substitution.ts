@@ -38,7 +38,7 @@ import { JsonDependencyExtended } from '../../../src/index.js'
 
 await t.test('Object substitution', async (t): Promise<void> => {
   const log = new Logger({ level: 'trace' })
-  
+
   const json: xpm.JsonXpmPackage = {
     name: 'test',
     version: '1.2.3',
@@ -56,18 +56,20 @@ await t.test('Object substitution', async (t): Promise<void> => {
               'linux-x64,linux-arm64,win32-x64,darwin-x64,darwin-arm64',
           },
         },
-        release: '21'
+        release: '21',
       },
-      buildConfigurations: {  
+      buildConfigurations: {
         one: {
           devDependencies: {
             '@xpack-dev-tools/clang': {
-              specifier: '{{ properties.native-clang-releases[properties.release].specifier }}',
-              platforms: '{{ properties.native-clang-releases[properties.release].platforms }}',
-            }
-          }
-        }
-      }
+              specifier:
+                '{{ properties.native-clang-releases[properties.release].specifier }}',
+              platforms:
+                '{{ properties.native-clang-releases[properties.release].platforms }}',
+            },
+          },
+        },
+      },
     },
   }
 
@@ -86,8 +88,9 @@ await t.test('Object substitution', async (t): Promise<void> => {
 
   // console.log(JSON.stringify(devDependencies, null, 2))
 
-  const clangDependency: JsonDependencyExtended = 
-    devDependencies['@xpack-dev-tools/clang'] as JsonDependencyExtended
+  const clangDependency: JsonDependencyExtended = devDependencies[
+    '@xpack-dev-tools/clang'
+  ] as JsonDependencyExtended
   t.ok(clangDependency, 'has @xpack-dev-tools/clang dependency')
 
   const specifier = clangDependency.specifier

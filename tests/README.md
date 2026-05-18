@@ -22,13 +22,9 @@ To configure TS to compile the tests, add a `tests/tsconfig.json`:
   /* https://www.typescriptlang.org/tsconfig */
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../tsconfig-common.json",
-  "compilerOptions": {
-  },
-  "exclude": [
-    "./tap"
-  ],
-  "include": [
-  ]
+  "compilerOptions": {},
+  "exclude": ["./tap"],
+  "include": []
 }
 ```
 
@@ -91,7 +87,7 @@ Tests can be started using scripts:
 ## Known issues
 
 - `ts-node` requires a top `tsconfig.json`, currently there is no
-configuration to pass a different path
+  configuration to pass a different path
 
 ## Links
 
