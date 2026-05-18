@@ -599,10 +599,8 @@ export class BuildConfigurations {
       return jsonBuildConfigurationTemplate.template.hidden ?? false
     }
 
-    const jsonBuildConfigurationContent: JsonBuildConfigurationContent = this
-      .jsonBuildConfigurations[
-      jsonBuildConfigurationName
-    ] as JsonBuildConfigurationContent
+    const jsonBuildConfigurationContent: JsonBuildConfigurationContent =
+      this.jsonBuildConfigurations[jsonBuildConfigurationName]
     return jsonBuildConfigurationContent.hidden ?? false
   }
 
@@ -698,9 +696,8 @@ export class BuildConfigurations {
       // exist. The ?? {} provides protection against unexpected inconsistencies
       // between the names map and the configurations object.
       /* c8 ignore start - safety net, they are always defined */
-      const jsonBuildConfiguration: JsonBuildConfigurationContent = (this
-        .jsonBuildConfigurations[jsonBuildConfigurationName] ??
-        {}) as JsonBuildConfigurationContent
+      const jsonBuildConfiguration: JsonBuildConfigurationContent =
+        this.jsonBuildConfigurations[jsonBuildConfigurationName] ?? {}
       /* c8 ignore stop */
 
       buildConfiguration = new BuildConfiguration({
@@ -1880,11 +1877,11 @@ export class BuildConfiguration {
     if (isString(localJsonBuildConfiguration.inherits)) {
       jsonInherits = [localJsonBuildConfiguration.inherits as string]
     } else if (Array.isArray(localJsonBuildConfiguration.inherits)) {
-      jsonInherits = localJsonBuildConfiguration.inherits as string[]
+      jsonInherits = localJsonBuildConfiguration.inherits
     } else if (isString(localJsonBuildConfiguration.inherit)) {
       jsonInherits = [localJsonBuildConfiguration.inherit as string]
     } else if (Array.isArray(localJsonBuildConfiguration.inherit)) {
-      jsonInherits = localJsonBuildConfiguration.inherit as string[]
+      jsonInherits = localJsonBuildConfiguration.inherit
     }
 
     if (jsonInherits.length > 0) {
